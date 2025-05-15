@@ -39,4 +39,9 @@ ENV/
 # Test outputs
 *.png
 *.gds
-layer_mapping.txt 
+layer_mapping.txt
+
+# Web GUI temporary files
+web_gui/uploads/
+web_gui/temp/
+web_gui/.deps_installed 

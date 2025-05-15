@@ -14,6 +14,7 @@
 - 支持内外边界的独立缩放
 - 支持YAML格式的配置文件
 - 支持图层映射和自定义
+- 提供Web GUI界面（详见下方说明）
 
 ## 项目结构
 
@@ -27,8 +28,66 @@ Summer-GDS/
 │   ├── region.py       # Region类，处理GDS区域
 │   ├── gds.py          # GDS类，处理GDS文件操作
 │   └── utils.py        # 工具函数
+├── web_gui/            # Web图形界面
+│   ├── app.py          # Flask应用
+│   ├── run.py          # 启动脚本
+│   ├── requirements.txt # Web GUI依赖
+│   ├── templates/      # HTML模板
+│   └── static/         # 静态资源
 └── README.md           # 项目文档
 ```
+
+## Web GUI界面
+
+Summer-GDS现在提供了一个友好的Web图形界面，方便您通过浏览器创建和编辑GDS配置文件。
+
+### 使用方法
+
+#### 方法一：使用启动脚本（推荐）
+
+可以直接使用根目录下的启动脚本：
+
+```bash
+./start_web_gui.sh
+```
+
+支持的参数：
+- `--host=IP地址`：指定服务器绑定的IP地址，默认为127.0.0.1
+- `--port=端口号`：指定服务器端口，默认为5000
+- `--debug`：启用调试模式
+
+例如：
+```bash
+./start_web_gui.sh --host=0.0.0.0 --port=8080 --debug
+```
+
+#### 方法二：手动启动
+
+1. 进入web_gui目录：
+```bash
+cd web_gui
+```
+
+2. 安装Web GUI依赖：
+```bash
+pip install -r requirements.txt
+```
+
+3. 启动Web服务器：
+```bash
+python run.py
+```
+
+4. 打开浏览器访问：http://localhost:5000
+
+### Web GUI功能
+
+- 可视化创建和编辑多边形和环阵列
+- 实时YAML和JSON编辑
+- 一键生成和下载GDS文件
+- 配置保存和加载
+
+详细使用说明请参阅 [web_gui/README.md](web_gui/README.md)
 
 ## 配置说明
 
@@ -117,3 +176,10 @@ python main_oop.py config.yaml
 2. 倒角半径不应超过边长的一半
 3. 缩放值应根据实际需求合理设置
 4. 建议先使用小规模数据测试配置 
+
+## TODO
+
+以下是计划在未来版本中实现的功能：
+
+1. 单文件多cell支持：在同一个GDS文件中创建和管理多个cell
+2. 圆形生成器：内置圆形图形生成功能，支持定制圆心、半径和精度 
