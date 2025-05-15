@@ -1,0 +1,104 @@
+@startuml GDS_Generator_Classes
+!theme materia
+
+class Frame {
+  - vertices: list[tuple[float, float]]
+  __init__(self, vertices: list[tuple[float, float]])
+  + is_clockwise(self) -> bool
+  + ensure_counterclockwise(self) -> None  //  修改内部顶点顺序，确保逆时针
+  + offset(self, width: float) -> Frame   //  正为外扩, 负为内缩, 返回新Frame
+  + apply_adaptive_fillet(self, convex_radius: float, concave_radius: float, precision: float, interactive: bool) -> Frame // 返回新Frame
+  + apply_arc_fillet(self, radius_or_radii_list, precision: float, interactive: bool) -> Frame // 返回新Frame
+  + get_vertices(self) -> list[tuple[float, float]]
+  + is_convex_vertex(prev_point, curr_point, next_point) -> bool // 判断顶点凹凸性
+  + line_intersection(line1: tuple[tuple[float, float], tuple[tuple[float, float], tuple[float, float]]], line2: tuple[tuple[float, float], tuple[tuple[float, float], tuple[float, float]]]) -> tuple[float, float] | None // 计算直线交点，平行返回None
+}
+
+class Region {
+  - kdb_region: KLayoutDbRegion  // 持有的 klayout.db.Region 实例
+  __init__(self) // 初始化时内部的 kdb_region 也应被初始化
+  + {static} create_polygon(cls, frame: Frame, fillet_radius: float = 0, precision: float = 0.01, interactive: bool = True) -> Region // 从Frame创建（单个多边形）
+  + {static} create_rings(cls, initial_frame: Frame, ring_width: float, ring_space: float, ring_num: int, fillet_radius: float = 0, precision: float = 0.01, interactive: bool = True) -> Region // 从Frame创建环
+  + __sub__(self, other: Region) -> Region // 布尔减法 (self - other)
+  + __add__(self, other: Region) -> Region // 布尔加法 (self + other)
+  + __and__(self, other: Region) -> Region // 布尔与 (self & other)
+  + __or__(self, other: Region) -> Region  // 布尔或 (self | other)
+  + __xor__(self, other: Region) -> Region // 布尔异或 (self ^ other)
+  + get_klayout_region(self) -> KLayoutDbRegion // 返回内部的 KLayoutDbRegion 实例
+}
+
+class LayerManager {
+  - layer_mapping: dict[tuple[int, int], str]  // (layer_num, datatype) -> layer_name
+  - layer_indices: dict[tuple[int, int], int]  // (layer_num, datatype) -> layer_index
+  __init__(self)
+  + get_layer_index(self, layer_info: tuple[int, int]) -> int | None // 获取layer索引，不存在返回None
+  + create_layer(self, layer_info: tuple[int, int], layer_name: str = None) -> int // 创建新layer，如果已存在则warning并返回现有索引
+  + get_layer_name(self, layer_info: tuple[int, int]) -> str | None // 获取layer名称
+  + get_all_layers(self) -> dict[tuple[int, int], tuple[int, str]] // 返回所有layer信息 (layer_info -> (index, name))
+  + save_mapping(self, output_file: str) -> None // 保存layer mapping到文件
+  + load_mapping(self, input_file: str) -> None // 从文件加载layer mapping
+}
+
+class Cell {
+  - kdb_cell: KLayoutDbCell
+  - layer_manager: LayerManager
+  __init__(self, kdb_cell: KLayoutDbCell)
+  + get_layer_index(self, layer_info: tuple[int, int]) -> int | None
+  + create_layer(self, layer_info: tuple[int, int], layer_name: str = None) -> int
+  + add_region(self, region: Region, layer_info: tuple[int, int]) -> None
+  + get_layer_manager(self) -> LayerManager
+}
+
+class GDS {
+  - kdb_layout: KLayoutDbLayout // 持有的 klayout.db.Layout 实例
+  - cells: dict[str, Cell]  // 存储cell_name到Cell实例的映射
+  - dbu: float
+  __init__(self, input_file: str = None, cell_name: str = "TOP", layer_info: tuple[int, int] = (1, 0), dbu: float = 0.001)
+  + save(self, output_file: str, save_mapping: bool = True) -> None // 保存GDS文件，可选是否同时保存layer mapping
+  + get_cells(self) -> list[Cell] // 返回所有Cell的列表
+  + get_cell(self, cell_name: str) -> Cell | None // 获取指定名称的Cell，不存在返回None
+  + create_cell(self, cell_name: str) -> Cell // 创建新的cell，如果已存在则warning并返回现有cell
+  + kdb_layout: KLayoutDbLayout // 直接访问Layout实例
+}
+
+' 为KLayout核心类在图表中定义对应的实体
+class KLayoutDbRegion <<(L,orchid)Library>> {
+  + "Represents klayout.db.Region"
+}
+class KLayoutDbLayout <<(L,orchid)Library>> {
+  + "Represents klayout.db.Layout"
+}
+class KLayoutDbCell <<(L,orchid)Library>> {
+  + "Represents klayout.db.Cell"
+}
+
+' 依赖关系
+Region ..> Frame : "uses"
+GDS ..> Region : "uses"
+Cell ..> Region : "uses"
+Cell "1" o-- "1" LayerManager : "has"
+
+' 聚合关系:
+Region "1" o-- "1" KLayoutDbRegion : "aggregates"
+GDS "1" o-- "1" KLayoutDbLayout : "aggregates"
+GDS "1" o-- "*" Cell : "aggregates"  ' 一个GDS可以包含多个Cell
+Cell "1" o-- "1" KLayoutDbCell : "aggregates"
+
+note "main.py (script)" as MainScript
+MainScript ..> GDS : "creates/uses"
+MainScript ..> Frame : "creates/uses"
+MainScript ..> Region : "creates/uses"
+MainScript ..> YamlConfig : "uses"
+
+class YamlConfig {
+  + {static} load(filepath: str) -> dict
+  + {static} parse_vertices(vertices_str: str) -> list[tuple[float,float]]
+}
+
+note "Global utility functions (e.g., um_to_db, logger)\nare used by Frame, Region, GDS classes." as Utils
+Frame .. Utils : "uses"
+Region .. Utils : "uses"
+GDS .. Utils : "uses"
+Cell .. Utils : "uses"
+
+@enduml

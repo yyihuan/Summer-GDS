@@ -1,0 +1,69 @@
+global:
+  dbu: 0.001  # 数据库单位（微米）
+  fillet:
+    interactive: true  # 是否启用交互式选择
+    default_action: "auto"  # 当interactive=false时的默认行为: "auto"或"force"
+    precision: 0.01  # 倒角精度（微米）
+  layer_mapping:
+    save: true  # 是否保存layer mapping文件
+    file: "layer_mapping.txt"  # mapping文件名
+
+gds:
+  input_file: null  # 输入GDS文件，null表示创建新文件
+  output_file: "output.gds"
+  cell_name: "TOP"  # 默认cell名称
+  default_layer: [1, 0]  # 默认layer [layer_num, datatype]
+
+shapes:
+  - type: "polygon"  # 普通多边形
+    vertices: "0,0:10,0:10,10:0,10"  # 顶点坐标，格式：x1,y1:x2,y2:...
+    cell: "TOP"  # 目标cell名称
+    layer: [1, 0]  # 或使用layer_name: "metal1"
+    fillet_radius: 0  # 倒角半径
+    
+  - type: "rings"  # 环形多边形
+    vertices: "20,0:30,0:30,10:20,10"
+    cell: "TOP"
+    layer: [2, 0]
+    fillet_radius: 0
+    ring_width: 2  # 环宽度
+    ring_space: 2  # 环间距
+    ring_num: 3    # 环数量 
+
+  - type: "polygon"
+    name: "Star_Filleted" 
+    cell: "TOP"
+    layer: [3, 0] 
+    vertices_gen: 
+      shape_type: "star"
+      center_x: 50
+      center_y: 50
+      outer_radius: 15
+      inner_radius: 7
+      points: 5 
+    fillet: 
+      type: "arc" 
+      radius: 0.8 
+      precision: 0.01
+      interactive: false 
+
+  - type: "rings"
+    name: "Star_Ring_Filleted"
+    cell: "TOP"
+    layer: [4, 0] 
+    vertices_gen: 
+      shape_type: "star"
+      center_x: 100
+      center_y: 50
+      outer_radius: 15
+      inner_radius: 7
+      points: 5
+    ring_width: 2
+    ring_space: 1
+    ring_num: 2
+    fillet: 
+      type: "adaptive"
+      convex_radius: 0.6
+      concave_radius: 0.3
+      precision: 0.01
+      interactive: false 
