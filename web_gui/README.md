@@ -32,10 +32,16 @@ pip install -r requirements.txt
 python run.py
 ```
 
+默认将监听所有网络接口(0.0.0.0)，允许从任何IP访问。如果只希望在本地访问，可以使用：
+
+```bash
+python run.py --host=127.0.0.1
+```
+
 2. 或指定主机和端口：
 
 ```bash
-python run.py --host 0.0.0.0 --port 8080
+python run.py --host=0.0.0.0 --port=8080
 ```
 
 3. 在开发时启用调试模式：

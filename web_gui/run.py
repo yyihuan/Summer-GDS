@@ -12,7 +12,7 @@ import argparse
 def main():
     """主函数"""
     parser = argparse.ArgumentParser(description='启动Summer-GDS Web GUI')
-    parser.add_argument('--host', type=str, default='127.0.0.1', help='服务器主机地址')
+    parser.add_argument('--host', type=str, default='0.0.0.0', help='服务器主机地址')
     parser.add_argument('--port', type=int, default=5000, help='服务器端口')
     parser.add_argument('--debug', action='store_true', help='启用调试模式')
     
