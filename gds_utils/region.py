@@ -86,15 +86,13 @@ class Region:
         return result
 
     @classmethod
-    def create_polygon(cls, frame: Frame, fillet_config: dict = None):
-        """从 Frame 对象创建多边形
+    def create_polygon(cls, frame: Frame, fillet_config: dict = None, zoom_config: list = [0, 0]) -> 'Region':
+        """从Frame创建多边形Region
         
         参数:
-            frame: Frame 对象，包含多边形顶点
-            fillet_config: 倒角配置字典，例如:
-                {"type": "arc", "radius": 0.5, "precision": 0.01, "interactive": True}
-                {"type": "adaptive", "convex_radius": 0.5, "concave_radius": 0.2, "precision": 0.01, "interactive": True}
-                如果为 None 或空，则不进行倒角。
+            frame: Frame对象，包含多边形的顶点
+            fillet_config: 倒角配置字典
+            zoom_config: 缩放配置 [外径缩放, 内径缩放]
             
         返回:
             Region: 包含多边形的 Region 对象
@@ -102,8 +100,20 @@ class Region:
         logger.info(f"从 Frame 创建多边形, 原始顶点数: {len(frame.get_vertices())}")
         if fillet_config:
             logger.info(f"应用倒角配置: {fillet_config}")
+        if zoom_config != [0, 0]:
+            logger.info(f"应用缩放配置: {zoom_config}")
 
         processed_frame = frame
+        # 首先应用缩放
+        if isinstance(zoom_config, list) and len(zoom_config) == 2:
+            outer_zoom, inner_zoom = zoom_config
+            if outer_zoom != 0:
+                logger.info(f"对外径进行缩放: {outer_zoom}")
+                processed_frame = processed_frame.offset(outer_zoom)
+        else:
+            logger.warning(f"缩放配置格式不正确，应为[外径缩放值, 内径缩放值]")
+
+        # 然后应用倒角
         if fillet_config and fillet_config.get("type"):
             fillet_type = fillet_config["type"]
             precision = fillet_config.get("precision", 0.01)
@@ -163,7 +173,7 @@ class Region:
 
     @classmethod
     def create_rings(cls, initial_frame: Frame, ring_width: float, ring_space: float, ring_num: int, 
-                   fillet_config: dict = None):
+                   fillet_config: dict = None, zoom_config: list = [0, 0]):
         """从 Frame 对象创建多个环
         
         参数:
@@ -171,114 +181,145 @@ class Region:
             ring_width: 环宽度
             ring_space: 环间距
             ring_num: 环数量
-            fillet_config: 倒角配置字典 (同 create_polygon)。倒角会分别应用于每个环的内外边界。
+            fillet_config: 倒角配置字典
+            zoom_config: 缩放配置 [外径缩放, 内径缩放]
             
         返回:
             Region: 包含所有环的 Region 对象
         """
         logger.info(f"创建多边形环: 宽度={ring_width}, 间距={ring_space}, 环数={ring_num}")
-        if fillet_config:
-            logger.info(f"环倒角配置: {fillet_config}")
+        logger.info(f"环倒角配置: {fillet_config}")
+        logger.info(f"环缩放配置: {zoom_config}")
 
-        result_region = cls() # 用于合并所有环的 Region 对象
-        
-        # 确保初始 Frame 的顶点是逆时针的, 这对 offset 和后续可能的倒角很重要
-        # Frame.offset 应该保持顶点顺序，但以防万一
+        # 确保初始 Frame 是逆时针的
         initial_frame.ensure_counterclockwise()
         logger.debug(f"初始Frame顶点已确保为逆时针: {initial_frame.get_vertices()}")
 
-        current_inner_boundary_frame = initial_frame
+        # 1. 生成所有环的边界Frame列表
+        outer_frames = []  # 存储所有外边界Frame
+        inner_frames = []  # 存储所有内边界Frame
+        current_frame = initial_frame
 
         try:
             for i in range(ring_num):
-                logger.debug(f"生成第 {i+1} 环")
+                # 生成外边界
+                outer_frame = current_frame.offset(ring_width)
+                outer_frame.ensure_counterclockwise()
+                outer_frames.append(outer_frame)
                 
-                # 1. 生成当前环的外边界 Frame
-                # offset 正值是外扩，确保 current_inner_boundary_frame 是逆时针，则 offset 结果也应是逆时针
-                current_outer_boundary_frame = current_inner_boundary_frame.offset(ring_width)
-                current_outer_boundary_frame.ensure_counterclockwise() # 确保外边界也是逆时针
+                # 生成内边界（当前frame就是内边界）
+                inner_frames.append(current_frame)
+                
+                # 为下一个环准备起始frame
+                if ring_space > 0:
+                    current_frame = outer_frame.offset(ring_space)
+                    current_frame.ensure_counterclockwise()
+                elif i < ring_num - 1:
+                    logger.error("ring_space为0，无法创建多个独立的环。后续环将被跳过。")
+                    break
 
-                # 2. 对内外边界 Frame 应用倒角 (如果需要)
-                # processed_inner_frame 和 processed_outer_frame 将是倒角后的 Frame
-                processed_inner_frame = current_inner_boundary_frame
-                processed_outer_frame = current_outer_boundary_frame
+            # 2. 对每个边界Frame应用缩放和倒角
+            processed_outer_frames = []
+            processed_inner_frames = []
+            
+            # 处理外边界
+            for frame in outer_frames:
+                processed_frame = frame
+                
+                # 应用缩放
+                if isinstance(zoom_config, list) and len(zoom_config) == 2:
+                    outer_zoom = zoom_config[0]
+                    if outer_zoom != 0:
+                        logger.info(f"对外边界进行缩放: {outer_zoom}")
+                        processed_frame = processed_frame.offset(outer_zoom)
 
+                
+                # 应用倒角
                 if fillet_config and fillet_config.get("type"):
                     fillet_type = fillet_config["type"]
                     precision = fillet_config.get("precision", 0.01)
                     interactive = fillet_config.get("interactive", True)
-                    logger.info(f"为环 {i+1} 应用倒角: 类型={fillet_type}")
-
-                    # 倒角内部Frame (processed_inner_frame)
-                    # ensure_counterclockwise 已经在循环开始前对 initial_frame 和 offset 后的 frame 做过
-                    if fillet_type == "arc":
-                        radius = fillet_config.get("radius", 0)
-                        if radius > 0:
-                            processed_inner_frame = processed_inner_frame.apply_arc_fillet(radius, precision, interactive)
-                            logger.debug(f"环 {i+1} 内边界倒角后顶点: {processed_inner_frame.get_vertices()}")
-                    elif fillet_type == "adaptive":
-                        convex_radius = fillet_config.get("convex_radius", 0)
-                        concave_radius = fillet_config.get("concave_radius", 0)
-                        if convex_radius > 0 or concave_radius > 0:
-                            processed_inner_frame = processed_inner_frame.apply_adaptive_fillet(convex_radius, concave_radius, precision, interactive)
-                            logger.debug(f"环 {i+1} 内边界自适应倒角后顶点数量: {len(processed_inner_frame.get_vertices())}")
                     
-                    # 倒角外部Frame (processed_outer_frame)
                     if fillet_type == "arc":
                         radius = fillet_config.get("radius", 0)
                         if radius > 0:
-                            processed_outer_frame = processed_outer_frame.apply_arc_fillet(radius, precision, interactive)
-                            logger.debug(f"环 {i+1} 外边界圆弧倒角后顶点数: {len(processed_outer_frame.get_vertices())}")
+                            processed_frame = processed_frame.apply_arc_fillet(radius, precision, interactive)
                     elif fillet_type == "adaptive":
                         convex_radius = fillet_config.get("convex_radius", 0)
                         concave_radius = fillet_config.get("concave_radius", 0)
                         if convex_radius > 0 or concave_radius > 0:
-                            processed_outer_frame = processed_outer_frame.apply_adaptive_fillet(convex_radius, concave_radius, precision, interactive)
-                            logger.debug(f"环 {i+1} 外边界自适应倒角后顶点数量: {len(processed_outer_frame.get_vertices())}")
+                            processed_frame = processed_frame.apply_adaptive_fillet(convex_radius, concave_radius, precision, interactive)
                 
-                # 3. 获取倒角后 (或原始) 的顶点
-                inner_vertices = processed_inner_frame.get_vertices()
-                outer_vertices = processed_outer_frame.get_vertices()
+                processed_outer_frames.append(processed_frame)
+            
+            # 处理内边界
+            for frame in inner_frames:
+                processed_frame = frame
+                
+                # 应用缩放
+                if isinstance(zoom_config, list) and len(zoom_config) == 2:
+                    inner_zoom = zoom_config[1]
+                    logger.debug(f"inner_zoom: {inner_zoom}")
+                    if inner_zoom != 0:
+                        logger.info(f"对内边界进行缩放: {inner_zoom}")
+                        logger.debug(f"frame before offset: {frame.get_vertices()[:4]}")
+                        processed_frame = processed_frame.offset(inner_zoom)
+                        logger.debug(f"frame after offset: {processed_frame.get_vertices()[:4]}")
+                # 应用倒角
+                if fillet_config and fillet_config.get("type"):
+                    fillet_type = fillet_config["type"]
+                    precision = fillet_config.get("precision", 0.01)
+                    interactive = fillet_config.get("interactive", True)
+                    
+                    if fillet_type == "arc":
+                        radius = fillet_config.get("radius", 0)
+                        if radius > 0:
+                            processed_frame = processed_frame.apply_arc_fillet(radius, precision, interactive)
+                    elif fillet_type == "adaptive":
+                        convex_radius = fillet_config.get("convex_radius", 0)
+                        concave_radius = fillet_config.get("concave_radius", 0)
+                        if convex_radius > 0 or concave_radius > 0:
+                            processed_frame = processed_frame.apply_adaptive_fillet(convex_radius, concave_radius, precision, interactive)
+                
+                processed_inner_frames.append(processed_frame)
 
-                if not inner_vertices or len(inner_vertices) < 3 or not outer_vertices or len(outer_vertices) < 3:
-                    logger.error(f"环 {i+1}: 内外边界顶点数量不足 (内: {len(inner_vertices)}, 外: {len(outer_vertices)})。跳过此环。")
-                    # 为下一个环准备内边界 (基于未倒角的偏移)
-                    if ring_space > 0 : # 只有当ring_space > 0 时才进行下一次偏移，否则会原地打转
-                         current_inner_boundary_frame = current_outer_boundary_frame.offset(ring_space)
-                         current_inner_boundary_frame.ensure_counterclockwise()
-                    elif i < ring_num -1: # 如果ring_space是0，且不是最后一个环，则无法继续
-                        logger.error("ring_space为0，无法创建多个独立的环。后续环将被跳过。")
-                        break
-                    continue # 跳过当前环的KLayout区域创建
-
-                # 4. 创建内外环的 DPolygon 和 Region
-                inner_dpoints = [db.DPoint(um_to_db(x), um_to_db(y)) for x, y in inner_vertices]
+            # 3. 创建最终的Region
+            result_region = cls()
+            
+            # 使用处理后的内外边界创建环
+            for i in range(len(processed_outer_frames)):
+                if i >= len(processed_inner_frames):
+                    break
+                    
+                outer_frame = processed_outer_frames[i]
+                inner_frame = processed_inner_frames[i]
+                
+                # 获取顶点
+                outer_vertices = outer_frame.get_vertices()
+                inner_vertices = inner_frame.get_vertices()
+                
+                if not outer_vertices or len(outer_vertices) < 3 or not inner_vertices or len(inner_vertices) < 3:
+                    logger.error(f"环 {i + 1}: 内外边界顶点数量不足 (外: {len(outer_vertices)}, 内: {len(inner_vertices)})。跳过此环。")
+                    continue
+                
+                # 创建DPolygon
                 outer_dpoints = [db.DPoint(um_to_db(x), um_to_db(y)) for x, y in outer_vertices]
+                inner_dpoints = [db.DPoint(um_to_db(x), um_to_db(y)) for x, y in inner_vertices]
                 
-                inner_dpoly = db.DPolygon(inner_dpoints)
                 outer_dpoly = db.DPolygon(outer_dpoints)
+                inner_dpoly = db.DPolygon(inner_dpoints)
                 
-                kdb_outer_ring_region = db.Region(outer_dpoly)
-                kdb_inner_hole_region = db.Region(inner_dpoly)
+                # 创建Region并执行布尔运算
+                outer_region = db.Region(outer_dpoly)
+                inner_region = db.Region(inner_dpoly)
+                ring_region = outer_region - inner_region
                 
-                # 5. 执行布尔运算（外环区域减去内孔区域）
-                single_ring_kdb_region = kdb_outer_ring_region - kdb_inner_hole_region
-                
-                # 6. 合并到结果区域
-                result_region.kdb_region += single_ring_kdb_region
-                
-                # 7. 为下一个环准备内边界 (基于未倒角的、原始偏移定义的外部边界，再进行偏移)
-                # 注意：这里我们用 current_outer_boundary_frame (offset后的，未倒角的) 作为下一次迭代的起点
-                if ring_space > 0:
-                    current_inner_boundary_frame = current_outer_boundary_frame.offset(ring_space)
-                    current_inner_boundary_frame.ensure_counterclockwise()
-                elif i < ring_num -1: # 如果ring_space是0，且不是最后一个环，则这是一个问题
-                    logger.error("ring_space为0，且还有环需要创建，这将导致后续环与当前环重叠或行为未定义。")
-                    # 决定是否中断或继续，这里选择中断以避免意外结果
-                    break 
+                # 合并到结果
+                result_region.kdb_region += ring_region
 
-            logger.info(f"已完成环的处理和合并，计划创建 {ring_num} 个环")
+            logger.info(f"已完成环的处理和合并，创建了 {len(processed_outer_frames)} 个环")
+            
         except Exception as e:
-            logger.error(f"创建环失败: {e}", exc_info=True) # 添加exc_info获取更详细的traceback
+            logger.error(f"创建环失败: {e}", exc_info=True)
             
         return result_region 

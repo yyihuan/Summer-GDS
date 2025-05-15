@@ -36,7 +36,7 @@ class Frame:
         # 如果是负值（内缩），暂时抛出异常
         if width < 0:
             logger.warning("当前版本不支持内缩操作，将使用绝对值作为外扩宽度")
-            width = abs(width)
+            # width = abs(width)
             
         n = len(self.vertices)
         offset_edges = []

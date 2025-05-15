@@ -157,12 +157,17 @@ def main():
         
         logger.debug(f"形状 '{shape_name}' 的倒角配置: {fillet_config}")
 
+        # 获取缩放配置
+        zoom_config = shape_data.get('zoom', [0, 0])
+        logger.debug(f"形状 '{shape_name}' 的缩放配置: {zoom_config}")
+
         region_obj = None # 重命名 region 为 region_obj
 
         if shape_data.get('type') == 'polygon':
             region_obj = Region.create_polygon(
                 frame,
-                fillet_config=fillet_config 
+                fillet_config=fillet_config,
+                zoom_config=zoom_config
             )
         elif shape_data.get('type') == 'rings':
             region_obj = Region.create_rings(
@@ -170,7 +175,8 @@ def main():
                 ring_width=shape_data.get('ring_width', 10),
                 ring_space=shape_data.get('ring_space', 12),
                 ring_num=shape_data.get('ring_num', 3),
-                fillet_config=fillet_config
+                fillet_config=fillet_config,
+                zoom_config=zoom_config 
             )
         else:
             logger.error(f"形状 '{shape_name}' 的类型未知: {shape_data.get('type')}")
