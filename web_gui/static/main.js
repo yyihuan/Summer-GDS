@@ -25,6 +25,8 @@ let config = {
 
 // 在页面加载完成后执行
 document.addEventListener('DOMContentLoaded', function() {
+    console.log('页面加载完成，初始化应用...');
+    
     // 初始化JSON编辑器
     const container = document.getElementById('jsonEditor');
     const options = {
@@ -37,6 +39,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     };
     jsonEditor = new JSONEditor(container, options, config);
+    console.log('JSON编辑器初始化完成');
 
     // 绑定事件处理函数
     document.getElementById('addShapeBtn').addEventListener('click', showShapeTypeModal);
@@ -45,6 +48,7 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('validateBtn').addEventListener('click', validateConfig);
     document.getElementById('generateBtn').addEventListener('click', generateGDS);
     document.getElementById('configFileInput').addEventListener('change', handleFileUpload);
+    console.log('按钮事件绑定完成');
 
     // 绑定表单变化事件
     document.getElementById('configForm').addEventListener('change', updateJSONFromForm);
@@ -60,6 +64,15 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // 初始化显示
     updateYAMLPreview();
+    
+    // 初始绑定倒角半径切换按钮事件
+    console.log('开始绑定倒角半径切换按钮事件...');
+    setTimeout(() => {
+        bindRadiusListToggleEvents();
+        console.log('倒角半径切换按钮事件绑定完成（延迟执行）');
+    }, 500);
+    
+    console.log('应用初始化完成');
 });
 
 // 显示形状类型选择模态框
@@ -109,10 +122,15 @@ function addShape(shapeType) {
     
     // 增加索引计数
     currentShapeIndex++;
+    
+    // 绑定倒角半径列表切换按钮事件
+    bindRadiusListToggleEvents();
 }
 
 // 渲染形状卡片
 function renderShapeCard(shape, index) {
+    console.log(`渲染形状卡片: 索引=${index}, 类型=${shape.type}, 名称=${shape.name}`);
+    
     const container = document.getElementById('shapesContainer');
     const templateId = shape.type === 'polygon' ? 'polygonShapeTemplate' : 'ringsShapeTemplate';
     const template = document.getElementById(templateId).innerHTML;
@@ -130,11 +148,39 @@ function renderShapeCard(shape, index) {
     
     // 添加到容器
     container.appendChild(cardElement);
+    console.log(`形状卡片已添加到DOM: 索引=${index}`);
     
     // 绑定删除按钮事件
-    cardElement.querySelector('.remove-shape-btn').addEventListener('click', function() {
-        removeShape(index);
-    });
+    const removeBtn = cardElement.querySelector('.remove-shape-btn');
+    if (removeBtn) {
+        removeBtn.addEventListener('click', function() {
+            removeShape(index);
+        });
+        console.log(`删除按钮事件已绑定: 索引=${index}`);
+    }
+    
+    // 绑定倒角半径切换按钮事件
+    const toggleToListBtn = cardElement.querySelector('.toggle-radius-list-btn');
+    if (toggleToListBtn) {
+        toggleToListBtn.addEventListener('click', function(event) {
+            console.log(`点击切换到半径列表按钮: 索引=${index}`);
+            toggleToRadiusList(event);
+        });
+        console.log(`切换到半径列表按钮事件已绑定: 索引=${index}`);
+    } else {
+        console.warn(`未找到切换到半径列表按钮: 索引=${index}`);
+    }
+    
+    const toggleToSingleBtn = cardElement.querySelector('.toggle-single-radius-btn');
+    if (toggleToSingleBtn) {
+        toggleToSingleBtn.addEventListener('click', function(event) {
+            console.log(`点击切换到单一半径按钮: 索引=${index}`);
+            toggleToSingleRadius(event);
+        });
+        console.log(`切换到单一半径按钮事件已绑定: 索引=${index}`);
+    } else {
+        console.warn(`未找到切换到单一半径按钮: 索引=${index}`);
+    }
 }
 
 // 填充形状表单值
@@ -169,6 +215,25 @@ function fillShapeFormValues(cardElement, shape, index) {
         const radiusInput = cardElement.querySelector(`[name="shapes[${index}].fillet.radius"]`);
         if (radiusInput && shape.fillet.radius !== undefined) {
             radiusInput.value = shape.fillet.radius;
+        }
+        
+        // 设置半径列表
+        if (shape.fillet.radii) {
+            const radiusListContainer = cardElement.querySelector(`.radius-list-container[data-shape-index="${index}"]`);
+            const radiiInput = cardElement.querySelector(`[name="shapes[${index}].fillet.radii"]`);
+            if (radiusListContainer && radiiInput) {
+                // 显示半径列表容器，隐藏单一半径输入框
+                radiusListContainer.style.display = 'flex';
+                const singleRadiusRow = radiusListContainer.previousElementSibling;
+                if (singleRadiusRow) {
+                    singleRadiusRow.style.display = 'none';
+                }
+                
+                // 设置半径列表值
+                radiiInput.value = Array.isArray(shape.fillet.radii) ? 
+                    shape.fillet.radii.join(',') : 
+                    shape.fillet.radii;
+            }
         }
     }
     
@@ -216,6 +281,9 @@ function refreshShapesContainer() {
     config.shapes.forEach((shape, index) => {
         renderShapeCard(shape, index);
     });
+    
+    // 重新绑定倒角半径切换按钮事件
+    bindRadiusListToggleEvents();
 }
 
 // 从表单更新JSON
@@ -257,6 +325,19 @@ function updateJSONFromForm() {
                 parseFloat(card.querySelector(`[name="shapes[${index}].zoom[1]"]`).value)
             ]
         };
+        
+        // 检查是否有半径列表
+        const radiusListContainer = card.querySelector(`.radius-list-container[data-shape-index="${index}"]`);
+        if (radiusListContainer && radiusListContainer.style.display !== 'none') {
+            const radiiInput = card.querySelector(`[name="shapes[${index}].fillet.radii"]`);
+            if (radiiInput && radiiInput.value) {
+                // 解析半径列表
+                const radiiValues = radiiInput.value.split(',').map(r => parseFloat(r.trim())).filter(r => !isNaN(r));
+                if (radiiValues.length > 0) {
+                    shape.fillet.radii = radiiValues;
+                }
+            }
+        }
         
         // 环阵列特有属性
         if (type === 'rings') {
@@ -406,7 +487,7 @@ function validateConfig() {
     });
 }
 
-// 生成GDS
+// 生成GDS文件
 function generateGDS() {
     // 显示加载提示
     showAlert('正在生成GDS文件...', 'info', false);
@@ -456,7 +537,102 @@ function generateGDS() {
     });
 }
 
-// 显示提示
+// 绑定倒角半径列表切换按钮事件
+function bindRadiusListToggleEvents() {
+    // 获取所有切换按钮
+    const listButtons = document.querySelectorAll('.toggle-radius-list-btn');
+    const singleButtons = document.querySelectorAll('.toggle-single-radius-btn');
+    
+    console.log(`找到 ${listButtons.length} 个切换到列表按钮和 ${singleButtons.length} 个切换到单一半径按钮`);
+    
+    // 绑定切换到半径列表按钮
+    listButtons.forEach(button => {
+        button.removeEventListener('click', toggleToRadiusList);
+        button.addEventListener('click', toggleToRadiusList);
+        console.log(`绑定切换到列表按钮: ${button.getAttribute('data-shape-index')}`);
+    });
+    
+    // 绑定切换到单一半径按钮
+    singleButtons.forEach(button => {
+        button.removeEventListener('click', toggleToSingleRadius);
+        button.addEventListener('click', toggleToSingleRadius);
+        console.log(`绑定切换到单一半径按钮: ${button.getAttribute('data-shape-index')}`);
+    });
+}
+
+// 切换到半径列表显示
+function toggleToRadiusList(event) {
+    const shapeIndex = event.currentTarget.getAttribute('data-shape-index');
+    console.log(`切换到半径列表: 形状索引 ${shapeIndex}`);
+    
+    const singleRadiusRow = event.currentTarget.closest('.row');
+    const radiusListContainer = document.querySelector(`.radius-list-container[data-shape-index="${shapeIndex}"]`);
+    
+    if (!radiusListContainer) {
+        console.error(`未找到半径列表容器: [data-shape-index="${shapeIndex}"]`);
+        return;
+    }
+    
+    // 隐藏单一半径输入框，显示半径列表输入框
+    singleRadiusRow.style.display = 'none';
+    radiusListContainer.style.display = 'flex';
+    console.log('显示切换成功');
+    
+    // 从单一半径生成初始半径列表
+    const singleRadius = document.querySelector(`[name="shapes[${shapeIndex}].fillet.radius"]`).value;
+    const verticesInput = document.querySelector(`[name="shapes[${shapeIndex}].vertices"]`);
+    let vertexCount = 0;
+    
+    if (verticesInput && verticesInput.value) {
+        // 计算顶点数量
+        vertexCount = verticesInput.value.split(':').length;
+    }
+    
+    // 生成相同数量的半径值
+    if (vertexCount > 0) {
+        const radiusList = Array(vertexCount).fill(singleRadius).join(',');
+        document.querySelector(`[name="shapes[${shapeIndex}].fillet.radii"]`).value = radiusList;
+        console.log(`生成半径列表: ${radiusList}`);
+    }
+    
+    // 更新JSON
+    updateJSONFromForm();
+}
+
+// 切换到单一半径显示
+function toggleToSingleRadius(event) {
+    const shapeIndex = event.currentTarget.getAttribute('data-shape-index');
+    console.log(`切换到单一半径: 形状索引 ${shapeIndex}`);
+    
+    const radiusListContainer = event.currentTarget.closest('.radius-list-container');
+    const singleRadiusRow = radiusListContainer.previousElementSibling;
+    
+    if (!singleRadiusRow) {
+        console.error(`未找到单一半径行: 形状索引 ${shapeIndex}`);
+        return;
+    }
+    
+    // 隐藏半径列表输入框，显示单一半径输入框
+    radiusListContainer.style.display = 'none';
+    singleRadiusRow.style.display = 'flex';
+    console.log('显示切换成功');
+    
+    // 从半径列表计算平均值作为单一半径
+    const radiiInput = document.querySelector(`[name="shapes[${shapeIndex}].fillet.radii"]`);
+    if (radiiInput && radiiInput.value) {
+        const radiiValues = radiiInput.value.split(',').map(r => parseFloat(r.trim())).filter(r => !isNaN(r));
+        if (radiiValues.length > 0) {
+            const avgRadius = radiiValues.reduce((sum, r) => sum + r, 0) / radiiValues.length;
+            document.querySelector(`[name="shapes[${shapeIndex}].fillet.radius"]`).value = avgRadius.toFixed(2);
+            console.log(`计算平均半径: ${avgRadius.toFixed(2)}`);
+        }
+    }
+    
+    // 更新JSON
+    updateJSONFromForm();
+}
+
+// 显示提示框
 function showAlert(message, type, dismissible = true) {
     const alertContainer = document.getElementById('alertContainer');
     alertContainer.innerHTML = '';
@@ -466,10 +642,6 @@ function showAlert(message, type, dismissible = true) {
         alertHTML += ' alert-dismissible fade show';
     }
     alertHTML += '" role="alert">';
-    
-    if (type === 'info' && message.includes('...')) {
-        alertHTML += `<div class="loading-spinner"></div> `;
-    }
     
     alertHTML += message;
     
@@ -492,4 +664,4 @@ function showAlert(message, type, dismissible = true) {
             }
         }, 3000);
     }
-} 
+}

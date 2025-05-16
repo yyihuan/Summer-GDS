@@ -155,6 +155,16 @@ def main():
         if fillet_config and "interactive" not in fillet_config: # 从全局配置继承interactive
             fillet_config["interactive"] = global_config.get('fillet', {}).get('interactive', True)
         
+        # 添加对倒角半径列表的支持
+        if fillet_config and fillet_config.get("type") == "arc":
+            # 如果提供了倒角半径列表，则使用它替代单一半径
+            if "radii" in fillet_config:
+                logger.info(f"检测到倒角半径列表: {fillet_config['radii']}")
+                fillet_config["radius_list"] = fillet_config["radii"]
+                # 保留radius作为默认半径，以防顶点数量与半径列表长度不匹配
+                if "radius" not in fillet_config:
+                    fillet_config["radius"] = 1.0  # 设置默认值
+        
         logger.debug(f"形状 '{shape_name}' 的倒角配置: {fillet_config}")
 
         # 获取缩放配置

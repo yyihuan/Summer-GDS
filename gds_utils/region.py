@@ -131,7 +131,13 @@ class Region:
                 radius = fillet_config.get("radius", 0)
                 if radius > 0:
                     logger.info(f"应用圆弧倒角: 半径={radius}, 精度={precision}")
-                    processed_frame = processed_frame.apply_arc_fillet(radius, precision, interactive)
+                    # 检查是否存在半径列表
+                    if "radius_list" in fillet_config:
+                        radius_list = fillet_config.get("radius_list")
+                        logger.info(f"使用半径列表进行倒角: {radius_list}")
+                        processed_frame = processed_frame.apply_arc_fillet(radius_list, precision, interactive)
+                    else:
+                        processed_frame = processed_frame.apply_arc_fillet(radius, precision, interactive)
                     logger.info(f"圆弧倒角后顶点数: {len(processed_frame.get_vertices())}")
                     # logger.debug(f"圆弧倒角后顶点: {processed_frame.get_vertices()}")
                 else:
@@ -243,7 +249,13 @@ class Region:
                     if fillet_type == "arc":
                         radius = fillet_config.get("radius", 0)
                         if radius > 0:
-                            processed_frame = processed_frame.apply_arc_fillet(radius, precision, interactive)
+                            # 检查是否存在半径列表
+                            if "radius_list" in fillet_config:
+                                radius_list = fillet_config.get("radius_list")
+                                logger.info(f"环外边界使用半径列表进行倒角: {radius_list}")
+                                processed_frame = processed_frame.apply_arc_fillet(radius_list, precision, interactive)
+                            else:
+                                processed_frame = processed_frame.apply_arc_fillet(radius, precision, interactive)
                     elif fillet_type == "adaptive":
                         convex_radius = fillet_config.get("convex_radius", 0)
                         concave_radius = fillet_config.get("concave_radius", 0)
@@ -274,7 +286,13 @@ class Region:
                     if fillet_type == "arc":
                         radius = fillet_config.get("radius", 0)
                         if radius > 0:
-                            processed_frame = processed_frame.apply_arc_fillet(radius, precision, interactive)
+                            # 检查是否存在半径列表
+                            if "radius_list" in fillet_config:
+                                radius_list = fillet_config.get("radius_list")
+                                logger.info(f"环内边界使用半径列表进行倒角: {radius_list}")
+                                processed_frame = processed_frame.apply_arc_fillet(radius_list, precision, interactive)
+                            else:
+                                processed_frame = processed_frame.apply_arc_fillet(radius, precision, interactive)
                     elif fillet_type == "adaptive":
                         convex_radius = fillet_config.get("convex_radius", 0)
                         concave_radius = fillet_config.get("concave_radius", 0)

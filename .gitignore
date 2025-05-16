@@ -25,9 +25,12 @@ wheels/
 .vscode/
 *.swp
 *.swo
+.DS_Store
+*.sublime*
 
 # Logs
 *.log
+logs/
 
 # Local development
 .env
@@ -40,8 +43,18 @@ ENV/
 *.png
 *.gds
 layer_mapping.txt
+examples/*.gds
 
 # Web GUI temporary files
 web_gui/uploads/
 web_gui/temp/
-web_gui/.deps_installed 
+web_gui/.deps_installed
+
+# Documentation
+docs/_build/
+docs/auto_examples/
+docs/generated/
+
+# Jupyter Notebooks
+.ipynb_checkpoints
+*.ipynb 

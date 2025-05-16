@@ -1,0 +1,73 @@
+global:
+  dbu: 0.001  # 数据库单位（微米）
+  fillet:
+    interactive: false  # 是否启用交互式选择
+    default_action: "auto"  # 当interactive=false时的默认行为
+    precision: 0.01  # 倒角精度（微米）
+
+gds:
+  input_file: null  # 输入GDS文件，null表示创建新文件
+  output_file: "fillet_radii_list_example.gds"
+  cell_name: "TOP"  # 默认cell名称
+  default_layer: [1, 0]  # 默认layer [layer_num, datatype]
+
+shapes:
+  # 1. 使用统一倒角半径的正方形
+  - type: "polygon"
+    name: "Square_Uniform_Fillet"
+    cell: "TOP"
+    layer: [1, 0]
+    vertices: "0,0:10,0:10,10:0,10"
+    fillet:
+      type: "arc"
+      radius: 1
+      precision: 0.01
+      interactive: false
+
+  # 2. 使用不同倒角半径的正方形
+  - type: "polygon"
+    name: "Square_Variable_Fillet"
+    cell: "TOP"
+    layer: [2, 0]
+    vertices: "20,0:30,0:30,10:20,10"
+    fillet:
+      type: "arc"
+      radius: 1  # 默认半径，当半径列表长度不匹配顶点数时使用
+      radii: [2, 0.5, 1.5, 1]  # 每个角的半径，按顶点顺序
+      precision: 0.01
+      interactive: false
+
+  # 3. 使用不同倒角半径的五角星
+  - type: "polygon"
+    name: "Star_Variable_Fillet"
+    cell: "TOP"
+    layer: [3, 0]
+    vertices_gen:
+      shape_type: "star"
+      center_x: 50
+      center_y: 50
+      outer_radius: 15
+      inner_radius: 7
+      points: 5
+    fillet:
+      type: "arc"
+      radius: 0.5  # 默认半径
+      radii: [2, 0, 1.5, 0, 1.5, 0, 1.5, 0, 1.5, 0]  # 每个角的半径，按顶点顺序
+      precision: 0.01
+      interactive: false
+
+  # 4. 使用不同倒角半径的环阵列
+  - type: "rings"
+    name: "Square_Rings_Variable_Fillet"
+    cell: "TOP"
+    layer: [4, 0]
+    vertices: "40,20:50,20:50,30:40,30"
+    ring_width: 2
+    ring_space: 3
+    ring_num: 2
+    fillet:
+      type: "arc"
+      radius: 1
+      radii: [2, 0.5, 1.5, 1]
+      precision: 0.01
+      interactive: false 

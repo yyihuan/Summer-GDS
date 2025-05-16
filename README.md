@@ -11,6 +11,7 @@
 - 支持从顶点列表或生成配置创建多边形
 - 支持创建多层环阵列
 - 支持圆弧倒角和自适应倒角
+- 支持为多边形/环阵列的每个角设置不同的倒角半径
 - 支持内外边界的独立缩放
 - 支持YAML格式的配置文件
 - 支持图层映射和自定义
@@ -22,19 +23,20 @@
 Summer-GDS/
 ├── main_oop.py          # 主程序入口
 ├── config.yaml          # 配置文件示例
-├── gds_utils/          # 核心工具包
+├── gds_utils/           # 核心工具包
 │   ├── __init__.py
-│   ├── frame.py        # Frame类，处理多边形顶点
-│   ├── region.py       # Region类，处理GDS区域
-│   ├── gds.py          # GDS类，处理GDS文件操作
-│   └── utils.py        # 工具函数
-├── web_gui/            # Web图形界面
-│   ├── app.py          # Flask应用
-│   ├── run.py          # 启动脚本
+│   ├── frame.py         # Frame类，处理多边形顶点
+│   ├── region.py        # Region类，处理GDS区域
+│   ├── gds.py           # GDS类，处理GDS文件操作
+│   └── utils.py         # 工具函数
+├── web_gui/             # Web图形界面
+│   ├── app.py           # Flask应用
+│   ├── run.py           # 启动脚本
 │   ├── requirements.txt # Web GUI依赖
-│   ├── templates/      # HTML模板
-│   └── static/         # 静态资源
-└── README.md           # 项目文档
+│   ├── templates/       # HTML模板
+│   └── static/          # 静态资源
+├── docs/                # 项目文档
+└── README.md
 ```
 
 ## Web GUI界面
@@ -78,7 +80,7 @@ pip install -r requirements.txt
 python run.py
 ```
 
-4. 打开浏览器访问：http://localhost:5000
+4. 打开浏览器访问：http://localhost:5001
 
 ### Web GUI功能
 
@@ -124,6 +126,24 @@ gds:
     interactive: false
   zoom: [1, 0]  # [外径缩放, 内径缩放]
 ```
+
+#### 使用独立倒角半径的多边形
+
+```yaml
+- type: "polygon"
+  name: "Variable_Fillet_Square"
+  vertices: "0,0:10,0:10,10:0,10"
+  layer: [1, 0]
+  fillet:
+    type: "arc"
+    radius: 1  # 默认半径，当半径列表长度不匹配顶点数时使用
+    radii: [2, 0.5, 1.5, 1]  # 每个角的半径，按顶点顺序
+    precision: 0.01
+    interactive: false
+  zoom: [1, 0]
+```
+
+> 详细的独立倒角半径功能说明请参阅 [docs/fillet_radius_list.md](docs/fillet_radius_list.md)
 
 #### 环阵列
 
@@ -182,4 +202,9 @@ python main_oop.py config.yaml
 以下是计划在未来版本中实现的功能：
 
 1. 单文件多cell支持：在同一个GDS文件中创建和管理多个cell
-2. 圆形生成器：内置圆形图形生成功能，支持定制圆心、半径和精度 
+2. 多边形顶点导入功能 & 导入检查功能
+3. 圆形生成器：内置圆形图形生成功能，支持定制圆心、半径和精度 
+4. ✅ 每个角使用独立倒角半径的功能：支持为多边形的每个角设置不同的倒角半径
+5. 更多形状生成器：矩形、椭圆等
+6. 图层颜色映射支持
+7. 更完善的错误处理和用户反馈 
