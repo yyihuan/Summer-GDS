@@ -29,15 +29,7 @@ class Frame:
             
         返回:
             Frame: 新的Frame对象，表示偏移后的多边形
-            
-        TODO: 增加对负宽度（内缩）的支持，需要计算不同方向的法向量，
-              并处理内缩时可能出现的自相交问题。
         """
-        # 如果是负值（内缩），暂时抛出异常
-        if width < 0:
-            logger.warning("当前版本不支持内缩操作，将使用绝对值作为外扩宽度")
-            # width = abs(width)
-            
         n = len(self.vertices)
         offset_edges = []
         
@@ -79,7 +71,7 @@ class Frame:
                 x = det(d, xdiff) / div
                 y = det(d, ydiff) / div
                 new_vertices.append((x, y))
-        
+
         return Frame(new_vertices)
 
     def get_vertices(self):
@@ -115,17 +107,45 @@ class Frame:
         return (x, y)
     
     def apply_adaptive_fillet(self, convex_radius, concave_radius, precision=0.01, interactive=True):
-        """根据顶点的凹凸性自适应应用不同的倒角半径"""
+        """根据顶点的凹凸性自适应应用不同的倒角半径
+        
+        Args:
+            convex_radius (float or list): 凸角倒角半径，可以是单个浮点数或与顶点数量相同的列表
+            concave_radius (float or list): 凹角倒角半径，可以是单个浮点数或与顶点数量相同的列表
+            precision (float): 倒角精度
+            interactive (bool): 是否启用交互模式
+            
+        Returns:
+            Frame: 倒角后的新Frame对象
+        """
         logger.info(f"开始自适应倒角: 凸角半径={convex_radius}, 凹角半径={concave_radius}, 精度={precision}, 交互模式={interactive}")
         logger.debug(f"输入顶点列表: {self.vertices}")
         
-        if convex_radius <= 0 and concave_radius <= 0:
-            logger.info("凸凹半径都小于等于0，不进行倒角")
-            return Frame(self.vertices)
-            
         n = len(self.vertices)
         if n < 3:
             logger.info("顶点数少于3，不进行倒角")
+            return Frame(self.vertices)
+            
+        # 检查和处理输入参数
+        if isinstance(convex_radius, list):
+            if len(convex_radius) != n:
+                logger.error(f"凸角半径列表长度({len(convex_radius)})与顶点数({n})不匹配")
+                return Frame(self.vertices)
+            convex_radii = convex_radius
+        else:
+            convex_radii = [float(convex_radius)] * n
+            
+        if isinstance(concave_radius, list):
+            if len(concave_radius) != n:
+                logger.error(f"凹角半径列表长度({len(concave_radius)})与顶点数({n})不匹配")
+                return Frame(self.vertices)
+            concave_radii = concave_radius
+        else:
+            concave_radii = [float(concave_radius)] * n
+            
+        # 如果所有半径都小于等于0，直接返回
+        if all(r <= 0 for r in convex_radii) and all(r <= 0 for r in concave_radii):
+            logger.info("所有凸凹半径都小于等于0，不进行倒角")
             return Frame(self.vertices)
         
         vertex_radii = []
@@ -139,7 +159,7 @@ class Frame:
             next_point = self.vertices[next_idx]
             
             is_convex = Frame.is_convex_vertex(prev_point, curr_point, next_point)
-            radius = convex_radius if is_convex else concave_radius
+            radius = convex_radii[i] if is_convex else concave_radii[i]
             vertex_radii.append(radius)
             logger.debug(f"顶点{i}: 位置={curr_point}, 凹凸性={'凸' if is_convex else '凹'}, 分配半径={radius}")
         
