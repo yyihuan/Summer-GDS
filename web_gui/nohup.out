@@ -1,0 +1,1562 @@
+ * Serving Flask app 'app'
+ * Debug mode: off
+WARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5001
+ * Running on http://10.3.15.2:5001
+Press CTRL+C to quit
+ * Serving Flask app 'app'
+ * Debug mode: off
+WARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5001
+ * Running on http://10.3.15.2:5001
+Press CTRL+C to quit
+127.0.0.1 - - [16/May/2025 13:45:06] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [16/May/2025 13:45:07] "GET /static/main.js HTTP/1.1" 200 -
+127.0.0.1 - - [16/May/2025 13:46:57] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [16/May/2025 13:46:58] "GET /static/main.js HTTP/1.1" 304 -
+127.0.0.1 - - [16/May/2025 14:06:03] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [16/May/2025 14:08:07] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [16/May/2025 14:23:40] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [16/May/2025 14:24:58] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [16/May/2025 14:24:59] "GET /static/main.js HTTP/1.1" 200 -
+127.0.0.1 - - [16/May/2025 14:26:15] code 400, message Bad HTTP/0.9 request type ('\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie:')
+127.0.0.1 - - [16/May/2025 14:26:15] "\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie: mstshash=Administr" 400 -
+127.0.0.1 - - [16/May/2025 14:45:28] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [16/May/2025 14:45:40] "POST /api/generate-gds HTTP/1.1" 500 -
+127.0.0.1 - - [16/May/2025 14:46:08] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [16/May/2025 14:57:06] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [16/May/2025 15:07:40] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [16/May/2025 15:22:09] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [16/May/2025 15:26:36] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [16/May/2025 15:34:06] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [16/May/2025 15:56:42] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [16/May/2025 16:04:07] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [16/May/2025 16:09:12] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [16/May/2025 16:31:59] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [16/May/2025 16:44:15] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [16/May/2025 17:07:22] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [16/May/2025 17:12:05] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [16/May/2025 17:28:45] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [16/May/2025 17:48:12] code 400, message Bad HTTP/0.9 request type ('l\x00')
+127.0.0.1 - - [16/May/2025 17:48:12] "l\x00\x0b\x00\x00\x00\x00\x00\x00\x00\x00\x00" 400 -
+127.0.0.1 - - [16/May/2025 18:00:10] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [16/May/2025 18:22:13] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [16/May/2025 18:39:28] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [16/May/2025 18:42:14] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [16/May/2025 18:54:30] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [16/May/2025 19:05:25] code 400, message Bad request version ("\x88!'\x00\x12¯I\x88Q4ë·\x86¾5Æ}\x9e9.\\%\x00>\x13\x02\x13\x03\x13\x01À,À0\x00\x9fÌ©Ì¨ÌªÀ+À/\x00\x9eÀ$À(\x00kÀ#À'\x00gÀ")
+127.0.0.1 - - [16/May/2025 19:05:25] "\x16\x03\x01\x02\x00\x01\x00\x01ü\x03\x03\x81\x9e \x0eÏåbI_úß\x18\x9aÃ¸\x90¬J3\x99"\x9eü;)d*¼p53½ ü\x82\x87Ï\x14®\x7f\x91ô\x1e\x88!'\x00\x12¯I\x88Q4ë·\x86¾5Æ}\x9e9.\\%\x00>\x13\x02\x13\x03\x13\x01À,À0\x00\x9fÌ©Ì¨ÌªÀ+À/\x00\x9eÀ$À(\x00kÀ#À'\x00gÀ" 400 -
+127.0.0.1 - - [16/May/2025 19:05:25] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [16/May/2025 19:13:19] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [16/May/2025 19:22:35] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [16/May/2025 19:29:32] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [16/May/2025 19:29:49] code 400, message Bad HTTP/0.9 request type ('\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie:')
+127.0.0.1 - - [16/May/2025 19:29:49] "\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie: mstshash=Administr--- Logging error ---
+127.0.0.1 - - [16/May/2025 19:32:49] code 400, message Bad HTTP/0.9 request type ('\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie:')
+--- Logging error ---
+127.0.0.1 - - [16/May/2025 19:32:49] "--- Logging error ---
+127.0.0.1 - - [16/May/2025 19:58:22] "GET / HTTP/1.1" 200 -
+--- Logging error ---
+127.0.0.1 - - [16/May/2025 20:00:00] "--- Logging error ---
+127.0.0.1 - - [16/May/2025 20:26:02] "--- Logging error ---
+127.0.0.1 - - [16/May/2025 20:40:12] "--- Logging error ---
+127.0.0.1 - - [16/May/2025 20:55:58] "--- Logging error ---
+127.0.0.1 - - [16/May/2025 21:18:01] "--- Logging error ---
+127.0.0.1 - - [16/May/2025 21:18:31] "GET / HTTP/1.1" 200 -
+--- Logging error ---
+127.0.0.1 - - [16/May/2025 21:26:23] "CONNECT example.com:443 HTTP/1.1" 404 -
+127.0.0.1 - - [16/May/2025 21:26:25] "CONNECT example.com:443 HTTP/1.1" 404 -
+127.0.0.1 - - [16/May/2025 21:45:54] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [16/May/2025 21:54:45] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [16/May/2025 22:02:43] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [16/May/2025 22:12:24] "CONNECT example.com:443 HTTP/1.1" 404 -
+127.0.0.1 - - [16/May/2025 22:12:25] "CONNECT example.com:443 HTTP/1.1" 404 -
+127.0.0.1 - - [16/May/2025 22:18:20] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [16/May/2025 22:36:23] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [16/May/2025 22:58:57] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [16/May/2025 23:11:01] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [16/May/2025 23:15:37] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [16/May/2025 23:28:46] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [16/May/2025 23:37:03] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [16/May/2025 23:51:55] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [17/May/2025 00:01:02] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [17/May/2025 00:01:06] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [17/May/2025 00:01:06] "GET /favicon.ico HTTP/1.1" 404 -
+127.0.0.1 - - [17/May/2025 00:01:07] code 505, message Invalid HTTP version (2.0)
+127.0.0.1 - - [17/May/2025 00:01:07] "PRI * HTTP/2.0" 505 -
+127.0.0.1 - - [17/May/2025 00:01:11] "GET /favicon.ico HTTP/1.1" 404 -
+127.0.0.1 - - [17/May/2025 00:01:12] code 400, message Bad request version ('À\x14À')
+127.0.0.1 - - [17/May/2025 00:01:12] "\x16\x03\x01\x00÷\x01\x00\x00ó\x03\x03kv\x1fXL«Z\x8bá/æuË}þèíBs\x0d4B\x00×\x12_ð¯Ýû?\x03 @AnÇÐqýä\x1cÝ\x95ä¿üKõ\x9eçÝ.\x91\x88\x14=\x06l&í\x82S¦º\x00&Ì¨Ì©À/À0À+À,À\x13À\x09À\x14À" 400 -
+127.0.0.1 - - [17/May/2025 00:01:53] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [17/May/2025 00:14:22] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [17/May/2025 00:28:43] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [17/May/2025 00:32:07] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [17/May/2025 00:48:32] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [17/May/2025 00:48:32] "GET /static/main.js HTTP/1.1" 304 -
+127.0.0.1 - - [17/May/2025 01:03:48] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [17/May/2025 01:13:04] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [17/May/2025 01:23:35] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [17/May/2025 01:39:23] code 400, message Bad HTTP/0.9 request type ('\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie:')
+127.0.0.1 - - [17/May/2025 01:39:23] "\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie: mstshash=Administr" 400 -
+127.0.0.1 - - [17/May/2025 01:41:23] code 400, message Bad request syntax ('MGLNDD_60.205.205.131_8088')
+127.0.0.1 - - [17/May/2025 01:41:23] "MGLNDD_60.205.205.131_8088" 400 -
+127.0.0.1 - - [17/May/2025 01:46:02] code 400, message Bad HTTP/0.9 request type ('\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie:')
+127.0.0.1 - - [17/May/2025 01:46:02] "\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie: mstshash=Administr" 400 -
+127.0.0.1 - - [17/May/2025 01:47:27] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [17/May/2025 01:49:47] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [17/May/2025 01:51:12] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [17/May/2025 02:18:21] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [17/May/2025 02:20:11] code 400, message Bad request syntax ('SSH-2.0-Go')
+127.0.0.1 - - [17/May/2025 02:20:11] "SSH-2.0-Go" 400 -
+127.0.0.1 - - [17/May/2025 02:31:49] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [17/May/2025 02:40:14] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [17/May/2025 02:53:04] code 400, message Bad HTTP/0.9 request type ('\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie:')
+127.0.0.1 - - [17/May/2025 02:53:04] "\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie: mstshash=Administr" 400 -
+127.0.0.1 - - [17/May/2025 02:55:37] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [17/May/2025 02:56:01] code 400, message Bad HTTP/0.9 request type ('\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie:')
+127.0.0.1 - - [17/May/2025 02:56:01] "\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie: mstshash=Administr" 400 -
+127.0.0.1 - - [17/May/2025 03:07:13] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [17/May/2025 03:09:22] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [17/May/2025 03:17:56] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [17/May/2025 03:31:45] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [17/May/2025 03:46:16] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [17/May/2025 03:49:09] code 400, message Bad HTTP/0.9 request type ('\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie:')
+127.0.0.1 - - [17/May/2025 03:49:09] "\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie: mstshash=Administr" 400 -
+127.0.0.1 - - [17/May/2025 03:50:10] code 400, message Bad request version ('\x04ÝÖd\x03ò\x08ðÝÀ¹XZ@qÑË\x17\x9e»k\x8f`¥\x81¶')
+127.0.0.1 - - [17/May/2025 03:50:10] "\x16\x03\x01\x00î\x01\x00\x00ê\x03\x03g\x06\x1bÇWB;v8«ÉÊAÐE\x93\x8a\x85\x93\x98ÖQr\x92\x14B\x0e\x03êõ\x96\x90 \x04ÝÖd\x03ò\x08ðÝÀ¹XZ@qÑË\x17\x9e»k\x8f`¥\x81¶" 400 -
+127.0.0.1 - - [17/May/2025 03:50:11] code 400, message Bad request version ('À(À$À\x14À')
+127.0.0.1 - - [17/May/2025 03:50:11] "\x16\x03\x01\x00Ê\x01\x00\x00Æ\x03\x03¦p\x8a|EÎµoìó^ç¿da§\x1co\x85)¨ì\x19wå®\x1eY&\x0dj&\x00\x00hÌ\x14Ì\x13À/À+À0À,À\x11À\x07À'À#À\x13À\x09À(À$À\x14À" 400 -
+127.0.0.1 - - [17/May/2025 03:57:43] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [17/May/2025 04:06:03] code 400, message Bad HTTP/0.9 request type ("\x16\x03\x03\x00\x9c\x01\x00\x00\x98\x03\x03h'\x9a«\x8bt]'\x1a¹#")
+127.0.0.1 - - [17/May/2025 04:06:03] "\x16\x03\x03\x00\x9c\x01\x00\x00\x98\x03\x03h'\x9a«\x8bt]'\x1a¹#\x85üÎ\x8dð\x9aï9£Ø\x13&t\x9a®\x06Ú\x06ÖäÏ\x00\x008À,À+À0À/\x00\x9f\x00\x9eÀ$À#À(À'À" 400 -
+127.0.0.1 - - [17/May/2025 04:06:03] "HEAD /pscc/ HTTP/1.1" 404 -
+127.0.0.1 - - [17/May/2025 04:06:03] code 400, message Bad request syntax ("\x16\x03\x03\x00\x9c\x01\x00\x00\x98\x03\x03h'\x9a«l>s;")
+127.0.0.1 - - [17/May/2025 04:06:03] "\x16\x03\x03\x00\x9c\x01\x00\x00\x98\x03\x03h'\x9a«l>s;" 400 -
+127.0.0.1 - - [17/May/2025 04:06:03] "HEAD /start/index.html HTTP/1.1" 404 -
+127.0.0.1 - - [17/May/2025 04:24:12] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [17/May/2025 04:27:33] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [17/May/2025 04:45:36] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [17/May/2025 04:53:13] code 400, message Bad HTTP/0.9 request type ('\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie:')
+127.0.0.1 - - [17/May/2025 04:53:13] "\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie: mstshash=Administr" 400 -
+127.0.0.1 - - [17/May/2025 05:03:26] "GET / HTTP/1.0" 200 -
+127.0.0.1 - - [17/May/2025 05:04:41] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [17/May/2025 05:07:33] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [17/May/2025 05:09:18] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [17/May/2025 05:20:51] code 400, message Bad request version ('À\x13À')
+127.0.0.1 - - [17/May/2025 05:20:51] "\x16\x03\x01\x00î\x01\x00\x00ê\x03\x03I\x06²ù¼\x99iÀYûøºe-\x83Ud]\x0e\x8d·b8´gÆÝ9dZ8f gÁ\x81i³öòË°©\x19NÖ½\x95g|püé<Z¡\x90T·é¥8'O;\x00&À+À/À,À0Ì©Ì¨À\x09À\x13À" 400 -
+127.0.0.1 - - [17/May/2025 05:21:02] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [17/May/2025 05:21:09] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [17/May/2025 05:21:43] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [17/May/2025 05:21:43] "GET /favicon.ico HTTP/1.1" 404 -
+127.0.0.1 - - [17/May/2025 05:33:06] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [17/May/2025 05:33:39] code 400, message Bad request version ('À\x14À')
+127.0.0.1 - - [17/May/2025 05:33:39] "\x16\x03\x01\x00î\x01\x00\x00ê\x03\x03\x10Aòæ\x82\x93Æ·\x08L\x80Ù\x09.s1¬\x93\x1d~!è;õåJõ\x8f{fR\x96 ³4Ë\x8b\x1f|\x9d\x82\x80Cz¤Åb¡0\x19\x17¢@dÃÅê\x8fõÞ Ü7¹u\x00&Ì¨Ì©À/À0À+À,À\x13À\x09À\x14À" 400 -
+127.0.0.1 - - [17/May/2025 05:34:17] code 400, message Bad request syntax ('ZG\x00\x00\x00\x05\x00+\x0e\x01\x00')
+127.0.0.1 - - [17/May/2025 05:34:17] "ZG\x00\x00\x00\x05\x00+\x0e\x01\x00" 400 -
+127.0.0.1 - - [17/May/2025 05:46:28] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [17/May/2025 05:59:16] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [17/May/2025 06:17:39] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [17/May/2025 06:19:36] code 400, message Bad HTTP/0.9 request type ('\x16\x03\x03\x01\x02\x01\x00\x00þ\x03\x03\x00')
+127.0.0.1 - - [17/May/2025 06:19:36] "\x16\x03\x03\x01\x02\x01\x00\x00þ\x03\x03\x00\x0c\x0bÈavõãr¥Ö×P\x11á\x96\x8dîB\x04@ÎÉ¢²\x8d"~p»Ëö\x00\x00VÀ,À+À0À/\x00\x9f\x00£\x00\x9e\x00¢À$À(À#À'\x00k\x00j\x00g\x00@À.À2À-À1À&À*À%À)À" 400 -
+127.0.0.1 - - [17/May/2025 06:22:04] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [17/May/2025 06:28:46] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [17/May/2025 06:59:52] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [17/May/2025 07:03:21] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [17/May/2025 07:05:09] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [17/May/2025 07:19:23] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [17/May/2025 07:21:38] code 400, message Bad HTTP/0.9 request type ('\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie:')
+127.0.0.1 - - [17/May/2025 07:21:38] "\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie: mstshash=Administr" 400 -
+127.0.0.1 - - [17/May/2025 07:22:16] code 400, message Bad HTTP/0.9 request type ('\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie:')
+127.0.0.1 - - [17/May/2025 07:22:16] "\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie: mstshash=Administr" 400 -
+127.0.0.1 - - [17/May/2025 07:30:40] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [17/May/2025 07:36:39] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [17/May/2025 07:44:44] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [17/May/2025 07:56:52] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [17/May/2025 07:58:50] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [17/May/2025 08:24:43] "GET / HTTP/1.0" 200 -
+127.0.0.1 - - [17/May/2025 08:26:20] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [17/May/2025 08:40:03] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [17/May/2025 09:03:53] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [17/May/2025 09:27:47] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [17/May/2025 09:40:04] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [17/May/2025 10:06:45] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [17/May/2025 10:07:02] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [17/May/2025 10:09:13] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [17/May/2025 10:27:20] code 400, message Bad HTTP/0.9 request type ('\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie:')
+127.0.0.1 - - [17/May/2025 10:27:20] "\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie: mstshash=Administr" 400 -
+127.0.0.1 - - [17/May/2025 10:35:39] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [17/May/2025 10:53:37] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [17/May/2025 11:03:27] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [17/May/2025 11:03:37] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [17/May/2025 11:03:38] "GET /favicon.ico HTTP/1.1" 404 -
+127.0.0.1 - - [17/May/2025 11:03:38] code 505, message Invalid HTTP version (2.0)
+127.0.0.1 - - [17/May/2025 11:03:38] "PRI * HTTP/2.0" 505 -
+127.0.0.1 - - [17/May/2025 11:03:42] "GET /favicon.ico HTTP/1.1" 404 -
+127.0.0.1 - - [17/May/2025 11:03:43] code 400, message Bad request version ('À\x14À')
+127.0.0.1 - - [17/May/2025 11:03:43] "\x16\x03\x01\x00÷\x01\x00\x00ó\x03\x03\x0dá¦CUÑ+£Èaº\x9b\x13¼\x01,q\x03Dl%.\x12î3\x88¿\x91h\x16±) \x05|Ø½Úºè¸\x16gà¾LjÍ\x96d\x009ØO\x01\x01JN'ó¶PV\x84L\x00&Ì¨Ì©À/À0À+À,À\x13À\x09À\x14À" 400 -
+127.0.0.1 - - [17/May/2025 11:24:44] code 400, message Bad HTTP/0.9 request type ('l\x00')
+127.0.0.1 - - [17/May/2025 11:24:44] "l\x00\x0b\x00\x00\x00\x00\x00\x00\x00\x00\x00" 400 -
+127.0.0.1 - - [17/May/2025 11:25:07] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [17/May/2025 11:35:02] code 400, message Bad HTTP/0.9 request type ('\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie:')
+127.0.0.1 - - [17/May/2025 11:35:02] "\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie: mstshash=Administr" 400 -
+127.0.0.1 - - [17/May/2025 11:41:19] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [17/May/2025 11:43:21] code 400, message Bad request version ('À\x13À')
+127.0.0.1 - - [17/May/2025 11:43:21] "\x16\x03\x01\x00î\x01\x00\x00ê\x03\x03I\x06²ù¼\x99iÀYûøºe-\x83Ud]\x0e\x8d·b8´gÆÝ9dZ8f gÁ\x81i³öòË°©\x19NÖ½\x95g|püé<Z¡\x90T·é¥8'O;\x00&À+À/À,À0Ì©Ì¨À\x09À\x13À" 400 -
+127.0.0.1 - - [17/May/2025 11:43:32] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [17/May/2025 11:46:21] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [17/May/2025 11:46:23] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [17/May/2025 11:46:23] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [17/May/2025 11:46:23] "GET /static/main.js HTTP/1.1" 200 -
+127.0.0.1 - - [17/May/2025 11:46:25] "GET /favicon.ico HTTP/1.1" 404 -
+127.0.0.1 - - [17/May/2025 12:00:49] code 400, message Bad request syntax ('SSH-2.0-OpenSSH')
+127.0.0.1 - - [17/May/2025 12:00:49] "SSH-2.0-OpenSSH" 400 -
+127.0.0.1 - - [17/May/2025 12:06:12] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [17/May/2025 12:14:31] code 400, message Bad HTTP/0.9 request type ('\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie:')
+127.0.0.1 - - [17/May/2025 12:14:31] "\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie: mstshash=Administr" 400 -
+127.0.0.1 - - [17/May/2025 12:16:06] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [17/May/2025 12:39:43] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [17/May/2025 12:57:40] code 400, message Bad HTTP/0.9 request type ('\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie:')
+127.0.0.1 - - [17/May/2025 12:57:40] "\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie: mstshash=Administr" 400 -
+127.0.0.1 - - [17/May/2025 13:03:01] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [17/May/2025 13:13:09] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [17/May/2025 13:22:15] code 400, message Bad HTTP/0.9 request type ('\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie:')
+127.0.0.1 - - [17/May/2025 13:22:15] "\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie: mstshash=Administr" 400 -
+127.0.0.1 - - [17/May/2025 13:27:32] code 400, message Bad HTTP/0.9 request type ('\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie:')
+127.0.0.1 - - [17/May/2025 13:27:32] "\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie: mstshash=Administr" 400 -
+127.0.0.1 - - [17/May/2025 13:29:38] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [17/May/2025 13:33:28] code 400, message Bad HTTP/0.9 request type ('\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie:')
+127.0.0.1 - - [17/May/2025 13:33:28] "\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie: mstshash=Administr" 400 -
+127.0.0.1 - - [17/May/2025 13:49:38] code 400, message Bad request syntax ('MGLNDD_60.205.205.131_8088')
+127.0.0.1 - - [17/May/2025 13:49:38] "MGLNDD_60.205.205.131_8088" 400 -
+127.0.0.1 - - [17/May/2025 14:01:22] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [17/May/2025 14:26:38] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [17/May/2025 14:40:01] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [17/May/2025 15:01:52] code 400, message Bad HTTP/0.9 request type ('\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie:')
+127.0.0.1 - - [17/May/2025 15:01:52] "\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie: mstshash=Administr" 400 -
+127.0.0.1 - - [17/May/2025 15:05:56] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [17/May/2025 15:08:40] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [17/May/2025 15:36:46] code 400, message Bad HTTP/0.9 request type ('\x16\x03\x01\x00î\x01\x00\x00ê\x03\x03êsÚ\x95¬%ûÿçó\x17eZ')
+127.0.0.1 - - [17/May/2025 15:36:46] "\x16\x03\x01\x00î\x01\x00\x00ê\x03\x03êsÚ\x95¬%ûÿçó\x17eZ\x0d`ó\x10²c½\x18LÞ" 400 -
+127.0.0.1 - - [17/May/2025 15:36:46] code 400, message Bad request version ('À(À$À\x14À')
+127.0.0.1 - - [17/May/2025 15:36:46] "\x16\x03\x01\x00Ê\x01\x00\x00Æ\x03\x03¦Ä<\x1dëé®¥0Pl'}»wÚiÁ )ag <)¯Î!#\x901u\x00\x00hÌ\x14Ì\x13À/À+À0À,À\x11À\x07À'À#À\x13À\x09À(À$À\x14À" 400 -
+127.0.0.1 - - [17/May/2025 15:40:57] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [17/May/2025 16:00:47] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [17/May/2025 16:12:11] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [17/May/2025 16:34:07] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [17/May/2025 16:51:47] "OPTIONS / HTTP/1.0" 200 -
+127.0.0.1 - - [17/May/2025 16:51:48] "GET / HTTP/1.0" 200 -
+127.0.0.1 - - [17/May/2025 16:51:48] "GET /nmaplowercheck1747471908 HTTP/1.1" 404 -
+127.0.0.1 - - [17/May/2025 16:51:48] "POST /sdk HTTP/1.1" 404 -
+127.0.0.1 - - [17/May/2025 16:51:48] "GET /HNAP1 HTTP/1.1" 404 -
+127.0.0.1 - - [17/May/2025 16:51:48] "GET /evox/about HTTP/1.1" 404 -
+127.0.0.1 - - [17/May/2025 16:51:58] code 400, message Bad request syntax ("\x16\x03\x01\x02\x00\x01\x00\x01ü\x03\x03$<ÿ\x8e»~µ´ð¬\x07ÉXÑ\x88Otçè²\x9b¹\x13´i\x0fQ\x13'AZ\x84\x00\x00Ú\x00\x05\x00\x04\x00\x02\x00\x01\x00\x16\x003\x009\x00:\x00\x18\x005\x00")
+127.0.0.1 - - [17/May/2025 16:51:58] "\x16\x03\x01\x02\x00\x01\x00\x01ü\x03\x03$<ÿ\x8e»~µ´ð¬\x07ÉXÑ\x88Otçè²\x9b¹\x13´i\x0fQ\x13'AZ\x84\x00\x00Ú\x00\x05\x00\x04\x00\x02\x00\x01\x00\x16\x003\x009\x00:\x00\x18\x005\x00" 400 -
+127.0.0.1 - - [17/May/2025 16:51:58] code 400, message Bad HTTP/0.9 request type ('\x16\x03\x01\x02\x00\x01\x00\x01ü\x03\x03Ej')
+127.0.0.1 - - [17/May/2025 16:51:58] "\x16\x03\x01\x02\x00\x01\x00\x01ü\x03\x03Ej\x1e.\x06:\x8fáÉ\x1aìð\x01A\x04ÒörýQeýÏE²æ\x9cÌ\x9dm\x9e'\x00\x00Ú\x00\x05\x00\x04\x00\x02\x00\x01\x00\x16\x003\x009\x00:\x00\x18\x005\x00" 400 -
+127.0.0.1 - - [17/May/2025 16:51:58] "GET / HTTP/1.0" 200 -
+127.0.0.1 - - [17/May/2025 16:51:58] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [17/May/2025 16:54:07] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [17/May/2025 17:05:15] code 400, message Bad HTTP/0.9 request type ('l\x00')
+127.0.0.1 - - [17/May/2025 17:05:15] "l\x00\x0b\x00\x00\x00\x00\x00\x00\x00\x00\x00" 400 -
+127.0.0.1 - - [17/May/2025 17:08:57] code 400, message Bad HTTP/0.9 request type ('\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie:')
+127.0.0.1 - - [17/May/2025 17:08:57] "\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie: mstshash=Administr" 400 -
+127.0.0.1 - - [17/May/2025 17:23:46] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [17/May/2025 17:36:28] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [17/May/2025 17:44:43] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [17/May/2025 17:45:02] "GET /favicon.ico HTTP/1.1" 404 -
+127.0.0.1 - - [17/May/2025 17:50:55] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [17/May/2025 18:26:25] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [17/May/2025 18:45:12] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [17/May/2025 18:46:06] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [17/May/2025 18:51:29] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [17/May/2025 19:12:45] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [17/May/2025 19:13:00] code 400, message Bad HTTP/0.9 request type ('\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie:')
+127.0.0.1 - - [17/May/2025 19:13:00] "\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie: mstshash=Administr" 400 -
+127.0.0.1 - - [17/May/2025 19:32:24] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [17/May/2025 19:59:52] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [17/May/2025 20:24:29] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [17/May/2025 20:47:27] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [17/May/2025 20:57:19] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [17/May/2025 21:11:49] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [17/May/2025 21:14:59] code 400, message Bad HTTP/0.9 request type ('\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie:')
+127.0.0.1 - - [17/May/2025 21:14:59] "\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie: mstshash=Administr" 400 -
+127.0.0.1 - - [17/May/2025 21:37:30] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [17/May/2025 21:49:03] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [17/May/2025 22:17:21] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [17/May/2025 22:20:49] code 400, message Bad request syntax ('\x03\x00\x00\x13\x0eà\x00\x00\x00\x00\x00\x01\x00\x08\x00\x03\x00\x00\x00')
+127.0.0.1 - - [17/May/2025 22:20:49] "\x03\x00\x00\x13\x0eà\x00\x00\x00\x00\x00\x01\x00\x08\x00\x03\x00\x00\x00" 400 -
+127.0.0.1 - - [17/May/2025 22:34:21] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [17/May/2025 23:01:37] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [17/May/2025 23:23:52] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [17/May/2025 23:30:36] code 400, message Bad HTTP/0.9 request type ('\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie:')
+127.0.0.1 - - [17/May/2025 23:30:36] "\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie: mstshash=Administr" 400 -
+127.0.0.1 - - [17/May/2025 23:47:07] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [17/May/2025 23:53:23] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [17/May/2025 23:54:20] "OPTIONS / HTTP/1.0" 200 -
+127.0.0.1 - - [17/May/2025 23:54:25] code 400, message Bad HTTP/0.9 request type ('l\x00')
+127.0.0.1 - - [17/May/2025 23:54:25] "l\x00\x0b\x00\x00\x00\x00\x00\x00\x00\x00\x00" 400 -
+127.0.0.1 - - [17/May/2025 23:54:26] "GET / HTTP/1.0" 200 -
+127.0.0.1 - - [17/May/2025 23:54:27] code 400, message Bad request version ('RTSP/1.0')
+127.0.0.1 - - [17/May/2025 23:54:27] "OPTIONS / RTSP/1.0" 400 -
+127.0.0.1 - - [17/May/2025 23:54:33] code 400, message Bad request version ('\x00\x01\x97|\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00')
+127.0.0.1 - - [17/May/2025 23:54:33] "\x80\x00\x00(rþ\x1d\x13\x00\x00\x00\x00\x00\x00\x00\x02\x00\x01\x86 \x00\x01\x97|\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00" 400 -
+127.0.0.1 - - [17/May/2025 23:54:38] code 400, message Bad HTTP/0.9 request type ('\x00')
+127.0.0.1 - - [17/May/2025 23:54:38] "\x00\x1e\x00\x06\x01\x00\x00\x01\x00\x00\x00\x00\x00\x00\x07version\x04bind\x00\x00\x10\x00\x03" 400 -
+127.0.0.1 - - [17/May/2025 23:54:43] code 400, message Bad HTTP/0.9 request type ('\x00')
+127.0.0.1 - - [17/May/2025 23:54:43] "\x00\x0c\x00\x00\x10\x00\x00\x00\x00\x00\x00\x00\x00\x00" 400 -
+127.0.0.1 - - [17/May/2025 23:54:43] code 400, message Bad request syntax ('EHLO')
+127.0.0.1 - - [17/May/2025 23:54:43] "EHLO" 400 -
+127.0.0.1 - - [17/May/2025 23:54:44] code 400, message Bad request syntax ('HELP')
+127.0.0.1 - - [17/May/2025 23:54:44] "HELP" 400 -
+127.0.0.1 - - [17/May/2025 23:54:44] code 400, message Bad request syntax ('\x16\x03\x00\x00S\x01\x00\x00O\x03\x00?G×÷º,îê²`~ó\x00ý\x82{¹Õ\x96Èw\x9bæÄÛ<=Ûoï\x10n\x00\x00(\x00\x16\x00\x13\x00')
+127.0.0.1 - - [17/May/2025 23:54:44] "\x16\x03\x00\x00S\x01\x00\x00O\x03\x00?G×÷º,îê²`~ó\x00ý\x82{¹Õ\x96Èw\x9bæÄÛ<=Ûoï\x10n\x00\x00(\x00\x16\x00\x13\x00" 400 -
+127.0.0.1 - - [17/May/2025 23:54:45] code 400, message Bad HTTP/0.9 request type ('\x03\x00\x00*%à\x00\x00\x00\x00\x00Cookie:')
+127.0.0.1 - - [17/May/2025 23:54:45] "\x03\x00\x00*%à\x00\x00\x00\x00\x00Cookie: mstshash=nmap" 400 -
+127.0.0.1 - - [17/May/2025 23:54:45] code 400, message Bad request version ('\x00/\x00')
+127.0.0.1 - - [17/May/2025 23:54:45] "\x16\x03\x00\x00i\x01\x00\x00e\x03\x03U\x1c§ärandom1random2random3random4\x00\x00\x0c\x00/\x00" 400 -
+127.0.0.1 - - [17/May/2025 23:54:46] code 400, message Bad HTTP/0.9 request type ('\x80\x9e\x01\x03\x01\x00u\x00\x00\x00')
+127.0.0.1 - - [17/May/2025 23:54:46] "\x80\x9e\x01\x03\x01\x00u\x00\x00\x00 \x00\x00f\x00\x00e\x00\x00d\x00\x00c\x00\x00b\x00\x00:\x00\x009\x00\x008\x00\x005\x00\x004\x00\x003\x00\x002\x00\x00/\x00\x00\x1b\x00\x00\x1a\x00\x00\x19\x00\x00\x18\x00\x00\x17\x00\x00\x16\x00\x00\x15\x00\x00\x14\x00\x00\x13\x00\x00\x12\x00\x00\x11\x00\x00" 400 -
+127.0.0.1 - - [17/May/2025 23:54:46] code 400, message Bad request syntax ('\x00\x00\x00qj\x81n0\x81k¡\x03\x02\x01\x05¢\x03\x02\x01')
+127.0.0.1 - - [17/May/2025 23:54:46] "\x00\x00\x00qj\x81n0\x81k¡\x03\x02\x01\x05¢\x03\x02\x01" 400 -
+127.0.0.1 - - [17/May/2025 23:54:51] code 400, message Bad request version ('0.12\x00')
+127.0.0.1 - - [17/May/2025 23:54:51] "\x00\x00\x00¤ÿSMBr\x00\x00\x00\x00\x08\x01@\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00@\x06\x00\x00\x01\x00\x00\x81\x00\x02PC NETWORK PROGRAM 1.0\x00\x02MICROSOFT NETWORKS 1.03\x00\x02MICROSOFT NETWORKS 3.0\x00\x02LANMAN1.0\x00\x02LM1.2X002\x00\x02Samba\x00\x02NT LANMAN 1.0\x00\x02NT LM 0.12\x00" 400 -
+127.0.0.1 - - [17/May/2025 23:54:52] "GET /nice%20ports,/Trinity.txt.bak HTTP/1.0" 404 -
+127.0.0.1 - - [17/May/2025 23:54:52] code 400, message Bad request syntax ('\x01default')
+127.0.0.1 - - [17/May/2025 23:54:52] "\x01default" 400 -
+127.0.0.1 - - [17/May/2025 23:54:52] code 400, message Bad request syntax ('0\x84\x00\x00\x00-\x02\x01\x07c\x84\x00\x00\x00$\x04\x00')
+127.0.0.1 - - [17/May/2025 23:54:52] "0\x84\x00\x00\x00-\x02\x01\x07c\x84\x00\x00\x00$\x04\x00" 400 -
+127.0.0.1 - - [17/May/2025 23:54:57] code 400, message Bad HTTP/0.9 request type ('0')
+127.0.0.1 - - [17/May/2025 23:54:57] "0\x0c\x02\x01\x01`\x07\x02\x01\x02\x04\x00\x80\x00" 400 -
+127.0.0.1 - - [17/May/2025 23:54:57] code 400, message Bad request version ('SIP/2.0')
+127.0.0.1 - - [17/May/2025 23:54:57] "OPTIONS sip:nm SIP/2.0" 400 -
+127.0.0.1 - - [17/May/2025 23:55:03] code 400, message Bad request syntax ('TNMP\x04\x00\x00\x00TNME\x00\x00\x04\x00')
+127.0.0.1 - - [17/May/2025 23:55:03] "TNMP\x04\x00\x00\x00TNME\x00\x00\x04\x00" 400 -
+127.0.0.1 - - [17/May/2025 23:55:08] code 400, message Bad HTTP/0.9 request type ('\x03\x00\x00')
+127.0.0.1 - - [17/May/2025 23:55:08] "\x03\x00\x00\x0b\x06à\x00\x00\x00\x00\x00" 400 -
+127.0.0.1 - - [17/May/2025 23:55:13] code 400, message Bad request syntax ('DmdT\x00\x00\x00\x17\x00\x00\x00\x01\x00\x00\x00\x00\x11\x11\x00ÿ\x01ÿ\x13')
+127.0.0.1 - - [17/May/2025 23:55:13] "DmdT\x00\x00\x00\x17\x00\x00\x00\x01\x00\x00\x00\x00\x11\x11\x00ÿ\x01ÿ\x13" 400 -
+127.0.0.1 - - [17/May/2025 23:55:18] code 400, message Bad HTTP/0.9 request type (':\x00\x00\x00/\x00\x00\x00\x02\x00\x00@\x02\x0f\x00\x01\x00=\x05\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00/\x00\x00\x00\x00\x00\x00\x00\x00\x00@')
+127.0.0.1 - - [17/May/2025 23:55:18] ":\x00\x00\x00/\x00\x00\x00\x02\x00\x00@\x02\x0f\x00\x01\x00=\x05\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00/\x00\x00\x00\x00\x00\x00\x00\x00\x00@\x1f\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00" 400 -
+127.0.0.1 - - [17/May/2025 23:55:23] code 400, message Bad request syntax ('DIST00000001ARGC00000005ARGV00000002ccARGV00000002-cARGV00000006nmap.cARGV00000002-oARGV00000006nmap.oDOTI00000000')
+127.0.0.1 - - [17/May/2025 23:55:23] "DIST00000001ARGC00000005ARGV00000002ccARGV00000002-cARGV00000006nmap.cARGV00000002-oARGV00000006nmap.oDOTI00000000" 400 -
+127.0.0.1 - - [17/May/2025 23:55:28] code 400, message Bad request syntax ('JRMI\x00\x02K')
+127.0.0.1 - - [17/May/2025 23:55:28] "JRMI\x00\x02K" 400 -
+127.0.0.1 - - [17/May/2025 23:55:33] code 400, message Bad request syntax ('\x01\x00\x00\x00\x01\x00\x00\x00\x08\x08')
+127.0.0.1 - - [17/May/2025 23:55:33] "\x01\x00\x00\x00\x01\x00\x00\x00\x08\x08" 400 -
+127.0.0.1 - - [17/May/2025 23:55:33] code 400, message Bad request version ('>')
+127.0.0.1 - - [17/May/2025 23:55:33] "< NTP/1.0 >" 400 -
+127.0.0.1 - - [17/May/2025 23:55:38] code 400, message Bad request version ('\x00{\x000\x000\x000\x000\x00A\x00A\x000\x000\x00-\x000\x00A\x000\x000\x00-\x000\x000\x00a\x000\x00-\x00A\x00A\x000\x00A\x00-\x000\x000\x000\x000\x00A\x000\x00A\x00A\x000\x00A\x00A\x000\x00}\x00\x00\x00àmß_')
+127.0.0.1 - - [17/May/2025 23:55:38] "\x01\x00\x00ýÎú\x0b° \x00\x00\x00MMS\x14\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x12\x00\x00\x00\x01\x00\x03\x00ðððð\x0b\x00\x04\x00\x1c\x00\x03\x00N\x00S\x00P\x00l\x00a\x00y\x00e\x00r\x00/\x009\x00.\x000\x00.\x000\x00.\x002\x009\x008\x000\x00;\x00 \x00{\x000\x000\x000\x000\x00A\x00A\x000\x000\x00-\x000\x00A\x000\x000\x00-\x000\x000\x00a\x000\x00-\x00A\x00A\x000\x00A\x00-\x000\x000\x000\x000\x00A\x000\x00A\x00A\x000\x00A\x00A\x000\x00}\x00\x00\x00àmß_" 400 -
+127.0.0.1 - - [17/May/2025 23:55:43] code 400, message Bad HTTP/0.9 request type ('\x00Z\x00\x00\x01\x00\x00\x00\x016\x01,\x00\x00\x08\x00\x7fÿ\x7f\x08\x00\x00\x00\x01\x00')
+127.0.0.1 - - [17/May/2025 23:55:43] "\x00Z\x00\x00\x01\x00\x00\x00\x016\x01,\x00\x00\x08\x00\x7fÿ\x7f\x08\x00\x00\x00\x01\x00 \x00:\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x004æ\x00\x00\x00\x01\x00\x00\x00\x00\x00\x00\x00\x00(CONNECT_DATA=(COMMAND=version))" 400 -
+127.0.0.1 - - [17/May/2025 23:55:43] code 400, message Bad request syntax ('Subscribe')
+127.0.0.1 - - [17/May/2025 23:55:43] "Subscribe" 400 -
+127.0.0.1 - - [17/May/2025 23:55:44] code 400, message Bad request syntax ('Query')
+127.0.0.1 - - [17/May/2025 23:55:44] "Query" 400 -
+127.0.0.1 - - [17/May/2025 23:55:44] code 400, message Bad request syntax ('\x05\x04\x00\x01\x02\x80\x05\x01\x00\x03')
+127.0.0.1 - - [17/May/2025 23:55:44] "\x05\x04\x00\x01\x02\x80\x05\x01\x00\x03" 400 -
+127.0.0.1 - - [17/May/2025 23:55:49] code 400, message Bad request syntax ('\x04\x01\x00\x16\x7f\x00\x00\x01root\x00')
+127.0.0.1 - - [17/May/2025 23:55:49] "\x04\x01\x00\x16\x7f\x00\x00\x01root\x00" 400 -
+127.0.0.1 - - [17/May/2025 23:55:54] code 400, message Bad request version ('\x03\x00(\x00\x04ÿ\x08\x00\x01U\x00\x00\x00MSSQLServer\x00H\x0f\x00\x00')
+127.0.0.1 - - [17/May/2025 23:55:54] "\x12\x01\x004\x00\x00\x00\x00\x00\x00\x15\x00\x06\x01\x00\x1b\x00\x01\x02\x00\x1c\x00\x0c\x03\x00(\x00\x04ÿ\x08\x00\x01U\x00\x00\x00MSSQLServer\x00H\x0f\x00\x00" 400 -
+127.0.0.1 - - [17/May/2025 23:55:54] code 400, message Bad request syntax ('HELP')
+127.0.0.1 - - [17/May/2025 23:55:54] "HELP" 400 -
+127.0.0.1 - - [17/May/2025 23:55:54] code 400, message Bad request syntax ('stats')
+127.0.0.1 - - [17/May/2025 23:55:54] "stats" 400 -
+127.0.0.1 - - [17/May/2025 23:55:55] code 400, message Bad request version ('\x06\x00\x00\x00\x00\x00\x08\x00\x00\x00\x01\x00\x00\x00\x02\x00\x00\x00\x03\x00\x00\x00\x02\x00\x00\x00')
+127.0.0.1 - - [17/May/2025 23:55:55] "\x00\x00\x00\x01\x00\x00\x00\x13\x00\x00\x00\x02\x00\x00\x00$\x00\x00\x00\x0bservice_mgr\x00\x00\x00\x00\x02\x00\x00\x00\x13\x01\x08scanner \x04\x05nmap \x06\x00\x00\x00\x00\x00\x08\x00\x00\x00\x01\x00\x00\x00\x02\x00\x00\x00\x03\x00\x00\x00\x02\x00\x00\x00" 400 -
+127.0.0.1 - - [17/May/2025 23:56:00] code 400, message Bad request version ('\x00\x00\x00\x04')
+127.0.0.1 - - [17/May/2025 23:56:00] "\x00\x00\x00\x00DB2DAS      \x01\x04\x00\x00\x00\x109z\x00\x01\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x01\x0c\x00\x00\x00\x00\x00\x00\x0c\x00\x00\x00\x0c\x00\x00\x00\x04" 400 -
+127.0.0.1 - - [17/May/2025 23:56:05] code 400, message Bad request version ('\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x01\x00ÿ\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00ä\x04\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x7f')
+127.0.0.1 - - [17/May/2025 23:56:05] "\x01Â\x00\x00\x00\x04\x00\x00¶\x01\x00\x00SQLDB2RA\x00\x01\x00\x00\x04\x01\x01\x00\x05\x00\x1d\x00\x88\x00\x00\x00\x01\x00\x00\x80\x00\x00\x00\x01\x09\x00\x00\x00\x01\x00\x00@\x00\x00\x00\x01\x09\x00\x00\x00\x01\x00\x00@\x00\x00\x00\x01\x08\x00\x00\x00\x04\x00\x00@\x00\x00\x00\x01\x04\x00\x00\x00\x01\x00\x00@\x00\x00\x00@\x04\x00\x00\x00\x04\x00\x00@\x00\x00\x00\x01\x04\x00\x00\x00\x04\x00\x00@\x00\x00\x00\x01\x04\x00\x00\x00\x04\x00\x00@\x00\x00\x00\x01\x04\x00\x00\x00\x02\x00\x00@\x00\x00\x00\x01\x04\x00\x00\x00\x04\x00\x00@\x00\x00\x00\x01\x00\x00\x00\x00\x01\x00\x00@\x00\x00\x00\x00\x04\x00\x00\x00\x04\x00\x00\x80\x00\x00\x00\x01\x04\x00\x00\x00\x04\x00\x00\x80\x00\x00\x00\x01\x04\x00\x00\x00\x03\x00\x00\x80\x00\x00\x00\x01\x04\x00\x00\x00\x04\x00\x00\x80\x00\x00\x00\x01\x08\x00\x00\x00\x01\x00\x00@\x00\x00\x00\x01\x04\x00\x00\x00\x04\x00\x00@\x00\x00\x00\x01\x10\x00\x00\x00\x01\x00\x00\x80\x00\x00\x00\x01\x10\x00\x00\x00\x01\x00\x00\x80\x00\x00\x00\x01\x04\x00\x00\x00\x04\x00\x00@\x00\x00\x00\x01\x09\x00\x00\x00\x01\x00\x00@\x00\x00\x00\x01\x09\x00\x00\x00\x01\x00\x00\x80\x00\x00\x00\x01\x04\x00\x00\x00\x03\x00\x00\x80\x00\x00\x00\x01\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x01\x04\x00\x00\x01\x00\x00\x80\x00\x00\x00\x01\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x01\x00\x00@\x00\x00\x00\x01\x00\x00\x00\x00\x01\x00\x00@\x00\x00\x00\x00        \x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x01\x00ÿ\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00ä\x04\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x7f" 400 -
+127.0.0.1 - - [17/May/2025 23:56:10] code 400, message Bad request version ('1\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00')
+127.0.0.1 - - [17/May/2025 23:56:10] "Client string for PARC version 1 Wire Encryption version 1\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00" 400 -
+127.0.0.1 - - [17/May/2025 23:56:10] code 400, message Bad HTTP/0.9 request type ('<\x00K\x00\x00\x00')
+127.0.0.1 - - [17/May/2025 23:56:10] "<\x00K\x00\x00\x00 \x00\x00\x00\x00\x00\x00\x00\x00\x00ÿÿÿÿ\x00\x00" 400 -
+127.0.0.1 - - [17/May/2025 23:56:11] code 400, message Bad request syntax ('\x124\x00\x01')
+127.0.0.1 - - [17/May/2025 23:56:11] "\x124\x00\x01" 400 -
+127.0.0.1 - - [17/May/2025 23:56:16] code 400, message Bad request syntax ('\x00\x03\x00\x01\x00\x00\x00\x00\x00\x00\x00\x02\x00\x00\x00\x00\x0f\x00')
+127.0.0.1 - - [17/May/2025 23:56:16] "\x00\x03\x00\x01\x00\x00\x00\x00\x00\x00\x00\x02\x00\x00\x00\x00\x0f\x00" 400 -
+127.0.0.1 - - [17/May/2025 23:56:16] code 400, message Bad request syntax ('serverstatus')
+127.0.0.1 - - [17/May/2025 23:56:16] "serverstatus" 400 -
+127.0.0.1 - - [17/May/2025 23:56:21] code 400, message Bad HTTP/0.9 request type ('Âååå\x9e')
+127.0.0.1 - - [17/May/2025 23:56:21] "Âååå\x9e ×¤¦ÐÕÝÜÈÖÝ×ÕÈÑÖ\x83\x80ÈÝ¤Ñ¡È¤ÒÕ×Ý£¤¡Ý¦×Ý\x98å" 400 -
+127.0.0.1 - - [17/May/2025 23:56:21] code 400, message Bad request syntax ('#ST')
+127.0.0.1 - - [17/May/2025 23:56:21] "#ST" 400 -
+127.0.0.1 - - [17/May/2025 23:56:26] code 400, message Bad request version ('\x00\x00\x00\x03\x00\x05nmap\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00j\x00\x00\x00\x7f')
+127.0.0.1 - - [17/May/2025 23:56:26] "\x00\x94\x01<\x00\x00\x00d\x00e\x00\x00\x00=\x00\x06IEEEM\x00\x00lsqlexec\x00\x00\x00\x00\x00\x00\x069.280\x00\x00\x0cRDS#R000000\x00\x00\x05sqli\x00\x00\x00\x013\x00\x00\x00\x00\x00\x00\x00\x00\x00\x01\x00\x05nmap\x00\x00\x05nmap\x00ol\x00\x00\x00\x00\x00\x00\x00\x00\x00=tlitcp\x00\x00\x00\x00\x00\x01\x00h\x00\x0b\x00\x00\x00\x03\x00\x05nmap\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00j\x00\x00\x00\x7f" 400 -
+127.0.0.1 - - [17/May/2025 23:56:31] code 400, message Bad request syntax ('\x002Ð\x01\x00\x01\x00,\x10A\x00\x04\x11^\x00\x04\x11m\x00\x04\x11Z\x00\x18\x14\x04\x14\x03\x00\x07$\x07\x00\x08$\x0f\x00\x08\x14@\x00\x08\x14t\x00\x08\x00\x04\x11G')
+127.0.0.1 - - [17/May/2025 23:56:31] "\x002Ð\x01\x00\x01\x00,\x10A\x00\x04\x11^\x00\x04\x11m\x00\x04\x11Z\x00\x18\x14\x04\x14\x03\x00\x07$\x07\x00\x08$\x0f\x00\x08\x14@\x00\x08\x14t\x00\x08\x00\x04\x11G" 400 -
+127.0.0.1 - - [17/May/2025 23:56:31] code 400, message Bad HTTP/0.9 request type ('TSH')
+127.0.0.1 - - [17/May/2025 23:56:31] "TSH \x00\x00\x00ì\x01\x011\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x01\x11\x04¸\x00\x00ID  " 400 -
+127.0.0.1 - - [17/May/2025 23:56:32] "GET /server-info HTTP/1.1" 404 -
+127.0.0.1 - - [17/May/2025 23:56:37] code 400, message Bad request syntax ('A\x00\x00\x00:0\x00\x00ÿÿÿÿÔ\x07\x00\x00\x00\x00\x00\x00test.$cmd\x00\x00\x00\x00\x00ÿÿÿÿ\x1b\x00\x00\x00\x01serverStatus\x00\x00\x00\x00\x00\x00\x00ð?\x00')
+127.0.0.1 - - [17/May/2025 23:56:37] "A\x00\x00\x00:0\x00\x00ÿÿÿÿÔ\x07\x00\x00\x00\x00\x00\x00test.$cmd\x00\x00\x00\x00\x00ÿÿÿÿ\x1b\x00\x00\x00\x01serverStatus\x00\x00\x00\x00\x00\x00\x00ð?\x00" 400 -
+127.0.0.1 - - [17/May/2025 23:56:37] code 400, message Bad request syntax ('*1')
+127.0.0.1 - - [17/May/2025 23:56:37] "*1" 400 -
+127.0.0.1 - - [17/May/2025 23:56:42] code 400, message Bad request syntax ('\x00\x00\x00\x01\x07')
+127.0.0.1 - - [17/May/2025 23:56:42] "\x00\x00\x00\x01\x07" 400 -
+127.0.0.1 - - [17/May/2025 23:56:42] code 400, message Bad HTTP/0.9 request type ('show')
+127.0.0.1 - - [17/May/2025 23:56:42] "show info" 400 -
+127.0.0.1 - - [17/May/2025 23:56:48] code 400, message Bad request syntax ('\x80\x10\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x15ðÑb\x00\x00\x00\x00\x00\x00\x00\x00')
+127.0.0.1 - - [17/May/2025 23:56:48] "\x80\x10\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x15ðÑb\x00\x00\x00\x00\x00\x00\x00\x00" 400 -
+127.0.0.1 - - [17/May/2025 23:56:53] code 400, message Bad request syntax ('\x00\x01n')
+127.0.0.1 - - [17/May/2025 23:56:53] "\x00\x01n" 400 -
+127.0.0.1 - - [17/May/2025 23:56:58] code 400, message Bad request syntax ('vp3')
+127.0.0.1 - - [17/May/2025 23:56:58] "vp3" 400 -
+127.0.0.1 - - [17/May/2025 23:57:03] code 400, message Bad request syntax ('\x94\x00ÍïÑa\x91\x03')
+127.0.0.1 - - [17/May/2025 23:57:03] "\x94\x00ÍïÑa\x91\x03" 400 -
+127.0.0.1 - - [17/May/2025 23:57:08] code 400, message Bad request syntax ('þ\x01')
+127.0.0.1 - - [17/May/2025 23:57:08] "þ\x01" 400 -
+127.0.0.1 - - [17/May/2025 23:57:08] "GET /version HTTP/1.1" 404 -
+127.0.0.1 - - [17/May/2025 23:57:13] code 400, message Bad request syntax ('\x00\x00\x07\x00\x08\x00\x03\x00\x04\x00\x05\x00\x06')
+127.0.0.1 - - [17/May/2025 23:57:13] "\x00\x00\x07\x00\x08\x00\x03\x00\x04\x00\x05\x00\x06" 400 -
+127.0.0.1 - - [17/May/2025 23:57:18] code 400, message Bad request syntax ('ÿû\x18ÿú\x18\x00IBM-3279-4-Eÿðÿû\x19ÿý\x19ÿû\x00ÿý\x00')
+127.0.0.1 - - [17/May/2025 23:57:18] "ÿû\x18ÿú\x18\x00IBM-3279-4-Eÿðÿû\x19ÿý\x19ÿû\x00ÿý\x00" 400 -
+127.0.0.1 - - [17/May/2025 23:57:23] code 400, message Bad request syntax ('GIOP\x01\x00\x01\x00$\x00\x00\x00\x00\x00\x00\x00\x01\x00\x00\x00\x01\x00\x00\x00\x06\x00\x00\x00abcdef\x00\x00\x04\x00\x00\x00get\x00\x00\x00\x00\x00')
+127.0.0.1 - - [17/May/2025 23:57:23] "GIOP\x01\x00\x01\x00$\x00\x00\x00\x00\x00\x00\x00\x01\x00\x00\x00\x01\x00\x00\x00\x06\x00\x00\x00abcdef\x00\x00\x04\x00\x00\x00get\x00\x00\x00\x00\x00" 400 -
+127.0.0.1 - - [17/May/2025 23:57:28] code 400, message Bad request syntax ('VERSION')
+127.0.0.1 - - [17/May/2025 23:57:28] "VERSION" 400 -
+127.0.0.1 - - [17/May/2025 23:57:33] code 400, message Bad request syntax ('CNXN\x00\x00\x00\x01\x00\x10\x00\x00\x07\x00\x00\x002\x02\x00\x00¼±§±host::\x00')
+127.0.0.1 - - [17/May/2025 23:57:33] "CNXN\x00\x00\x00\x01\x00\x10\x00\x00\x07\x00\x00\x002\x02\x00\x00¼±§±host::\x00" 400 -
+127.0.0.1 - - [17/May/2025 23:57:38] code 400, message Bad HTTP/0.9 request type ('\x00\x00\x00\x10\x00\x00\x00')
+127.0.0.1 - - [17/May/2025 23:57:38] "\x00\x00\x00\x10\x00\x00\x00\x0c{"code":106}" 400 -
+127.0.0.1 - - [17/May/2025 23:57:43] code 400, message Bad request syntax ('\x0c\x00\x01\x00\x00\x00ImYorDad0u\x00\x00')
+127.0.0.1 - - [17/May/2025 23:57:43] "\x0c\x00\x01\x00\x00\x00ImYorDad0u\x00\x00" 400 -
+127.0.0.1 - - [17/May/2025 23:57:48] code 400, message Bad HTTP/0.9 request type ('ÚÚ\x01\x00\x00\x00\x14\x00\x10\x03\x08\x00\x00\x00')
+127.0.0.1 - - [17/May/2025 23:57:48] "ÚÚ\x01\x00\x00\x00\x14\x00\x10\x03\x08\x00\x00\x00\x0bM\x00\x00\x00\x00" 400 -
+127.0.0.1 - - [18/May/2025 00:00:36] code 400, message Bad request version ("Ôãø÷>_\x93\x19\x03ÒmÌQ\x84=\xad\x80¼6\x9eÈz&Ü\x08Æ,/:·ê1\x00\x9c\x13\x02\x13\x03\x13\x01\x003\x009\x005\x00/À,À0\x00£\x00\x9fÌ©Ì¨ÌªÀ¯À\xadÀ£À\x9fÀ]ÀaÀWÀSÀ+À/\x00¢\x00\x9eÀ®À¬À¢À\x9eÀ\\À`ÀVÀRÀ$À(\x00k\x00jÀsÀw\x00Ä\x00ÃÀ#À'\x00g\x00@ÀrÀv\x00¾\x00½À")
+127.0.0.1 - - [18/May/2025 00:00:36] "\x16\x03\x01\x02\x00\x01\x00\x01ü\x03\x03½\x839vB*r'00ìëæ½#@ÕU\x91[\x96\x01ç µ\x1e,\x10\x8d\x1c<C Ôãø÷>_\x93\x19\x03ÒmÌQ\x84=­\x80¼6\x9eÈz&Ü\x08Æ,/:·ê1\x00\x9c\x13\x02\x13\x03\x13\x01\x003\x009\x005\x00/À,À0\x00£\x00\x9fÌ©Ì¨ÌªÀ¯À­À£À\x9fÀ]ÀaÀWÀSÀ+À/\x00¢\x00\x9eÀ®À¬À¢À\x9eÀ\\À`ÀVÀRÀ$À(\x00k\x00jÀsÀw\x00Ä\x00ÃÀ#À'\x00g\x00@ÀrÀv\x00¾\x00½À" 400 -
+127.0.0.1 - - [18/May/2025 00:00:47] code 400, message Bad HTTP/0.9 request type ('\x80\x00\x00($ìÜ~\x00\x00\x00\x00\x00\x00\x00\x02\x00\x01\x86')
+127.0.0.1 - - [18/May/2025 00:00:47] "\x80\x00\x00($ìÜ~\x00\x00\x00\x00\x00\x00\x00\x02\x00\x01\x86 \x00\x00\x00\x02\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00" 400 -
+127.0.0.1 - - [18/May/2025 00:27:07] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [18/May/2025 00:33:37] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [18/May/2025 00:36:46] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [18/May/2025 00:38:29] code 400, message Bad request version ('ñ\x01±åû\x8ap')
+127.0.0.1 - - [18/May/2025 00:38:29] "\x16\x03\x01\x00{\x01\x00\x00w\x03\x03\x04\x85\x8bÈÑåpãR\x07\x83^H1 ñ\x01±åû\x8ap" 400 -
+127.0.0.1 - - [18/May/2025 00:39:46] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [18/May/2025 00:41:00] code 400, message Bad request syntax ('SSH-2.0-Go')
+127.0.0.1 - - [18/May/2025 00:41:00] "SSH-2.0-Go" 400 -
+127.0.0.1 - - [18/May/2025 00:41:52] code 400, message Bad request version ('À\x14À')
+127.0.0.1 - - [18/May/2025 00:41:52] "\x16\x03\x01\x00{\x01\x00\x00w\x03\x03T\x1dkHÂ\x0f4ÔW\x09ª>~Û¤\x16\x9eã¸\x13¬'ì\x94=n}MVräø\x00\x00\x1aÀ/À+À\x11À\x07À\x13À\x09À\x14À" 400 -
+127.0.0.1 - - [18/May/2025 01:00:42] "POST /ws/v1/cluster/apps/new-application HTTP/1.1" 404 -
+127.0.0.1 - - [18/May/2025 01:01:29] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [18/May/2025 01:08:43] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [18/May/2025 01:40:10] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [18/May/2025 01:43:34] code 400, message Bad request version ("Ã\x08hà²ï\x00\x00VÀ,À+À0À/\x00\x9f\x00£\x00\x9e\x00¢À$À(À#À'\x00k\x00j\x00g\x00@À.À2À-À1À&À*À%À)À")
+127.0.0.1 - - [18/May/2025 01:43:34] "\x16\x03\x03\x01\x02\x01\x00\x00þ\x03\x03¸¦Bù\x91×KA\x8a\x9e\x81\x7f\x0b\x89\x0fÑÀah\x16\x89:üÖ\x07\x0dÃ\x08hà²ï\x00\x00VÀ,À+À0À/\x00\x9f\x00£\x00\x9e\x00¢À$À(À#À'\x00k\x00j\x00g\x00@À.À2À-À1À&À*À%À)À" 400 -
+127.0.0.1 - - [18/May/2025 01:49:41] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [18/May/2025 02:02:07] code 400, message Bad HTTP/0.9 request type ('\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie:')
+127.0.0.1 - - [18/May/2025 02:02:07] "\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie: mstshash=Administr" 400 -
+127.0.0.1 - - [18/May/2025 02:19:24] code 400, message Bad request syntax ("\x16\x03\x03\x01\x02\x01\x00\x00þ\x03\x03\x1b\xad)\x15úÃ¦ÞÉ¸>!-íý\x86µ>|3X\x80·¨h\x06Jù\x01\x116\x9b\x00\x00VÀ,À+À0À/\x00\x9f\x00£\x00\x9e\x00¢À$À(À#À'\x00k\x00j\x00g\x00@À.À2À-À1À&À*À%À)À")
+127.0.0.1 - - [18/May/2025 02:19:24] "\x16\x03\x03\x01\x02\x01\x00\x00þ\x03\x03\x1b­)\x15úÃ¦ÞÉ¸>!-íý\x86µ>|3X\x80·¨h\x06Jù\x01\x116\x9b\x00\x00VÀ,À+À0À/\x00\x9f\x00£\x00\x9e\x00¢À$À(À#À'\x00k\x00j\x00g\x00@À.À2À-À1À&À*À%À)À" 400 -
+127.0.0.1 - - [18/May/2025 02:21:55] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [18/May/2025 02:23:31] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [18/May/2025 02:44:02] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [18/May/2025 02:46:08] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [18/May/2025 02:46:09] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [18/May/2025 02:46:09] "GET /favicon.ico HTTP/1.1" 404 -
+127.0.0.1 - - [18/May/2025 02:46:10] "GET /static/main.js HTTP/1.1" 200 -
+127.0.0.1 - - [18/May/2025 02:54:25] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [18/May/2025 03:04:15] code 400, message Bad HTTP/0.9 request type ('\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie:')
+127.0.0.1 - - [18/May/2025 03:04:15] "\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie: mstshash=Administr" 400 -
+127.0.0.1 - - [18/May/2025 03:27:13] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [18/May/2025 03:35:06] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [18/May/2025 03:54:39] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [18/May/2025 04:25:38] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [18/May/2025 04:46:29] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [18/May/2025 04:56:45] code 400, message Bad HTTP/0.9 request type ('\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie:')
+127.0.0.1 - - [18/May/2025 04:56:45] "\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie: mstshash=Administr" 400 -
+127.0.0.1 - - [18/May/2025 04:57:16] code 400, message Bad HTTP/0.9 request type ('\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie:')
+127.0.0.1 - - [18/May/2025 04:57:16] "\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie: mstshash=Administr" 400 -
+127.0.0.1 - - [18/May/2025 05:02:00] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [18/May/2025 05:12:17] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [18/May/2025 05:14:58] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [18/May/2025 05:32:42] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [18/May/2025 05:33:05] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [18/May/2025 05:50:52] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [18/May/2025 06:04:19] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [18/May/2025 06:09:20] code 400, message Bad HTTP/0.9 request type ('l\x00')
+127.0.0.1 - - [18/May/2025 06:09:20] "l\x00\x0b\x00\x00\x00\x00\x00\x00\x00\x00\x00" 400 -
+127.0.0.1 - - [18/May/2025 06:16:45] code 400, message Bad request version ('À\x13À')
+127.0.0.1 - - [18/May/2025 06:16:45] "\x16\x03\x01\x00î\x01\x00\x00ê\x03\x03ýbMZ2ä}\x81b\x8dñ*ðêÄv8KÚªlæ O0BÀ±\x8d!ÓO ^¡PpeRß\x83\x07[{ÑÏêF\x1aØ/\x9cUÇ² \x1cø\x1c\x01O\x0b\x86TV\x00&À+À/À,À0Ì©Ì¨À\x09À\x13À" 400 -
+127.0.0.1 - - [18/May/2025 06:16:45] code 400, message Bad request version ('À(À$À\x14À')
+127.0.0.1 - - [18/May/2025 06:16:45] "\x16\x03\x01\x00Ê\x01\x00\x00Æ\x03\x03M\x1d\x0eµ\x89DÅ\x08.¦\x83q \x10l\x06ö\x86Ü\x03PÃ¼\x1e\x96é&\x17*\x87\x97ð\x00\x00hÌ\x14Ì\x13À/À+À0À,À\x11À\x07À'À#À\x13À\x09À(À$À\x14À" 400 -
+127.0.0.1 - - [18/May/2025 06:19:42] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [18/May/2025 06:30:45] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [18/May/2025 06:32:50] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [18/May/2025 06:54:55] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [18/May/2025 07:11:55] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [18/May/2025 07:22:44] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [18/May/2025 07:40:36] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [18/May/2025 07:51:08] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [18/May/2025 07:58:11] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [18/May/2025 08:10:36] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [18/May/2025 08:14:10] "GET / HTTP/1.0" 200 -
+127.0.0.1 - - [18/May/2025 08:24:26] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [18/May/2025 08:27:26] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [18/May/2025 08:42:10] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [18/May/2025 08:45:53] code 400, message Bad HTTP/0.9 request type ('\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie:')
+127.0.0.1 - - [18/May/2025 08:45:53] "\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie: mstshash=Administr" 400 -
+127.0.0.1 - - [18/May/2025 09:00:12] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [18/May/2025 09:05:48] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [18/May/2025 09:11:31] code 400, message Bad request version ('ó\x13N\x90Oâ"1ãm|Ù¤\x11\x15t\x9b\x1b`ÓÚ\x00>\x13\x02\x13\x03\x13\x01À,À0\x00\x9fÌ©Ì¨ÌªÀ+À/\x00\x9eÀ$À(\x00kÀ#À\'\x00gÀ')
+127.0.0.1 - - [18/May/2025 09:11:31] "\x16\x03\x01\x02\x00\x01\x00\x01ü\x03\x03±/Z<¾]5:¢f\x17ìbHy%Fæ\x1eTa't\x8cyû_\x90Æt\x947 ;>ú\x08\x81Z>ØW\x0d\x0có\x13N\x90Oâ"1ãm|Ù¤\x11\x15t\x9b\x1b`ÓÚ\x00>\x13\x02\x13\x03\x13\x01À,À0\x00\x9fÌ©Ì¨ÌªÀ+À/\x00\x9eÀ$À(\x00kÀ#À'\x00gÀ" 400 -
+127.0.0.1 - - [18/May/2025 09:11:31] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [18/May/2025 09:12:58] code 400, message Bad request version ("{\x93|ðP\x00>\x13\x02\x13\x03\x13\x01À,À0\x00\x9fÌ©Ì¨ÌªÀ+À/\x00\x9eÀ$À(\x00kÀ#À'\x00gÀ")
+127.0.0.1 - - [18/May/2025 09:12:58] "\x16\x03\x01\x02\x00\x01\x00\x01ü\x03\x03¬[?Û\x0fæ¾ka{\x96mç\x1d!Þ£ßçË"5&\x14E½\x90M?\x0dÜZ ÕºÎoüBôÙ\x07}Ë\x8e\x8f\x1e\x13\x08\x87ÅÔVe9-Ê^Ì\x09{\x93|ðP\x00>\x13\x02\x13\x03\x13\x01À,À0\x00\x9fÌ©Ì¨ÌªÀ+À/\x00\x9eÀ$À(\x00kÀ#À'\x00gÀ" 400 -
+127.0.0.1 - - [18/May/2025 09:12:58] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [18/May/2025 09:23:45] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [18/May/2025 09:33:28] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [18/May/2025 09:46:58] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [18/May/2025 09:55:42] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [18/May/2025 10:07:47] "GET /manager/html HTTP/1.1" 404 -
+127.0.0.1 - - [18/May/2025 10:07:47] code 400, message Bad HTTP/0.9 request type ('\x16\x03\x01\x00Z\x01\x00\x00V\x03\x01h)@ò&\x12é\x1a')
+127.0.0.1 - - [18/May/2025 10:07:47] "\x16\x03\x01\x00Z\x01\x00\x00V\x03\x01h)@ò&\x12é\x1a\x09Û\x12\x84Nµ{z\x14\x00ë2|ád\x83c\x84Ob\x8dF¡\x99\x00\x00\x0eÀ" 400 -
+127.0.0.1 - - [18/May/2025 10:07:48] code 400, message Bad HTTP/0.9 request type ('\x16\x03\x01\x00Z\x01\x00\x00V\x03\x01h)@òM\x0e1\x8b\x86f\x98wb\x81J')
+127.0.0.1 - - [18/May/2025 10:07:48] "\x16\x03\x01\x00Z\x01\x00\x00V\x03\x01h)@òM\x0e1\x8b\x86f\x98wb\x81J\x1fù±\x17ßS¥\x17¨¶\x97ô¯Ïw©Ú\x00\x00\x0eÀ" 400 -
+127.0.0.1 - - [18/May/2025 10:24:13] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [18/May/2025 10:26:23] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [18/May/2025 10:30:19] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [18/May/2025 10:33:23] code 400, message Bad HTTP/0.9 request type ('\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie:')
+127.0.0.1 - - [18/May/2025 10:33:23] "\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie: mstshash=Administr" 400 -
+127.0.0.1 - - [18/May/2025 10:40:29] code 400, message Bad HTTP/0.9 request type ('\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie:')
+127.0.0.1 - - [18/May/2025 10:40:29] "\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie: mstshash=Administr" 400 -
+127.0.0.1 - - [18/May/2025 10:41:22] code 400, message Bad HTTP/0.9 request type ("\x16\x03\x01\x00î\x01\x00\x00ê\x03\x03¼\x0fe\x8b\x96\x00¹øvj\x99\x05Ð*z_\x8a'jW\x87àò\x94\x8b¿ÀL\x95>5\x94")
+127.0.0.1 - - [18/May/2025 10:41:22] "\x16\x03\x01\x00î\x01\x00\x00ê\x03\x03¼\x0fe\x8b\x96\x00¹øvj\x99\x05Ð*z_\x8a'jW\x87àò\x94\x8b¿ÀL\x95>5\x94 zó\x8fô?\x92z\x16àâ\x98;&âáð±z\x14ù\x9c\x07n/Ã" 400 -
+127.0.0.1 - - [18/May/2025 10:41:23] code 400, message Bad HTTP/0.9 request type ("\x16\x03\x01\x00Ê\x01\x00\x00Æ\x03\x03\x12C£\x03k'T±Ç²'·\x82<.Þ\x02BÕË\x80HÞg.ºy\x9dP2ªâ\x00\x00hÌ\x14Ì\x13À/À+À0À,À\x11À\x07À'À#À\x13À")
+127.0.0.1 - - [18/May/2025 10:41:23] "\x16\x03\x01\x00Ê\x01\x00\x00Æ\x03\x03\x12C£\x03k'T±Ç²'·\x82<.Þ\x02BÕË\x80HÞg.ºy\x9dP2ªâ\x00\x00hÌ\x14Ì\x13À/À+À0À,À\x11À\x07À'À#À\x13À\x09À(À$À\x14À" 400 -
+127.0.0.1 - - [18/May/2025 10:55:51] "GET / HTTP/1.0" 200 -
+127.0.0.1 - - [18/May/2025 11:02:06] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [18/May/2025 11:06:32] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [18/May/2025 11:18:25] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [18/May/2025 11:33:13] code 400, message Bad HTTP/0.9 request type ('\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie:')
+127.0.0.1 - - [18/May/2025 11:33:13] "\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie: mstshash=Administr" 400 -
+127.0.0.1 - - [18/May/2025 11:42:52] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [18/May/2025 11:44:43] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [18/May/2025 11:50:12] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [18/May/2025 12:15:55] code 400, message Bad HTTP/0.9 request type ('\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie:')
+127.0.0.1 - - [18/May/2025 12:15:55] "\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie: mstshash=Administr" 400 -
+127.0.0.1 - - [18/May/2025 12:25:10] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [18/May/2025 12:25:30] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [18/May/2025 12:44:18] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [18/May/2025 12:55:40] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [18/May/2025 12:58:27] code 400, message Bad HTTP/0.9 request type ('\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie:')
+127.0.0.1 - - [18/May/2025 12:58:27] "\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie: mstshash=Administr" 400 -
+127.0.0.1 - - [18/May/2025 12:58:31] code 400, message Bad HTTP/0.9 request type ('\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie:')
+127.0.0.1 - - [18/May/2025 12:58:31] "\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie: mstshash=Administr" 400 -
+127.0.0.1 - - [18/May/2025 13:03:41] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [18/May/2025 13:03:58] "GET /favicon.ico HTTP/1.1" 404 -
+127.0.0.1 - - [18/May/2025 13:04:26] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [18/May/2025 13:04:55] code 400, message Bad HTTP/0.9 request type ('l\x00')
+127.0.0.1 - - [18/May/2025 13:04:55] "l\x00\x0b\x00\x00\x00\x00\x00\x00\x00\x00\x00" 400 -
+127.0.0.1 - - [18/May/2025 13:08:57] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [18/May/2025 13:22:20] "GET http://passport.baidu.com/ HTTP/1.1" 200 -
+127.0.0.1 - - [18/May/2025 13:22:31] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [18/May/2025 13:22:34] code 400, message Bad request syntax ('\x05\x01\x00')
+127.0.0.1 - - [18/May/2025 13:22:34] "\x05\x01\x00" 400 -
+127.0.0.1 - - [18/May/2025 13:22:45] code 400, message Bad request syntax ('\x04\x01\x00Pg)§ê\x00')
+127.0.0.1 - - [18/May/2025 13:22:45] "\x04\x01\x00Pg)§ê\x00" 400 -
+127.0.0.1 - - [18/May/2025 13:34:36] code 400, message Bad HTTP/0.9 request type ('l\x00')
+127.0.0.1 - - [18/May/2025 13:34:36] "l\x00\x0b\x00\x00\x00\x00\x00\x00\x00\x00\x00" 400 -
+127.0.0.1 - - [18/May/2025 13:34:42] code 400, message Bad request version ('À\x14À')
+127.0.0.1 - - [18/May/2025 13:34:42] "\x16\x03\x01\x00î\x01\x00\x00ê\x03\x03¢\x88Ö\x1fÖ+pí´\x9fIJÏw\x1c9ç\x90S\x1b\x91|hí°\x9202à-­* >\x99\x09*×o³\x0foyÁ9\x9c\x00\x1bÏ\x97¶ÂÕ{â\x9cjp\x81\x96\x1e+·Xk\x00&Ì¨Ì©À/À0À+À,À\x13À\x09À\x14À" 400 -
+127.0.0.1 - - [18/May/2025 13:34:46] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [18/May/2025 13:34:49] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [18/May/2025 13:34:50] "GET /favicon.ico HTTP/1.1" 404 -
+127.0.0.1 - - [18/May/2025 13:34:51] code 505, message Invalid HTTP version (2.0)
+127.0.0.1 - - [18/May/2025 13:34:51] "PRI * HTTP/2.0" 505 -
+127.0.0.1 - - [18/May/2025 13:34:54] "GET /favicon.ico HTTP/1.1" 404 -
+127.0.0.1 - - [18/May/2025 13:34:55] code 400, message Bad request version ('\x7f3Ï½zê9û')
+127.0.0.1 - - [18/May/2025 13:34:55] "\x16\x03\x01\x00÷\x01\x00\x00ó\x03\x03LÙåæ>Å;éþ\x0c`$\x8b\x18UWÙb\x8cÔ=\x1d+DØ\x0cÛj«ÿÇ\x12 \x81¹\x87__¿º\x188©\x0b\x7f3Ï½zê9û" 400 -
+127.0.0.1 - - [18/May/2025 13:39:17] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [18/May/2025 13:43:55] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [18/May/2025 13:51:22] code 400, message Bad HTTP/0.9 request type ('\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie:')
+127.0.0.1 - - [18/May/2025 13:51:22] "\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie: mstshash=Administr" 400 -
+127.0.0.1 - - [18/May/2025 14:06:41] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [18/May/2025 14:16:48] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [18/May/2025 14:17:45] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [18/May/2025 14:35:49] code 400, message Bad HTTP/0.9 request type ('\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie:')
+127.0.0.1 - - [18/May/2025 14:35:49] "\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie: mstshash=Administr" 400 -
+127.0.0.1 - - [18/May/2025 14:47:36] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [18/May/2025 14:50:17] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [18/May/2025 15:00:30] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [18/May/2025 15:14:04] code 400, message Bad HTTP/0.9 request type ('\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie:')
+127.0.0.1 - - [18/May/2025 15:14:04] "\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie: mstshash=Administr" 400 -
+127.0.0.1 - - [18/May/2025 15:16:00] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [18/May/2025 15:34:42] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [18/May/2025 15:36:36] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [18/May/2025 15:37:09] code 400, message Bad HTTP/0.9 request type ('\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie:')
+127.0.0.1 - - [18/May/2025 15:37:09] "\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie: mstshash=Administr" 400 -
+127.0.0.1 - - [18/May/2025 15:51:53] code 400, message Bad HTTP/0.9 request type ('\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie:')
+127.0.0.1 - - [18/May/2025 15:51:53] "\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie: mstshash=Administr" 400 -
+127.0.0.1 - - [18/May/2025 16:05:20] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [18/May/2025 16:22:34] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [18/May/2025 16:40:20] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [18/May/2025 16:55:00] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [18/May/2025 16:59:08] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [18/May/2025 17:03:43] code 400, message Bad HTTP/0.9 request type ('\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie:')
+127.0.0.1 - - [18/May/2025 17:03:43] "\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie: mstshash=Administr" 400 -
+127.0.0.1 - - [18/May/2025 17:15:35] code 400, message Bad HTTP/0.9 request type ('l\x00')
+127.0.0.1 - - [18/May/2025 17:15:35] "l\x00\x0b\x00\x00\x00\x00\x00\x00\x00\x00\x00" 400 -
+127.0.0.1 - - [18/May/2025 17:26:24] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [18/May/2025 17:38:23] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [18/May/2025 17:51:42] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [18/May/2025 18:11:42] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [18/May/2025 18:12:26] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [18/May/2025 18:46:33] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [18/May/2025 18:51:28] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [18/May/2025 18:52:56] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [18/May/2025 19:05:42] code 400, message Bad HTTP/0.9 request type ('\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie:')
+127.0.0.1 - - [18/May/2025 19:05:42] "\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie: mstshash=Administr" 400 -
+127.0.0.1 - - [18/May/2025 19:27:22] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [18/May/2025 19:31:10] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [18/May/2025 19:35:01] code 400, message Bad HTTP/0.9 request type ('\x16\x03\x01\x00u\x01\x00\x00q\x03\x03£%\x9aÍ\x91"T`Å\\KÓÓö^0ñ³©\x15m\x96Eº\x93\x029õCQÓ¹\x00\x00\x1aÀ/À+À\x11À\x07À\x13À')
+127.0.0.1 - - [18/May/2025 19:35:01] "\x16\x03\x01\x00u\x01\x00\x00q\x03\x03£%\x9aÍ\x91"T`Å\\KÓÓö^0ñ³©\x15m\x96Eº\x93\x029õCQÓ¹\x00\x00\x1aÀ/À+À\x11À\x07À\x13À\x09À\x14À" 400 -
+127.0.0.1 - - [18/May/2025 19:40:53] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [18/May/2025 20:05:46] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [18/May/2025 20:16:34] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [18/May/2025 20:40:34] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [18/May/2025 20:42:14] code 400, message Bad HTTP/0.9 request type ('\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie:')
+127.0.0.1 - - [18/May/2025 20:42:14] "\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie: mstshash=Administr" 400 -
+127.0.0.1 - - [18/May/2025 20:47:06] code 400, message Bad request version ('À\x14À')
+127.0.0.1 - - [18/May/2025 20:47:06] "\x16\x03\x01\x00u\x01\x00\x00q\x03\x03y1Ì\x0cb\x87h\x02ya[¼\x13ÇJ\x82\x87E\x17\x09\x82*Ö\x17L\x11Æítº16\x00\x00\x1aÀ/À+À\x11À\x07À\x13À\x09À\x14À" 400 -
+127.0.0.1 - - [18/May/2025 20:56:35] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [18/May/2025 21:11:36] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [18/May/2025 21:25:41] code 400, message Bad HTTP/0.9 request type ('\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie:')
+127.0.0.1 - - [18/May/2025 21:25:41] "\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie: mstshash=Administr" 400 -
+127.0.0.1 - - [18/May/2025 21:41:22] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [18/May/2025 21:44:51] code 400, message Bad HTTP/0.9 request type ('\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie:')
+127.0.0.1 - - [18/May/2025 21:44:51] "\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie: mstshash=Administr" 400 -
+127.0.0.1 - - [18/May/2025 21:57:57] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [18/May/2025 22:04:52] code 400, message Bad HTTP/0.9 request type ('\x16\x03\x01\x00u\x01\x00\x00q\x03\x03l)jrM\x0f\x9dÕê\x8dÜ¾Ðd¤¸\x94aö\x187Ffý±]ù\x17cÁ¤×\x00\x00\x1aÀ/À+À\x11À\x07À\x13À')
+127.0.0.1 - - [18/May/2025 22:04:52] "\x16\x03\x01\x00u\x01\x00\x00q\x03\x03l)jrM\x0f\x9dÕê\x8dÜ¾Ðd¤¸\x94aö\x187Ffý±]ù\x17cÁ¤×\x00\x00\x1aÀ/À+À\x11À\x07À\x13À\x09À\x14À" 400 -
+127.0.0.1 - - [18/May/2025 22:07:07] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [18/May/2025 22:10:14] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [18/May/2025 22:13:45] code 400, message Bad HTTP/0.9 request type ('\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie:')
+127.0.0.1 - - [18/May/2025 22:13:45] "\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie: mstshash=Administr" 400 -
+127.0.0.1 - - [18/May/2025 22:30:04] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [18/May/2025 22:30:08] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [18/May/2025 22:30:09] "GET /favicon.ico HTTP/1.1" 404 -
+127.0.0.1 - - [18/May/2025 22:30:10] code 505, message Invalid HTTP version (2.0)
+127.0.0.1 - - [18/May/2025 22:30:10] "PRI * HTTP/2.0" 505 -
+127.0.0.1 - - [18/May/2025 22:30:14] "GET /favicon.ico HTTP/1.1" 404 -
+127.0.0.1 - - [18/May/2025 22:30:15] code 400, message Bad request version ('À\x14À')
+127.0.0.1 - - [18/May/2025 22:30:15] "\x16\x03\x01\x00÷\x01\x00\x00ó\x03\x03\x83ónÒ\x87Rì2¿§CÉoóãh¦yó2\x14\x9cF\x8býÒ\x9cÆh\x83EX \x93Â}\x16Å\x9c\x81`m\x90\x92ß+! \x96Rßã\x1e^Q\x97{|FZ\x99©Â\x82G\x00&Ì¨Ì©À/À0À+À,À\x13À\x09À\x14À" 400 -
+127.0.0.1 - - [18/May/2025 22:41:47] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [18/May/2025 22:46:26] code 400, message Bad HTTP/0.9 request type ('\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie:')
+127.0.0.1 - - [18/May/2025 22:46:26] "\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie: mstshash=Administr" 400 -
+127.0.0.1 - - [18/May/2025 22:54:20] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [18/May/2025 23:12:38] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [18/May/2025 23:18:06] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [18/May/2025 23:25:32] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [18/May/2025 23:42:21] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [18/May/2025 23:43:20] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [18/May/2025 23:52:07] code 400, message Bad HTTP/0.9 request type ('\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie:')
+127.0.0.1 - - [18/May/2025 23:52:07] "\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie: mstshash=Administr" 400 -
+127.0.0.1 - - [18/May/2025 23:54:52] code 400, message Bad HTTP/0.9 request type ('\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie:')
+127.0.0.1 - - [18/May/2025 23:54:52] "\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie: mstshash=Administr" 400 -
+127.0.0.1 - - [18/May/2025 23:58:40] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [19/May/2025 00:05:30] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [19/May/2025 00:05:40] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [19/May/2025 00:23:30] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [19/May/2025 00:35:57] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [19/May/2025 00:46:27] code 400, message Bad request version ('$`\x01ÃW\x00Ï\x8363¼Ä\x03"´i[h\x80\x10\x8a¿Cc[D\x96\x04Ç@0\x00>\x13\x02\x13\x03\x13\x01À,À0\x00\x9fÌ©Ì¨ÌªÀ+À/\x00\x9eÀ$À(\x00kÀ#À\'\x00gÀ')
+127.0.0.1 - - [19/May/2025 00:46:27] "\x16\x03\x01\x02\x00\x01\x00\x01ü\x03\x03\x0bfþ¿A\x03÷¼ý\x9bç\x87FÞ\x9a,|tCÐñµ\x97*Ær\x8e\x17:£,µ \x1d$`\x01ÃW\x00Ï\x8363¼Ä\x03"´i[h\x80\x10\x8a¿Cc[D\x96\x04Ç@0\x00>\x13\x02\x13\x03\x13\x01À,À0\x00\x9fÌ©Ì¨ÌªÀ+À/\x00\x9eÀ$À(\x00kÀ#À'\x00gÀ" 400 -
+127.0.0.1 - - [19/May/2025 00:46:28] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [19/May/2025 00:46:31] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [19/May/2025 00:47:01] code 400, message Bad HTTP/0.9 request type ('\x16\x03\x01\x00u\x01\x00\x00q\x03\x03Dl\x89*æ\x07«|ã<;Pï\x0e.I\x04exä\x81\x0eúWÉË:Ñ\x83-\x92|\x00\x00\x1aÀ/À+À\x11À\x07À\x13À')
+127.0.0.1 - - [19/May/2025 00:47:01] "\x16\x03\x01\x00u\x01\x00\x00q\x03\x03Dl\x89*æ\x07«|ã<;Pï\x0e.I\x04exä\x81\x0eúWÉË:Ñ\x83-\x92|\x00\x00\x1aÀ/À+À\x11À\x07À\x13À\x09À\x14À" 400 -
+127.0.0.1 - - [19/May/2025 01:06:32] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [19/May/2025 01:10:41] code 400, message Bad request version ('À\x14À')
+127.0.0.1 - - [19/May/2025 01:10:41] "\x16\x03\x01\x00u\x01\x00\x00q\x03\x03=Nù@éF ~9g²/\x0eØ/\x96.~\x1ea\x11ùÐåvJÛ\x8by\x85ëÎ\x00\x00\x1aÀ/À+À\x11À\x07À\x13À\x09À\x14À" 400 -
+127.0.0.1 - - [19/May/2025 01:18:37] code 400, message Bad HTTP/0.9 request type ('\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie:')
+127.0.0.1 - - [19/May/2025 01:18:37] "\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie: mstshash=Administr" 400 -
+127.0.0.1 - - [19/May/2025 01:20:21] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [19/May/2025 01:22:55] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [19/May/2025 01:44:53] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [19/May/2025 02:01:06] "GET /login/stylesheets/theme.css HTTP/1.1" 404 -
+127.0.0.1 - - [19/May/2025 02:01:06] "GET /stylesheets/theme.css HTTP/1.1" 404 -
+127.0.0.1 - - [19/May/2025 02:01:06] "GET /chs/js/lang_zh_tw.js HTTP/1.1" 404 -
+127.0.0.1 - - [19/May/2025 02:01:06] "GET /index.php HTTP/1.1" 404 -
+127.0.0.1 - - [19/May/2025 02:01:06] "GET /public/stylesheets/theme.css HTTP/1.1" 404 -
+127.0.0.1 - - [19/May/2025 02:01:06] "GET /customer/js/lang_zh_tw.js HTTP/1.1" 404 -
+127.0.0.1 - - [19/May/2025 02:01:06] "GET /index.php HTTP/1.1" 404 -
+127.0.0.1 - - [19/May/2025 02:01:06] "GET /ips/index.php HTTP/1.1" 404 -
+127.0.0.1 - - [19/May/2025 02:01:06] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [19/May/2025 02:01:47] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [19/May/2025 02:06:36] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [19/May/2025 02:20:29] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [19/May/2025 02:26:57] code 400, message Bad HTTP/0.9 request type ('\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie:')
+127.0.0.1 - - [19/May/2025 02:26:57] "\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie: mstshash=Administr" 400 -
+127.0.0.1 - - [19/May/2025 02:37:31] code 400, message Bad HTTP/0.9 request type ('\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie:')
+127.0.0.1 - - [19/May/2025 02:37:31] "\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie: mstshash=Administr" 400 -
+127.0.0.1 - - [19/May/2025 02:39:00] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [19/May/2025 03:05:24] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [19/May/2025 03:19:54] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [19/May/2025 03:24:05] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [19/May/2025 03:24:14] code 400, message Bad request syntax ('MGLNDD_60.205.205.131_8088')
+127.0.0.1 - - [19/May/2025 03:24:14] "MGLNDD_60.205.205.131_8088" 400 -
+127.0.0.1 - - [19/May/2025 03:38:17] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [19/May/2025 04:04:28] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [19/May/2025 04:07:08] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [19/May/2025 04:10:00] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [19/May/2025 04:10:10] code 400, message Bad request version ('ø_ÉÊ\x00\x00\x00à\x816A÷\x7f\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00û.\x01')
+127.0.0.1 - - [19/May/2025 04:10:10] "\x12\x01\x00^\x00\x00\x01\x00\x00\x00$\x00\x06\x01\x00*\x00\x01\x02\x00+\x00\x01\x03\x00,\x00\x04\x04\x000\x00\x01\x05\x001\x00$\x06\x00U\x00\x01ÿ\x04\x07\x0c¼\x00\x00\x00\x00\x00\x00\x15Ð\x00¯/\x11A÷\x7f\x00\x00 ø_ÉÊ\x00\x00\x00à\x816A÷\x7f\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00û.\x01" 400 -
+127.0.0.1 - - [19/May/2025 04:25:14] "GET / HTTP/1.0" 200 -
+127.0.0.1 - - [19/May/2025 04:29:49] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [19/May/2025 04:41:26] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [19/May/2025 05:05:36] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [19/May/2025 05:05:42] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [19/May/2025 05:05:43] "GET /favicon.ico HTTP/1.1" 404 -
+127.0.0.1 - - [19/May/2025 05:05:43] code 505, message Invalid HTTP version (2.0)
+127.0.0.1 - - [19/May/2025 05:05:43] "PRI * HTTP/2.0" 505 -
+127.0.0.1 - - [19/May/2025 05:05:47] "GET /favicon.ico HTTP/1.1" 404 -
+127.0.0.1 - - [19/May/2025 05:05:47] code 400, message Bad request version ('À\x14À')
+127.0.0.1 - - [19/May/2025 05:05:47] "\x16\x03\x01\x00÷\x01\x00\x00ó\x03\x03É\x9eÆo¬³ê9Å¦A_ÃVV\x85KÄÏ¥ÏP\x99«\x13Ô¡N\x9b\x83\x0e\x8d \x0e\x85Á\\\x8dÝ\x15\x04\x94\x88\x86\x97©ï-;\x85|\x7f\x0bê\x85\x06Èº:@\x9dðeS±\x00&Ì¨Ì©À/À0À+À,À\x13À\x09À\x14À" 400 -
+127.0.0.1 - - [19/May/2025 05:07:03] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [19/May/2025 05:13:27] "GET / HTTP/1.0" 200 -
+127.0.0.1 - - [19/May/2025 05:20:12] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [19/May/2025 05:22:41] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [19/May/2025 05:34:46] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [19/May/2025 05:56:15] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [19/May/2025 06:23:08] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [19/May/2025 06:36:27] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [19/May/2025 06:45:04] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [19/May/2025 06:57:25] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [19/May/2025 07:15:06] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [19/May/2025 07:15:45] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [19/May/2025 07:30:41] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [19/May/2025 07:54:34] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [19/May/2025 07:55:20] code 400, message Bad HTTP/0.9 request type ('\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie:')
+127.0.0.1 - - [19/May/2025 07:55:20] "\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie: mstshash=Administr" 400 -
+127.0.0.1 - - [19/May/2025 07:57:58] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [19/May/2025 08:21:15] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [19/May/2025 08:35:27] "OPTIONS / HTTP/1.0" 200 -
+127.0.0.1 - - [19/May/2025 08:35:32] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [19/May/2025 08:35:33] code 400, message Bad HTTP/0.9 request type ('l\x00')
+127.0.0.1 - - [19/May/2025 08:35:33] "l\x00\x0b\x00\x00\x00\x00\x00\x00\x00\x00\x00" 400 -
+127.0.0.1 - - [19/May/2025 08:35:34] "GET / HTTP/1.0" 200 -
+127.0.0.1 - - [19/May/2025 08:35:35] code 400, message Bad request version ('RTSP/1.0')
+127.0.0.1 - - [19/May/2025 08:35:35] "OPTIONS / RTSP/1.0" 400 -
+127.0.0.1 - - [19/May/2025 08:35:41] code 400, message Bad request version ('\x00\x01\x97|\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00')
+127.0.0.1 - - [19/May/2025 08:35:41] "\x80\x00\x00(rþ\x1d\x13\x00\x00\x00\x00\x00\x00\x00\x02\x00\x01\x86 \x00\x01\x97|\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00" 400 -
+127.0.0.1 - - [19/May/2025 08:35:46] code 400, message Bad HTTP/0.9 request type ('\x00')
+127.0.0.1 - - [19/May/2025 08:35:46] "\x00\x1e\x00\x06\x01\x00\x00\x01\x00\x00\x00\x00\x00\x00\x07version\x04bind\x00\x00\x10\x00\x03" 400 -
+127.0.0.1 - - [19/May/2025 08:35:51] code 400, message Bad HTTP/0.9 request type ('\x00')
+127.0.0.1 - - [19/May/2025 08:35:51] "\x00\x0c\x00\x00\x10\x00\x00\x00\x00\x00\x00\x00\x00\x00" 400 -
+127.0.0.1 - - [19/May/2025 08:35:52] code 400, message Bad request syntax ('EHLO')
+127.0.0.1 - - [19/May/2025 08:35:52] "EHLO" 400 -
+127.0.0.1 - - [19/May/2025 08:35:53] code 400, message Bad request syntax ('HELP')
+127.0.0.1 - - [19/May/2025 08:35:53] "HELP" 400 -
+127.0.0.1 - - [19/May/2025 08:35:53] code 400, message Bad request syntax ('\x16\x03\x00\x00S\x01\x00\x00O\x03\x00?G×÷º,îê²`~ó\x00ý\x82{¹Õ\x96Èw\x9bæÄÛ<=Ûoï\x10n\x00\x00(\x00\x16\x00\x13\x00')
+127.0.0.1 - - [19/May/2025 08:35:53] "\x16\x03\x00\x00S\x01\x00\x00O\x03\x00?G×÷º,îê²`~ó\x00ý\x82{¹Õ\x96Èw\x9bæÄÛ<=Ûoï\x10n\x00\x00(\x00\x16\x00\x13\x00" 400 -
+127.0.0.1 - - [19/May/2025 08:35:55] code 400, message Bad HTTP/0.9 request type ('\x03\x00\x00*%à\x00\x00\x00\x00\x00Cookie:')
+127.0.0.1 - - [19/May/2025 08:35:55] "\x03\x00\x00*%à\x00\x00\x00\x00\x00Cookie: mstshash=nmap" 400 -
+127.0.0.1 - - [19/May/2025 08:35:55] code 400, message Bad request version ('\x00/\x00')
+127.0.0.1 - - [19/May/2025 08:35:55] "\x16\x03\x00\x00i\x01\x00\x00e\x03\x03U\x1c§ärandom1random2random3random4\x00\x00\x0c\x00/\x00" 400 -
+127.0.0.1 - - [19/May/2025 08:35:56] code 400, message Bad HTTP/0.9 request type ('\x80\x9e\x01\x03\x01\x00u\x00\x00\x00')
+127.0.0.1 - - [19/May/2025 08:35:56] "\x80\x9e\x01\x03\x01\x00u\x00\x00\x00 \x00\x00f\x00\x00e\x00\x00d\x00\x00c\x00\x00b\x00\x00:\x00\x009\x00\x008\x00\x005\x00\x004\x00\x003\x00\x002\x00\x00/\x00\x00\x1b\x00\x00\x1a\x00\x00\x19\x00\x00\x18\x00\x00\x17\x00\x00\x16\x00\x00\x15\x00\x00\x14\x00\x00\x13\x00\x00\x12\x00\x00\x11\x00\x00" 400 -
+127.0.0.1 - - [19/May/2025 08:35:57] code 400, message Bad request syntax ('\x00\x00\x00qj\x81n0\x81k¡\x03\x02\x01\x05¢\x03\x02\x01')
+127.0.0.1 - - [19/May/2025 08:35:57] "\x00\x00\x00qj\x81n0\x81k¡\x03\x02\x01\x05¢\x03\x02\x01" 400 -
+127.0.0.1 - - [19/May/2025 08:36:03] code 400, message Bad request version ('0.12\x00')
+127.0.0.1 - - [19/May/2025 08:36:03] "\x00\x00\x00¤ÿSMBr\x00\x00\x00\x00\x08\x01@\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00@\x06\x00\x00\x01\x00\x00\x81\x00\x02PC NETWORK PROGRAM 1.0\x00\x02MICROSOFT NETWORKS 1.03\x00\x02MICROSOFT NETWORKS 3.0\x00\x02LANMAN1.0\x00\x02LM1.2X002\x00\x02Samba\x00\x02NT LANMAN 1.0\x00\x02NT LM 0.12\x00" 400 -
+127.0.0.1 - - [19/May/2025 08:36:03] "GET /nice%20ports,/Trinity.txt.bak HTTP/1.0" 404 -
+127.0.0.1 - - [19/May/2025 08:36:03] code 400, message Bad request syntax ('\x01default')
+127.0.0.1 - - [19/May/2025 08:36:03] "\x01default" 400 -
+127.0.0.1 - - [19/May/2025 08:36:03] code 400, message Bad request syntax ('0\x84\x00\x00\x00-\x02\x01\x07c\x84\x00\x00\x00$\x04\x00')
+127.0.0.1 - - [19/May/2025 08:36:03] "0\x84\x00\x00\x00-\x02\x01\x07c\x84\x00\x00\x00$\x04\x00" 400 -
+127.0.0.1 - - [19/May/2025 08:36:09] code 400, message Bad HTTP/0.9 request type ('0')
+127.0.0.1 - - [19/May/2025 08:36:09] "0\x0c\x02\x01\x01`\x07\x02\x01\x02\x04\x00\x80\x00" 400 -
+127.0.0.1 - - [19/May/2025 08:36:09] code 400, message Bad request version ('SIP/2.0')
+127.0.0.1 - - [19/May/2025 08:36:09] "OPTIONS sip:nm SIP/2.0" 400 -
+127.0.0.1 - - [19/May/2025 08:36:14] code 400, message Bad request syntax ('TNMP\x04\x00\x00\x00TNME\x00\x00\x04\x00')
+127.0.0.1 - - [19/May/2025 08:36:14] "TNMP\x04\x00\x00\x00TNME\x00\x00\x04\x00" 400 -
+127.0.0.1 - - [19/May/2025 08:36:19] code 400, message Bad HTTP/0.9 request type ('\x03\x00\x00')
+127.0.0.1 - - [19/May/2025 08:36:19] "\x03\x00\x00\x0b\x06à\x00\x00\x00\x00\x00" 400 -
+127.0.0.1 - - [19/May/2025 08:36:24] code 400, message Bad request syntax ('DmdT\x00\x00\x00\x17\x00\x00\x00\x01\x00\x00\x00\x00\x11\x11\x00ÿ\x01ÿ\x13')
+127.0.0.1 - - [19/May/2025 08:36:24] "DmdT\x00\x00\x00\x17\x00\x00\x00\x01\x00\x00\x00\x00\x11\x11\x00ÿ\x01ÿ\x13" 400 -
+127.0.0.1 - - [19/May/2025 08:36:29] code 400, message Bad HTTP/0.9 request type (':\x00\x00\x00/\x00\x00\x00\x02\x00\x00@\x02\x0f\x00\x01\x00=\x05\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00/\x00\x00\x00\x00\x00\x00\x00\x00\x00@')
+127.0.0.1 - - [19/May/2025 08:36:29] ":\x00\x00\x00/\x00\x00\x00\x02\x00\x00@\x02\x0f\x00\x01\x00=\x05\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00/\x00\x00\x00\x00\x00\x00\x00\x00\x00@\x1f\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00" 400 -
+127.0.0.1 - - [19/May/2025 08:36:34] code 400, message Bad request syntax ('DIST00000001ARGC00000005ARGV00000002ccARGV00000002-cARGV00000006nmap.cARGV00000002-oARGV00000006nmap.oDOTI00000000')
+127.0.0.1 - - [19/May/2025 08:36:34] "DIST00000001ARGC00000005ARGV00000002ccARGV00000002-cARGV00000006nmap.cARGV00000002-oARGV00000006nmap.oDOTI00000000" 400 -
+127.0.0.1 - - [19/May/2025 08:36:39] code 400, message Bad request syntax ('JRMI\x00\x02K')
+127.0.0.1 - - [19/May/2025 08:36:39] "JRMI\x00\x02K" 400 -
+127.0.0.1 - - [19/May/2025 08:36:44] code 400, message Bad request syntax ('\x01\x00\x00\x00\x01\x00\x00\x00\x08\x08')
+127.0.0.1 - - [19/May/2025 08:36:44] "\x01\x00\x00\x00\x01\x00\x00\x00\x08\x08" 400 -
+127.0.0.1 - - [19/May/2025 08:36:44] code 400, message Bad request version ('>')
+127.0.0.1 - - [19/May/2025 08:36:44] "< NTP/1.0 >" 400 -
+127.0.0.1 - - [19/May/2025 08:36:47] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [19/May/2025 08:36:50] code 400, message Bad request version ('\x00{\x000\x000\x000\x000\x00A\x00A\x000\x000\x00-\x000\x00A\x000\x000\x00-\x000\x000\x00a\x000\x00-\x00A\x00A\x000\x00A\x00-\x000\x000\x000\x000\x00A\x000\x00A\x00A\x000\x00A\x00A\x000\x00}\x00\x00\x00àmß_')
+127.0.0.1 - - [19/May/2025 08:36:50] "\x01\x00\x00ýÎú\x0b° \x00\x00\x00MMS\x14\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x12\x00\x00\x00\x01\x00\x03\x00ðððð\x0b\x00\x04\x00\x1c\x00\x03\x00N\x00S\x00P\x00l\x00a\x00y\x00e\x00r\x00/\x009\x00.\x000\x00.\x000\x00.\x002\x009\x008\x000\x00;\x00 \x00{\x000\x000\x000\x000\x00A\x00A\x000\x000\x00-\x000\x00A\x000\x000\x00-\x000\x000\x00a\x000\x00-\x00A\x00A\x000\x00A\x00-\x000\x000\x000\x000\x00A\x000\x00A\x00A\x000\x00A\x00A\x000\x00}\x00\x00\x00àmß_" 400 -
+127.0.0.1 - - [19/May/2025 08:36:55] code 400, message Bad HTTP/0.9 request type ('\x00Z\x00\x00\x01\x00\x00\x00\x016\x01,\x00\x00\x08\x00\x7fÿ\x7f\x08\x00\x00\x00\x01\x00')
+127.0.0.1 - - [19/May/2025 08:36:55] "\x00Z\x00\x00\x01\x00\x00\x00\x016\x01,\x00\x00\x08\x00\x7fÿ\x7f\x08\x00\x00\x00\x01\x00 \x00:\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x004æ\x00\x00\x00\x01\x00\x00\x00\x00\x00\x00\x00\x00(CONNECT_DATA=(COMMAND=version))" 400 -
+127.0.0.1 - - [19/May/2025 08:36:55] code 400, message Bad request syntax ('Subscribe')
+127.0.0.1 - - [19/May/2025 08:36:55] "Subscribe" 400 -
+127.0.0.1 - - [19/May/2025 08:36:55] code 400, message Bad request syntax ('Query')
+127.0.0.1 - - [19/May/2025 08:36:55] "Query" 400 -
+127.0.0.1 - - [19/May/2025 08:36:55] code 400, message Bad request syntax ('\x05\x04\x00\x01\x02\x80\x05\x01\x00\x03')
+127.0.0.1 - - [19/May/2025 08:36:55] "\x05\x04\x00\x01\x02\x80\x05\x01\x00\x03" 400 -
+127.0.0.1 - - [19/May/2025 08:37:00] code 400, message Bad request syntax ('\x04\x01\x00\x16\x7f\x00\x00\x01root\x00')
+127.0.0.1 - - [19/May/2025 08:37:00] "\x04\x01\x00\x16\x7f\x00\x00\x01root\x00" 400 -
+127.0.0.1 - - [19/May/2025 08:37:05] code 400, message Bad request version ('\x03\x00(\x00\x04ÿ\x08\x00\x01U\x00\x00\x00MSSQLServer\x00H\x0f\x00\x00')
+127.0.0.1 - - [19/May/2025 08:37:05] "\x12\x01\x004\x00\x00\x00\x00\x00\x00\x15\x00\x06\x01\x00\x1b\x00\x01\x02\x00\x1c\x00\x0c\x03\x00(\x00\x04ÿ\x08\x00\x01U\x00\x00\x00MSSQLServer\x00H\x0f\x00\x00" 400 -
+127.0.0.1 - - [19/May/2025 08:37:06] code 400, message Bad request syntax ('HELP')
+127.0.0.1 - - [19/May/2025 08:37:06] "HELP" 400 -
+127.0.0.1 - - [19/May/2025 08:37:06] code 400, message Bad request syntax ('stats')
+127.0.0.1 - - [19/May/2025 08:37:06] "stats" 400 -
+127.0.0.1 - - [19/May/2025 08:37:06] code 400, message Bad request version ('\x06\x00\x00\x00\x00\x00\x08\x00\x00\x00\x01\x00\x00\x00\x02\x00\x00\x00\x03\x00\x00\x00\x02\x00\x00\x00')
+127.0.0.1 - - [19/May/2025 08:37:06] "\x00\x00\x00\x01\x00\x00\x00\x13\x00\x00\x00\x02\x00\x00\x00$\x00\x00\x00\x0bservice_mgr\x00\x00\x00\x00\x02\x00\x00\x00\x13\x01\x08scanner \x04\x05nmap \x06\x00\x00\x00\x00\x00\x08\x00\x00\x00\x01\x00\x00\x00\x02\x00\x00\x00\x03\x00\x00\x00\x02\x00\x00\x00" 400 -
+127.0.0.1 - - [19/May/2025 08:37:11] code 400, message Bad request version ('\x00\x00\x00\x04')
+127.0.0.1 - - [19/May/2025 08:37:11] "\x00\x00\x00\x00DB2DAS      \x01\x04\x00\x00\x00\x109z\x00\x01\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x01\x0c\x00\x00\x00\x00\x00\x00\x0c\x00\x00\x00\x0c\x00\x00\x00\x04" 400 -
+127.0.0.1 - - [19/May/2025 08:37:16] code 400, message Bad request version ('\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x01\x00ÿ\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00ä\x04\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x7f')
+127.0.0.1 - - [19/May/2025 08:37:16] "\x01Â\x00\x00\x00\x04\x00\x00¶\x01\x00\x00SQLDB2RA\x00\x01\x00\x00\x04\x01\x01\x00\x05\x00\x1d\x00\x88\x00\x00\x00\x01\x00\x00\x80\x00\x00\x00\x01\x09\x00\x00\x00\x01\x00\x00@\x00\x00\x00\x01\x09\x00\x00\x00\x01\x00\x00@\x00\x00\x00\x01\x08\x00\x00\x00\x04\x00\x00@\x00\x00\x00\x01\x04\x00\x00\x00\x01\x00\x00@\x00\x00\x00@\x04\x00\x00\x00\x04\x00\x00@\x00\x00\x00\x01\x04\x00\x00\x00\x04\x00\x00@\x00\x00\x00\x01\x04\x00\x00\x00\x04\x00\x00@\x00\x00\x00\x01\x04\x00\x00\x00\x02\x00\x00@\x00\x00\x00\x01\x04\x00\x00\x00\x04\x00\x00@\x00\x00\x00\x01\x00\x00\x00\x00\x01\x00\x00@\x00\x00\x00\x00\x04\x00\x00\x00\x04\x00\x00\x80\x00\x00\x00\x01\x04\x00\x00\x00\x04\x00\x00\x80\x00\x00\x00\x01\x04\x00\x00\x00\x03\x00\x00\x80\x00\x00\x00\x01\x04\x00\x00\x00\x04\x00\x00\x80\x00\x00\x00\x01\x08\x00\x00\x00\x01\x00\x00@\x00\x00\x00\x01\x04\x00\x00\x00\x04\x00\x00@\x00\x00\x00\x01\x10\x00\x00\x00\x01\x00\x00\x80\x00\x00\x00\x01\x10\x00\x00\x00\x01\x00\x00\x80\x00\x00\x00\x01\x04\x00\x00\x00\x04\x00\x00@\x00\x00\x00\x01\x09\x00\x00\x00\x01\x00\x00@\x00\x00\x00\x01\x09\x00\x00\x00\x01\x00\x00\x80\x00\x00\x00\x01\x04\x00\x00\x00\x03\x00\x00\x80\x00\x00\x00\x01\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x01\x04\x00\x00\x01\x00\x00\x80\x00\x00\x00\x01\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x01\x00\x00@\x00\x00\x00\x01\x00\x00\x00\x00\x01\x00\x00@\x00\x00\x00\x00        \x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x01\x00ÿ\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00ä\x04\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x7f" 400 -
+127.0.0.1 - - [19/May/2025 08:37:21] code 400, message Bad request version ('1\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00')
+127.0.0.1 - - [19/May/2025 08:37:21] "Client string for PARC version 1 Wire Encryption version 1\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00" 400 -
+127.0.0.1 - - [19/May/2025 08:37:22] code 400, message Bad HTTP/0.9 request type ('<\x00K\x00\x00\x00')
+127.0.0.1 - - [19/May/2025 08:37:22] "<\x00K\x00\x00\x00 \x00\x00\x00\x00\x00\x00\x00\x00\x00ÿÿÿÿ\x00\x00" 400 -
+127.0.0.1 - - [19/May/2025 08:37:22] code 400, message Bad request syntax ('\x124\x00\x01')
+127.0.0.1 - - [19/May/2025 08:37:22] "\x124\x00\x01" 400 -
+127.0.0.1 - - [19/May/2025 08:37:27] code 400, message Bad request syntax ('\x00\x03\x00\x01\x00\x00\x00\x00\x00\x00\x00\x02\x00\x00\x00\x00\x0f\x00')
+127.0.0.1 - - [19/May/2025 08:37:27] "\x00\x03\x00\x01\x00\x00\x00\x00\x00\x00\x00\x02\x00\x00\x00\x00\x0f\x00" 400 -
+127.0.0.1 - - [19/May/2025 08:37:27] code 400, message Bad request syntax ('serverstatus')
+127.0.0.1 - - [19/May/2025 08:37:27] "serverstatus" 400 -
+127.0.0.1 - - [19/May/2025 08:37:33] code 400, message Bad HTTP/0.9 request type ('Âååå\x9e')
+127.0.0.1 - - [19/May/2025 08:37:33] "Âååå\x9e ×¤¦ÐÕÝÜÈÖÝ×ÕÈÑÖ\x83\x80ÈÝ¤Ñ¡È¤ÒÕ×Ý£¤¡Ý¦×Ý\x98å" 400 -
+127.0.0.1 - - [19/May/2025 08:37:33] code 400, message Bad request syntax ('#ST')
+127.0.0.1 - - [19/May/2025 08:37:33] "#ST" 400 -
+127.0.0.1 - - [19/May/2025 08:37:38] code 400, message Bad request version ('\x00\x00\x00\x03\x00\x05nmap\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00j\x00\x00\x00\x7f')
+127.0.0.1 - - [19/May/2025 08:37:38] "\x00\x94\x01<\x00\x00\x00d\x00e\x00\x00\x00=\x00\x06IEEEM\x00\x00lsqlexec\x00\x00\x00\x00\x00\x00\x069.280\x00\x00\x0cRDS#R000000\x00\x00\x05sqli\x00\x00\x00\x013\x00\x00\x00\x00\x00\x00\x00\x00\x00\x01\x00\x05nmap\x00\x00\x05nmap\x00ol\x00\x00\x00\x00\x00\x00\x00\x00\x00=tlitcp\x00\x00\x00\x00\x00\x01\x00h\x00\x0b\x00\x00\x00\x03\x00\x05nmap\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00j\x00\x00\x00\x7f" 400 -
+127.0.0.1 - - [19/May/2025 08:37:43] code 400, message Bad request syntax ('\x002Ð\x01\x00\x01\x00,\x10A\x00\x04\x11^\x00\x04\x11m\x00\x04\x11Z\x00\x18\x14\x04\x14\x03\x00\x07$\x07\x00\x08$\x0f\x00\x08\x14@\x00\x08\x14t\x00\x08\x00\x04\x11G')
+127.0.0.1 - - [19/May/2025 08:37:43] "\x002Ð\x01\x00\x01\x00,\x10A\x00\x04\x11^\x00\x04\x11m\x00\x04\x11Z\x00\x18\x14\x04\x14\x03\x00\x07$\x07\x00\x08$\x0f\x00\x08\x14@\x00\x08\x14t\x00\x08\x00\x04\x11G" 400 -
+127.0.0.1 - - [19/May/2025 08:37:43] code 400, message Bad HTTP/0.9 request type ('TSH')
+127.0.0.1 - - [19/May/2025 08:37:43] "TSH \x00\x00\x00ì\x01\x011\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x01\x11\x04¸\x00\x00ID  " 400 -
+127.0.0.1 - - [19/May/2025 08:37:43] "GET /server-info HTTP/1.1" 404 -
+127.0.0.1 - - [19/May/2025 08:37:48] code 400, message Bad request syntax ('A\x00\x00\x00:0\x00\x00ÿÿÿÿÔ\x07\x00\x00\x00\x00\x00\x00test.$cmd\x00\x00\x00\x00\x00ÿÿÿÿ\x1b\x00\x00\x00\x01serverStatus\x00\x00\x00\x00\x00\x00\x00ð?\x00')
+127.0.0.1 - - [19/May/2025 08:37:48] "A\x00\x00\x00:0\x00\x00ÿÿÿÿÔ\x07\x00\x00\x00\x00\x00\x00test.$cmd\x00\x00\x00\x00\x00ÿÿÿÿ\x1b\x00\x00\x00\x01serverStatus\x00\x00\x00\x00\x00\x00\x00ð?\x00" 400 -
+127.0.0.1 - - [19/May/2025 08:37:49] code 400, message Bad request syntax ('*1')
+127.0.0.1 - - [19/May/2025 08:37:49] "*1" 400 -
+127.0.0.1 - - [19/May/2025 08:37:54] code 400, message Bad request syntax ('\x00\x00\x00\x01\x07')
+127.0.0.1 - - [19/May/2025 08:37:54] "\x00\x00\x00\x01\x07" 400 -
+127.0.0.1 - - [19/May/2025 08:37:54] code 400, message Bad HTTP/0.9 request type ('show')
+127.0.0.1 - - [19/May/2025 08:37:54] "show info" 400 -
+127.0.0.1 - - [19/May/2025 08:37:59] code 400, message Bad request syntax ('\x80\x10\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x15ðÑb\x00\x00\x00\x00\x00\x00\x00\x00')
+127.0.0.1 - - [19/May/2025 08:37:59] "\x80\x10\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x15ðÑb\x00\x00\x00\x00\x00\x00\x00\x00" 400 -
+127.0.0.1 - - [19/May/2025 08:38:04] code 400, message Bad request syntax ('\x00\x01n')
+127.0.0.1 - - [19/May/2025 08:38:04] "\x00\x01n" 400 -
+127.0.0.1 - - [19/May/2025 08:38:09] code 400, message Bad request syntax ('vp3')
+127.0.0.1 - - [19/May/2025 08:38:09] "vp3" 400 -
+127.0.0.1 - - [19/May/2025 08:38:14] code 400, message Bad request syntax ('\x94\x00ÍïÑa\x91\x03')
+127.0.0.1 - - [19/May/2025 08:38:14] "\x94\x00ÍïÑa\x91\x03" 400 -
+127.0.0.1 - - [19/May/2025 08:38:19] code 400, message Bad request syntax ('þ\x01')
+127.0.0.1 - - [19/May/2025 08:38:19] "þ\x01" 400 -
+127.0.0.1 - - [19/May/2025 08:38:19] "GET /version HTTP/1.1" 404 -
+127.0.0.1 - - [19/May/2025 08:38:24] code 400, message Bad request syntax ('\x00\x00\x07\x00\x08\x00\x03\x00\x04\x00\x05\x00\x06')
+127.0.0.1 - - [19/May/2025 08:38:24] "\x00\x00\x07\x00\x08\x00\x03\x00\x04\x00\x05\x00\x06" 400 -
+127.0.0.1 - - [19/May/2025 08:38:29] code 400, message Bad request syntax ('ÿû\x18ÿú\x18\x00IBM-3279-4-Eÿðÿû\x19ÿý\x19ÿû\x00ÿý\x00')
+127.0.0.1 - - [19/May/2025 08:38:29] "ÿû\x18ÿú\x18\x00IBM-3279-4-Eÿðÿû\x19ÿý\x19ÿû\x00ÿý\x00" 400 -
+127.0.0.1 - - [19/May/2025 08:38:34] code 400, message Bad request syntax ('GIOP\x01\x00\x01\x00$\x00\x00\x00\x00\x00\x00\x00\x01\x00\x00\x00\x01\x00\x00\x00\x06\x00\x00\x00abcdef\x00\x00\x04\x00\x00\x00get\x00\x00\x00\x00\x00')
+127.0.0.1 - - [19/May/2025 08:38:34] "GIOP\x01\x00\x01\x00$\x00\x00\x00\x00\x00\x00\x00\x01\x00\x00\x00\x01\x00\x00\x00\x06\x00\x00\x00abcdef\x00\x00\x04\x00\x00\x00get\x00\x00\x00\x00\x00" 400 -
+127.0.0.1 - - [19/May/2025 08:38:40] code 400, message Bad request syntax ('VERSION')
+127.0.0.1 - - [19/May/2025 08:38:40] "VERSION" 400 -
+127.0.0.1 - - [19/May/2025 08:38:45] code 400, message Bad request syntax ('CNXN\x00\x00\x00\x01\x00\x10\x00\x00\x07\x00\x00\x002\x02\x00\x00¼±§±host::\x00')
+127.0.0.1 - - [19/May/2025 08:38:45] "CNXN\x00\x00\x00\x01\x00\x10\x00\x00\x07\x00\x00\x002\x02\x00\x00¼±§±host::\x00" 400 -
+127.0.0.1 - - [19/May/2025 08:38:50] code 400, message Bad HTTP/0.9 request type ('\x00\x00\x00\x10\x00\x00\x00')
+127.0.0.1 - - [19/May/2025 08:38:50] "\x00\x00\x00\x10\x00\x00\x00\x0c{"code":106}" 400 -
+127.0.0.1 - - [19/May/2025 08:38:55] code 400, message Bad request syntax ('\x0c\x00\x01\x00\x00\x00ImYorDad0u\x00\x00')
+127.0.0.1 - - [19/May/2025 08:38:55] "\x0c\x00\x01\x00\x00\x00ImYorDad0u\x00\x00" 400 -
+127.0.0.1 - - [19/May/2025 08:39:00] code 400, message Bad HTTP/0.9 request type ('ÚÚ\x01\x00\x00\x00\x14\x00\x10\x03\x08\x00\x00\x00')
+127.0.0.1 - - [19/May/2025 08:39:00] "ÚÚ\x01\x00\x00\x00\x14\x00\x10\x03\x08\x00\x00\x00\x0bM\x00\x00\x00\x00" 400 -
+127.0.0.1 - - [19/May/2025 08:41:45] code 400, message Bad request version ("pu×ûæmKÃäl\x9d¡öþ\x96Ð\x143dû\x01)ò\x00\x9c\x13\x02\x13\x03\x13\x01\x003\x009\x005\x00/À,À0\x00£\x00\x9fÌ©Ì¨ÌªÀ¯À\xadÀ£À\x9fÀ]ÀaÀWÀSÀ+À/\x00¢\x00\x9eÀ®À¬À¢À\x9eÀ\\À`ÀVÀRÀ$À(\x00k\x00jÀsÀw\x00Ä\x00ÃÀ#À'\x00g\x00@ÀrÀv\x00¾\x00½À")
+127.0.0.1 - - [19/May/2025 08:41:45] "\x16\x03\x01\x02\x00\x01\x00\x01ü\x03\x03ÐÜg\x0e\x9f\x93G §d<å\x12äxi\x04%ã?\x1fÒÕ\x95ôü\x88A¼ÂÈ7 m\x8dÞw÷7°Û\x0dpu×ûæmKÃäl\x9d¡öþ\x96Ð\x143dû\x01)ò\x00\x9c\x13\x02\x13\x03\x13\x01\x003\x009\x005\x00/À,À0\x00£\x00\x9fÌ©Ì¨ÌªÀ¯À­À£À\x9fÀ]ÀaÀWÀSÀ+À/\x00¢\x00\x9eÀ®À¬À¢À\x9eÀ\\À`ÀVÀRÀ$À(\x00k\x00jÀsÀw\x00Ä\x00ÃÀ#À'\x00g\x00@ÀrÀv\x00¾\x00½À" 400 -
+127.0.0.1 - - [19/May/2025 08:41:52] code 400, message Bad HTTP/0.9 request type ('\x80\x00\x00(,\x03Ó\x92\x00\x00\x00\x00\x00\x00\x00\x02\x00\x01\x86')
+127.0.0.1 - - [19/May/2025 08:41:52] "\x80\x00\x00(,\x03Ó\x92\x00\x00\x00\x00\x00\x00\x00\x02\x00\x01\x86 \x00\x00\x00\x02\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00" 400 -
+127.0.0.1 - - [19/May/2025 08:41:58] code 400, message Bad HTTP/0.9 request type ('\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie:')
+127.0.0.1 - - [19/May/2025 08:41:58] "\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie: mstshash=Administr" 400 -
+127.0.0.1 - - [19/May/2025 08:43:01] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [19/May/2025 08:52:25] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [19/May/2025 09:10:30] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [19/May/2025 09:12:24] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [19/May/2025 09:28:01] code 400, message Bad request version ('À\x13À')
+127.0.0.1 - - [19/May/2025 09:28:01] "\x16\x03\x01\x00î\x01\x00\x00ê\x03\x03j\x11o`"^cx\x9aõ\x1c\x19æk$$>~\x8a\x9cý\x04\x111Ú\x81èe\x09<\x83\x09 h_\x97õK¼\x00íÒÎ@S;î·B\x8a£¨e\x0bl¤\x9d\x98\x0fõ~Gsbæ\x00&À+À/À,À0Ì©Ì¨À\x09À\x13À" 400 -
+127.0.0.1 - - [19/May/2025 09:28:02] code 400, message Bad request version ('À(À$À\x14À')
+127.0.0.1 - - [19/May/2025 09:28:02] "\x16\x03\x01\x00Ê\x01\x00\x00Æ\x03\x03\x82JÃ¨Ï\x89G\x03(@Û®²_û\x0b\x87\x03Å\x05âáO)ÄQâ\x84Ò0\x7f+\x00\x00hÌ\x14Ì\x13À/À+À0À,À\x11À\x07À'À#À\x13À\x09À(À$À\x14À" 400 -
+127.0.0.1 - - [19/May/2025 09:33:56] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [19/May/2025 09:34:28] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [19/May/2025 10:03:50] code 400, message Bad HTTP/0.9 request type ('\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie:')
+127.0.0.1 - - [19/May/2025 10:03:50] "\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie: mstshash=Administr" 400 -
+127.0.0.1 - - [19/May/2025 10:06:08] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [19/May/2025 10:11:12] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [19/May/2025 10:11:50] code 400, message Bad HTTP/0.9 request type ('\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie:')
+127.0.0.1 - - [19/May/2025 10:11:50] "\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie: mstshash=Administr" 400 -
+127.0.0.1 - - [19/May/2025 10:21:23] code 400, message Bad HTTP/0.9 request type ('\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie:')
+127.0.0.1 - - [19/May/2025 10:21:23] "\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie: mstshash=Administr" 400 -
+127.0.0.1 - - [19/May/2025 10:28:03] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [19/May/2025 10:28:04] "GET /favicon.ico HTTP/1.1" 404 -
+127.0.0.1 - - [19/May/2025 10:31:25] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [19/May/2025 10:31:43] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [19/May/2025 10:56:42] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [19/May/2025 11:07:06] code 400, message Bad request syntax ('~\x00\x02\x00\x00\x01\x88\x88\x88\x88\x88\x03¥-~')
+127.0.0.1 - - [19/May/2025 11:07:06] "~\x00\x02\x00\x00\x01\x88\x88\x88\x88\x88\x03¥-~" 400 -
+127.0.0.1 - - [19/May/2025 11:18:43] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [19/May/2025 11:39:39] code 400, message Bad HTTP/0.9 request type ('l\x00')
+127.0.0.1 - - [19/May/2025 11:39:39] "l\x00\x0b\x00\x00\x00\x00\x00\x00\x00\x00\x00" 400 -
+127.0.0.1 - - [19/May/2025 11:43:01] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [19/May/2025 12:07:05] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [19/May/2025 12:20:17] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [19/May/2025 12:23:47] code 400, message Bad HTTP/0.9 request type ('\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie:')
+127.0.0.1 - - [19/May/2025 12:23:47] "\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie: mstshash=Administr" 400 -
+127.0.0.1 - - [19/May/2025 12:30:30] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [19/May/2025 12:46:47] code 400, message Bad HTTP/0.9 request type ('\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie:')
+127.0.0.1 - - [19/May/2025 12:46:47] "\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie: mstshash=Administr" 400 -
+127.0.0.1 - - [19/May/2025 13:04:01] code 400, message Bad HTTP/0.9 request type ('\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie:')
+127.0.0.1 - - [19/May/2025 13:04:01] "\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie: mstshash=Administr" 400 -
+127.0.0.1 - - [19/May/2025 13:07:09] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [19/May/2025 13:16:08] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [19/May/2025 13:31:43] code 400, message Bad HTTP/0.9 request type ('\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie:')
+127.0.0.1 - - [19/May/2025 13:31:43] "\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie: mstshash=Administr" 400 -
+127.0.0.1 - - [19/May/2025 13:35:10] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [19/May/2025 13:50:19] code 400, message Bad HTTP/0.9 request type ('\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie:')
+127.0.0.1 - - [19/May/2025 13:50:19] "\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie: mstshash=Administr" 400 -
+127.0.0.1 - - [19/May/2025 13:54:01] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [19/May/2025 14:07:32] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [19/May/2025 14:08:04] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [19/May/2025 14:16:28] code 400, message Bad HTTP/0.9 request type ('\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie:')
+127.0.0.1 - - [19/May/2025 14:16:28] "\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie: mstshash=Administr" 400 -
+127.0.0.1 - - [19/May/2025 14:26:23] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [19/May/2025 14:38:12] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [19/May/2025 14:45:24] code 400, message Bad request version ('À\x13À')
+127.0.0.1 - - [19/May/2025 14:45:24] "\x16\x03\x01\x00î\x01\x00\x00ê\x03\x03ªóÎ/ï`ÓaÊ\x9fï\x14T3\x86å\x16/UË\x8f±\x9d§\x1b\x93e\x02ñ\x84Tá ÝÈúN_Ö4ÙÓ>º\x1a.º\x9b(â\x0ea\x15÷I?ßþ\x13\x1aÀo2vÞ\x00&À+À/À,À0Ì©Ì¨À\x09À\x13À" 400 -
+127.0.0.1 - - [19/May/2025 14:45:25] code 400, message Bad request version ('À(À$À\x14À')
+127.0.0.1 - - [19/May/2025 14:45:25] "\x16\x03\x01\x00Ê\x01\x00\x00Æ\x03\x03©w\x12\x10æ9\x8d\x11eèë\\êt5\x99l÷i\x83\x0bÃ\x9dÚø0\x84nY¹ {\x00\x00hÌ\x14Ì\x13À/À+À0À,À\x11À\x07À'À#À\x13À\x09À(À$À\x14À" 400 -
+127.0.0.1 - - [19/May/2025 14:46:19] code 400, message Bad HTTP/0.9 request type ('l\x00')
+127.0.0.1 - - [19/May/2025 14:46:19] "l\x00\x0b\x00\x00\x00\x00\x00\x00\x00\x00\x00" 400 -
+127.0.0.1 - - [19/May/2025 14:47:41] code 400, message Bad HTTP/0.9 request type ('\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie:')
+127.0.0.1 - - [19/May/2025 14:47:41] "\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie: mstshash=Administr" 400 -
+127.0.0.1 - - [19/May/2025 14:49:23] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [19/May/2025 15:11:24] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [19/May/2025 15:29:00] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [19/May/2025 16:03:25] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [19/May/2025 16:15:30] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [19/May/2025 16:36:04] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [19/May/2025 16:54:35] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [19/May/2025 17:10:42] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [19/May/2025 17:38:40] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [19/May/2025 17:43:50] code 400, message Bad HTTP/0.9 request type ('\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie:')
+127.0.0.1 - - [19/May/2025 17:43:50] "\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie: mstshash=Administr" 400 -
+127.0.0.1 - - [19/May/2025 17:51:20] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [19/May/2025 18:03:07] code 400, message Bad request version ('À#À¬À®À+À')
+127.0.0.1 - - [19/May/2025 18:03:07] "\x16\x03\x03\x01§\x01\x00\x01£\x03\x03\x09Ú¿i\x1al\x84öÓÁ\x94:\x9aAùÑ¦\x9eïz/t£0Þ~z=»ð\x87\x9a Áke)òt.\x03ÄÝÓ\x80°\x851$ÿ\x90:(Ã\x06Ý\x1aþ\x13N;\x8aÃ\x99\x1d\x00\x8a\x00\x16\x003\x00gÀ\x9eÀ¢\x00\x9e\x009\x00kÀ\x9fÀ£\x00\x9f\x00E\x00¾\x00\x88\x00Ä\x00\x9aÀ\x08À\x09À#À¬À®À+À" 400 -
+127.0.0.1 - - [19/May/2025 18:03:12] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [19/May/2025 18:15:30] "GET /favicon.ico HTTP/1.1" 404 -
+127.0.0.1 - - [19/May/2025 18:27:29] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [19/May/2025 18:40:18] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [19/May/2025 19:04:40] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [19/May/2025 19:09:17] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [19/May/2025 19:15:32] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [19/May/2025 19:35:21] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [19/May/2025 19:35:38] code 400, message Bad HTTP/0.9 request type ('l\x00')
+127.0.0.1 - - [19/May/2025 19:35:38] "l\x00\x0b\x00\x00\x00\x00\x00\x00\x00\x00\x00" 400 -
+127.0.0.1 - - [19/May/2025 19:35:53] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [19/May/2025 19:36:00] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [19/May/2025 19:36:02] "GET /favicon.ico HTTP/1.1" 404 -
+127.0.0.1 - - [19/May/2025 19:36:03] code 505, message Invalid HTTP version (2.0)
+127.0.0.1 - - [19/May/2025 19:36:03] "PRI * HTTP/2.0" 505 -
+127.0.0.1 - - [19/May/2025 19:36:14] "GET /favicon.ico HTTP/1.1" 404 -
+127.0.0.1 - - [19/May/2025 19:36:15] code 400, message Bad HTTP/0.9 request type ('\x16\x03\x01\x00÷\x01\x00\x00ó\x03\x03ÃéWdÉ\x80\x02S\x19\x8b')
+127.0.0.1 - - [19/May/2025 19:36:15] "\x16\x03\x01\x00÷\x01\x00\x00ó\x03\x03ÃéWdÉ\x80\x02S\x19\x8b \x10Ã#ô\x80\x84Ë\x94" 400 -
+127.0.0.1 - - [19/May/2025 19:49:49] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [19/May/2025 19:53:35] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [19/May/2025 19:53:39] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [19/May/2025 19:53:40] "GET /favicon.ico HTTP/1.1" 404 -
+127.0.0.1 - - [19/May/2025 19:53:40] code 505, message Invalid HTTP version (2.0)
+127.0.0.1 - - [19/May/2025 19:53:40] "PRI * HTTP/2.0" 505 -
+127.0.0.1 - - [19/May/2025 19:53:44] "GET /favicon.ico HTTP/1.1" 404 -
+127.0.0.1 - - [19/May/2025 19:53:45] code 400, message Bad request version ('À\x14À')
+127.0.0.1 - - [19/May/2025 19:53:45] "\x16\x03\x01\x00÷\x01\x00\x00ó\x03\x03\x8dz`ÿÚbÂê\x12ÉyC¼\x0ey\x1e§Z$G£á\x1atÊl\x93Ä¸\x15ª3 ®°¶!àÿ õ\x0fQb\x1fïâÉï\x1b!3~xÍ×¢³o7ÛØ\x95dì\x00&Ì¨Ì©À/À0À+À,À\x13À\x09À\x14À" 400 -
+127.0.0.1 - - [19/May/2025 20:24:59] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [19/May/2025 20:37:14] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [19/May/2025 21:04:55] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [19/May/2025 21:06:07] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [19/May/2025 21:09:24] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [19/May/2025 21:16:34] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [19/May/2025 21:23:39] code 400, message Bad request version ('À#À¬À®À+À')
+127.0.0.1 - - [19/May/2025 21:23:39] "\x16\x03\x03\x01§\x01\x00\x01£\x03\x03t)M+?Öp\x84óò±tbR.íäÄö\x90\x8b\x81;·ÁoO£\x99O\x00ü h9ºñ]\x88JKÓ.­»|ÿ¾(76o\x00ã+ÃZùT2òAj\x82F\x00\x8a\x00\x16\x003\x00gÀ\x9eÀ¢\x00\x9e\x009\x00kÀ\x9fÀ£\x00\x9f\x00E\x00¾\x00\x88\x00Ä\x00\x9aÀ\x08À\x09À#À¬À®À+À" 400 -
+127.0.0.1 - - [19/May/2025 21:23:46] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [19/May/2025 21:34:51] "GET /favicon.ico HTTP/1.1" 404 -
+127.0.0.1 - - [19/May/2025 21:42:52] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [19/May/2025 21:44:48] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [19/May/2025 21:52:10] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [19/May/2025 22:02:42] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [19/May/2025 22:03:01] "GET /favicon.ico HTTP/1.1" 404 -
+127.0.0.1 - - [19/May/2025 22:24:23] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [19/May/2025 22:25:14] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [19/May/2025 22:25:19] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [19/May/2025 22:32:50] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [19/May/2025 22:40:18] code 400, message Bad HTTP/0.9 request type ('\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie:')
+127.0.0.1 - - [19/May/2025 22:40:18] "\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie: mstshash=Administr" 400 -
+127.0.0.1 - - [19/May/2025 22:59:46] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [19/May/2025 23:02:04] "GET /index.php HTTP/1.1" 404 -
+127.0.0.1 - - [19/May/2025 23:02:04] "GET /stylesheets/theme.css HTTP/1.1" 404 -
+127.0.0.1 - - [19/May/2025 23:02:04] "GET /ips/index.php HTTP/1.1" 404 -
+127.0.0.1 - - [19/May/2025 23:02:04] "GET /login/stylesheets/theme.css HTTP/1.1" 404 -
+127.0.0.1 - - [19/May/2025 23:02:04] "GET /customer/js/lang_zh_tw.js HTTP/1.1" 404 -
+127.0.0.1 - - [19/May/2025 23:02:04] "GET /chs/js/lang_zh_tw.js HTTP/1.1" 404 -
+127.0.0.1 - - [19/May/2025 23:02:04] "GET /index.php HTTP/1.1" 404 -
+127.0.0.1 - - [19/May/2025 23:02:04] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [19/May/2025 23:02:04] "GET /public/stylesheets/theme.css HTTP/1.1" 404 -
+127.0.0.1 - - [19/May/2025 23:06:07] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [19/May/2025 23:21:46] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [19/May/2025 23:24:23] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [19/May/2025 23:42:21] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [19/May/2025 23:47:28] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [19/May/2025 23:53:01] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [20/May/2025 00:12:36] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [20/May/2025 00:17:56] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [20/May/2025 00:45:11] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [20/May/2025 00:58:15] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [20/May/2025 01:05:37] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [20/May/2025 01:26:38] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [20/May/2025 01:34:52] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [20/May/2025 01:46:18] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [20/May/2025 01:49:34] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [20/May/2025 02:01:49] code 400, message Bad request version ("]\x8fÃÔ?Ä+¶\x9c\x91#\x95\x90~ÝB\x08xáQ<\x08\x08c%Mà\x00>\x13\x02\x13\x03\x13\x01À,À0\x00\x9fÌ©Ì¨ÌªÀ+À/\x00\x9eÀ$À(\x00kÀ#À'\x00gÀ")
+127.0.0.1 - - [20/May/2025 02:01:49] "\x16\x03\x01\x02\x00\x01\x00\x01ü\x03\x03aÀàø¸ÐìºRuÄ¤\x1a\x95Á0\x94i¤+Y°@Øæ(\x93\x9dó°å¥ \x97\x11ãÿ ]\x8fÃÔ?Ä+¶\x9c\x91#\x95\x90~ÝB\x08xáQ<\x08\x08c%Mà\x00>\x13\x02\x13\x03\x13\x01À,À0\x00\x9fÌ©Ì¨ÌªÀ+À/\x00\x9eÀ$À(\x00kÀ#À'\x00gÀ" 400 -
+127.0.0.1 - - [20/May/2025 02:01:49] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [20/May/2025 02:04:01] code 400, message Bad request version ('\x8aö\x7f\x00\x00Pö\x7f\x18Þ\x00\x00\x00à\x81ª\x8aö\x7f\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00u\x13\x01')
+127.0.0.1 - - [20/May/2025 02:04:01] "\x12\x01\x00^\x00\x00\x01\x00\x00\x00$\x00\x06\x01\x00*\x00\x01\x02\x00+\x00\x01\x03\x00,\x00\x04\x04\x000\x00\x01\x05\x001\x00$\x06\x00U\x00\x01ÿ\x04\x07\x0c¼\x00\x00\x00\x00\x00\x00\x15Ð\x00¯/\x85\x8aö\x7f\x00\x00Pö\x7f\x18Þ\x00\x00\x00à\x81ª\x8aö\x7f\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00u\x13\x01" 400 -
+127.0.0.1 - - [20/May/2025 02:13:37] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [20/May/2025 02:14:30] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [20/May/2025 02:37:10] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [20/May/2025 02:55:38] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [20/May/2025 03:01:53] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [20/May/2025 03:26:41] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [20/May/2025 03:32:19] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [20/May/2025 03:32:31] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [20/May/2025 03:38:04] code 400, message Bad HTTP/0.9 request type ('\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie:')
+127.0.0.1 - - [20/May/2025 03:38:04] "\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie: mstshash=Administr" 400 -
+127.0.0.1 - - [20/May/2025 03:50:08] code 400, message Bad request version ('À\x13À')
+127.0.0.1 - - [20/May/2025 03:50:08] "\x16\x03\x01\x00î\x01\x00\x00ê\x03\x03Õãd\x93\x17üU¸®;ÆDÄg5iuÉNÉ.\x8d\x88\x891­^W#Íg\x8d «\x11"Î\x1bsHv\x88®\x94Z!\x90ø\x00Ï¼øYj*\x99Pq\x8aÖ(x#\x128\x00&À+À/À,À0Ì©Ì¨À\x09À\x13À" 400 -
+127.0.0.1 - - [20/May/2025 03:50:09] code 400, message Bad request version ('À(À$À\x14À')
+127.0.0.1 - - [20/May/2025 03:50:09] "\x16\x03\x01\x00Ê\x01\x00\x00Æ\x03\x03\x99ñZûdù\x92¤Ä\x8fÑ\x0d¼°¯"ócx¡\x9cAiL\x88CÀ\x13ö"§â\x00\x00hÌ\x14Ì\x13À/À+À0À,À\x11À\x07À'À#À\x13À\x09À(À$À\x14À" 400 -
+127.0.0.1 - - [20/May/2025 04:02:58] code 400, message Bad request syntax ('\x16\x03\x01\x02\x00\x01\x00\x01ü\x03\x03?þ')
+127.0.0.1 - - [20/May/2025 04:02:58] "\x16\x03\x01\x02\x00\x01\x00\x01ü\x03\x03?þ" 400 -
+127.0.0.1 - - [20/May/2025 04:02:58] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [20/May/2025 04:04:24] "GET / HTTP/1.0" 200 -
+127.0.0.1 - - [20/May/2025 04:07:51] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [20/May/2025 04:10:24] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [20/May/2025 04:16:15] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [20/May/2025 04:42:26] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [20/May/2025 04:48:05] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [20/May/2025 04:49:29] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [20/May/2025 05:26:26] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [20/May/2025 05:30:23] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [20/May/2025 05:45:11] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [20/May/2025 05:49:51] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [20/May/2025 06:07:27] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [20/May/2025 06:22:09] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [20/May/2025 06:34:34] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [20/May/2025 06:44:28] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [20/May/2025 06:47:33] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [20/May/2025 06:48:43] code 400, message Bad HTTP/0.9 request type ('l\x00')
+127.0.0.1 - - [20/May/2025 06:48:43] "l\x00\x0b\x00\x00\x00\x00\x00\x00\x00\x00\x00" 400 -
+127.0.0.1 - - [20/May/2025 06:55:54] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [20/May/2025 07:11:45] code 400, message Bad HTTP/0.9 request type ('\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie:')
+127.0.0.1 - - [20/May/2025 07:11:45] "\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie: mstshash=Administr" 400 -
+127.0.0.1 - - [20/May/2025 07:12:18] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [20/May/2025 07:24:59] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [20/May/2025 07:35:21] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [20/May/2025 07:56:16] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [20/May/2025 08:03:26] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [20/May/2025 08:11:44] "GET /manager/html HTTP/1.1" 404 -
+127.0.0.1 - - [20/May/2025 08:19:48] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [20/May/2025 08:34:14] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [20/May/2025 08:39:21] code 400, message Bad HTTP/0.9 request type ('l\x00')
+127.0.0.1 - - [20/May/2025 08:39:21] "l\x00\x0b\x00\x00\x00\x00\x00\x00\x00\x00\x00" 400 -
+127.0.0.1 - - [20/May/2025 08:39:57] code 400, message Bad HTTP/0.9 request type ('\x06\x00ÿ\x07\x00\x00\x00\x00\x00\x00\x00\x00\x00')
+127.0.0.1 - - [20/May/2025 08:39:57] "\x06\x00ÿ\x07\x00\x00\x00\x00\x00\x00\x00\x00\x00\x09 \x18È\x81\x008\x8e\x04µ" 400 -
+127.0.0.1 - - [20/May/2025 08:43:09] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [20/May/2025 08:52:23] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [20/May/2025 09:22:10] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [20/May/2025 09:35:01] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [20/May/2025 09:56:30] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [20/May/2025 09:59:02] code 400, message Bad HTTP/0.9 request type ('\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie:')
+127.0.0.1 - - [20/May/2025 09:59:02] "\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie: mstshash=Administr" 400 -
+127.0.0.1 - - [20/May/2025 10:00:19] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [20/May/2025 10:14:13] code 400, message Bad HTTP/0.9 request type ('\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie:')
+127.0.0.1 - - [20/May/2025 10:14:13] "\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie: mstshash=Administr" 400 -
+127.0.0.1 - - [20/May/2025 10:16:08] "GET /manager/text/list HTTP/1.1" 404 -
+127.0.0.1 - - [20/May/2025 10:18:36] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [20/May/2025 10:37:25] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [20/May/2025 10:46:31] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [20/May/2025 10:53:45] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [20/May/2025 10:57:44] code 400, message Bad HTTP/0.9 request type ('\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie:')
+127.0.0.1 - - [20/May/2025 10:57:44] "\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie: mstshash=Administr" 400 -
+127.0.0.1 - - [20/May/2025 11:17:04] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [20/May/2025 11:17:20] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [20/May/2025 11:44:29] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [20/May/2025 12:06:23] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [20/May/2025 12:21:06] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [20/May/2025 12:23:06] code 400, message Bad HTTP/0.9 request type ('\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie:')
+127.0.0.1 - - [20/May/2025 12:23:06] "\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie: mstshash=Administr" 400 -
+127.0.0.1 - - [20/May/2025 12:23:27] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [20/May/2025 12:23:47] "GET /favicon.ico HTTP/1.1" 404 -
+127.0.0.1 - - [20/May/2025 12:34:33] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [20/May/2025 12:35:11] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [20/May/2025 12:49:15] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [20/May/2025 12:50:50] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [20/May/2025 13:10:42] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [20/May/2025 13:11:32] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [20/May/2025 13:12:21] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [20/May/2025 13:31:16] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [20/May/2025 13:45:18] code 400, message Bad request syntax ('\x16\x03\x01\x00î\x01\x00\x00ê\x03\x03C;ä¸ÊN4Ù|')
+127.0.0.1 - - [20/May/2025 13:45:18] "\x16\x03\x01\x00î\x01\x00\x00ê\x03\x03C;ä¸ÊN4Ù|" 400 -
+127.0.0.1 - - [20/May/2025 13:45:19] code 400, message Bad request version ('À(À$À\x14À')
+127.0.0.1 - - [20/May/2025 13:45:19] "\x16\x03\x01\x00Ê\x01\x00\x00Æ\x03\x03`ñ\x889\x1aô\x1eQûè\x9eë#\x0eücOÛ»®/Q\x9cò\x9cÓå8£\x15Ðî\x00\x00hÌ\x14Ì\x13À/À+À0À,À\x11À\x07À'À#À\x13À\x09À(À$À\x14À" 400 -
+127.0.0.1 - - [20/May/2025 13:50:19] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [20/May/2025 13:57:08] code 400, message Bad HTTP/0.9 request type ('\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie:')
+127.0.0.1 - - [20/May/2025 13:57:08] "\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie: mstshash=Administr" 400 -
+127.0.0.1 - - [20/May/2025 13:59:38] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [20/May/2025 14:10:45] "GET / HTTP/1.0" 200 -
+127.0.0.1 - - [20/May/2025 14:21:26] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [20/May/2025 14:32:14] code 400, message Bad HTTP/0.9 request type ('\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie:')
+127.0.0.1 - - [20/May/2025 14:32:14] "\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie: mstshash=Administr" 400 -
+127.0.0.1 - - [20/May/2025 14:46:04] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [20/May/2025 14:59:18] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [20/May/2025 15:05:51] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [20/May/2025 15:24:16] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [20/May/2025 15:36:51] code 400, message Bad request version ('\x00\x9eÌ¨Ìª\x003\x00=\x00\x16À')
+127.0.0.1 - - [20/May/2025 15:36:51] "\x16\x03\x01\x01\x17\x01\x00\x01\x13\x03\x03\x9aû^]W0:p³D\x8aoÝ\x96Z_ÜG\x1a\x84£0¿ä»\x83\x08\x13Y)¾Þ .°ôóË!cÎ°"!ü^\x97\x90G\x93K\x99Üi¼¼;\x92U»¼}¾Ì\x14\x004Ì¨Ì©À/À0À+À,À\x09\x00\x9eÌ¨Ìª\x003\x00=\x00\x16À" 400 -
+127.0.0.1 - - [20/May/2025 15:37:02] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [20/May/2025 15:37:04] "GET /favicon.ico HTTP/1.1" 404 -
+127.0.0.1 - - [20/May/2025 15:37:04] "GET /robots.txt HTTP/1.1" 404 -
+127.0.0.1 - - [20/May/2025 15:37:05] "GET /sitemap.xml HTTP/1.1" 404 -
+127.0.0.1 - - [20/May/2025 15:37:06] "GET /static/main.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/May/2025 15:37:07] "GET /config.json HTTP/1.1" 404 -
+127.0.0.1 - - [20/May/2025 15:40:05] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [20/May/2025 15:46:37] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [20/May/2025 15:51:10] code 400, message Bad HTTP/0.9 request type ('l\x00')
+127.0.0.1 - - [20/May/2025 15:51:10] "l\x00\x0b\x00\x00\x00\x00\x00\x00\x00\x00\x00" 400 -
+127.0.0.1 - - [20/May/2025 16:02:02] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [20/May/2025 16:04:12] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [20/May/2025 16:15:38] code 400, message Bad request version ("\x9f\x00>\x13\x02\x13\x03\x13\x01À,À0\x00\x9fÌ©Ì¨ÌªÀ+À/\x00\x9eÀ$À(\x00kÀ#À'\x00gÀ")
+127.0.0.1 - - [20/May/2025 16:15:38] "\x16\x03\x01\x02\x00\x01\x00\x01ü\x03\x03g\x8f\x0e[íH\x84"Ê\x0e\x9a¨ \x01>\x9aJ4JÄ4\x8a¼AmdÙ\x85\x0eY¸6 ä¡|òã[¶\x91Íc\x8a@²S6\x9eÆì{ÿ0y A#YdX«ó\x0c\x9f\x00>\x13\x02\x13\x03\x13\x01À,À0\x00\x9fÌ©Ì¨ÌªÀ+À/\x00\x9eÀ$À(\x00kÀ#À'\x00gÀ" 400 -
+127.0.0.1 - - [20/May/2025 16:15:39] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [20/May/2025 16:27:38] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [20/May/2025 16:46:49] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [20/May/2025 16:46:50] "GET /favicon.ico HTTP/1.1" 404 -
+127.0.0.1 - - [20/May/2025 17:34:49] code 400, message Bad request version ('À\x14À')
+127.0.0.1 - - [20/May/2025 17:34:49] "\x16\x03\x01\x00{\x01\x00\x00w\x03\x03ÿ\x9b°\x84?\x94\x01!Gº\x17ü4×Ê«Z6\x82! ð^\x13Ê=(+Y9¤}\x00\x00\x1aÀ/À+À\x11À\x07À\x13À\x09À\x14À" 400 -
+127.0.0.1 - - [20/May/2025 18:20:48] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [20/May/2025 18:22:13] code 400, message Bad HTTP/0.9 request type ('\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie:')
+127.0.0.1 - - [20/May/2025 18:22:13] "\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie: mstshash=Administr" 400 -
+127.0.0.1 - - [20/May/2025 18:33:53] code 400, message Bad request syntax ('MGLNDD_60.205.205.131_8088')
+127.0.0.1 - - [20/May/2025 18:33:53] "MGLNDD_60.205.205.131_8088" 400 -
+127.0.0.1 - - [20/May/2025 18:55:18] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [20/May/2025 18:58:06] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [20/May/2025 18:58:21] code 400, message Bad HTTP/0.9 request type ('\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie:')
+127.0.0.1 - - [20/May/2025 18:58:21] "\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie: mstshash=Administr" 400 -
+127.0.0.1 - - [20/May/2025 19:37:59] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [20/May/2025 19:45:08] code 400, message Bad HTTP/0.9 request type ('\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie:')
+127.0.0.1 - - [20/May/2025 19:45:08] "\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie: mstshash=Administr" 400 -
+127.0.0.1 - - [20/May/2025 20:11:43] code 400, message Bad request syntax ('\x05\x01\x00')
+127.0.0.1 - - [20/May/2025 20:11:43] "\x05\x01\x00" 400 -
+127.0.0.1 - - [20/May/2025 20:12:01] "GET http://passport.baidu.com/ HTTP/1.1" 200 -
+127.0.0.1 - - [20/May/2025 20:12:19] code 400, message Bad request syntax ('\x04\x01\x00Pg)§ê\x00')
+127.0.0.1 - - [20/May/2025 20:12:19] "\x04\x01\x00Pg)§ê\x00" 400 -
+127.0.0.1 - - [20/May/2025 20:17:08] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [20/May/2025 20:34:41] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [20/May/2025 20:40:17] code 400, message Bad request version ('À\x14À')
+127.0.0.1 - - [20/May/2025 20:40:17] "\x16\x03\x01\x00{\x01\x00\x00w\x03\x03W!!÷\x01\x83 \x15¦Ìí|wúçÖ\x1e>¢B£A\x1e_\x00ç¾AÓKfT\x00\x00\x1aÀ/À+À\x11À\x07À\x13À\x09À\x14À" 400 -
+127.0.0.1 - - [20/May/2025 20:41:55] code 400, message Bad HTTP/0.9 request type ('\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie:')
+127.0.0.1 - - [20/May/2025 20:41:55] "\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie: mstshash=Administr" 400 -
+127.0.0.1 - - [20/May/2025 20:55:33] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [20/May/2025 21:16:22] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [20/May/2025 21:16:26] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [20/May/2025 21:16:26] "GET /favicon.ico HTTP/1.1" 404 -
+127.0.0.1 - - [20/May/2025 21:16:27] code 505, message Invalid HTTP version (2.0)
+127.0.0.1 - - [20/May/2025 21:16:27] "PRI * HTTP/2.0" 505 -
+127.0.0.1 - - [20/May/2025 21:16:30] "GET /favicon.ico HTTP/1.1" 404 -
+127.0.0.1 - - [20/May/2025 21:16:31] code 400, message Bad request version ('À\x14À')
+127.0.0.1 - - [20/May/2025 21:16:31] "\x16\x03\x01\x00÷\x01\x00\x00ó\x03\x03U±þEªøÄÞÐ3\x9aèù¥K\x9aèx¥¡j_\x9e\x96,eè o\x05¶& &\x0bt%D\x9b+ütñ>\x9fÒ\x1fò¬ó:\x80¹!(ãþí\x14´í}\x10aE\x00&Ì¨Ì©À/À0À+À,À\x13À\x09À\x14À" 400 -
+127.0.0.1 - - [20/May/2025 21:23:08] code 400, message Bad request version ('À#À¬À®À+À')
+127.0.0.1 - - [20/May/2025 21:23:08] "\x16\x03\x03\x01§\x01\x00\x01£\x03\x03ÐÃ\x1f*Ê¯¨ÂëL\x1eÔ\x10\x8eñì Ûy72çÑ¢¹ÜÌ×\x90ê"3 ß\x1cÂ êª\x8eà±cÎ\x99\x10º3\x0c"\x8b8Y\x0c\x16p\x1cÿvõËq!\x8b\x0d\x00\x8a\x00\x16\x003\x00gÀ\x9eÀ¢\x00\x9e\x009\x00kÀ\x9fÀ£\x00\x9f\x00E\x00¾\x00\x88\x00Ä\x00\x9aÀ\x08À\x09À#À¬À®À+À" 400 -
+127.0.0.1 - - [20/May/2025 21:23:11] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [20/May/2025 21:36:01] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [20/May/2025 21:36:10] "GET /favicon.ico HTTP/1.1" 404 -
+127.0.0.1 - - [20/May/2025 21:46:30] code 400, message Bad HTTP/0.9 request type ('\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie:')
+127.0.0.1 - - [20/May/2025 21:46:30] "\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie: mstshash=Administr" 400 -
+127.0.0.1 - - [20/May/2025 22:10:04] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [20/May/2025 22:31:08] code 400, message Bad request syntax ('\x03\x00\x00\x13\x0eà\x00\x00\x00\x00\x00\x01\x00\x08\x00\x03\x00\x00\x00')
+127.0.0.1 - - [20/May/2025 22:31:08] "\x03\x00\x00\x13\x0eà\x00\x00\x00\x00\x00\x01\x00\x08\x00\x03\x00\x00\x00" 400 -
+127.0.0.1 - - [20/May/2025 22:41:15] code 400, message Bad HTTP/0.9 request type ('\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie:')
+127.0.0.1 - - [20/May/2025 22:41:15] "\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie: mstshash=Administr" 400 -
+127.0.0.1 - - [20/May/2025 22:48:23] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [20/May/2025 23:29:56] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [20/May/2025 23:52:28] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [20/May/2025 23:52:28] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [20/May/2025 23:52:29] "GET /static/main.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/May/2025 23:52:40] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [20/May/2025 23:52:40] "GET /static/main.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/May/2025 23:52:50] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [20/May/2025 23:52:50] "GET /static/main.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/May/2025 23:53:00] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [20/May/2025 23:53:01] "GET /static/main.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/May/2025 23:54:00] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [20/May/2025 23:54:01] "GET /favicon.ico HTTP/1.1" 404 -
+127.0.0.1 - - [20/May/2025 23:54:02] code 505, message Invalid HTTP version (2.0)
+127.0.0.1 - - [20/May/2025 23:54:02] "PRI * HTTP/2.0" 505 -
+127.0.0.1 - - [20/May/2025 23:54:06] "GET /favicon.ico HTTP/1.1" 404 -
+127.0.0.1 - - [20/May/2025 23:54:07] code 400, message Bad request version ('À\x14À')
+127.0.0.1 - - [20/May/2025 23:54:07] "\x16\x03\x01\x00÷\x01\x00\x00ó\x03\x03¸\x17]ÏkrA\x1aM;#°õ\x95¢B\x87ö\x1e\x80b\x89O^¾\x88\x08\x07\x7fÖ)n \x1fÃ¶©ÝÌ\\-¹º<Dk\x08)\x1f#ÒM]À<A'\x85\x97÷V&½T\x88\x00&Ì¨Ì©À/À0À+À,À\x13À\x09À\x14À" 400 -
+127.0.0.1 - - [21/May/2025 00:08:23] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [21/May/2025 00:32:34] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [21/May/2025 00:48:38] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [21/May/2025 01:09:47] code 400, message Bad HTTP/0.9 request type ('\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie:')
+127.0.0.1 - - [21/May/2025 01:09:47] "\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie: mstshash=Administr" 400 -
+127.0.0.1 - - [21/May/2025 01:26:02] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [21/May/2025 01:52:55] code 400, message Bad HTTP/0.9 request type ('\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie:')
+127.0.0.1 - - [21/May/2025 01:52:55] "\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie: mstshash=Administr" 400 -
+127.0.0.1 - - [21/May/2025 02:01:09] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [21/May/2025 02:39:57] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [21/May/2025 02:39:57] "GET /explicit_not_exist_path HTTP/1.1" 404 -
+127.0.0.1 - - [21/May/2025 02:39:58] "GET /admin/ HTTP/1.1" 404 -
+127.0.0.1 - - [21/May/2025 02:39:58] "GET /robots.txt HTTP/1.1" 404 -
+127.0.0.1 - - [21/May/2025 02:39:58] "GET /favicon.ico HTTP/1.1" 404 -
+127.0.0.1 - - [21/May/2025 02:39:58] "GET /v1/models HTTP/1.1" 404 -
+127.0.0.1 - - [21/May/2025 02:39:58] "GET /images/ofbiz.ico HTTP/1.1" 404 -
+127.0.0.1 - - [21/May/2025 02:39:58] "GET /nacos/ HTTP/1.1" 404 -
+127.0.0.1 - - [21/May/2025 02:39:59] "GET /nacos/css/main.css HTTP/1.1" 404 -
+127.0.0.1 - - [21/May/2025 02:39:59] "GET /v2/logging HTTP/1.1" 404 -
+127.0.0.1 - - [21/May/2025 02:39:59] "GET /sse HTTP/1.1" 404 -
+127.0.0.1 - - [21/May/2025 02:39:59] "GET /messages HTTP/1.1" 404 -
+127.0.0.1 - - [21/May/2025 02:39:59] "GET /web/static/src/img/favicon.ico HTTP/1.1" 404 -
+127.0.0.1 - - [21/May/2025 02:39:59] "GET /phpMyAdmin/ HTTP/1.1" 404 -
+127.0.0.1 - - [21/May/2025 02:39:59] "GET /phpmyadmin/ HTTP/1.1" 404 -
+127.0.0.1 - - [21/May/2025 02:39:59] "GET /wcm/ HTTP/1.1" 404 -
+127.0.0.1 - - [21/May/2025 02:41:53] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [21/May/2025 02:56:34] code 400, message Bad HTTP/0.9 request type ('\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie:')
+127.0.0.1 - - [21/May/2025 02:56:34] "\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie: mstshash=Administr" 400 -
+127.0.0.1 - - [21/May/2025 03:15:32] code 400, message Bad request version ('À\x13À')
+127.0.0.1 - - [21/May/2025 03:15:32] "\x16\x03\x01\x00î\x01\x00\x00ê\x03\x03\x98Ñ\x93W\x7f?\x19!8é¤X:ð3%\x96\x92Ù+õuP\x00T×qwï\x0f\x85· ,\x90m¸Wã\x02ZaÙËm\x7fr\x92È0ErÒPÜÖgç­Z\x1c)±\x94Û\x00&À+À/À,À0Ì©Ì¨À\x09À\x13À" 400 -
+127.0.0.1 - - [21/May/2025 03:15:32] code 400, message Bad request version ('À(À$À\x14À')
+127.0.0.1 - - [21/May/2025 03:15:32] "\x16\x03\x01\x00Ê\x01\x00\x00Æ\x03\x03\x93\x1eJ SDÕÞ<\x94ñµ!P¤\x82\x97s<ûU·U³\x98\x07ú\x10F'z\x9a\x00\x00hÌ\x14Ì\x13À/À+À0À,À\x11À\x07À'À#À\x13À\x09À(À$À\x14À" 400 -
+127.0.0.1 - - [21/May/2025 03:23:49] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [21/May/2025 03:28:57] code 400, message Bad HTTP/0.9 request type ('\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie:')
+127.0.0.1 - - [21/May/2025 03:28:57] "\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie: mstshash=Administr" 400 -
+127.0.0.1 - - [21/May/2025 03:36:08] code 400, message Bad HTTP/0.9 request type ('\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie:')
+127.0.0.1 - - [21/May/2025 03:36:08] "\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie: mstshash=Administr" 400 -
+127.0.0.1 - - [21/May/2025 04:00:24] "GET / HTTP/1.0" 200 -
+127.0.0.1 - - [21/May/2025 04:02:13] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [21/May/2025 04:08:08] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [21/May/2025 04:14:45] code 400, message Bad request version ('X"àÄ\x88.[Lª×\x1b\\ã«åx#¨)\x00\x00VÀ,À+À0À/\x00\x9f\x00£\x00\x9e\x00¢À$À(À#À\'\x00k\x00j\x00g\x00@À.À2À-À1À&À*À%À)À')
+127.0.0.1 - - [21/May/2025 04:14:45] "\x16\x03\x03\x01\x02\x01\x00\x00þ\x03\x03:\x11\x8d\x11I'`\x0dæm|Ô\x1cX"àÄ\x88.[Lª×\x1b\\ã«åx#¨)\x00\x00VÀ,À+À0À/\x00\x9f\x00£\x00\x9e\x00¢À$À(À#À'\x00k\x00j\x00g\x00@À.À2À-À1À&À*À%À)À" 400 -
+127.0.0.1 - - [21/May/2025 04:15:28] code 400, message Bad HTTP/0.9 request type ('\x16\x03\x03\x01\x02\x01\x00\x00þ\x03\x03\\\\\x99ÔðÇ\x83')
+127.0.0.1 - - [21/May/2025 04:15:28] "\x16\x03\x03\x01\x02\x01\x00\x00þ\x03\x03\\\\\x99ÔðÇ\x83\x1eà,\x8c\x9e\x8fBW¥¤\x04%\x83d\x812>¤Q\x87ôòõö\x05\x00\x00VÀ,À+À0À/\x00\x9f\x00£\x00\x9e\x00¢À$À(À#À'\x00k\x00j\x00g\x00@À.À2À-À1À&À*À%À)À" 400 -
+127.0.0.1 - - [21/May/2025 04:26:39] code 400, message Bad HTTP/0.9 request type ('\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie:')
+127.0.0.1 - - [21/May/2025 04:26:39] "\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie: mstshash=Administr" 400 -
+127.0.0.1 - - [21/May/2025 04:36:38] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [21/May/2025 04:37:14] code 400, message Bad HTTP/0.9 request type ('\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie:')
+127.0.0.1 - - [21/May/2025 04:37:14] "\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie: mstshash=Administr" 400 -
+127.0.0.1 - - [21/May/2025 04:47:11] code 400, message Bad HTTP/0.9 request type ('\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie:')
+127.0.0.1 - - [21/May/2025 04:47:11] "\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie: mstshash=Administr" 400 -
+127.0.0.1 - - [21/May/2025 05:17:55] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [21/May/2025 05:23:30] code 400, message Bad HTTP/0.9 request type ('\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie:')
+127.0.0.1 - - [21/May/2025 05:23:30] "\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie: mstshash=Administr" 400 -
+127.0.0.1 - - [21/May/2025 05:52:52] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [21/May/2025 06:29:34] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [21/May/2025 06:32:39] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [21/May/2025 06:37:07] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [21/May/2025 06:37:08] "GET /explicit_not_exist_path HTTP/1.1" 404 -
+127.0.0.1 - - [21/May/2025 06:37:08] "GET /admin/ HTTP/1.1" 404 -
+127.0.0.1 - - [21/May/2025 06:37:08] "GET /robots.txt HTTP/1.1" 404 -
+127.0.0.1 - - [21/May/2025 06:37:08] "GET /favicon.ico HTTP/1.1" 404 -
+127.0.0.1 - - [21/May/2025 06:37:08] "GET /v1/models HTTP/1.1" 404 -
+127.0.0.1 - - [21/May/2025 06:37:09] "GET /images/ofbiz.ico HTTP/1.1" 404 -
+127.0.0.1 - - [21/May/2025 06:37:09] "GET /nacos/ HTTP/1.1" 404 -
+127.0.0.1 - - [21/May/2025 06:37:09] "GET /nacos/css/main.css HTTP/1.1" 404 -
+127.0.0.1 - - [21/May/2025 06:37:09] "GET /v2/logging HTTP/1.1" 404 -
+127.0.0.1 - - [21/May/2025 06:37:09] "GET /sse HTTP/1.1" 404 -
+127.0.0.1 - - [21/May/2025 06:37:09] "GET /messages HTTP/1.1" 404 -
+127.0.0.1 - - [21/May/2025 06:37:09] "GET /web/static/src/img/favicon.ico HTTP/1.1" 404 -
+127.0.0.1 - - [21/May/2025 06:37:09] "GET /phpMyAdmin/ HTTP/1.1" 404 -
+127.0.0.1 - - [21/May/2025 06:37:09] "GET /phpmyadmin/ HTTP/1.1" 404 -
+127.0.0.1 - - [21/May/2025 06:37:10] "GET /wcm/ HTTP/1.1" 404 -
+127.0.0.1 - - [21/May/2025 07:04:59] code 400, message Bad HTTP/0.9 request type ('\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie:')
+127.0.0.1 - - [21/May/2025 07:04:59] "\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie: mstshash=Administr" 400 -
+127.0.0.1 - - [21/May/2025 07:15:26] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [21/May/2025 07:52:45] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [21/May/2025 07:55:02] code 400, message Bad HTTP/0.9 request type ('\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie:')
+127.0.0.1 - - [21/May/2025 07:55:02] "\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie: mstshash=Administr" 400 -
+127.0.0.1 - - [21/May/2025 08:20:34] code 400, message Bad HTTP/0.9 request type ('\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie:')
+127.0.0.1 - - [21/May/2025 08:20:34] "\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie: mstshash=Administr" 400 -
+127.0.0.1 - - [21/May/2025 08:28:21] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [21/May/2025 08:47:31] code 400, message Bad HTTP/0.9 request type ('\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie:')
+127.0.0.1 - - [21/May/2025 08:47:31] "\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie: mstshash=Administr" 400 -
+127.0.0.1 - - [21/May/2025 09:09:53] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [21/May/2025 09:39:26] code 400, message Bad request syntax ('\x04\x01\x00Pg)§ê\x00')
+127.0.0.1 - - [21/May/2025 09:39:26] "\x04\x01\x00Pg)§ê\x00" 400 -
+127.0.0.1 - - [21/May/2025 09:39:37] "GET http://passport.baidu.com/ HTTP/1.1" 200 -
+127.0.0.1 - - [21/May/2025 09:39:48] code 400, message Bad request syntax ('\x05\x01\x00')
+127.0.0.1 - - [21/May/2025 09:39:48] "\x05\x01\x00" 400 -
+127.0.0.1 - - [21/May/2025 09:45:38] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [21/May/2025 09:54:32] code 400, message Bad HTTP/0.9 request type ('\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie:')
+127.0.0.1 - - [21/May/2025 09:54:32] "\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie: mstshash=Administr" 400 -
+127.0.0.1 - - [21/May/2025 10:27:13] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [21/May/2025 10:37:24] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [21/May/2025 10:57:30] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [21/May/2025 11:07:04] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [21/May/2025 11:12:48] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [21/May/2025 11:20:54] code 400, message Bad HTTP/0.9 request type ('l\x00')
+127.0.0.1 - - [21/May/2025 11:20:54] "l\x00\x0b\x00\x00\x00\x00\x00\x00\x00\x00\x00" 400 -
+127.0.0.1 - - [21/May/2025 11:23:01] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [21/May/2025 11:36:21] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [21/May/2025 11:41:05] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [21/May/2025 11:46:06] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [21/May/2025 12:18:42] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [21/May/2025 12:22:37] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [21/May/2025 12:24:23] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [21/May/2025 12:43:19] code 400, message Bad request version ('À\x13À')
+127.0.0.1 - - [21/May/2025 12:43:19] "\x16\x03\x01\x00î\x01\x00\x00ê\x03\x03à(N\x12÷\x1d[k@)\x01\x8dFFÃ»\x8bÔ/bI<%Sê¬è¾{ÇöÐ 8\x0f\x0e\x14eÔ]½µT\x0b½Ñ8\x8aX§«¯/Èq\x99h¬ï@õ\x06\x09ßú\x00&À+À/À,À0Ì©Ì¨À\x09À\x13À" 400 -
+127.0.0.1 - - [21/May/2025 12:43:19] code 400, message Bad request syntax ('\x16\x03\x01\x00Ê\x01\x00\x00Æ\x03\x03\x9eÛP\x93Í\x1bµþÌÙ"ÂJc¡úÂ¡?íè\x10A\x8cU\x95\x89s×\x90{')
+127.0.0.1 - - [21/May/2025 12:43:19] "\x16\x03\x01\x00Ê\x01\x00\x00Æ\x03\x03\x9eÛP\x93Í\x1bµþÌÙ"ÂJc¡úÂ¡?íè\x10A\x8cU\x95\x89s×\x90{" 400 -
+127.0.0.1 - - [21/May/2025 12:45:07] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [21/May/2025 12:58:15] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [21/May/2025 13:03:10] "GET / HTTP/1.0" 200 -
+127.0.0.1 - - [21/May/2025 13:07:11] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [21/May/2025 13:07:16] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [21/May/2025 13:28:13] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [21/May/2025 13:37:27] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [21/May/2025 13:55:35] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [21/May/2025 14:16:27] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [21/May/2025 14:18:23] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [21/May/2025 14:23:37] code 400, message Bad request syntax ('\x16\x03\x01\x00{\x01\x00\x00w\x03\x03uù\x97¦')
+127.0.0.1 - - [21/May/2025 14:23:37] "\x16\x03\x01\x00{\x01\x00\x00w\x03\x03uù\x97¦" 400 -
+127.0.0.1 - - [21/May/2025 15:09:11] code 400, message Bad HTTP/0.9 request type ('l\x00')
+127.0.0.1 - - [21/May/2025 15:09:11] "l\x00\x0b\x00\x00\x00\x00\x00\x00\x00\x00\x00" 400 -
+127.0.0.1 - - [21/May/2025 15:09:18] code 400, message Bad request version ('À\x14À')
+127.0.0.1 - - [21/May/2025 15:09:18] "\x16\x03\x01\x00î\x01\x00\x00ê\x03\x03,e-¹\x91½Ê\x13N\x91\x04ú\x84\x93\x0d\x1f\x9dÕ\x19µc»±»9\x18Èþ5E>ì 0po\x19»Ðå-\x96\x98*¬bZ\x16þÞ×ÕM\x94\x7f\x87vÓ~Ú\x94Õ ,q\x00&Ì¨Ì©À/À0À+À,À\x13À\x09À\x14À" 400 -
+127.0.0.1 - - [21/May/2025 15:09:21] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [21/May/2025 15:09:25] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [21/May/2025 15:09:25] "GET /favicon.ico HTTP/1.1" 404 -
+127.0.0.1 - - [21/May/2025 15:09:26] code 505, message Invalid HTTP version (2.0)
+127.0.0.1 - - [21/May/2025 15:09:26] "PRI * HTTP/2.0" 505 -
+127.0.0.1 - - [21/May/2025 15:09:29] "GET /favicon.ico HTTP/1.1" 404 -
+127.0.0.1 - - [21/May/2025 15:09:30] code 400, message Bad request version ('\x96U«UÔ\x04g')
+127.0.0.1 - - [21/May/2025 15:09:30] "\x16\x03\x01\x00÷\x01\x00\x00ó\x03\x030\x8a\x92p_m\x8e}\x06}\x8eV\x0eön¯V$Â\x11!\x19`\x95BN\x8b\x05uòpK \x7f%ëõó1MK\x1a&\x7fèå\x16Ê\x1d&\x0d\x96U«UÔ\x04g" 400 -
+127.0.0.1 - - [21/May/2025 15:28:37] code 400, message Bad HTTP/0.9 request type ('\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie:')
+127.0.0.1 - - [21/May/2025 15:28:37] "\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie: mstshash=Administr" 400 -
+127.0.0.1 - - [21/May/2025 15:33:59] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [21/May/2025 16:20:27] code 400, message Bad HTTP/0.9 request type ('\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie:')
+127.0.0.1 - - [21/May/2025 16:20:27] "\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie: mstshash=Administr" 400 -
+127.0.0.1 - - [21/May/2025 16:27:02] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [21/May/2025 16:27:02] "GET /favicon.ico HTTP/1.1" 404 -
+127.0.0.1 - - [21/May/2025 16:48:52] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [21/May/2025 16:52:11] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [21/May/2025 17:05:25] code 400, message Bad HTTP/0.9 request type ('\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie:')
+127.0.0.1 - - [21/May/2025 17:05:25] "\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie: mstshash=Administr" 400 -
+127.0.0.1 - - [21/May/2025 17:17:51] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [21/May/2025 17:28:27] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [21/May/2025 17:37:00] code 400, message Bad HTTP/0.9 request type ('l\x00')
+127.0.0.1 - - [21/May/2025 17:37:00] "l\x00\x0b\x00\x00\x00\x00\x00\x00\x00\x00\x00" 400 -
+127.0.0.1 - - [21/May/2025 17:43:14] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [21/May/2025 17:55:38] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [21/May/2025 18:06:26] code 400, message Bad HTTP/0.9 request type ('\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie:')
+127.0.0.1 - - [21/May/2025 18:06:26] "\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie: mstshash=Administr" 400 -
+127.0.0.1 - - [21/May/2025 18:13:23] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [21/May/2025 18:29:57] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [21/May/2025 18:45:25] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [21/May/2025 18:55:52] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [21/May/2025 19:12:08] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [21/May/2025 19:27:34] code 400, message Bad request syntax ('\x04\x01\x00Pg)§ê\x00')
+127.0.0.1 - - [21/May/2025 19:27:34] "\x04\x01\x00Pg)§ê\x00" 400 -
+127.0.0.1 - - [21/May/2025 19:27:44] code 400, message Bad request syntax ('\x05\x01\x00')
+127.0.0.1 - - [21/May/2025 19:27:44] "\x05\x01\x00" 400 -
+127.0.0.1 - - [21/May/2025 19:27:46] "GET http://passport.baidu.com/ HTTP/1.1" 200 -
+127.0.0.1 - - [21/May/2025 19:39:05] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [21/May/2025 19:49:35] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [21/May/2025 19:49:58] code 400, message Bad HTTP/0.9 request type ('l\x00')
+127.0.0.1 - - [21/May/2025 19:49:58] "l\x00\x0b\x00\x00\x00\x00\x00\x00\x00\x00\x00" 400 -
+127.0.0.1 - - [21/May/2025 19:50:05] code 400, message Bad request version ('À\x14À')
+127.0.0.1 - - [21/May/2025 19:50:05] "\x16\x03\x01\x00î\x01\x00\x00ê\x03\x03®\x0dÖá\x90yHÕ°Ñ)\x8c¥iD×LÓ)\x1fÅä÷6b\x1d&k\x91s`µ \x94:\x05fë\x1a:Á\x16¼®íh\x8eÕ&Î\x15ªnýüã¸\x17]gîVY\x8có\x00&Ì¨Ì©À/À0À+À,À\x13À\x09À\x14À" 400 -
+127.0.0.1 - - [21/May/2025 19:50:08] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [21/May/2025 19:50:12] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [21/May/2025 19:50:13] "GET /favicon.ico HTTP/1.1" 404 -
+127.0.0.1 - - [21/May/2025 19:50:13] code 505, message Invalid HTTP version (2.0)
+127.0.0.1 - - [21/May/2025 19:50:13] "PRI * HTTP/2.0" 505 -
+127.0.0.1 - - [21/May/2025 19:50:17] "GET /favicon.ico HTTP/1.1" 404 -
+127.0.0.1 - - [21/May/2025 19:50:17] code 400, message Bad request version ('À\x14À')
+127.0.0.1 - - [21/May/2025 19:50:17] "\x16\x03\x01\x00÷\x01\x00\x00ó\x03\x03\x1f½®\x0fwä?G\x8dj¸Ú×\x92\x05\x98Ñ\x82­-ÌÔcë¾&r\x1d=æ\x16¼ dã\x83õ÷=\x9f6óÄø=MºgM[²jé\x92\x15Sz\x17<í\x02Yâ\x18¹\x00&Ì¨Ì©À/À0À+À,À\x13À\x09À\x14À" 400 -
+127.0.0.1 - - [21/May/2025 19:50:55] code 400, message Bad HTTP/0.9 request type ('\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie:')
+127.0.0.1 - - [21/May/2025 19:50:55] "\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie: mstshash=Administr" 400 -
+127.0.0.1 - - [21/May/2025 20:02:23] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [21/May/2025 20:03:45] "GET / HTTP/1.0" 200 -
+127.0.0.1 - - [21/May/2025 20:03:49] code 400, message Bad request syntax ('\x05\x04\x00\x01\x02\x80\x05\x01\x00\x03')
+127.0.0.1 - - [21/May/2025 20:03:49] "\x05\x04\x00\x01\x02\x80\x05\x01\x00\x03" 400 -
+127.0.0.1 - - [21/May/2025 20:03:59] code 400, message Bad request syntax ('\x04\x01\x00\x16\x7f\x00\x00\x01root\x00')
+127.0.0.1 - - [21/May/2025 20:03:59] "\x04\x01\x00\x16\x7f\x00\x00\x01root\x00" 400 -
+127.0.0.1 - - [21/May/2025 20:04:04] "OPTIONS / HTTP/1.0" 200 -
+127.0.0.1 - - [21/May/2025 20:04:09] code 400, message Bad request version ('RTSP/1.0')
+127.0.0.1 - - [21/May/2025 20:04:09] "OPTIONS / RTSP/1.0" 400 -
+127.0.0.1 - - [21/May/2025 20:04:19] code 400, message Bad request version ('\x00\x01\x97|\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00')
+127.0.0.1 - - [21/May/2025 20:04:19] "\x80\x00\x00(rþ\x1d\x13\x00\x00\x00\x00\x00\x00\x00\x02\x00\x01\x86 \x00\x01\x97|\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00" 400 -
+127.0.0.1 - - [21/May/2025 20:04:27] code 400, message Bad HTTP/0.9 request type ('\x00')
+127.0.0.1 - - [21/May/2025 20:04:27] "\x00\x1e\x00\x06\x01\x00\x00\x01\x00\x00\x00\x00\x00\x00\x07version\x04bind\x00\x00\x10\x00\x03" 400 -
+127.0.0.1 - - [21/May/2025 20:04:34] code 400, message Bad HTTP/0.9 request type ('\x00')
+127.0.0.1 - - [21/May/2025 20:04:34] "\x00\x0c\x00\x00\x10\x00\x00\x00\x00\x00\x00\x00\x00\x00" 400 -
+127.0.0.1 - - [21/May/2025 20:04:36] code 400, message Bad request syntax ('EHLO')
+127.0.0.1 - - [21/May/2025 20:04:36] "EHLO" 400 -
+127.0.0.1 - - [21/May/2025 20:04:41] code 400, message Bad request syntax ('HELP')
+127.0.0.1 - - [21/May/2025 20:04:41] "HELP" 400 -
+127.0.0.1 - - [21/May/2025 20:04:46] code 400, message Bad request syntax ('\x16\x03\x00\x00S\x01\x00\x00O\x03\x00?G×÷º,îê²`~ó\x00ý\x82{¹Õ\x96Èw\x9bæÄÛ<=Ûoï\x10n\x00\x00(\x00\x16\x00\x13\x00')
+127.0.0.1 - - [21/May/2025 20:04:46] "\x16\x03\x00\x00S\x01\x00\x00O\x03\x00?G×÷º,îê²`~ó\x00ý\x82{¹Õ\x96Èw\x9bæÄÛ<=Ûoï\x10n\x00\x00(\x00\x16\x00\x13\x00" 400 -
+127.0.0.1 - - [21/May/2025 20:04:51] code 400, message Bad HTTP/0.9 request type ('\x03\x00\x00*%à\x00\x00\x00\x00\x00Cookie:')
+127.0.0.1 - - [21/May/2025 20:04:51] "\x03\x00\x00*%à\x00\x00\x00\x00\x00Cookie: mstshash=nmap" 400 -
+127.0.0.1 - - [21/May/2025 20:04:56] code 400, message Bad request version ('\x00/\x00')
+127.0.0.1 - - [21/May/2025 20:04:56] "\x16\x03\x00\x00i\x01\x00\x00e\x03\x03U\x1c§ärandom1random2random3random4\x00\x00\x0c\x00/\x00" 400 -
+127.0.0.1 - - [21/May/2025 20:05:01] code 400, message Bad HTTP/0.9 request type ('\x80\x9e\x01\x03\x01\x00u\x00\x00\x00')
+127.0.0.1 - - [21/May/2025 20:05:01] "\x80\x9e\x01\x03\x01\x00u\x00\x00\x00 \x00\x00f\x00\x00e\x00\x00d\x00\x00c\x00\x00b\x00\x00:\x00\x009\x00\x008\x00\x005\x00\x004\x00\x003\x00\x002\x00\x00/\x00\x00\x1b\x00\x00\x1a\x00\x00\x19\x00\x00\x18\x00\x00\x17\x00\x00\x16\x00\x00\x15\x00\x00\x14\x00\x00\x13\x00\x00\x12\x00\x00\x11\x00\x00" 400 -
+127.0.0.1 - - [21/May/2025 20:05:06] code 400, message Bad request syntax ('\x00\x00\x00qj\x81n0\x81k¡\x03\x02\x01\x05¢\x03\x02\x01')
+127.0.0.1 - - [21/May/2025 20:05:06] "\x00\x00\x00qj\x81n0\x81k¡\x03\x02\x01\x05¢\x03\x02\x01" 400 -
+127.0.0.1 - - [21/May/2025 20:05:16] code 400, message Bad request version ('0.12\x00')
+127.0.0.1 - - [21/May/2025 20:05:16] "\x00\x00\x00¤ÿSMBr\x00\x00\x00\x00\x08\x01@\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00@\x06\x00\x00\x01\x00\x00\x81\x00\x02PC NETWORK PROGRAM 1.0\x00\x02MICROSOFT NETWORKS 1.03\x00\x02MICROSOFT NETWORKS 3.0\x00\x02LANMAN1.0\x00\x02LM1.2X002\x00\x02Samba\x00\x02NT LANMAN 1.0\x00\x02NT LM 0.12\x00" 400 -
+127.0.0.1 - - [21/May/2025 20:05:23] code 400, message Bad HTTP/0.9 request type ('l\x00')
+127.0.0.1 - - [21/May/2025 20:05:23] "l\x00\x0b\x00\x00\x00\x00\x00\x00\x00\x00\x00" 400 -
+127.0.0.1 - - [21/May/2025 20:05:24] "GET /nice%20ports,/Trinity.txt.bak HTTP/1.0" 404 -
+127.0.0.1 - - [21/May/2025 20:05:29] code 400, message Bad request syntax ('\x01default')
+127.0.0.1 - - [21/May/2025 20:05:29] "\x01default" 400 -
+127.0.0.1 - - [21/May/2025 20:05:34] code 400, message Bad request syntax ('0\x84\x00\x00\x00-\x02\x01\x07c\x84\x00\x00\x00$\x04\x00')
+127.0.0.1 - - [21/May/2025 20:05:34] "0\x84\x00\x00\x00-\x02\x01\x07c\x84\x00\x00\x00$\x04\x00" 400 -
+127.0.0.1 - - [21/May/2025 20:05:43] code 400, message Bad HTTP/0.9 request type ('0')
+127.0.0.1 - - [21/May/2025 20:05:43] "0\x0c\x02\x01\x01`\x07\x02\x01\x02\x04\x00\x80\x00" 400 -
+127.0.0.1 - - [21/May/2025 20:05:44] code 400, message Bad request version ('SIP/2.0')
+127.0.0.1 - - [21/May/2025 20:05:44] "OPTIONS sip:nm SIP/2.0" 400 -
+127.0.0.1 - - [21/May/2025 20:05:54] code 400, message Bad request syntax ('TNMP\x04\x00\x00\x00TNME\x00\x00\x04\x00')
+127.0.0.1 - - [21/May/2025 20:05:54] "TNMP\x04\x00\x00\x00TNME\x00\x00\x04\x00" 400 -
+127.0.0.1 - - [21/May/2025 20:06:01] code 400, message Bad HTTP/0.9 request type ('\x03\x00\x00')
+127.0.0.1 - - [21/May/2025 20:06:01] "\x03\x00\x00\x0b\x06à\x00\x00\x00\x00\x00" 400 -
+127.0.0.1 - - [21/May/2025 20:06:07] code 400, message Bad request syntax ('DmdT\x00\x00\x00\x17\x00\x00\x00\x01\x00\x00\x00\x00\x11\x11\x00ÿ\x01ÿ\x13')
+127.0.0.1 - - [21/May/2025 20:06:07] "DmdT\x00\x00\x00\x17\x00\x00\x00\x01\x00\x00\x00\x00\x11\x11\x00ÿ\x01ÿ\x13" 400 -
+127.0.0.1 - - [21/May/2025 20:06:14] code 400, message Bad HTTP/0.9 request type (':\x00\x00\x00/\x00\x00\x00\x02\x00\x00@\x02\x0f\x00\x01\x00=\x05\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00/\x00\x00\x00\x00\x00\x00\x00\x00\x00@')
+127.0.0.1 - - [21/May/2025 20:06:14] ":\x00\x00\x00/\x00\x00\x00\x02\x00\x00@\x02\x0f\x00\x01\x00=\x05\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00/\x00\x00\x00\x00\x00\x00\x00\x00\x00@\x1f\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00" 400 -
+127.0.0.1 - - [21/May/2025 20:06:21] code 400, message Bad request syntax ('DIST00000001ARGC00000005ARGV00000002ccARGV00000002-cARGV00000006nmap.cARGV00000002-oARGV00000006nmap.oDOTI00000000')
+127.0.0.1 - - [21/May/2025 20:06:21] "DIST00000001ARGC00000005ARGV00000002ccARGV00000002-cARGV00000006nmap.cARGV00000002-oARGV00000006nmap.oDOTI00000000" 400 -
+127.0.0.1 - - [21/May/2025 20:06:28] code 400, message Bad request syntax ('JRMI\x00\x02K')
+127.0.0.1 - - [21/May/2025 20:06:28] "JRMI\x00\x02K" 400 -
+127.0.0.1 - - [21/May/2025 20:06:36] code 400, message Bad request syntax ('\x01\x00\x00\x00\x01\x00\x00\x00\x08\x08')
+127.0.0.1 - - [21/May/2025 20:06:36] "\x01\x00\x00\x00\x01\x00\x00\x00\x08\x08" 400 -
+127.0.0.1 - - [21/May/2025 20:06:37] code 400, message Bad request version ('>')
+127.0.0.1 - - [21/May/2025 20:06:37] "< NTP/1.0 >" 400 -
+127.0.0.1 - - [21/May/2025 20:06:47] code 400, message Bad request version ('\x00{\x000\x000\x000\x000\x00A\x00A\x000\x000\x00-\x000\x00A\x000\x000\x00-\x000\x000\x00a\x000\x00-\x00A\x00A\x000\x00A\x00-\x000\x000\x000\x000\x00A\x000\x00A\x00A\x000\x00A\x00A\x000\x00}\x00\x00\x00àmß_')
+127.0.0.1 - - [21/May/2025 20:06:47] "\x01\x00\x00ýÎú\x0b° \x00\x00\x00MMS\x14\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x12\x00\x00\x00\x01\x00\x03\x00ðððð\x0b\x00\x04\x00\x1c\x00\x03\x00N\x00S\x00P\x00l\x00a\x00y\x00e\x00r\x00/\x009\x00.\x000\x00.\x000\x00.\x002\x009\x008\x000\x00;\x00 \x00{\x000\x000\x000\x000\x00A\x00A\x000\x000\x00-\x000\x00A\x000\x000\x00-\x000\x000\x00a\x000\x00-\x00A\x00A\x000\x00A\x00-\x000\x000\x000\x000\x00A\x000\x00A\x00A\x000\x00A\x00A\x000\x00}\x00\x00\x00àmß_" 400 -
+127.0.0.1 - - [21/May/2025 20:06:54] code 400, message Bad HTTP/0.9 request type ('\x00Z\x00\x00\x01\x00\x00\x00\x016\x01,\x00\x00\x08\x00\x7fÿ\x7f\x08\x00\x00\x00\x01\x00')
+127.0.0.1 - - [21/May/2025 20:06:54] "\x00Z\x00\x00\x01\x00\x00\x00\x016\x01,\x00\x00\x08\x00\x7fÿ\x7f\x08\x00\x00\x00\x01\x00 \x00:\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x004æ\x00\x00\x00\x01\x00\x00\x00\x00\x00\x00\x00\x00(CONNECT_DATA=(COMMAND=version))" 400 -
+127.0.0.1 - - [21/May/2025 20:06:56] code 400, message Bad request syntax ('Subscribe')
+127.0.0.1 - - [21/May/2025 20:06:56] "Subscribe" 400 -
+127.0.0.1 - - [21/May/2025 20:07:00] code 400, message Bad request syntax ('Query')
+127.0.0.1 - - [21/May/2025 20:07:00] "Query" 400 -
+127.0.0.1 - - [21/May/2025 20:07:10] code 400, message Bad request version ('\x03\x00(\x00\x04ÿ\x08\x00\x01U\x00\x00\x00MSSQLServer\x00H\x0f\x00\x00')
+127.0.0.1 - - [21/May/2025 20:07:10] "\x12\x01\x004\x00\x00\x00\x00\x00\x00\x15\x00\x06\x01\x00\x1b\x00\x01\x02\x00\x1c\x00\x0c\x03\x00(\x00\x04ÿ\x08\x00\x01U\x00\x00\x00MSSQLServer\x00H\x0f\x00\x00" 400 -
+127.0.0.1 - - [21/May/2025 20:07:12] code 400, message Bad request syntax ('HELP')
+127.0.0.1 - - [21/May/2025 20:07:12] "HELP" 400 -
+127.0.0.1 - - [21/May/2025 20:07:16] code 400, message Bad request syntax ('stats')
+127.0.0.1 - - [21/May/2025 20:07:16] "stats" 400 -
+127.0.0.1 - - [21/May/2025 20:07:20] code 400, message Bad request version ('\x06\x00\x00\x00\x00\x00\x08\x00\x00\x00\x01\x00\x00\x00\x02\x00\x00\x00\x03\x00\x00\x00\x02\x00\x00\x00')
+127.0.0.1 - - [21/May/2025 20:07:20] "\x00\x00\x00\x01\x00\x00\x00\x13\x00\x00\x00\x02\x00\x00\x00$\x00\x00\x00\x0bservice_mgr\x00\x00\x00\x00\x02\x00\x00\x00\x13\x01\x08scanner \x04\x05nmap \x06\x00\x00\x00\x00\x00\x08\x00\x00\x00\x01\x00\x00\x00\x02\x00\x00\x00\x03\x00\x00\x00\x02\x00\x00\x00" 400 -
+127.0.0.1 - - [21/May/2025 20:07:29] code 400, message Bad request version ('\x00\x00\x00\x04')
+127.0.0.1 - - [21/May/2025 20:07:29] "\x00\x00\x00\x00DB2DAS      \x01\x04\x00\x00\x00\x109z\x00\x01\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x01\x0c\x00\x00\x00\x00\x00\x00\x0c\x00\x00\x00\x0c\x00\x00\x00\x04" 400 -
+127.0.0.1 - - [21/May/2025 20:07:36] code 400, message Bad request version ('\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x01\x00ÿ\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00ä\x04\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x7f')
+127.0.0.1 - - [21/May/2025 20:07:36] "\x01Â\x00\x00\x00\x04\x00\x00¶\x01\x00\x00SQLDB2RA\x00\x01\x00\x00\x04\x01\x01\x00\x05\x00\x1d\x00\x88\x00\x00\x00\x01\x00\x00\x80\x00\x00\x00\x01\x09\x00\x00\x00\x01\x00\x00@\x00\x00\x00\x01\x09\x00\x00\x00\x01\x00\x00@\x00\x00\x00\x01\x08\x00\x00\x00\x04\x00\x00@\x00\x00\x00\x01\x04\x00\x00\x00\x01\x00\x00@\x00\x00\x00@\x04\x00\x00\x00\x04\x00\x00@\x00\x00\x00\x01\x04\x00\x00\x00\x04\x00\x00@\x00\x00\x00\x01\x04\x00\x00\x00\x04\x00\x00@\x00\x00\x00\x01\x04\x00\x00\x00\x02\x00\x00@\x00\x00\x00\x01\x04\x00\x00\x00\x04\x00\x00@\x00\x00\x00\x01\x00\x00\x00\x00\x01\x00\x00@\x00\x00\x00\x00\x04\x00\x00\x00\x04\x00\x00\x80\x00\x00\x00\x01\x04\x00\x00\x00\x04\x00\x00\x80\x00\x00\x00\x01\x04\x00\x00\x00\x03\x00\x00\x80\x00\x00\x00\x01\x04\x00\x00\x00\x04\x00\x00\x80\x00\x00\x00\x01\x08\x00\x00\x00\x01\x00\x00@\x00\x00\x00\x01\x04\x00\x00\x00\x04\x00\x00@\x00\x00\x00\x01\x10\x00\x00\x00\x01\x00\x00\x80\x00\x00\x00\x01\x10\x00\x00\x00\x01\x00\x00\x80\x00\x00\x00\x01\x04\x00\x00\x00\x04\x00\x00@\x00\x00\x00\x01\x09\x00\x00\x00\x01\x00\x00@\x00\x00\x00\x01\x09\x00\x00\x00\x01\x00\x00\x80\x00\x00\x00\x01\x04\x00\x00\x00\x03\x00\x00\x80\x00\x00\x00\x01\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x01\x04\x00\x00\x01\x00\x00\x80\x00\x00\x00\x01\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x01\x00\x00@\x00\x00\x00\x01\x00\x00\x00\x00\x01\x00\x00@\x00\x00\x00\x00        \x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x01\x00ÿ\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00ä\x04\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x7f" 400 -
+127.0.0.1 - - [21/May/2025 20:07:43] code 400, message Bad request version ('1\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00')
+127.0.0.1 - - [21/May/2025 20:07:43] "Client string for PARC version 1 Wire Encryption version 1\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00" 400 -
+127.0.0.1 - - [21/May/2025 20:07:45] code 400, message Bad HTTP/0.9 request type ('<\x00K\x00\x00\x00')
+127.0.0.1 - - [21/May/2025 20:07:45] "<\x00K\x00\x00\x00 \x00\x00\x00\x00\x00\x00\x00\x00\x00ÿÿÿÿ\x00\x00" 400 -
+127.0.0.1 - - [21/May/2025 20:07:49] code 400, message Bad request syntax ('\x124\x00\x01')
+127.0.0.1 - - [21/May/2025 20:07:49] "\x124\x00\x01" 400 -
+127.0.0.1 - - [21/May/2025 20:07:57] code 400, message Bad request syntax ('\x00\x03\x00\x01\x00\x00\x00\x00\x00\x00\x00\x02\x00\x00\x00\x00\x0f\x00')
+127.0.0.1 - - [21/May/2025 20:07:57] "\x00\x03\x00\x01\x00\x00\x00\x00\x00\x00\x00\x02\x00\x00\x00\x00\x0f\x00" 400 -
+127.0.0.1 - - [21/May/2025 20:07:59] code 400, message Bad request syntax ('serverstatus')
+127.0.0.1 - - [21/May/2025 20:07:59] "serverstatus" 400 -
+127.0.0.1 - - [21/May/2025 20:08:07] code 400, message Bad HTTP/0.9 request type ('Âååå\x9e')
+127.0.0.1 - - [21/May/2025 20:08:07] "Âååå\x9e ×¤¦ÐÕÝÜÈÖÝ×ÕÈÑÖ\x83\x80ÈÝ¤Ñ¡È¤ÒÕ×Ý£¤¡Ý¦×Ý\x98å" 400 -
+127.0.0.1 - - [21/May/2025 20:08:08] code 400, message Bad request syntax ('#ST')
+127.0.0.1 - - [21/May/2025 20:08:08] "#ST" 400 -
+127.0.0.1 - - [21/May/2025 20:08:17] code 400, message Bad request version ('\x00\x00\x00\x03\x00\x05nmap\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00j\x00\x00\x00\x7f')
+127.0.0.1 - - [21/May/2025 20:08:17] "\x00\x94\x01<\x00\x00\x00d\x00e\x00\x00\x00=\x00\x06IEEEM\x00\x00lsqlexec\x00\x00\x00\x00\x00\x00\x069.280\x00\x00\x0cRDS#R000000\x00\x00\x05sqli\x00\x00\x00\x013\x00\x00\x00\x00\x00\x00\x00\x00\x00\x01\x00\x05nmap\x00\x00\x05nmap\x00ol\x00\x00\x00\x00\x00\x00\x00\x00\x00=tlitcp\x00\x00\x00\x00\x00\x01\x00h\x00\x0b\x00\x00\x00\x03\x00\x05nmap\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00j\x00\x00\x00\x7f" 400 -
+127.0.0.1 - - [21/May/2025 20:08:24] code 400, message Bad request syntax ('\x002Ð\x01\x00\x01\x00,\x10A\x00\x04\x11^\x00\x04\x11m\x00\x04\x11Z\x00\x18\x14\x04\x14\x03\x00\x07$\x07\x00\x08$\x0f\x00\x08\x14@\x00\x08\x14t\x00\x08\x00\x04\x11G')
+127.0.0.1 - - [21/May/2025 20:08:24] "\x002Ð\x01\x00\x01\x00,\x10A\x00\x04\x11^\x00\x04\x11m\x00\x04\x11Z\x00\x18\x14\x04\x14\x03\x00\x07$\x07\x00\x08$\x0f\x00\x08\x14@\x00\x08\x14t\x00\x08\x00\x04\x11G" 400 -
+127.0.0.1 - - [21/May/2025 20:08:25] code 400, message Bad HTTP/0.9 request type ('TSH')
+127.0.0.1 - - [21/May/2025 20:08:25] "TSH \x00\x00\x00ì\x01\x011\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x01\x11\x04¸\x00\x00ID  " 400 -
+127.0.0.1 - - [21/May/2025 20:08:30] "GET /server-info HTTP/1.1" 404 -
+127.0.0.1 - - [21/May/2025 20:08:38] code 400, message Bad request syntax ('A\x00\x00\x00:0\x00\x00ÿÿÿÿÔ\x07\x00\x00\x00\x00\x00\x00test.$cmd\x00\x00\x00\x00\x00ÿÿÿÿ\x1b\x00\x00\x00\x01serverStatus\x00\x00\x00\x00\x00\x00\x00ð?\x00')
+127.0.0.1 - - [21/May/2025 20:08:38] "A\x00\x00\x00:0\x00\x00ÿÿÿÿÔ\x07\x00\x00\x00\x00\x00\x00test.$cmd\x00\x00\x00\x00\x00ÿÿÿÿ\x1b\x00\x00\x00\x01serverStatus\x00\x00\x00\x00\x00\x00\x00ð?\x00" 400 -
+127.0.0.1 - - [21/May/2025 20:08:39] code 400, message Bad request syntax ('*1')
+127.0.0.1 - - [21/May/2025 20:08:39] "*1" 400 -
+127.0.0.1 - - [21/May/2025 20:08:45] code 400, message Bad request syntax ('\x00\x00\x00\x01\x07')
+127.0.0.1 - - [21/May/2025 20:08:45] "\x00\x00\x00\x01\x07" 400 -
+127.0.0.1 - - [21/May/2025 20:08:45] code 400, message Bad HTTP/0.9 request type ('show')
+127.0.0.1 - - [21/May/2025 20:08:45] "show info" 400 -
+127.0.0.1 - - [21/May/2025 20:08:50] code 400, message Bad request syntax ('\x80\x10\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x15ðÑb\x00\x00\x00\x00\x00\x00\x00\x00')
+127.0.0.1 - - [21/May/2025 20:08:50] "\x80\x10\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x15ðÑb\x00\x00\x00\x00\x00\x00\x00\x00" 400 -
+127.0.0.1 - - [21/May/2025 20:08:55] code 400, message Bad request syntax ('\x00\x01n')
+127.0.0.1 - - [21/May/2025 20:08:55] "\x00\x01n" 400 -
+127.0.0.1 - - [21/May/2025 20:09:00] code 400, message Bad request syntax ('vp3')
+127.0.0.1 - - [21/May/2025 20:09:00] "vp3" 400 -
+127.0.0.1 - - [21/May/2025 20:09:05] code 400, message Bad request syntax ('\x94\x00ÍïÑa\x91\x03')
+127.0.0.1 - - [21/May/2025 20:09:05] "\x94\x00ÍïÑa\x91\x03" 400 -
+127.0.0.1 - - [21/May/2025 20:09:10] code 400, message Bad request syntax ('þ\x01')
+127.0.0.1 - - [21/May/2025 20:09:10] "þ\x01" 400 -
+127.0.0.1 - - [21/May/2025 20:09:11] "GET /version HTTP/1.1" 404 -
+127.0.0.1 - - [21/May/2025 20:09:16] code 400, message Bad request syntax ('\x00\x00\x07\x00\x08\x00\x03\x00\x04\x00\x05\x00\x06')
+127.0.0.1 - - [21/May/2025 20:09:16] "\x00\x00\x07\x00\x08\x00\x03\x00\x04\x00\x05\x00\x06" 400 -
+127.0.0.1 - - [21/May/2025 20:09:21] code 400, message Bad request syntax ('ÿû\x18ÿú\x18\x00IBM-3279-4-Eÿðÿû\x19ÿý\x19ÿû\x00ÿý\x00')
+127.0.0.1 - - [21/May/2025 20:09:21] "ÿû\x18ÿú\x18\x00IBM-3279-4-Eÿðÿû\x19ÿý\x19ÿû\x00ÿý\x00" 400 -
+127.0.0.1 - - [21/May/2025 20:09:27] code 400, message Bad request syntax ('GIOP\x01\x00\x01\x00$\x00\x00\x00\x00\x00\x00\x00\x01\x00\x00\x00\x01\x00\x00\x00\x06\x00\x00\x00abcdef\x00\x00\x04\x00\x00\x00get\x00\x00\x00\x00\x00')
+127.0.0.1 - - [21/May/2025 20:09:27] "GIOP\x01\x00\x01\x00$\x00\x00\x00\x00\x00\x00\x00\x01\x00\x00\x00\x01\x00\x00\x00\x06\x00\x00\x00abcdef\x00\x00\x04\x00\x00\x00get\x00\x00\x00\x00\x00" 400 -
+127.0.0.1 - - [21/May/2025 20:09:32] code 400, message Bad request syntax ('VERSION')
+127.0.0.1 - - [21/May/2025 20:09:32] "VERSION" 400 -
+127.0.0.1 - - [21/May/2025 20:09:37] code 400, message Bad request syntax ('CNXN\x00\x00\x00\x01\x00\x10\x00\x00\x07\x00\x00\x002\x02\x00\x00¼±§±host::\x00')
+127.0.0.1 - - [21/May/2025 20:09:37] "CNXN\x00\x00\x00\x01\x00\x10\x00\x00\x07\x00\x00\x002\x02\x00\x00¼±§±host::\x00" 400 -
+127.0.0.1 - - [21/May/2025 20:09:42] code 400, message Bad HTTP/0.9 request type ('\x00\x00\x00\x10\x00\x00\x00')
+127.0.0.1 - - [21/May/2025 20:09:42] "\x00\x00\x00\x10\x00\x00\x00\x0c{"code":106}" 400 -
+127.0.0.1 - - [21/May/2025 20:09:47] code 400, message Bad request syntax ('\x0c\x00\x01\x00\x00\x00ImYorDad0u\x00\x00')
+127.0.0.1 - - [21/May/2025 20:09:47] "\x0c\x00\x01\x00\x00\x00ImYorDad0u\x00\x00" 400 -
+127.0.0.1 - - [21/May/2025 20:09:52] code 400, message Bad HTTP/0.9 request type ('ÚÚ\x01\x00\x00\x00\x14\x00\x10\x03\x08\x00\x00\x00')
+127.0.0.1 - - [21/May/2025 20:09:52] "ÚÚ\x01\x00\x00\x00\x14\x00\x10\x03\x08\x00\x00\x00\x0bM\x00\x00\x00\x00" 400 -
+127.0.0.1 - - [21/May/2025 20:11:01] "POST /sdk HTTP/1.1" 404 -
+127.0.0.1 - - [21/May/2025 20:11:12] "GET /nmaplowercheck1747829461 HTTP/1.1" 404 -
+127.0.0.1 - - [21/May/2025 20:11:12] "GET /evox/about HTTP/1.1" 404 -
+127.0.0.1 - - [21/May/2025 20:11:12] "GET /HNAP1 HTTP/1.1" 404 -
+127.0.0.1 - - [21/May/2025 20:11:35] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [21/May/2025 20:11:39] code 400, message Bad HTTP/0.9 request type ('\x16\x03\x01\x02\x00\x01\x00\x01ü\x03\x03]éWÝàÝæ-\x90A|\x17ªº\x08®(ÄÎ\x14W\x97\x0f\x908âþèjNËN')
+127.0.0.1 - - [21/May/2025 20:11:39] "\x16\x03\x01\x02\x00\x01\x00\x01ü\x03\x03]éWÝàÝæ-\x90A|\x17ªº\x08®(ÄÎ\x14W\x97\x0f\x908âþèjNËN î\x18ÖlJ,\x81IE¥R\x19£èÛþ\x91-f(´*À|\x13Ã®Òí4y\x9a\x00\x9c\x13\x02\x13\x03\x13\x01\x003\x009\x005\x00/À,À0\x00£\x00\x9fÌ©Ì¨ÌªÀ¯À­À£À\x9fÀ]ÀaÀWÀSÀ+À/\x00¢\x00\x9eÀ®À¬À¢À\x9eÀ\\À`ÀVÀRÀ$À(\x00k\x00jÀsÀw\x00Ä\x00ÃÀ#À'\x00g\x00@ÀrÀv\x00¾\x00½À" 400 -
+127.0.0.1 - - [21/May/2025 20:11:46] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [21/May/2025 20:11:48] code 400, message Bad HTTP/0.9 request type ('\x80\x00\x00(*&\x9e\x08\x00\x00\x00\x00\x00\x00\x00\x02\x00\x01\x86')
+127.0.0.1 - - [21/May/2025 20:11:48] "\x80\x00\x00(*&\x9e\x08\x00\x00\x00\x00\x00\x00\x00\x02\x00\x01\x86 \x00\x00\x00\x02\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00" 400 -
+127.0.0.1 - - [21/May/2025 20:41:15] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [21/May/2025 20:42:23] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [21/May/2025 20:49:53] code 400, message Bad HTTP/0.9 request type ('\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie:')
+127.0.0.1 - - [21/May/2025 20:49:53] "\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie: mstshash=Administr" 400 -
+127.0.0.1 - - [21/May/2025 20:53:04] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [21/May/2025 21:17:59] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [21/May/2025 21:20:47] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [21/May/2025 21:31:18] code 400, message Bad HTTP/0.9 request type ('\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie:')
+127.0.0.1 - - [21/May/2025 21:31:18] "\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie: mstshash=Administr" 400 -
+127.0.0.1 - - [21/May/2025 21:33:06] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [21/May/2025 21:33:43] code 400, message Bad request syntax ('SSH-2.0-Go')
+127.0.0.1 - - [21/May/2025 21:33:43] "SSH-2.0-Go" 400 -
+127.0.0.1 - - [21/May/2025 21:58:59] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [21/May/2025 22:01:32] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [21/May/2025 23:03:23] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [21/May/2025 23:10:10] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [21/May/2025 23:17:32] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [21/May/2025 23:32:03] "GET /Diagnostics.asp HTTP/1.1" 404 -
+127.0.0.1 - - [21/May/2025 23:45:50] code 400, message Bad HTTP/0.9 request type ('\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie:')
+127.0.0.1 - - [21/May/2025 23:45:50] "\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie: mstshash=Administr" 400 -
+127.0.0.1 - - [21/May/2025 23:46:56] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [21/May/2025 23:54:53] code 400, message Bad HTTP/0.9 request type ('\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie:')
+127.0.0.1 - - [21/May/2025 23:54:53] "\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie: mstshash=Administr" 400 -
+127.0.0.1 - - [21/May/2025 23:56:08] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [21/May/2025 23:56:09] "GET /static/main.js HTTP/1.1" 200 -

@@ -1,0 +1,70 @@
+global:
+  dbu: 0.001
+  fillet:
+    interactive: false
+    default_action: auto
+    precision: 0.01
+  layer_mapping:
+    save: true
+    file: layer_mapping.txt
+
+gds:
+  output_file: extend_rings_example.gds
+  cell_name: TOP
+  default_layer: [1, 0]
+
+shapes:
+  # 方形环阵列
+  - type: rings
+    name: 原始方形环阵列
+    layer: [1, 0]
+    vertices: "0,0:100,0:100,100:0,100"
+    ring_width: 10
+    ring_space: 2
+    ring_num: 3
+    fillet:
+      type: arc
+      radius: 5
+    zoom: [0, 0]
+  
+  # 偏置环（向外扩展版）
+  - type: extend_rings
+    name: 外扩偏置环
+    layer: [2, 0]
+    vertices: "0,0:100,0:100,100:0,100"
+    ring_width: 10
+    ring_space: 2
+    ring_num: 3
+    extend_width: 5  # 正值，向外扩展
+    fillet:
+      type: arc
+      radius: 5
+    zoom: [0, 0]
+  
+  # 偏置环（向内缩窄版）
+  - type: extend_rings
+    name: 内缩偏置环
+    layer: [3, 0]
+    vertices: "0,0:100,0:100,100:0,100"
+    ring_width: 10
+    ring_space: 2
+    ring_num: 3
+    extend_width: -2  # 负值，向内缩窄
+    fillet:
+      type: arc
+      radius: 5
+    zoom: [0, 0]
+  
+  # 带有不同倒角半径的偏置环
+  - type: extend_rings
+    name: 多半径偏置环
+    layer: [4, 0]
+    vertices: "200,0:300,0:300,100:200,100"
+    ring_width: 10
+    ring_space: 2
+    ring_num: 3
+    extend_width: 3
+    fillet:
+      type: arc
+      radii: [10, 5, 8, 3]  # 每个角使用不同的倒角半径
+    zoom: [0, 0] 

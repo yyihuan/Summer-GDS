@@ -100,7 +100,7 @@ function addShape(shapeType) {
             type: "arc",
             radius: 1
         },
-        zoom: [0, 0]
+        zoom: 0
     };
     
     // 环阵列特有属性
@@ -200,9 +200,8 @@ function fillShapeFormValues(cardElement, shape, index) {
     }
     
     // 设置缩放
-    if (shape.zoom && Array.isArray(shape.zoom)) {
-        cardElement.querySelector(`[name="shapes[${index}].zoom[0]"]`).value = shape.zoom[0];
-        cardElement.querySelector(`[name="shapes[${index}].zoom[1]"]`).value = shape.zoom[1];
+    if (shape.zoom !== undefined) {
+        cardElement.querySelector(`[name="shapes[${index}].zoom"]`).value = shape.zoom;
     }
     
     // 设置倒角
@@ -244,11 +243,17 @@ function fillShapeFormValues(cardElement, shape, index) {
         const ringNumInput = cardElement.querySelector(`[name="shapes[${index}].ring_num"]`);
         
         if (ringWidthInput && shape.ring_width !== undefined) {
-            ringWidthInput.value = shape.ring_width;
+            // 处理环宽度（支持数组或单一值）
+            ringWidthInput.value = Array.isArray(shape.ring_width) ? 
+                shape.ring_width.join(',') : 
+                shape.ring_width.toString();
         }
         
         if (ringSpaceInput && shape.ring_space !== undefined) {
-            ringSpaceInput.value = shape.ring_space;
+            // 处理环间距（支持数组或单一值）
+            ringSpaceInput.value = Array.isArray(shape.ring_space) ? 
+                shape.ring_space.join(',') : 
+                shape.ring_space.toString();
         }
         
         if (ringNumInput && shape.ring_num !== undefined) {
@@ -288,72 +293,88 @@ function refreshShapesContainer() {
 
 // 从表单更新JSON
 function updateJSONFromForm() {
-    // 获取全局配置
+    console.log('从表单更新JSON...');
+    
+    // 更新全局设置
     config.global.dbu = parseFloat(document.getElementById('dbu').value);
     config.global.fillet.precision = parseFloat(document.getElementById('filletPrecision').value);
     config.global.fillet.interactive = document.getElementById('filletInteractive').checked;
     config.global.fillet.default_action = document.getElementById('filletDefaultAction').value;
     
-    // 获取GDS配置
+    // 更新GDS设置
     config.gds.output_file = document.getElementById('outputFile').value;
     config.gds.cell_name = document.getElementById('cellName').value;
-    config.gds.default_layer[0] = parseInt(document.getElementById('defaultLayerNum').value);
-    config.gds.default_layer[1] = parseInt(document.getElementById('defaultDatatype').value);
+    config.gds.default_layer = [
+        parseInt(document.getElementById('defaultLayerNum').value),
+        parseInt(document.getElementById('defaultDatatype').value)
+    ];
     
-    // 获取形状配置
-    const shapeCards = document.querySelectorAll('.shape-card');
+    // 更新形状列表
+    const shapesContainer = document.getElementById('shapesContainer');
+    const shapeCards = shapesContainer.querySelectorAll('.shape-card');
     config.shapes = [];
     
-    shapeCards.forEach(card => {
-        const index = parseInt(card.getAttribute('data-shape-index'));
-        const type = card.querySelector(`[name="shapes[${index}].type"]`).value;
+    shapeCards.forEach((card, index) => {
+        const shapeIndex = card.getAttribute('data-shape-index');
+        const shapeType = card.querySelector(`[name="shapes[${shapeIndex}].type"]`).value;
         
         const shape = {
-            type: type,
-            name: card.querySelector(`[name="shapes[${index}].name"]`).value,
+            type: shapeType,
+            name: card.querySelector(`[name="shapes[${shapeIndex}].name"]`).value,
             layer: [
-                parseInt(card.querySelector(`[name="shapes[${index}].layer[0]"]`).value),
-                parseInt(card.querySelector(`[name="shapes[${index}].layer[1]"]`).value)
+                parseInt(card.querySelector(`[name="shapes[${shapeIndex}].layer[0]"]`).value),
+                parseInt(card.querySelector(`[name="shapes[${shapeIndex}].layer[1]"]`).value)
             ],
-            vertices: card.querySelector(`[name="shapes[${index}].vertices"]`).value,
+            vertices: card.querySelector(`[name="shapes[${shapeIndex}].vertices"]`).value,
+            zoom: parseFloat(card.querySelector(`[name="shapes[${shapeIndex}].zoom"]`).value || 0),
             fillet: {
-                type: card.querySelector(`[name="shapes[${index}].fillet.type"]`).value,
-                radius: parseFloat(card.querySelector(`[name="shapes[${index}].fillet.radius"]`).value)
-            },
-            zoom: [
-                parseFloat(card.querySelector(`[name="shapes[${index}].zoom[0]"]`).value),
-                parseFloat(card.querySelector(`[name="shapes[${index}].zoom[1]"]`).value)
-            ]
+                type: card.querySelector(`[name="shapes[${shapeIndex}].fillet.type"]`).value
+            }
         };
         
-        // 检查是否有半径列表
-        const radiusListContainer = card.querySelector(`.radius-list-container[data-shape-index="${index}"]`);
+        // 处理倒角半径
+        const radiusListContainer = card.querySelector(`.radius-list-container[data-shape-index="${shapeIndex}"]`);
         if (radiusListContainer && radiusListContainer.style.display !== 'none') {
-            const radiiInput = card.querySelector(`[name="shapes[${index}].fillet.radii"]`);
-            if (radiiInput && radiiInput.value) {
-                // 解析半径列表
-                const radiiValues = radiiInput.value.split(',').map(r => parseFloat(r.trim())).filter(r => !isNaN(r));
-                if (radiiValues.length > 0) {
-                    shape.fillet.radii = radiiValues;
-                }
-            }
+            // 使用半径列表
+            const radiiStr = card.querySelector(`[name="shapes[${shapeIndex}].fillet.radii"]`).value;
+            shape.fillet.radii = radiiStr.split(',').map(r => parseFloat(r.trim()));
+        } else {
+            // 使用单一半径
+            shape.fillet.radius = parseFloat(card.querySelector(`[name="shapes[${shapeIndex}].fillet.radius"]`).value || 0);
         }
         
         // 环阵列特有属性
-        if (type === 'rings') {
-            shape.ring_width = parseFloat(card.querySelector(`[name="shapes[${index}].ring_width"]`).value);
-            shape.ring_space = parseFloat(card.querySelector(`[name="shapes[${index}].ring_space"]`).value);
-            shape.ring_num = parseInt(card.querySelector(`[name="shapes[${index}].ring_num"]`).value);
+        if (shapeType === 'rings') {
+            // 处理环宽度（支持数组或单一值）
+            const ringWidthStr = card.querySelector(`[name="shapes[${shapeIndex}].ring_width"]`).value;
+            if (ringWidthStr.includes(',')) {
+                // 如果包含逗号，处理为数组
+                shape.ring_width = ringWidthStr.split(',').map(w => parseFloat(w.trim())).filter(w => !isNaN(w));
+            } else {
+                // 否则处理为单一值
+                shape.ring_width = parseFloat(ringWidthStr);
+            }
+            
+            // 处理环间距（支持数组或单一值）
+            const ringSpaceStr = card.querySelector(`[name="shapes[${shapeIndex}].ring_space"]`).value;
+            if (ringSpaceStr.includes(',')) {
+                // 如果包含逗号，处理为数组
+                shape.ring_space = ringSpaceStr.split(',').map(s => parseFloat(s.trim())).filter(s => !isNaN(s));
+            } else {
+                // 否则处理为单一值
+                shape.ring_space = parseFloat(ringSpaceStr);
+            }
+            
+            shape.ring_num = parseInt(card.querySelector(`[name="shapes[${shapeIndex}].ring_num"]`).value);
         }
         
         config.shapes.push(shape);
     });
     
-    // 更新JSON编辑器
+    // 更新JSON编辑器和YAML预览
     jsonEditor.set(config);
-    
-    // 更新YAML预览
     updateYAMLPreview();
+    console.log('JSON更新完成');
 }
 
 // 从JSON更新表单

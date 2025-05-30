@@ -22,7 +22,7 @@ shapes:
     fillet:
       type: "arc"
       radius: 1
-    zoom: [1, 0]
+    zoom: 1
     
   - type: "rings"
     name: "方形环阵列"
@@ -34,4 +34,4 @@ shapes:
     fillet:
       type: "arc"
       radius: 1.5
-    zoom: [0, 0] 
+    zoom: 0 

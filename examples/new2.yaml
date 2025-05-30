@@ -1,0 +1,30 @@
+global:
+  dbu: 0.001
+  fillet:
+    interactive: false
+    default_action: auto
+    precision: 0.01
+  layer_mapping:
+    save: true
+    file: layer_mapping.txt
+gds:
+  input_file: null
+  output_file: output.gds
+  cell_name: TOP
+  default_layer:
+    - 1
+    - 0
+shapes:
+  - type: rings
+    name: 环阵列0
+    vertices: 0,0:100,0:100,100:0,100
+    layer:
+      - 1
+      - 0
+    fillet:
+      type: arc
+      radius: 1
+    zoom: 0.5
+    ring_width: 5
+    ring_space: 2
+    ring_num: 3

@@ -267,10 +267,7 @@
                 <div class="row">
                     <div class="col-md-6 mb-3">
                         <label class="form-label">缩放</label>
-                        <div class="input-group">
-                            <input type="number" class="form-control" name="shapes[{index}].zoom[0]" placeholder="外径" step="0.1" value="0">
-                            <input type="number" class="form-control" name="shapes[{index}].zoom[1]" placeholder="内径" step="0.1" value="0">
-                        </div>
+                        <input type="number" class="form-control" name="shapes[{index}].zoom" placeholder="缩放值" step="0.1" value="0">
                     </div>
                     <div class="col-md-6 mb-3">
                         <label class="form-label">倒角类型</label>
@@ -343,12 +340,12 @@
                 </div>
                 <div class="row">
                     <div class="col-md-4 mb-3">
-                        <label class="form-label">环宽度</label>
-                        <input type="number" class="form-control" name="shapes[{index}].ring_width" value="1" step="0.1">
+                        <label class="form-label">环宽度 (单个数字或逗号分隔的列表)</label>
+                        <input type="text" class="form-control" name="shapes[{index}].ring_width" value="1" placeholder="例如: 1 或 1,2,3">
                     </div>
                     <div class="col-md-4 mb-3">
-                        <label class="form-label">环间距</label>
-                        <input type="number" class="form-control" name="shapes[{index}].ring_space" value="1" step="0.1">
+                        <label class="form-label">环间距 (单个数字或逗号分隔的列表)</label>
+                        <input type="text" class="form-control" name="shapes[{index}].ring_space" value="1" placeholder="例如: 1 或 1,2,3">
                     </div>
                     <div class="col-md-4 mb-3">
                         <label class="form-label">环数量</label>
@@ -358,10 +355,7 @@
                 <div class="row">
                     <div class="col-md-6 mb-3">
                         <label class="form-label">缩放</label>
-                        <div class="input-group">
-                            <input type="number" class="form-control" name="shapes[{index}].zoom[0]" placeholder="外径" step="0.1" value="0">
-                            <input type="number" class="form-control" name="shapes[{index}].zoom[1]" placeholder="内径" step="0.1" value="0">
-                        </div>
+                        <input type="number" class="form-control" name="shapes[{index}].zoom" placeholder="缩放值" step="0.1" value="0">
                     </div>
                     <div class="col-md-6 mb-3">
                         <label class="form-label">倒角类型</label>
