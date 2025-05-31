@@ -101,8 +101,6 @@ class Region:
         logger.info(f"从 Frame 创建多边形, 原始顶点数: {len(frame.get_vertices())}")
         if fillet_config:
             logger.info(f"应用倒角配置: {fillet_config}")
-        if zoom_config != 0:
-            logger.info(f"应用缩放配置: {zoom_config}")
 
         processed_frame = frame
         # 首先应用缩放
@@ -227,7 +225,7 @@ class Region:
 
         # 1. 处理缩放，获得新的初始Frame以及ring_width和ring_space
         if isinstance(zoom_config, (int, float)) and zoom_config != 0:
-            logger.info(f"进行缩放: {zoom_config}")
+            logger.info(f"根据缩放配置: {zoom_config}，对初始Frame进行缩放，并调整ring_width和ring_space: {ring_width}, {ring_space}")
             initial_frame = initial_frame.offset(-zoom_config)
             if isinstance(ring_width, list):  ring_width = [width + 2 * zoom_config for width in ring_width]
             else:  ring_width = ring_width + 2 * zoom_config
@@ -319,14 +317,8 @@ class Region:
             
             processed_outer_frames.append(processed_frame)
         
-        # 内边界倒角和缩放
+        # 内边界倒角
         for processed_frame in inner_frames:
-            # 应用缩放
-            if zoom_config != 0:
-                logger.info(f"对内边界进行缩放: {zoom_config}")
-            else:
-                logger.info(f"内边界无需缩放或缩放配置错误，skip。。。。。。")
-            
             # 应用倒角
             if fillet_flag:
                 if fillet_type == "arc":
@@ -384,60 +376,3 @@ class Region:
         
         
         return result_region 
-
-    @classmethod
-    def create_extend_rings(cls, initial_frame: Frame, ring_width: Union[float, List[float]], 
-                        ring_space: Union[float, List[float]], ring_num: int, 
-                        extend_width: float, fillet_config: dict = None, zoom_config: Union[int, float] = 0):
-        """从Frame对象创建偏置环阵列（扩展或缩窄已有的环阵列）
-        
-        参数:
-            initial_frame: 初始Frame对象
-            ring_width: 原始环宽度，可以是单一值或列表（每个环单独指定宽度）
-            ring_space: 原始环间距，可以是单一值或列表（每个环单独指定间距）
-            ring_num: 原始环数量
-            extend_width: 扩展宽度(正值表示扩展，负值表示缩窄)
-            fillet_config: 原始倒角配置字典
-            zoom_config: 原始缩放值（正值表示向外扩展，负值表示向内收缩）
-            
-        返回:
-            Region: 包含偏置环的Region对象
-        """
-        logger.info(f"创建偏置环阵列: 原环宽={ring_width}, 原环间距={ring_space}, 环数={ring_num}, 偏置宽度={extend_width}")
-        
-        # 计算新的zoom配置
-        # 如果extend_width为正，则外围扩大，内围缩小
-        # 如果extend_width为负，则外围缩小，内围扩大
-        new_zoom_config = 0
-        if isinstance(zoom_config, (int, float)):
-            # 加上原始的zoom配置
-            new_zoom_config = zoom_config + extend_width
-        else:
-            new_zoom_config = extend_width
-            
-        logger.info(f"原始缩放配置: {zoom_config}, 新缩放配置: {new_zoom_config}")
-        # 生成新的内边界
-        new_inner_frame = initial_frame.offset(new_zoom_config)
-        logger.info(f"生成扩展内边界")
-        # 生成新的环参数
-        new_ring_width = ring_width - 2 * new_zoom_config
-        new_ring_space = ring_space + 2 * new_zoom_config
-        logger.info(f"调整环宽度: 原宽度={ring_width}, 新宽度={new_ring_width}")
-        logger.info(f"调整环间距: 原间距={ring_space}, 新间距={new_ring_space}")
-        # 计算新的倒角配置
-        new_fillet_config = fillet_config.copy()
-        if fillet_config and fillet_config.get("type") == "arc":
-            new_fillet_config["radius"] = fillet_config.get("radius") + new_zoom_config
-        elif fillet_config and fillet_config.get("type") == "adaptive":
-            new_fillet_config["convex_radius"] = fillet_config.get("convex_radius") + new_zoom_config
-            new_fillet_config["concave_radius"] = fillet_config.get("concave_radius") + new_zoom_config
-        logger.info(f"调整倒角配置: 原配置={fillet_config}, 新配置={new_fillet_config}")
-
-        # 调用create_rings创建新的环阵列
-        return cls.create_rings(
-            new_inner_frame,
-            new_ring_width,
-            new_ring_space,
-            ring_num,
-            fillet_config=new_fillet_config
-        ) 

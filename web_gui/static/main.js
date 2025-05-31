@@ -159,6 +159,15 @@ function renderShapeCard(shape, index) {
         console.log(`删除按钮事件已绑定: 索引=${index}`);
     }
     
+    // 绑定偏置按钮事件
+    const offsetBtn = cardElement.querySelector('.offset-shape-btn');
+    if (offsetBtn) {
+        offsetBtn.addEventListener('click', function() {
+            offsetShape(index);
+        });
+        console.log(`偏置按钮事件已绑定: 索引=${index}`);
+    }
+    
     // 绑定倒角半径切换按钮事件
     const toggleToListBtn = cardElement.querySelector('.toggle-radius-list-btn');
     if (toggleToListBtn) {
@@ -651,6 +660,49 @@ function toggleToSingleRadius(event) {
     
     // 更新JSON
     updateJSONFromForm();
+}
+
+// 偏置形状
+function offsetShape(sourceIndex) {
+    console.log(`开始偏置形状: 源索引=${sourceIndex}`);
+    
+    // 获取源形状
+    const sourceShape = config.shapes[sourceIndex];
+    if (!sourceShape) {
+        console.error('源形状不存在');
+        showAlert('源形状不存在', 'danger');
+        return;
+    }
+    
+    // 创建新形状配置，深拷贝源形状
+    const newShape = JSON.parse(JSON.stringify(sourceShape));
+    
+    // 修改名称
+    newShape.name = `${sourceShape.name}_偏置`;
+    
+    // 修改图层索引（默认加1）
+    if (Array.isArray(newShape.layer) && newShape.layer.length > 0) {
+        newShape.layer[0] = newShape.layer[0] + 1;
+    }
+    
+    // 添加到配置中
+    config.shapes.push(newShape);
+    
+    // 渲染形状卡片
+    renderShapeCard(newShape, config.shapes.length - 1);
+    
+    // 更新JSON编辑器和YAML预览
+    jsonEditor.set(config);
+    updateYAMLPreview();
+    
+    // 增加索引计数
+    currentShapeIndex++;
+    
+    // 绑定倒角半径列表切换按钮事件
+    bindRadiusListToggleEvents();
+    
+    console.log(`形状偏置完成: 新索引=${config.shapes.length - 1}`);
+    showAlert('形状偏置成功', 'success', true);
 }
 
 // 显示提示框
