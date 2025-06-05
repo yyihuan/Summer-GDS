@@ -118,6 +118,12 @@ class Frame:
         Returns:
             Frame: 倒角后的新Frame对象
         """
+
+        # 两个内外半径都为0，直接返回
+        if convex_radius == 0 and concave_radius == 0:
+            logger.info("内外半径都为0，不进行倒角")
+            return Frame(self.vertices)
+        
         logger.info(f"开始自适应倒角: 凸角半径={convex_radius}, 凹角半径={concave_radius}, 精度={precision}, 交互模式={interactive}")
         logger.debug(f"输入顶点列表: {self.vertices}")
         
@@ -169,6 +175,11 @@ class Frame:
 
     def apply_arc_fillet(self, radius_or_radii_list, precision=0.01, interactive=True):
         """对多边形的顶点应用圆弧倒角。"""
+        # 如果倒角列表里都是0，直接返回
+        if all(r == 0 for r in radius_or_radii_list):
+            logger.info("倒角列表里都是0，不进行倒角")
+            return Frame(self.vertices)
+        
         filleted_vertices = self._apply_arc_fillet_internal(radius_or_radii_list, precision, interactive)
         return Frame(filleted_vertices)
 

@@ -127,7 +127,8 @@ class Region:
 
             if fillet_type == "arc":
                 radius = fillet_config.get("radius", 0)
-                if radius > 0:
+                radius_list = fillet_config.get("radius_list", [])
+                if radius != 0 or len(radius_list) > 0:
                     # 检查是否存在半径列表
                     if "radius_list" in fillet_config:
                         radius_list = fillet_config.get("radius_list")
@@ -272,11 +273,21 @@ class Region:
             interactive = fillet_config.get("interactive", True)
             if "radius_list" in fillet_config:
                 inner_radius = fillet_config.get("radius_list")
-                logger.info(f"使用半径列表进行倒角: {inner_radius}")
+                # 如果倒角列表里都是0，直接跳过倒角
+                if all(r == 0 for r in inner_radius):
+                    logger.info("倒角列表里都是0，不进行倒角")
+                    fillet_flag = False
+                else:
+                    logger.info(f"使用半径列表进行倒角: {inner_radius}")
             else:
                 inner_radius = fillet_config.get("radius")
-                logger.info(f"使用单一半径进行倒角: {inner_radius}")
-            fillet_flag = True
+                # 如果倒角半径为0，直接跳过倒角
+                if inner_radius == 0:
+                    logger.info("倒角半径为0，不进行倒角")
+                    fillet_flag = False
+                else:
+                    logger.info(f"使用单一半径进行倒角: {inner_radius}")
+                    fillet_flag = True
         else:
             logger.info(f"无需倒角，skip。。。。。。")
             fillet_flag = False
@@ -284,7 +295,9 @@ class Region:
         processed_outer_frames = []
         processed_inner_frames = []
         
-        # 外边界倒角和缩放
+        # 校验倒角flag
+        
+        # 外边界倒角
         i = -1
         for processed_frame in outer_frames:
             i += 1
