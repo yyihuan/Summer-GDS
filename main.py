@@ -188,6 +188,13 @@ def main():
                 fillet_config=fillet_config,
                 zoom_config=zoom_config 
             )
+        elif shape_data.get('type') == 'via':
+            region_obj = Region.polygon2ring(
+                frame,
+                inner_zoom=shape_data.get('inner_zoom', -1),
+                outer_zoom=shape_data.get('outer_zoom', 1),
+                fillet_config=fillet_config
+            )
         else:
             logger.error(f"形状 '{shape_name}' 的类型未知: {shape_data.get('type')}")
             continue

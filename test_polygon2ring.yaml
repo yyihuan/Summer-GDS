@@ -1,0 +1,42 @@
+global:
+  dbu: 0.001  # 数据库单位（微米）
+  fillet:
+    interactive: true  # 全局倒角交互设置
+
+gds:
+  cell_name: "TOP"  # 默认单元格名称
+  output_file: "test_via.gds"  # 输出文件名
+  default_layer: [1, 0]  # 默认图层
+
+shapes:
+  - name: "raw_square"
+    type: "polygon"
+    vertices_gen:
+      shape_type: "star"
+      center_x: 0
+      center_y: 0
+      outer_radius: 50
+      inner_radius: 20
+      points: 5
+    fillet:
+      type: "arc"
+      radius: 4
+      precision: 0.01
+    layer: [1, 0] 
+
+  - name: "square_via"
+    type: "via"
+    vertices_gen:
+      shape_type: "star"
+      center_x: 0
+      center_y: 0
+      outer_radius: 50
+      inner_radius: 20
+      points: 5
+    inner_zoom: -2  # 向内收缩2微米
+    outer_zoom: -1   # 向外扩展2微米
+    fillet:
+      type: "arc"
+      radius: 4
+      precision: 0.01
+    layer: [2, 0] 

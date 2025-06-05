@@ -34,6 +34,7 @@ shapes:
     ring_width: [3, 4, 5]
     ring_space: [2, 4, 6]
     ring_num: 3
+  
   - type: rings
     name: 偏置环_环阵列2_3
     layer:

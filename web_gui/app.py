@@ -9,7 +9,7 @@ from werkzeug.utils import secure_filename
 
 # 添加父目录到路径，以便导入main_oop中的函数
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from main_oop import main as gds_main
+from main import main as gds_main
 
 app = Flask(__name__)
 CORS(app)  # 启用跨域请求

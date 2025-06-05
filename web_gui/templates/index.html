@@ -236,7 +236,8 @@
             <div class="card-header bg-info text-white d-flex justify-content-between align-items-center">
                 <h6 class="mb-0">多边形 #{index}</h6>
                 <div>
-                    <button type="button" class="btn btn-sm btn-light me-2 offset-shape-btn" data-shape-index="{index}">偏置</button>
+                    <button type="button" class="btn btn-sm btn-light me-2 via-shape-btn" data-shape-index="{index}" title="以此多边形为基础创建刻孔/溅铝环">刻孔/溅铝</button>
+                    <button type="button" class="btn btn-sm btn-light me-2 offset-shape-btn" data-shape-index="{index}" title="对此多边形进行偏置">偏置</button>
                     <button type="button" class="btn btn-sm btn-light me-2 edit-shape-btn">编辑</button>
                     <button type="button" class="btn btn-sm btn-danger remove-shape-btn">删除</button>
                 </div>
@@ -395,6 +396,99 @@
         </div>
     </template>
     
+    <template id="viaShapeTemplate">
+        <div class="card shape-card" data-shape-index="{index}" data-shape-type="via">
+            <div class="card-header bg-success text-white d-flex justify-content-between align-items-center">
+                <h6 class="mb-0">刻孔/溅铝 (Via) #{index} (基于图形: {base_shape_name})</h6>
+                <div>
+                    <button type="button" class="btn btn-sm btn-light me-2 edit-shape-btn">编辑</button>
+                    <button type="button" class="btn btn-sm btn-danger remove-shape-btn">删除</button>
+                </div>
+            </div>
+            <div class="card-body">
+                <input type="hidden" name="shapes[{index}].type" value="via">
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">名称</label>
+                        <input type="text" class="form-control" name="shapes[{index}].name" value="via_{index}" data-base-shape-name="{base_shape_name}">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">图层 (编号, 数据类型)</label>
+                        <div class="input-group">
+                            <input type="number" class="form-control" name="shapes[{index}].layer[0]" value="1" min="0">
+                            <input type="number" class="form-control" name="shapes[{index}].layer[1]" value="0" min="0">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">内部缩放</label>
+                        <input type="number" class="form-control" name="shapes[{index}].inner_zoom" step="any">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">外部缩放</label>
+                        <input type="number" class="form-control" name="shapes[{index}].outer_zoom" step="any">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 mb-3">
+                        <label class="form-label">基础图形顶点</label>
+                        <textarea class="form-control" name="shapes[{index}].vertices" rows="3" readonly data-base-vertices="{base_vertices}">{base_vertices}</textarea>
+                    </div>
+                </div>
+                <div class="card mb-3">
+                    <div class="card-header">
+                        <h6 class="mb-0">倒角配置 (继承自: {base_shape_name})</h6>
+                    </div>
+                    <div class="card-body">
+                        <input type="hidden" name="shapes[{index}].fillet.type" value="{base_fillet_type}">
+                        <input type="hidden" name="shapes[{index}].fillet.radius" value="{base_fillet_radius}">
+                        <input type="hidden" name="shapes[{index}].fillet.precision" value="{base_fillet_precision}">
+                        <input type="hidden" name="shapes[{index}].fillet.convex_radius" value="{base_fillet_convex_radius}">
+                        <input type="hidden" name="shapes[{index}].fillet.concave_radius" value="{base_fillet_concave_radius}">
+                        <p>类型: {base_fillet_type_display}</p>
+                        <p>半径/参数: {base_fillet_params_display}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <!-- Modal for Via Parameters -->
+    <div class="modal fade" id="viaParamsModal" tabindex="-1" aria-labelledby="viaParamsModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="viaParamsModalLabel">设置刻孔/溅铝参数</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="baseShapeIndexForVia">
+                    <div class="mb-3">
+                        <label for="viaInnerZoom" class="form-label">内部缩放 (Inner Zoom)</label>
+                        <input type="number" class="form-control" id="viaInnerZoom" value="-1" step="any">
+                    </div>
+                    <div class="mb-3">
+                        <label for="viaOuterZoom" class="form-label">外部缩放 (Outer Zoom)</label>
+                        <input type="number" class="form-control" id="viaOuterZoom" value="1" step="any">
+                    </div>
+                    <div class="mb-3">
+                        <label for="viaLayerNum" class="form-label">图层编号</label>
+                        <input type="number" class="form-control" id="viaLayerNum" value="1" min="0">
+                    </div>
+                    <div class="mb-3">
+                        <label for="viaLayerDatatype" class="form-label">图层数据类型</label>
+                        <input type="number" class="form-control" id="viaLayerDatatype" value="0" min="0">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-primary" id="confirmAddViaBtn">确认添加</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
     <!-- 形状选择模态框 -->
     <div class="modal fade" id="shapeTypeModal" tabindex="-1" aria-labelledby="shapeTypeModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -420,4 +514,5 @@
     <script src="https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js"></script>
     <script src="{{ url_for('static', filename='main.js') }}"></script>
 </body>
+</html> 
 </html> 

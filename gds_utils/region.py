@@ -376,3 +376,30 @@ class Region:
         
         
         return result_region 
+
+    @classmethod
+    def polygon2ring(cls, frame: Frame, inner_zoom: Union[int, float], outer_zoom: Union[int, float], fillet_config: dict = None) -> 'Region':
+        """从Frame创建一个环结构，主要用于溅铝、刻孔工艺
+        
+        参数:
+            frame: Frame对象，包含多边形的顶点
+            inner_zoom: 内部缩放值（正值表示向外扩展，负值表示向内收缩）
+            outer_zoom: 外部缩放值（正值表示向外扩展，负值表示向内收缩）
+            fillet_config: 倒角配置字典
+            
+        返回:
+            Region: 包含via结构的Region对象
+        """
+        logger.info(f"创建via结构: 内部缩放={inner_zoom}, 外部缩放={outer_zoom}")
+        
+        # 创建外部区域
+        outer_region = cls.create_polygon(frame, fillet_config, outer_zoom)
+        
+        # 创建内部区域
+        inner_region = cls.create_polygon(frame, fillet_config, inner_zoom)
+        
+        # 使用布尔减法得到via环
+        result = outer_region - inner_region
+        
+        logger.info("via结构创建完成")
+        return result 
