@@ -5,6 +5,7 @@ import math # 需要 math 来生成五角星
 from gds_utils import GDS, Frame, Region
 from gds_utils.utils import setup_logging, logger
 import klayout.db as db  # 添加这行导入
+import ast
 
 # 新增的辅助函数
 def _generate_vertices(gen_config: dict) -> list:
@@ -180,11 +181,96 @@ def main():
                 zoom_config=zoom_config
             )
         elif shape_data.get('type') == 'rings':
+            # 预处理ring_width，如果为, 代表一组生成规则，解析后转换为列表
+            # 例如，((1, 5, 3), (6,11, 2))对应[3,3,3,3,3,2,2,2,2,2,2]
+            print(f"ring_width的raw type是: {type(shape_data.get('ring_width'))}")
+            ring_width_rule = ast.literal_eval(shape_data.get('ring_width'))
+            if isinstance(ring_width_rule, list) and isinstance(ring_width_rule[0], tuple):
+                logger.info(f"ring_width是list，且第一个元素是tuple。试图根据规则生成ring_width列表")
+                ring_width_list = []
+                # 校验ring_width的规则是否合规，正确的规则是：
+                # 1. 每个元素ring_width_rule[i]必须是tuple，且长度为3
+                # 2. ring_width_rule[i][1] = ring_width_rule[i+1][0]+1, 除非是最后一个元素
+                # 3. ring_width_rule[i][0] < ring_width_rule[i][1]
+                logger.info(f"ring_width_rule: {ring_width_rule}")
+                for i in range(len(ring_width_rule)-1):
+                    if not isinstance(ring_width_rule[i], tuple) or len(ring_width_rule[i]) != 3:
+                        logger.error(f"rule error1: ring_width的规则{ring_width_rule}格式错误，必须为tuple，且长度为3")
+                        print(f"ring_width_rule[i]: {ring_width_rule[i]}, {i}")
+                        return
+                    if not isinstance(ring_width_rule[i+1], tuple) or len(ring_width_rule[i+1]) != 3:
+                        logger.error(f"rule error2: ring_width的规则{ring_width_rule}格式错误，必须为tuple，且长度为3")
+                        return
+                    #if ring_width_rule[i][1] != ring_width_rule[i+1][0]+1:
+                    #    logger.error(f"ring_width的规则{ring_width_rule}格式错误，必须满足ring_width_rule[i][1] = ring_width_rule[i+1][0]+1")
+                    #     return
+                    #if ring_width_rule[i][0] >= ring_width_rule[i][1]:
+                    #    logger.error(f"ring_width的规则{ring_width_rule}格式错误，必须满足ring_width_rule[i][0] < ring_width_rule[i][1]")
+                    #    return
+                # 解析规则，生成ring_width_list
+                for rule in ring_width_rule:
+                    logger.info(f"rule: {rule}")
+                    ring_width_list += [rule[2]] * (rule[1] - rule[0] + 1)
+                shape_data['ring_width'] = ring_width_list  # 将处理后的ring_width列表赋值给shape_data
+            #logger.info(f"处理后的ring_width列表: {ring_width_list}")
+            elif isinstance(ring_width_rule, tuple):
+                ring_width_list = list(ring_width_rule)
+                shape_data['ring_width'] = ring_width_list  # 将处理后的ring_width列表赋值给shape_data
+                logger.info(f"转换ring_width输入列表为list: {ring_width_list}")
+            elif isinstance(ring_width_rule, (int, float)):
+                ring_width = float(ring_width_rule)
+                shape_data['ring_width'] = ring_width  # 将处理后的ring_width列表赋值给shape_data
+                logger.info(f"ring_width输入为单值，转换为list: {ring_width}")
+            else:
+                logger.error(f"ring_width输入格式错误，只能接收list或tuple或int/float，当前类型: {type(ring_width_rule)}")
+                return
+            logger.info(f"处理后的ring_width: {shape_data['ring_width']}")
+
+            # 处理ring_space
+            print(f"ring_space的raw type是: {type(shape_data.get('ring_space'))}")
+            ring_space_rule = ast.literal_eval(shape_data.get('ring_space'))
+            if isinstance(ring_space_rule, list) and isinstance(ring_space_rule[0], tuple):
+                logger.info(f"ring_space是list，且第一个元素是list。试图根据规则生成ring_space列表")
+                ring_space_list = []
+                # 校验ring_width的规则是否合规，正确的规则是：
+                # 1. 每个元素ring_width_rule[i]必须是tuple，且长度为3
+                # 2. ring_width_rule[i][1] = ring_width_rule[i+1][0], 除非是最后一个元素
+                # 3. ring_width_rule[i][0] < ring_width_rule[i][1]
+                for i in range(len(ring_space_rule)-1):
+                    if not isinstance(ring_space_rule[i], tuple) or len(ring_space_rule[i]) != 3:
+                        logger.error(f"ring_space的规则{ring_space_rule[i]}格式错误，必须为tuple，且长度为3")
+                        return
+                    if not isinstance(ring_space_rule[i+1], tuple) or len(ring_space_rule[i+1]) != 3:
+                        logger.error(f"ring_space的规则{ring_space_rule[i]}格式错误，必须为tuple，且长度为3")
+                        return
+                    #if ring_space_rule[i][1] != ring_space_rule[i+1][0]:
+                    #    logger.error(f"ring_space的规则{ring_space_rule}格式错误，必须满足ring_space_rule[i][1] = ring_space_rule[i+1][0]")
+                    #    return
+                    #if ring_space_rule[i][0] >= ring_space_rule[i][1]:
+                    #    logger.error(f"ring_space的规则{ring_space_rule}格式错误，必须满足ring_space_rule[i][0] < ring_space_rule[i][1]")
+                    #    return
+                # 解析规则，生成ring_space_list
+                for rule in ring_space_rule:
+                    ring_space_list+=[rule[2]] * (rule[1] - rule[0])
+                shape_data['ring_space'] = ring_space_list  # 将处理后的ring_space列表赋值给shape_data
+            elif isinstance(ring_space_rule, tuple):
+                ring_space_list = list(ring_space_rule)
+                shape_data['ring_space'] = ring_space_list  # 将处理后的ring_space列表赋值给shape_data
+                logger.info(f"转换ring_space输入列表为list: {ring_space_list}")
+            elif isinstance(ring_space_rule, (int, float)):
+                ring_space = float(ring_space_rule)
+                shape_data['ring_space'] = ring_space  # 将处理后的ring_space列表赋值给shape_data
+                logger.info(f"ring_space输入为单值，转换为float: {ring_space}")
+            else:
+                logger.error(f"ring_space输入格式错误，只能接收list或tuple，当前类型: {type(ring_space_rule)}")
+                return
+            logger.info(f"处理后的ring_space列表: {shape_data['ring_space']}")
+            
             region_obj = Region.create_rings(
                 frame,
-                ring_width=shape_data.get('ring_width', 10),
-                ring_space=shape_data.get('ring_space', 12),
-                ring_num=shape_data.get('ring_num', 3),
+                ring_width=shape_data.get('ring_width'),
+                ring_space=shape_data.get('ring_space'),
+                ring_num=shape_data.get('ring_num'),
                 fillet_config=fillet_config,
                 zoom_config=zoom_config 
             )

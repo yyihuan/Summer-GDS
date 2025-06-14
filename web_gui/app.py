@@ -49,6 +49,19 @@ DEFAULT_CONFIG = {
     "shapes": []
 }
 
+def ensure_string_values(config_data):
+    """确保ring_width和ring_space保持为字符串类型"""
+    if isinstance(config_data, dict):
+        for key, value in config_data.items():
+            if key in ['ring_width', 'ring_space']:
+                config_data[key] = str(value)
+            elif isinstance(value, (dict, list)):
+                ensure_string_values(value)
+    elif isinstance(config_data, list):
+        for item in config_data:
+            ensure_string_values(item)
+    return config_data
+
 @app.route('/')
 def index():
     """渲染主页"""
@@ -69,10 +82,13 @@ def generate_gds():
         else:
             config_data = yaml.safe_load(request.form.get('config', '{}'))
         
+        # 确保ring_width和ring_space保持为字符串类型
+        config_data = ensure_string_values(config_data)
+        
         # 创建临时配置文件
         config_file = os.path.join(app.config['TEMP_FOLDER'], 'temp_config.yaml')
         with open(config_file, 'w') as f:
-            yaml.dump(config_data, f)
+            yaml.dump(config_data, f, default_style='"')  # 使用双引号来确保字符串类型
         
         # 设置输出文件路径
         output_file = os.path.join(app.config['TEMP_FOLDER'], config_data.get('gds', {}).get('output_file', 'output.gds'))
@@ -80,7 +96,7 @@ def generate_gds():
         
         # 重写配置文件
         with open(config_file, 'w') as f:
-            yaml.dump(config_data, f)
+            yaml.dump(config_data, f, default_style='"')  # 使用双引号来确保字符串类型
         
         # 保存当前工作目录
         original_dir = os.getcwd()
@@ -113,6 +129,9 @@ def validate_config():
         else:
             config_data = yaml.safe_load(request.form.get('config', '{}'))
         
+        # 确保ring_width和ring_space保持为字符串类型
+        config_data = ensure_string_values(config_data)
+        
         # 基本验证
         if not isinstance(config_data, dict):
             return jsonify({"valid": False, "errors": ["配置必须是一个有效的YAML对象"]}), 400
@@ -138,6 +157,9 @@ def save_config():
     try:
         config_data = request.json
         
+        # 确保ring_width和ring_space保持为字符串类型
+        config_data = ensure_string_values(config_data)
+        
         # 确保文件名安全
         filename = secure_filename(config_data.get('filename', 'config.yaml'))
         if not filename.endswith('.yaml'):
@@ -148,7 +170,7 @@ def save_config():
         # 提取并保存配置
         config_content = config_data.get('config', {})
         with open(file_path, 'w') as f:
-            yaml.dump(config_content, f)
+            yaml.dump(config_content, f, default_style='"')  # 使用双引号来确保字符串类型
             
         return jsonify({"success": True, "file_path": file_path})
     except Exception as e:
@@ -167,6 +189,8 @@ def load_config():
     try:
         # 读取并解析YAML文件
         config_content = yaml.safe_load(file.stream)
+        # 确保ring_width和ring_space保持为字符串类型
+        config_content = ensure_string_values(config_content)
         return jsonify({"success": True, "config": config_content})
     except Exception as e:
         return jsonify({"success": False, "error": f"配置文件解析错误: {str(e)}"}), 400

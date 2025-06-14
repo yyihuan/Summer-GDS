@@ -119,8 +119,9 @@ function addShape(shapeType) {
     
     // 环阵列特有属性
     if (shapeType === 'rings') {
-        newShape.ring_width = 1;
-        newShape.ring_space = 1;
+        // 保持为字符串，方便后端灵活解析
+        newShape.ring_width = "1";
+        newShape.ring_space = "1";
         newShape.ring_num = 3;
     }
     
@@ -351,17 +352,13 @@ function fillShapeFormValues(cardElement, shape, index) {
         const ringNumInput = cardElement.querySelector(`[name="shapes[${index}].ring_num"]`);
         
         if (ringWidthInput && shape.ring_width !== undefined) {
-            // 处理环宽度（支持数组或单一值）
-            ringWidthInput.value = Array.isArray(shape.ring_width) ? 
-                shape.ring_width.join(',') : 
-                shape.ring_width.toString();
+            // 直接显示字符串
+            ringWidthInput.value = shape.ring_width.toString();
         }
         
         if (ringSpaceInput && shape.ring_space !== undefined) {
-            // 处理环间距（支持数组或单一值）
-            ringSpaceInput.value = Array.isArray(shape.ring_space) ? 
-                shape.ring_space.join(',') : 
-                shape.ring_space.toString();
+            // 直接显示字符串
+            ringSpaceInput.value = shape.ring_space.toString();
         }
         
         if (ringNumInput && shape.ring_num !== undefined) {
@@ -470,19 +467,12 @@ function updateJSONFromForm() {
             
             // 环阵列特有属性
             if (shapeType === 'rings') {
+                // 直接将字符串保存到配置中，保持原貌，方便后端解析
                 const ringWidthStr = card.querySelector(`[name="shapes[${shapeIndex}].ring_width"]`).value;
-                if (ringWidthStr.includes(',')) {
-                    shape.ring_width = ringWidthStr.split(',').map(w => parseFloat(w.trim())).filter(w => !isNaN(w));
-                } else {
-                    shape.ring_width = parseFloat(ringWidthStr);
-                }
-                
+                shape.ring_width = ringWidthStr;
+
                 const ringSpaceStr = card.querySelector(`[name="shapes[${shapeIndex}].ring_space"]`).value;
-                if (ringSpaceStr.includes(',')) {
-                    shape.ring_space = ringSpaceStr.split(',').map(s => parseFloat(s.trim())).filter(s => !isNaN(s));
-                } else {
-                    shape.ring_space = parseFloat(ringSpaceStr);
-                }
+                shape.ring_space = ringSpaceStr;
                 
                 shape.ring_num = parseInt(card.querySelector(`[name="shapes[${shapeIndex}].ring_num"]`).value);
             }
