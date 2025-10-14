@@ -223,7 +223,7 @@ function bindShapeCardEvents(cardElement, shape, index) {
         });
     }
     
-    // 绑定偏置按钮事件
+    // 绑定扩大/缩小按钮事件
     const offsetBtn = cardElement.querySelector('.offset-shape-btn');
     if (offsetBtn) {
         offsetBtn.addEventListener('click', function() {
@@ -891,9 +891,9 @@ function toggleToSingleRadius(event) {
     updateJSONFromForm();
 }
 
-// 偏置形状
+// 扩大/缩小形状
 function offsetShape(sourceIndex) {
-    console.log(`开始偏置形状: 源索引=${sourceIndex}`);
+    console.log(`开始扩大/缩小形状: 源索引=${sourceIndex}`);
     
     // 获取源形状
     const sourceShape = config.shapes[sourceIndex];
@@ -907,7 +907,7 @@ function offsetShape(sourceIndex) {
     const newShape = JSON.parse(JSON.stringify(sourceShape));
     
     // 修改名称
-    newShape.name = `${sourceShape.name}_偏置`;
+    newShape.name = `${sourceShape.name}_扩大缩小`;
     
     // 修改图层索引（默认加1）
     if (Array.isArray(newShape.layer) && newShape.layer.length > 0) {
@@ -930,8 +930,8 @@ function offsetShape(sourceIndex) {
     // 绑定倒角半径列表切换按钮事件
     bindRadiusListToggleEvents();
     
-    console.log(`形状偏置完成: 新索引=${config.shapes.length - 1}`);
-    showAlert('形状偏置成功', 'success', true);
+    console.log(`形状扩大/缩小完成: 新索引=${config.shapes.length - 1}`);
+    showAlert('形状扩大/缩小成功', 'success', true);
 }
 
 // 显示提示框

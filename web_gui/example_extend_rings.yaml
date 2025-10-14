@@ -27,9 +27,9 @@ shapes:
       radius: 5
     zoom: [0, 0]
   
-  # 偏置环（向外扩展版）
+  # 扩大环（向外扩展版）
   - type: extend_rings
-    name: 外扩偏置环
+    name: 外扩扩大环
     layer: [2, 0]
     vertices: "0,0:100,0:100,100:0,100"
     ring_width: 10
@@ -41,9 +41,9 @@ shapes:
       radius: 5
     zoom: [0, 0]
   
-  # 偏置环（向内缩窄版）
+  # 缩小环（向内缩窄版）
   - type: extend_rings
-    name: 内缩偏置环
+    name: 内缩缩小环
     layer: [3, 0]
     vertices: "0,0:100,0:100,100:0,100"
     ring_width: 10
@@ -55,9 +55,9 @@ shapes:
       radius: 5
     zoom: [0, 0]
   
-  # 带有不同倒角半径的偏置环
+  # 带有不同倒角半径的扩大环
   - type: extend_rings
-    name: 多半径偏置环
+    name: 多半径扩大环
     layer: [4, 0]
     vertices: "200,0:300,0:300,100:200,100"
     ring_width: 10
