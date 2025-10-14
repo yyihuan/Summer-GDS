@@ -653,7 +653,19 @@
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jsoneditor@9.9.0/dist/jsoneditor.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js"></script>
+
+    <!-- 形状联动系统 -->
+    <script src="{{ url_for('static', filename='linkage/core.js') }}"></script>
+    <script src="{{ url_for('static', filename='linkage/id-manager.js') }}"></script>
+    <script src="{{ url_for('static', filename='linkage/property-path.js') }}"></script>
+    <script src="{{ url_for('static', filename='linkage/validator.js') }}"></script>
+    <script src="{{ url_for('static', filename='linkage/property-resolver.js') }}"></script>
+
+    <!-- 联动系统测试文件 -->
+    <script src="{{ url_for('static', filename='linkage/stage3-test.js') }}"></script>
+    <script src="{{ url_for('static', filename='linkage/debug-test.js') }}"></script>
+
+    <!-- 主应用脚本 -->
     <script src="{{ url_for('static', filename='main.js') }}"></script>
 </body>
-</html> 
 </html> 

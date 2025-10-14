@@ -891,46 +891,86 @@ function toggleToSingleRadius(event) {
     updateJSONFromForm();
 }
 
-// 扩大/缩小形状
+// 扩大/缩小形状 - 增强版支持派生关系
 function offsetShape(sourceIndex) {
     console.log(`开始扩大/缩小形状: 源索引=${sourceIndex}`);
-    
-    // 获取源形状
+
     const sourceShape = config.shapes[sourceIndex];
     if (!sourceShape) {
         console.error('源形状不存在');
         showAlert('源形状不存在', 'danger');
         return;
     }
-    
-    // 创建新形状配置，深拷贝源形状
-    const newShape = JSON.parse(JSON.stringify(sourceShape));
-    
-    // 修改名称
-    newShape.name = `${sourceShape.name}_扩大缩小`;
-    
-    // 修改图层索引（默认加1）
-    if (Array.isArray(newShape.layer) && newShape.layer.length > 0) {
-        newShape.layer[0] = newShape.layer[0] + 1;
+
+    // 确保联动系统已加载
+    if (typeof LinkageIdManager === 'undefined' || typeof LinkagePropertyResolver === 'undefined') {
+        console.warn('联动系统未加载，使用原有逻辑');
+        // 原有逻辑作为降级方案
+        const newShape = JSON.parse(JSON.stringify(sourceShape));
+        newShape.name = `${sourceShape.name}_扩大缩小`;
+        if (Array.isArray(newShape.layer) && newShape.layer.length > 0) {
+            newShape.layer[0] = newShape.layer[0] + 1;
+        }
+        config.shapes.push(newShape);
+        renderShapeCard(newShape, config.shapes.length - 1);
+        jsonEditor.set(config);
+        updateYAMLPreview();
+        currentShapeIndex++;
+        bindRadiusListToggleEvents();
+        console.log(`形状扩大/缩小完成: 新索引=${config.shapes.length - 1}`);
+        showAlert('形状扩大/缩小成功', 'success', true);
+        return;
     }
-    
+
+    // 确保源形状有ID
+    if (!sourceShape.id) {
+        sourceShape.id = LinkageIdManager.generateShapeId();
+        LinkageCore.log('info', `为源形状生成ID: ${sourceShape.name} -> ${sourceShape.id}`);
+    }
+
+    // 创建派生形状配置（新格式）
+    const newShape = {
+        type: sourceShape.type,
+        id: LinkageIdManager.generateShapeId(),
+        name: `${sourceShape.name}_扩大缩小`,
+        layer: [
+            (sourceShape.layer[0] || 1) + 1,
+            sourceShape.layer[1] || 0
+        ],
+
+        // 新增：派生关系配置
+        derivation: {
+            base_shape_id: sourceShape.id,
+            derive_type: 'offset',
+            derive_params: {
+                zoom: sourceShape.zoom || 0  // 派生参数
+            },
+            created_at: new Date().toISOString(),
+            overrides: {}  // 初始无覆盖
+        },
+
+        // 运行时计算属性将在解析时生成
+        _computed: {}
+    };
+
     // 添加到配置中
     config.shapes.push(newShape);
-    
-    // 渲染形状卡片
-    renderShapeCard(newShape, config.shapes.length - 1);
-    
+
+    // 重建ID映射表
+    LinkageIdManager.buildIdMap(config.shapes);
+
+    // 解析并渲染新形状
+    const resolvedShape = LinkagePropertyResolver.resolveShapeProperties(newShape);
+    renderShapeCard(resolvedShape, config.shapes.length - 1);
+
     // 更新JSON编辑器和YAML预览
     jsonEditor.set(config);
     updateYAMLPreview();
-    
-    // 增加索引计数
+
     currentShapeIndex++;
-    
-    // 绑定倒角半径列表切换按钮事件
     bindRadiusListToggleEvents();
-    
-    console.log(`形状扩大/缩小完成: 新索引=${config.shapes.length - 1}`);
+
+    LinkageCore.log('info', `派生形状创建完成: ${newShape.name} <- ${sourceShape.name}`);
     showAlert('形状扩大/缩小成功', 'success', true);
 }
 
@@ -989,7 +1029,7 @@ function handleViaButtonClick(baseShapeIndex) {
     viaModal.show();
 }
 
-// 新增函数：确认添加 Via 形状
+// 新增函数：确认添加 Via 形状 - 增强版支持派生关系
 function confirmAddVia() {
     console.log('confirmAddVia 函数被调用');
     const baseShapeIndex = parseInt(document.getElementById('baseShapeIndexForVia').value);
@@ -1015,42 +1055,93 @@ function confirmAddVia() {
             return;
         }
 
-        const newViaShape = {
-            type: "via",
-            name: (baseShape.name || `多边形${baseShapeIndex}`) + "_via",
-            inner_zoom: innerZoom,
-            outer_zoom: outerZoom,
-            layer: [layerNum, layerDatatype],
-            // 深拷贝基础图形的倒角信息
-            fillet: JSON.parse(JSON.stringify(baseShape.fillet || { type: 'none' })),
-            // 复制顶点或顶点生成配置
-        };
+        // 检查联动系统是否加载
+        const useAdvancedMode = typeof LinkageIdManager !== 'undefined' && typeof LinkagePropertyResolver !== 'undefined';
 
-        if (baseShape.vertices_gen) {
-            newViaShape.vertices_gen = JSON.parse(JSON.stringify(baseShape.vertices_gen));
-        } else if (baseShape.vertices) {
-            newViaShape.vertices = baseShape.vertices; // 顶点字符串是原始类型，直接复制
+        let newViaShape;
+
+        if (useAdvancedMode) {
+            // 确保基础形状有ID
+            if (!baseShape.id) {
+                baseShape.id = LinkageIdManager.generateShapeId();
+                LinkageCore.log('info', `为基础形状生成ID: ${baseShape.name} -> ${baseShape.id}`);
+            }
+
+            // 新格式：支持派生关系的 Via 形状
+            newViaShape = {
+                type: "via",
+                id: LinkageIdManager.generateShapeId(),
+                name: (baseShape.name || `多边形${baseShapeIndex}`) + "_via",
+                inner_zoom: innerZoom,
+                outer_zoom: outerZoom,
+                layer: [layerNum, layerDatatype],
+
+                // 新增：派生关系配置
+                derivation: {
+                    base_shape_id: baseShape.id,
+                    derive_type: 'via',
+                    derive_params: {
+                        inner_zoom: innerZoom,
+                        outer_zoom: outerZoom
+                    },
+                    created_at: new Date().toISOString(),
+                    overrides: {}  // 初始无覆盖
+                },
+
+                // 运行时计算属性将在解析时生成
+                _computed: {}
+            };
+
+            LinkageCore.log('info', `创建派生Via形状: ${newViaShape.name} <- ${baseShape.name}`);
         } else {
-            showAlert('基础图形缺少顶点或顶点生成信息!', 'danger');
-            return; // 如果没有顶点信息，则不创建
+            // 原有格式：降级兼容模式
+            console.warn('联动系统未加载，使用原有Via创建逻辑');
+            newViaShape = {
+                type: "via",
+                name: (baseShape.name || `多边形${baseShapeIndex}`) + "_via",
+                inner_zoom: innerZoom,
+                outer_zoom: outerZoom,
+                layer: [layerNum, layerDatatype],
+                // 深拷贝基础图形的倒角信息
+                fillet: JSON.parse(JSON.stringify(baseShape.fillet || { type: 'none' })),
+            };
+
+            if (baseShape.vertices_gen) {
+                newViaShape.vertices_gen = JSON.parse(JSON.stringify(baseShape.vertices_gen));
+            } else if (baseShape.vertices) {
+                newViaShape.vertices = baseShape.vertices; // 顶点字符串是原始类型，直接复制
+            } else {
+                showAlert('基础图形缺少顶点或顶点生成信息!', 'danger');
+                return; // 如果没有顶点信息，则不创建
+            }
+
+            // 存储用于模板渲染的基础图形信息
+            newViaShape.base_shape_info = {
+                name: baseShape.name || `多边形${baseShapeIndex}`,
+                vertices: baseShape.vertices || (baseShape.vertices_gen ? '由配置生成' : '无顶点信息'),
+                fillet_type: baseShape.fillet ? baseShape.fillet.type : 'none',
+                fillet_radius: baseShape.fillet ? baseShape.fillet.radius : undefined,
+                fillet_precision: baseShape.fillet ? baseShape.fillet.precision : (config.global.fillet.precision || 0.01),
+                fillet_convex_radius: baseShape.fillet ? baseShape.fillet.convex_radius : undefined,
+                fillet_concave_radius: baseShape.fillet ? baseShape.fillet.concave_radius : undefined,
+            };
         }
-        
-        // 存储用于模板渲染的基础图形信息
-        newViaShape.base_shape_info = {
-            name: baseShape.name || `多边形${baseShapeIndex}`,
-            vertices: baseShape.vertices || (baseShape.vertices_gen ? '由配置生成' : '无顶点信息'),
-            fillet_type: baseShape.fillet ? baseShape.fillet.type : 'none',
-            fillet_radius: baseShape.fillet ? baseShape.fillet.radius : undefined,
-            fillet_precision: baseShape.fillet ? baseShape.fillet.precision : (config.global.fillet.precision || 0.01),
-            fillet_convex_radius: baseShape.fillet ? baseShape.fillet.convex_radius : undefined,
-            fillet_concave_radius: baseShape.fillet ? baseShape.fillet.concave_radius : undefined,
-        };
 
         config.shapes.push(newViaShape);
         currentShapeIndex++; // 确保下一个图形的索引是新的
 
-        refreshShapesContainer(); // 重新渲染所有图形
-        
+        if (useAdvancedMode) {
+            // 重建ID映射表
+            LinkageIdManager.buildIdMap(config.shapes);
+
+            // 解析并渲染新形状
+            const resolvedShape = LinkagePropertyResolver.resolveShapeProperties(newViaShape);
+            renderShapeCard(resolvedShape, config.shapes.length - 1);
+        } else {
+            // 使用原有渲染逻辑
+            refreshShapesContainer(); // 重新渲染所有图形
+        }
+
         jsonEditor.set(config); // 更新JSON编辑器
         updateYAMLPreview(); // 更新YAML预览
 
