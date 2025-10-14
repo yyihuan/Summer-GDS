@@ -1,0 +1,16 @@
+[project]
+name = "summer-gds"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "flask>=2.0.0",
+    "flask-cors>=3.0.10",
+    "klayout>=0.28.0",
+    "matplotlib>=3.5.0",
+    "numpy>=1.20.0",
+    "pyinstaller>=6.16.0",
+    "pyyaml>=6.0",
+    "werkzeug>=2.0.0",
+]

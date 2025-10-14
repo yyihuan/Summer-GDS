@@ -40,7 +40,7 @@ cd "$GUI_DIR"
 # 检查是否需要安装依赖
 if [ ! -f ".deps_installed" ]; then
   echo "正在安装依赖..."
-  pip install -r requirements.txt
+  uv add -r requirements.txt
   if [ $? -eq 0 ]; then
     touch .deps_installed
     echo "依赖安装完成"

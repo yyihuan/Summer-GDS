@@ -97,15 +97,25 @@ class GDS:
 
     def save(self, output_file, save_mapping=True):
         """保存 GDS 文件
-        
+
         参数:
             output_file: 输出文件路径
             save_mapping: 是否保存图层映射
         """
         try:
+            # 规范化输出路径
+            output_file = os.path.abspath(os.path.normpath(output_file))
+
+            # 确保输出目录存在
+            output_dir = os.path.dirname(output_file)
+            if output_dir and not os.path.exists(output_dir):
+                os.makedirs(output_dir)
+
+            # 使用简单的 write 方法,让 klayout 自动根据扩展名判断格式
+            # 这种方式在打包和非打包环境下都能正常工作
             self.kdb_layout.write(output_file)
             logger.info(f"保存GDS文件: {output_file}")
-            
+
             # 保存图层映射
             if save_mapping:
                 basename, _ = os.path.splitext(output_file)

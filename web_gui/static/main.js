@@ -266,6 +266,29 @@ function bindShapeCardEvents(cardElement, shape, index) {
             updateJSONFromForm();
         });
     });
+
+    // 绑定几何类型切换事件
+    const geometrySelect = cardElement.querySelector('.geometry-type-select');
+    if (geometrySelect) {
+        geometrySelect.addEventListener('change', function(e) {
+            const geometryType = e.target.value;
+            console.log(`几何类型切换到: ${geometryType}, 形状索引: ${index}`);
+            toggleGeometryInputs(index, geometryType);
+        });
+    }
+
+    // 绑定圆形参数输入事件
+    const circleInputs = cardElement.querySelectorAll('.circle-params-container input');
+    circleInputs.forEach(input => {
+        input.addEventListener('input', function() {
+            console.log('圆形参数变更:', input.name, input.value);
+            // 实时更新顶点（防抖处理）
+            clearTimeout(input.updateTimeout);
+            input.updateTimeout = setTimeout(() => {
+                updateVerticesFromCircle(index);
+            }, 300);
+        });
+    });
 }
 
 // 填充形状表单值
@@ -350,17 +373,17 @@ function fillShapeFormValues(cardElement, shape, index) {
         const ringWidthInput = cardElement.querySelector(`[name="shapes[${index}].ring_width"]`);
         const ringSpaceInput = cardElement.querySelector(`[name="shapes[${index}].ring_space"]`);
         const ringNumInput = cardElement.querySelector(`[name="shapes[${index}].ring_num"]`);
-        
+
         if (ringWidthInput && shape.ring_width !== undefined) {
             // 直接显示字符串
             ringWidthInput.value = shape.ring_width.toString();
         }
-        
+
         if (ringSpaceInput && shape.ring_space !== undefined) {
             // 直接显示字符串
             ringSpaceInput.value = shape.ring_space.toString();
         }
-        
+
         if (ringNumInput && shape.ring_num !== undefined) {
             ringNumInput.value = shape.ring_num;
         }
@@ -370,6 +393,46 @@ function fillShapeFormValues(cardElement, shape, index) {
 
         const outerZoomInput = cardElement.querySelector(`[name="shapes[${index}].outer_zoom"]`);
         if(outerZoomInput && shape.outer_zoom !== undefined) outerZoomInput.value = shape.outer_zoom;
+    }
+
+    // 恢复几何类型和圆形参数（基于元数据）
+    if (shape.type === 'polygon' || shape.type === 'rings') {
+        const geometrySelect = cardElement.querySelector('.geometry-type-select');
+        if (geometrySelect && shape._metadata) {
+            if (shape._metadata.source === 'circle') {
+                console.log(`恢复圆形状态: 形状${index}, 元数据:`, shape._metadata);
+
+                // 设置为圆形模式
+                geometrySelect.value = 'circle';
+
+                // 恢复圆形参数
+                const params = shape._metadata.params;
+                if (params) {
+                    const centerXInput = cardElement.querySelector('[name*="center_x"]');
+                    const centerYInput = cardElement.querySelector('[name*="center_y"]');
+                    const radiusInput = cardElement.querySelector('[name*="radius"]');
+                    const segmentsInput = cardElement.querySelector('[name*="segments"]');
+
+                    if (centerXInput) centerXInput.value = params.center_x !== undefined ? params.center_x : 0;
+                    if (centerYInput) centerYInput.value = params.center_y !== undefined ? params.center_y : 0;
+                    if (radiusInput) radiusInput.value = params.radius || 10;
+                    if (segmentsInput) segmentsInput.value = params.segments || 64;
+                }
+
+                // 切换UI显示到圆形模式
+                setTimeout(() => toggleGeometryInputs(index, 'circle'), 100);
+            } else {
+                // 默认为顶点模式
+                geometrySelect.value = 'vertices';
+                setTimeout(() => toggleGeometryInputs(index, 'vertices'), 100);
+            }
+        } else {
+            // 没有元数据，默认为顶点模式
+            if (geometrySelect) {
+                geometrySelect.value = 'vertices';
+                setTimeout(() => toggleGeometryInputs(index, 'vertices'), 100);
+            }
+        }
     }
 }
 
@@ -453,7 +516,7 @@ function updateJSONFromForm() {
             shape.fillet = {
                 type: card.querySelector(`[name="shapes[${shapeIndex}].fillet.type"]`).value
             };
-            
+
             // 处理倒角半径
             const radiusListContainer = card.querySelector(`.radius-list-container[data-shape-index="${shapeIndex}"]`);
             if (radiusListContainer && radiusListContainer.style.display !== 'none') {
@@ -463,6 +526,43 @@ function updateJSONFromForm() {
             } else {
                 // 使用单一半径
                 shape.fillet.radius = parseFloat(card.querySelector(`[name="shapes[${shapeIndex}].fillet.radius"]`).value || 0);
+            }
+
+            // 检查是否为圆形生成的形状，保存元数据
+            const geometrySelect = card.querySelector('.geometry-type-select');
+            if (geometrySelect && geometrySelect.value === 'circle') {
+                // 获取圆形参数，确保圆心坐标默认为0
+                const centerXInput = card.querySelector(`[name*="center_x"]`);
+                const centerYInput = card.querySelector(`[name*="center_y"]`);
+                const radiusInput = card.querySelector(`[name*="radius"]`);
+                const segmentsInput = card.querySelector(`[name*="segments"]`);
+
+                const centerX = centerXInput ? (parseFloat(centerXInput.value) || 0) : 0;
+                const centerY = centerYInput ? (parseFloat(centerYInput.value) || 0) : 0;
+                const radius = radiusInput ? parseFloat(radiusInput.value) : 0;
+                const segments = segmentsInput ? (parseInt(segmentsInput.value) || 64) : 64;
+
+                console.log(`保存圆形元数据: 索引=${shapeIndex}, 中心(${centerX}, ${centerY}), 半径=${radius}, 精度=${segments}`);
+
+                // 保存元数据
+                shape._metadata = {
+                    source: 'circle',
+                    params: {
+                        center_x: centerX,
+                        center_y: centerY,
+                        radius: radius,
+                        segments: segments
+                    },
+                    generated_at: new Date().toISOString(),
+                    version: '1.0'
+                };
+            } else {
+                // 如果不是圆形，标记为顶点源
+                shape._metadata = {
+                    source: 'vertices',
+                    generated_at: new Date().toISOString(),
+                    version: '1.0'
+                };
             }
             
             // 环阵列特有属性
@@ -965,4 +1065,121 @@ function confirmAddVia() {
     } else {
         showAlert('找不到有效的基础多边形图形!', 'danger');
     }
+}
+
+// ==================== 圆形支持功能 ====================
+
+// 圆形顶点生成算法
+function generateCircleVertices(centerX, centerY, radius, segments = 64) {
+    console.log(`生成圆形顶点: 中心(${centerX}, ${centerY}), 半径=${radius}, 精度=${segments}`);
+
+    if (!radius || radius <= 0) {
+        throw new Error('半径必须大于0');
+    }
+
+    if (segments < 8 || segments > 256) {
+        console.warn(`精度值${segments}超出范围，使用默认值64`);
+        segments = 64; // 使用默认值
+    }
+
+    const vertices = [];
+    for (let i = 0; i < segments; i++) {
+        const angle = (2 * Math.PI * i) / segments;
+        const x = centerX + radius * Math.cos(angle);
+        const y = centerY + radius * Math.sin(angle);
+        vertices.push(`${x.toFixed(3)},${y.toFixed(3)}`);
+    }
+
+    const result = vertices.join(':');
+    console.log(`生成的顶点: ${result.substring(0, 50)}...`);
+    return result;
+}
+
+// 动态表单切换逻辑
+function toggleGeometryInputs(shapeIndex, geometryType) {
+    console.log(`切换几何类型: 形状索引=${shapeIndex}, 类型=${geometryType}`);
+
+    const container = document.querySelector(`[data-shape-index="${shapeIndex}"]`);
+    if (!container) {
+        console.error(`未找到形状容器: data-shape-index="${shapeIndex}"`);
+        return;
+    }
+
+    const verticesContainer = container.querySelector('.vertices-container');
+    const circleContainer = container.querySelector('.circle-params-container');
+
+    if (!verticesContainer || !circleContainer) {
+        console.error('未找到顶点容器或圆形参数容器');
+        return;
+    }
+
+    if (geometryType === 'circle') {
+        verticesContainer.style.display = 'none';
+        circleContainer.style.display = 'block';
+        console.log('已切换到圆形模式');
+
+        // 如果圆形参数不为空，立即生成顶点
+        setTimeout(() => updateVerticesFromCircle(shapeIndex), 100);
+    } else {
+        verticesContainer.style.display = 'block';
+        circleContainer.style.display = 'none';
+        console.log('已切换到顶点模式');
+    }
+}
+
+// 从圆形参数更新顶点
+function updateVerticesFromCircle(shapeIndex) {
+    console.log(`从圆形参数更新顶点: 形状索引=${shapeIndex}`);
+
+    const container = document.querySelector(`[data-shape-index="${shapeIndex}"]`);
+    if (!container) {
+        console.error(`未找到形状容器: data-shape-index="${shapeIndex}"`);
+        return;
+    }
+
+    try {
+        const centerXInput = container.querySelector('[name*="center_x"]');
+        const centerYInput = container.querySelector('[name*="center_y"]');
+        const radiusInput = container.querySelector('[name*="radius"]');
+        const segmentsInput = container.querySelector('[name*="segments"]');
+
+        const centerX = centerXInput ? (parseFloat(centerXInput.value) || 0) : 0;
+        const centerY = centerYInput ? (parseFloat(centerYInput.value) || 0) : 0;
+        const radius = radiusInput ? parseFloat(radiusInput.value) : 0;
+        const segments = segmentsInput ? (parseInt(segmentsInput.value) || 64) : 64;
+
+        console.log(`圆形参数: 中心(${centerX}, ${centerY}), 半径=${radius}, 精度=${segments}`);
+
+        if (radius > 0) {
+            const vertices = generateCircleVertices(centerX, centerY, radius, segments);
+            const verticesInput = container.querySelector('[name*="vertices"]');
+            if (verticesInput) {
+                verticesInput.value = vertices;
+                console.log('顶点已更新到输入框');
+                updateJSONFromForm(); // 触发配置更新
+            }
+        }
+    } catch (error) {
+        console.error('圆形顶点生成失败:', error);
+        showAlert(`圆形参数错误: ${error.message}`, 'danger');
+    }
+}
+
+// 参数验证
+function validateCircleParams(centerX, centerY, radius, segments) {
+    const errors = [];
+
+    if (isNaN(centerX) || isNaN(centerY)) {
+        errors.push('圆心坐标必须是有效数字');
+    }
+
+    if (!radius || radius <= 0) {
+        errors.push('半径必须大于0');
+    }
+
+    if (segments && (segments < 8 || segments > 256)) {
+        errors.push('精度必须在8-256之间');
+    }
+
+    return errors;
 }

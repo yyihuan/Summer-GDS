@@ -69,6 +69,43 @@
         @keyframes spinner-border {
             to { transform: rotate(360deg); }
         }
+
+        /* 圆形参数区域样式 */
+        .circle-params-container {
+            background-color: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 0.375rem;
+            padding: 15px;
+            margin-top: 10px;
+        }
+
+        .geometry-type-select {
+            border-color: #4a6bdf;
+        }
+
+        .circle-params-container input:invalid {
+            border-color: #dc3545;
+        }
+
+        .circle-params-container input:valid {
+            border-color: #198754;
+        }
+
+        /* 过渡动画 */
+        .circle-params-container,
+        .vertices-container {
+            transition: all 0.3s ease-in-out;
+        }
+
+        /* 隐藏时的样式 */
+        .circle-params-container[style*="display: none"],
+        .vertices-container[style*="display: none"] {
+            opacity: 0;
+            max-height: 0;
+            overflow: hidden;
+            margin: 0;
+            padding: 0;
+        }
     </style>
 </head>
 <body>
@@ -262,8 +299,60 @@
                         </div>
                     </div>
                     <div class="col-md-6 mb-3">
-                        <label class="form-label">顶点坐标 (x1,y1:x2,y2:...)</label>
-                        <input type="text" class="form-control" name="shapes[{index}].vertices" placeholder="0,0:10,0:10,10:0,10">
+                        <label class="form-label">定义方式</label>
+                        <select class="form-select geometry-type-select"
+                                name="shapes[{index}].geometry_type"
+                                data-shape-index="{index}">
+                            <option value="vertices">顶点坐标</option>
+                            <option value="circle">圆形</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- 圆形参数区域（默认隐藏） -->
+                <div class="circle-params-container" data-shape-index="{index}" style="display: none;">
+                    <div class="row">
+                        <div class="col-md-3 mb-3">
+                            <label class="form-label">圆心X (μm)</label>
+                            <input type="number" class="form-control"
+                                   name="shapes[{index}].circle.center_x"
+                                   step="0.001" placeholder="0" value="0">
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label class="form-label">圆心Y (μm)</label>
+                            <input type="number" class="form-control"
+                                   name="shapes[{index}].circle.center_y"
+                                   step="0.001" placeholder="0" value="0">
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label class="form-label">半径 (μm)</label>
+                            <input type="number" class="form-control"
+                                   name="shapes[{index}].circle.radius"
+                                   step="0.001" min="0.001" placeholder="10" required>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label class="form-label">精度</label>
+                            <input type="number" class="form-control"
+                                   name="shapes[{index}].circle.segments"
+                                   value="64" min="8" max="256" placeholder="64">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <small class="form-text text-muted">
+                                圆形将自动转换为多边形顶点。精度越高，圆形越光滑，但顶点数量也越多。
+                            </small>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 顶点输入区域添加容器类 -->
+                <div class="vertices-container" data-shape-index="{index}">
+                    <div class="row">
+                        <div class="col-md-12 mb-3">
+                            <label class="form-label">顶点坐标 (x1,y1:x2,y2:...)</label>
+                            <input type="text" class="form-control" name="shapes[{index}].vertices" placeholder="0,0:10,0:10,10:0,10">
+                        </div>
                     </div>
                 </div>
                 <div class="row">
@@ -337,8 +426,60 @@
                         </div>
                     </div>
                     <div class="col-md-6 mb-3">
-                        <label class="form-label">顶点坐标 (x1,y1:x2,y2:...)</label>
-                        <input type="text" class="form-control" name="shapes[{index}].vertices" placeholder="0,0:10,0:10,10:0,10">
+                        <label class="form-label">定义方式</label>
+                        <select class="form-select geometry-type-select"
+                                name="shapes[{index}].geometry_type"
+                                data-shape-index="{index}">
+                            <option value="vertices">顶点坐标</option>
+                            <option value="circle">圆形</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- 圆形参数区域（默认隐藏） -->
+                <div class="circle-params-container" data-shape-index="{index}" style="display: none;">
+                    <div class="row">
+                        <div class="col-md-3 mb-3">
+                            <label class="form-label">圆心X (μm)</label>
+                            <input type="number" class="form-control"
+                                   name="shapes[{index}].circle.center_x"
+                                   step="0.001" placeholder="0" value="0">
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label class="form-label">圆心Y (μm)</label>
+                            <input type="number" class="form-control"
+                                   name="shapes[{index}].circle.center_y"
+                                   step="0.001" placeholder="0" value="0">
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label class="form-label">半径 (μm)</label>
+                            <input type="number" class="form-control"
+                                   name="shapes[{index}].circle.radius"
+                                   step="0.001" min="0.001" placeholder="10" required>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label class="form-label">精度</label>
+                            <input type="number" class="form-control"
+                                   name="shapes[{index}].circle.segments"
+                                   value="64" min="8" max="256" placeholder="64">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <small class="form-text text-muted">
+                                圆形将自动转换为多边形顶点。精度越高，圆形越光滑，但顶点数量也越多。
+                            </small>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 顶点输入区域添加容器类 -->
+                <div class="vertices-container" data-shape-index="{index}">
+                    <div class="row">
+                        <div class="col-md-12 mb-3">
+                            <label class="form-label">顶点坐标 (x1,y1:x2,y2:...)</label>
+                            <input type="text" class="form-control" name="shapes[{index}].vertices" placeholder="0,0:10,0:10,10:0,10">
+                        </div>
                     </div>
                 </div>
                 <div class="row">
