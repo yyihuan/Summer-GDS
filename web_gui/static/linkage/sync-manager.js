@@ -1,0 +1,382 @@
+// 变更检测与同步模块
+window.LinkageSyncManager = {
+
+    _enhanced: false,
+
+    getConfig() {
+        if (window.config) {
+            return window.config;
+        }
+        if (typeof config !== 'undefined') {
+            return config;
+        }
+        window.config = { shapes: [] };
+        return window.config;
+    },
+
+    // 增强 updateJSONFromForm，增加变更检测流程
+    enhanceUpdateJSONFromForm() {
+        if (this._enhanced) {
+            return;
+        }
+
+        const originalUpdate = window.updateJSONFromForm;
+        if (typeof originalUpdate !== 'function') {
+            LinkageCore.log('warn', '未找到 updateJSONFromForm，暂不启用变更检测');
+            return;
+        }
+
+        const manager = this;
+        window.updateJSONFromForm = function enhancedUpdateJSONFromForm() {
+            const activeConfig = manager.getConfig();
+            const previousShapes = JSON.parse(JSON.stringify(activeConfig.shapes || []));
+            LinkageCore.log('info', '开始表单更新，记录变更前状态');
+
+            originalUpdate.call(this);
+
+            setTimeout(() => {
+                const latestConfig = manager.getConfig();
+                manager.detectAndSync(previousShapes, latestConfig.shapes || []);
+            }, 0);
+        };
+
+        this._enhanced = true;
+        LinkageCore.log('info', 'updateJSONFromForm 函数已增强');
+    },
+
+    // 对比变更并执行同步
+    detectAndSync(oldShapes, newShapes) {
+        if (!Array.isArray(newShapes) || newShapes.length === 0) {
+            return;
+        }
+
+        const changes = this.detectChanges(oldShapes || [], newShapes);
+        if (changes.length === 0) {
+            return;
+        }
+
+        changes.forEach(({ shapeId, changedProperties }) => {
+            LinkageCore.log('info', `检测到形状变化: ${shapeId}`, changedProperties);
+            this.syncDerivedShapes(shapeId, changedProperties);
+        });
+    },
+
+    // 检测所有形状的差异
+    detectChanges(oldShapes, newShapes) {
+        const changes = [];
+        const snapshot = Array.isArray(newShapes) ? newShapes : [];
+
+        LinkageIdManager.buildIdMap(snapshot);
+
+        snapshot.forEach((newShape) => {
+            if (!newShape?.id) {
+                return;
+            }
+
+            const oldShape = (oldShapes || []).find(item => item?.id === newShape.id);
+            if (!oldShape) {
+                return;
+            }
+
+            const diff = this.detectPropertyChanges(oldShape, newShape);
+            if (diff.length > 0) {
+                changes.push({
+                    shapeId: newShape.id,
+                    shapeName: newShape.name,
+                    changedProperties: diff
+                });
+            }
+        });
+
+        return changes;
+    },
+
+    // 检测单个形状内的属性差异
+    detectPropertyChanges(oldShape, newShape) {
+        const changed = [];
+
+        LinkageCore.INHERITABLE_PROPERTIES.forEach(propPath => {
+            const oldValue = LinkageCore.getNestedProperty(oldShape, propPath);
+            const newValue = LinkageCore.getNestedProperty(newShape, propPath);
+
+            if (!LinkageCore.deepEqual(oldValue, newValue)) {
+                changed.push(propPath);
+                LinkageCore.log('debug', `属性变化检测: ${propPath}`, {
+                    old: oldValue,
+                    new: newValue
+                });
+            }
+        });
+
+        return changed;
+    },
+
+    // 将基础形状变更同步至派生形状
+    syncDerivedShapes(baseShapeId, changedProperties) {
+        const activeConfig = this.getConfig();
+        const shapes = activeConfig.shapes || [];
+        if (shapes.length === 0) {
+            return;
+        }
+
+        const baseShape = shapes.find(shape => shape?.id === baseShapeId);
+        if (!baseShape) {
+            LinkageCore.log('warn', `同步失败，未找到基础形状: ${baseShapeId}`);
+            return;
+        }
+
+        LinkageIdManager.buildIdMap(shapes);
+        const derivedShapes = LinkageIdManager.findDerivedShapes(baseShapeId, shapes);
+        if (derivedShapes.length === 0) {
+            LinkageCore.log('debug', `无派生形状需要同步: ${baseShapeId}`);
+            return;
+        }
+
+        LinkageCore.log('info', `同步 ${derivedShapes.length} 个派生形状`, {
+            baseShapeId,
+            changedProperties
+        });
+
+        derivedShapes.forEach(({ shape, index }) => {
+            let needsUpdate = false;
+
+            changedProperties.forEach(propPath => {
+                const overridden = LinkagePropertyResolver.isPropertyOverridden(shape, propPath);
+                if (overridden) {
+                    LinkageCore.log('debug', `跳过已覆盖属性: ${shape.name}.${propPath}`);
+                    return;
+                }
+
+                needsUpdate = true;
+                const baseValue = LinkageCore.getNestedProperty(baseShape, propPath);
+                this.normalizeDerivedShapeData(shape, propPath, baseValue);
+                this.updateComputedCache(shape, propPath, baseValue);
+                LinkageCore.log('debug', `同步属性: ${shape.name}.${propPath}`);
+            });
+
+            if (!needsUpdate) {
+                return;
+            }
+
+            const resolved = LinkagePropertyResolver.resolveShapeProperties(shape);
+            activeConfig.shapes[index] = resolved;
+            this.updateShapeCardDisplay(index, resolved);
+        });
+
+        LinkageIdManager.buildIdMap(activeConfig.shapes);
+
+        this.updateJSONEditorSilently();
+    },
+
+    // 当找不到卡片时仍视为成功
+    updateShapeCardDisplay(shapeIndex, resolvedShape) {
+        const card = document.querySelector(`[data-shape-index="${shapeIndex}"]`);
+        if (!card) {
+            LinkageCore.log('debug', `形状卡片不存在（可能为测试环境）: 索引${shapeIndex}`);
+            LinkageCore.log('debug', `数据层同步完成: ${resolvedShape.name}`);
+            return;
+        }
+
+        if (resolvedShape.id) {
+            card.setAttribute('data-shape-id', resolvedShape.id);
+        }
+
+        if (resolvedShape.derivation) {
+            card.setAttribute('data-derivation', JSON.stringify(resolvedShape.derivation));
+        } else {
+            card.removeAttribute('data-derivation');
+        }
+
+        const overrideManager = window.LinkageOverrideManager;
+        if (overrideManager) {
+            overrideManager.isSystemUpdate = true;
+        }
+
+        this.updateFormValues(card, resolvedShape, shapeIndex);
+
+        if (overrideManager) {
+            overrideManager.isSystemUpdate = false;
+            overrideManager.refreshIndicatorsForShape(resolvedShape, shapeIndex);
+        }
+        LinkageCore.log('debug', `已更新形状卡片显示: ${resolvedShape.name}`);
+    },
+
+    // 更新表单控件
+    updateFormValues(card, shape, index) {
+        const overrideManager = window.LinkageOverrideManager;
+        if (overrideManager) {
+            overrideManager.isSystemUpdate = true;
+        }
+
+        const computed = shape._computed || {};
+
+        if (computed.vertices !== undefined) {
+            const input = card.querySelector(`[name="shapes[${index}].vertices"]`);
+            if (input) input.value = computed.vertices;
+        }
+
+        if (computed.fillet) {
+            const typeSelect = card.querySelector(`[name="shapes[${index}].fillet.type"]`);
+            if (typeSelect && computed.fillet.type) {
+                typeSelect.value = computed.fillet.type;
+            }
+
+            const radiusInput = card.querySelector(`[name="shapes[${index}].fillet.radius"]`);
+            if (radiusInput && computed.fillet.radius !== undefined) {
+                radiusInput.value = computed.fillet.radius;
+            }
+
+            const radiiInput = card.querySelector(`[name="shapes[${index}].fillet.radii"]`);
+            if (radiiInput && computed.fillet.radii !== undefined) {
+                radiiInput.value = Array.isArray(computed.fillet.radii)
+                    ? computed.fillet.radii.join(',')
+                    : computed.fillet.radii;
+            }
+
+            const precisionInput = card.querySelector(`[name="shapes[${index}].fillet.precision"]`);
+            if (precisionInput && computed.fillet.precision !== undefined) {
+                precisionInput.value = computed.fillet.precision;
+            }
+
+            const convexInput = card.querySelector(`[name="shapes[${index}].fillet.convex_radius"]`);
+            if (convexInput && computed.fillet.convex_radius !== undefined) {
+                convexInput.value = computed.fillet.convex_radius;
+            }
+
+            const concaveInput = card.querySelector(`[name="shapes[${index}].fillet.concave_radius"]`);
+            if (concaveInput && computed.fillet.concave_radius !== undefined) {
+                concaveInput.value = computed.fillet.concave_radius;
+            }
+        }
+
+        if (computed.zoom !== undefined) {
+            const zoomInput = card.querySelector(`[name="shapes[${index}].zoom"]`);
+            if (zoomInput) zoomInput.value = computed.zoom;
+        }
+
+        if (computed._metadata !== undefined) {
+            const metadataInput = card.querySelector(`[name="shapes[${index}]._metadata"]`);
+            if (metadataInput) {
+                metadataInput.value = typeof computed._metadata === 'object'
+                    ? JSON.stringify(computed._metadata)
+                    : computed._metadata;
+            }
+        }
+
+        if (overrideManager) {
+            overrideManager.isSystemUpdate = false;
+        }
+    },
+
+    // 静默刷新 JSON 编辑器与 YAML 预览
+    updateJSONEditorSilently() {
+        if (typeof jsonEditor !== 'undefined' && jsonEditor && typeof jsonEditor.set === 'function') {
+            const options = jsonEditor.options || {};
+            const originalOnChange = options.onChangeJSON;
+            if (jsonEditor.options) {
+                jsonEditor.options.onChangeJSON = null;
+            }
+
+            try {
+                jsonEditor.set(this.getConfig());
+            } catch (error) {
+                LinkageCore.log('error', 'JSON 编辑器更新失败', error);
+            }
+
+            if (jsonEditor.options) {
+                jsonEditor.options.onChangeJSON = originalOnChange;
+            }
+        }
+
+        if (typeof updateYAMLPreview === 'function') {
+            try {
+                updateYAMLPreview();
+            } catch (error) {
+                LinkageCore.log('error', 'YAML 预览更新失败', error);
+            }
+        }
+    },
+
+    // 调整派生参数，避免旧值覆盖继承
+    normalizeDerivedShapeData(shape, propertyPath, baseValue) {
+        const derivation = shape?.derivation;
+        if (!derivation) {
+            return;
+        }
+
+        const deriveParams = derivation.derive_params;
+        if (!deriveParams || typeof deriveParams !== 'object') {
+            return;
+        }
+
+        const rootKey = propertyPath.split('.')[0];
+        if (!Object.prototype.hasOwnProperty.call(deriveParams, rootKey)) {
+            return;
+        }
+
+        if (baseValue === undefined) {
+            delete deriveParams[rootKey];
+            LinkageCore.log('debug', `移除派生参数: ${shape.name}.${rootKey}`);
+        } else {
+            deriveParams[rootKey] = baseValue;
+            LinkageCore.log('debug', `同步派生参数: ${shape.name}.${rootKey} = ${JSON.stringify(baseValue)}`);
+        }
+    },
+
+    // 维护 _computed 缓存，便于测试读取
+    updateComputedCache(shape, propertyPath, baseValue) {
+        shape._computed = shape._computed || {};
+
+        if (baseValue === undefined) {
+            const keys = propertyPath.split('.');
+            const last = keys.pop();
+            const target = keys.reduce((current, key) => current?.[key], shape._computed);
+            if (target && Object.prototype.hasOwnProperty.call(target, last)) {
+                delete target[last];
+            }
+            return;
+        }
+
+        LinkageCore.setNestedProperty(shape._computed, propertyPath, baseValue);
+    },
+
+    // 批量同步所有派生形状（供需要时使用）
+    syncAllDerivedShapes() {
+        const activeConfig = this.getConfig();
+        const shapes = activeConfig.shapes || [];
+        LinkageIdManager.buildIdMap(shapes);
+
+        shapes.forEach((shape, index) => {
+            if (!shape?.derivation) {
+                return;
+            }
+
+            const resolved = LinkagePropertyResolver.resolveShapeProperties(shape);
+            activeConfig.shapes[index] = resolved;
+            this.updateShapeCardDisplay(index, resolved);
+        });
+
+        this.updateJSONEditorSilently();
+    },
+
+    // 强制刷新某个派生形状
+    forceRecalculateShape(shapeIndex) {
+        const activeConfig = this.getConfig();
+        const shapes = activeConfig.shapes || [];
+        const shape = shapes[shapeIndex];
+        if (!shape) {
+            LinkageCore.log('warn', `形状不存在: 索引${shapeIndex}`);
+            return;
+        }
+
+        if (!shape.derivation) {
+            LinkageCore.log('debug', `形状不是派生形状: ${shape.name}`);
+            return;
+        }
+
+        const resolved = LinkagePropertyResolver.resolveShapeProperties(shape);
+        activeConfig.shapes[shapeIndex] = resolved;
+        this.updateShapeCardDisplay(shapeIndex, resolved);
+        this.updateJSONEditorSilently();
+    }
+};

@@ -350,14 +350,22 @@
                 <div class="vertices-container" data-shape-index="{index}">
                     <div class="row">
                         <div class="col-md-12 mb-3">
-                            <label class="form-label">顶点坐标 (x1,y1:x2,y2:...)</label>
+                        <label class="form-label">顶点坐标 (x1,y1:x2,y2:...)
+                            <span class="badge bg-secondary ms-2"
+                                  data-inheritance-indicator="vertices"
+                                  data-shape-index="{index}">继承中</span>
+                        </label>
                             <input type="text" class="form-control" name="shapes[{index}].vertices" placeholder="0,0:10,0:10,10:0,10">
                         </div>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-6 mb-3">
-                        <label class="form-label">缩放</label>
+                        <label class="form-label">缩放
+                            <span class="badge bg-secondary ms-2"
+                                  data-inheritance-indicator="zoom"
+                                  data-shape-index="{index}">继承中</span>
+                        </label>
                         <input type="number" class="form-control" name="shapes[{index}].zoom" placeholder="缩放值" step="0.1" value="0">
                     </div>
                     <div class="col-md-6 mb-3">
@@ -371,7 +379,11 @@
                 </div>
                 <div class="row">
                     <div class="col-md-6 mb-3">
-                        <label class="form-label">倒角半径</label>
+                        <label class="form-label">倒角半径
+                            <span class="badge bg-secondary ms-2"
+                                  data-inheritance-indicator="fillet.radius"
+                                  data-shape-index="{index}">继承中</span>
+                        </label>
                         <div class="input-group">
                             <input type="number" class="form-control" name="shapes[{index}].fillet.radius" placeholder="倒角半径" step="0.1" value="1">
                             <button type="button" class="btn btn-outline-secondary toggle-radius-list-btn" data-shape-index="{index}">
@@ -477,7 +489,11 @@
                 <div class="vertices-container" data-shape-index="{index}">
                     <div class="row">
                         <div class="col-md-12 mb-3">
-                            <label class="form-label">顶点坐标 (x1,y1:x2,y2:...)</label>
+                        <label class="form-label">顶点坐标 (x1,y1:x2,y2:...)
+                            <span class="badge bg-secondary ms-2"
+                                  data-inheritance-indicator="vertices"
+                                  data-shape-index="{index}">继承中</span>
+                        </label>
                             <input type="text" class="form-control" name="shapes[{index}].vertices" placeholder="0,0:10,0:10,10:0,10">
                         </div>
                     </div>
@@ -498,7 +514,11 @@
                 </div>
                 <div class="row">
                     <div class="col-md-6 mb-3">
-                        <label class="form-label">缩放</label>
+                        <label class="form-label">缩放
+                            <span class="badge bg-secondary ms-2"
+                                  data-inheritance-indicator="zoom"
+                                  data-shape-index="{index}">继承中</span>
+                        </label>
                         <input type="number" class="form-control" name="shapes[{index}].zoom" placeholder="缩放值" step="0.1" value="0">
                     </div>
                     <div class="col-md-6 mb-3">
@@ -512,7 +532,11 @@
                 </div>
                 <div class="row">
                     <div class="col-md-6 mb-3">
-                        <label class="form-label">倒角半径</label>
+                        <label class="form-label">倒角半径
+                            <span class="badge bg-secondary ms-2"
+                                  data-inheritance-indicator="fillet.radius"
+                                  data-shape-index="{index}">继承中</span>
+                        </label>
                         <div class="input-group">
                             <input type="number" class="form-control" name="shapes[{index}].fillet.radius" placeholder="倒角半径" step="0.1" value="1">
                             <button type="button" class="btn btn-outline-secondary toggle-radius-list-btn" data-shape-index="{index}">
@@ -660,9 +684,13 @@
     <script src="{{ url_for('static', filename='linkage/property-path.js') }}"></script>
     <script src="{{ url_for('static', filename='linkage/validator.js') }}"></script>
     <script src="{{ url_for('static', filename='linkage/property-resolver.js') }}"></script>
+    <script src="{{ url_for('static', filename='linkage/override-manager.js') }}"></script>
+    <script src="{{ url_for('static', filename='linkage/sync-manager.js') }}"></script>
 
     <!-- 联动系统测试文件 -->
     <script src="{{ url_for('static', filename='linkage/stage3-test.js') }}"></script>
+    <script src="{{ url_for('static', filename='linkage/stage4-test.js') }}"></script>
+    <script src="{{ url_for('static', filename='linkage/stage5-test.js') }}"></script>
     <script src="{{ url_for('static', filename='linkage/debug-test.js') }}"></script>
 
     <!-- 主应用脚本 -->

@@ -23,6 +23,9 @@ let config = {
     shapes: []
 };
 
+// 确保全局窗口对象持有同一配置引用
+window.config = config;
+
 // 在页面加载完成后执行
 document.addEventListener('DOMContentLoaded', function() {
     console.log('页面加载完成，初始化应用...');
@@ -34,6 +37,7 @@ document.addEventListener('DOMContentLoaded', function() {
         modes: ['tree', 'view', 'form', 'code', 'text'],
         onChangeJSON: function(newJSON) {
             config = newJSON;
+            window.config = config;
             updateFormFromJSON();
             updateYAMLPreview();
         }
@@ -85,7 +89,21 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     console.log('确认添加Via按钮事件绑定完成');
-    
+
+    if (typeof LinkageIdManager !== 'undefined') {
+        LinkageIdManager.buildIdMap(config.shapes);
+    }
+
+    if (typeof LinkageSyncManager !== 'undefined' &&
+        typeof LinkageSyncManager.enhanceUpdateJSONFromForm === 'function') {
+        LinkageSyncManager.enhanceUpdateJSONFromForm();
+    }
+
+    if (typeof LinkageOverrideManager !== 'undefined' &&
+        typeof LinkageOverrideManager.enhanceFormEventBinding === 'function') {
+        LinkageOverrideManager.enhanceFormEventBinding();
+    }
+
     console.log('应用初始化完成');
 });
 
@@ -191,6 +209,26 @@ function renderShapeCard(shape, index) {
     const tempDiv = document.createElement('div');
     tempDiv.innerHTML = cardHtml;
     const cardElement = tempDiv.firstElementChild;
+
+    if (typeof LinkageIdManager !== 'undefined' && !shape.id) {
+        shape.id = LinkageIdManager.generateShapeId();
+        if (Array.isArray(config.shapes)) {
+            config.shapes[index] = shape;
+        }
+        if (typeof LinkageCore !== 'undefined') {
+            LinkageCore.log('info', `为形状生成ID: ${shape.name || '未命名形状'} -> ${shape.id}`);
+        }
+    }
+
+    if (shape.id) {
+        cardElement.setAttribute('data-shape-id', shape.id);
+    }
+
+    if (shape.derivation) {
+        cardElement.setAttribute('data-derivation', JSON.stringify(shape.derivation));
+    } else {
+        cardElement.removeAttribute('data-derivation');
+    }
     
     // 如果是 via 类型，添加数据属性以存储基础形状信息
     if (shape.type === 'via' && shape.base_shape_info) {
@@ -211,6 +249,10 @@ function renderShapeCard(shape, index) {
     
     // 绑定事件处理程序
     bindShapeCardEvents(cardElement, shape, index);
+
+    if (typeof LinkageOverrideManager !== 'undefined') {
+        LinkageOverrideManager.refreshIndicatorsForShape(shape, index);
+    }
 }
 
 // 新增函数：绑定形状卡片事件
@@ -306,13 +348,18 @@ function fillShapeFormValues(cardElement, shape, index) {
     
     // 设置顶点
     if (shape.type === 'polygon' || shape.type === 'rings') {
-        if (shape.vertices) {
+        const computed = shape._computed || {};
+
+        const verticesValue = shape.vertices !== undefined ? shape.vertices : computed.vertices;
+        if (verticesValue !== undefined) {
             const verticesInput = cardElement.querySelector(`[name="shapes[${index}].vertices"]`);
-            if(verticesInput) verticesInput.value = shape.vertices;
+            if(verticesInput) verticesInput.value = verticesValue;
         }
-        if (shape.zoom !== undefined) {
+
+        const zoomValue = shape.zoom !== undefined ? shape.zoom : computed.zoom;
+        if (zoomValue !== undefined) {
             const zoomInput = cardElement.querySelector(`[name="shapes[${index}].zoom"]`);
-            if(zoomInput) zoomInput.value = shape.zoom;
+            if(zoomInput) zoomInput.value = zoomValue;
         }
     } else if (shape.type === 'via') { // via 类型的顶点是只读的，从 base_vertices 填充
         const verticesTextarea = cardElement.querySelector(`[name="shapes[${index}].vertices"]`);
@@ -322,35 +369,57 @@ function fillShapeFormValues(cardElement, shape, index) {
     }
     
     // 设置倒角
-    if (shape.fillet && (shape.type === 'polygon' || shape.type === 'rings')) {
+    const computedFillet = shape._computed?.fillet;
+    const filletData = (shape.fillet || computedFillet) && (shape.type === 'polygon' || shape.type === 'rings');
+
+    if (filletData) {
+        const fillet = shape.fillet || {};
+        const computed = computedFillet || {};
+
         const filletTypeSelect = cardElement.querySelector(`[name="shapes[${index}].fillet.type"]`);
-        if (filletTypeSelect && shape.fillet.type) {
-            filletTypeSelect.value = shape.fillet.type;
+        const filletType = fillet.type !== undefined ? fillet.type : computed.type;
+        if (filletTypeSelect && filletType) {
+            filletTypeSelect.value = filletType;
         }
-        
+
         const radiusInput = cardElement.querySelector(`[name="shapes[${index}].fillet.radius"]`);
-        if (radiusInput && shape.fillet.radius !== undefined) {
-            radiusInput.value = shape.fillet.radius;
+        const radiusValue = fillet.radius !== undefined ? fillet.radius : computed.radius;
+        if (radiusInput && radiusValue !== undefined) {
+            radiusInput.value = radiusValue;
         }
-        
-        // 设置半径列表
-        if (shape.fillet.radii) {
+
+        if (fillet.radii || computed.radii) {
+            const radiiSource = fillet.radii !== undefined ? fillet.radii : computed.radii;
             const radiusListContainer = cardElement.querySelector(`.radius-list-container[data-shape-index="${index}"]`);
             const radiiInput = cardElement.querySelector(`[name="shapes[${index}].fillet.radii"]`);
             if (radiusListContainer && radiiInput) {
-                // 显示半径列表容器，隐藏单一半径输入框
                 radiusListContainer.style.display = 'flex';
                 const singleRadiusRow = radiusListContainer.previousElementSibling;
                 if (singleRadiusRow) {
                     singleRadiusRow.style.display = 'none';
                 }
-                
-                // 设置半径列表值
-                radiiInput.value = Array.isArray(shape.fillet.radii) ? 
-                    shape.fillet.radii.join(',') : 
-                    shape.fillet.radii;
+                radiiInput.value = Array.isArray(radiiSource) ? radiiSource.join(',') : radiiSource;
             }
         }
+
+        const precisionInput = cardElement.querySelector(`[name="shapes[${index}].fillet.precision"]`);
+        const precisionValue = fillet.precision !== undefined ? fillet.precision : computed.precision;
+        if (precisionInput && precisionValue !== undefined) {
+            precisionInput.value = precisionValue;
+        }
+
+        const convexInput = cardElement.querySelector(`[name="shapes[${index}].fillet.convex_radius"]`);
+        const convexValue = fillet.convex_radius !== undefined ? fillet.convex_radius : computed.convex_radius;
+        if (convexInput && convexValue !== undefined) {
+            convexInput.value = convexValue;
+        }
+
+        const concaveInput = cardElement.querySelector(`[name="shapes[${index}].fillet.concave_radius"]`);
+        const concaveValue = fillet.concave_radius !== undefined ? fillet.concave_radius : computed.concave_radius;
+        if (concaveInput && concaveValue !== undefined) {
+            concaveInput.value = concaveValue;
+        }
+
     } else if (shape.type === 'via' && shape.base_shape_info) { // via 的倒角信息通过 hidden input 填充
         const filletTypeInput = cardElement.querySelector(`[name="shapes[${index}].fillet.type"]`);
         if(filletTypeInput) filletTypeInput.value = shape.base_shape_info.fillet_type || 'none';
@@ -509,6 +578,22 @@ function updateJSONFromForm() {
             ]
         };
 
+        const shapeId = card.getAttribute('data-shape-id');
+        if (shapeId) {
+            shape.id = shapeId;
+        } else if (typeof LinkageIdManager !== 'undefined') {
+            shape.id = LinkageIdManager.generateShapeId();
+        }
+
+        const derivationData = card.getAttribute('data-derivation');
+        if (derivationData) {
+            try {
+                shape.derivation = JSON.parse(derivationData);
+            } catch (error) {
+                console.error('解析派生关系失败:', error);
+            }
+        }
+
         // 处理不同类型形状的特定属性
         if (shapeType === 'polygon' || shapeType === 'rings') {
             shape.vertices = card.querySelector(`[name="shapes[${shapeIndex}].vertices"]`).value;
@@ -608,7 +693,13 @@ function updateJSONFromForm() {
         
         config.shapes.push(shape);
     });
-    
+
+    if (typeof LinkageIdManager !== 'undefined') {
+        LinkageIdManager.buildIdMap(config.shapes);
+    }
+
+    window.config = config;
+
     // 更新JSON编辑器和YAML预览
     jsonEditor.set(config);
     updateYAMLPreview();
@@ -631,6 +722,12 @@ function updateFormFromJSON() {
     
     // 刷新形状容器
     refreshShapesContainer();
+
+    if (typeof LinkageIdManager !== 'undefined') {
+        LinkageIdManager.buildIdMap(config.shapes);
+    }
+
+    window.config = config;
 }
 
 // 更新YAML预览
@@ -702,6 +799,8 @@ function handleFileUpload(event) {
         if (data.success) {
             // 更新配置
             config = data.config;
+
+            window.config = config;
             
             // 更新JSON编辑器
             jsonEditor.set(config);
