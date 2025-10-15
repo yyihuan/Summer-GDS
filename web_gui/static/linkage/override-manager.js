@@ -64,6 +64,12 @@ window.LinkageOverrideManager = {
                 return [`[name="${base}.fillet.concave_radius"]`];
             case 'zoom':
                 return [`[name="${base}.zoom"]`];
+            case 'ring_width':
+                return [`[name="${base}.ring_width"]`];
+            case 'ring_space':
+                return [`[name="${base}.ring_space"]`];
+            case 'ring_num':
+                return [`[name="${base}.ring_num"]`];
             default:
                 return [];
         }

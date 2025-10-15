@@ -500,15 +500,27 @@
                 </div>
                 <div class="row">
                     <div class="col-md-4 mb-3">
-                        <label class="form-label">环宽度 (单个数字或逗号分隔的列表)</label>
+                        <label class="form-label">环宽度 (单个数字或逗号分隔的列表)
+                            <span class="badge bg-secondary ms-2"
+                                  data-inheritance-indicator="ring_width"
+                                  data-shape-index="{index}">继承中</span>
+                        </label>
                         <input type="text" class="form-control" name="shapes[{index}].ring_width" value="1" placeholder="例如: 1 或 1,2,3">
                     </div>
                     <div class="col-md-4 mb-3">
-                        <label class="form-label">环间距 (单个数字或逗号分隔的列表)</label>
+                        <label class="form-label">环间距 (单个数字或逗号分隔的列表)
+                            <span class="badge bg-secondary ms-2"
+                                  data-inheritance-indicator="ring_space"
+                                  data-shape-index="{index}">继承中</span>
+                        </label>
                         <input type="text" class="form-control" name="shapes[{index}].ring_space" value="1" placeholder="例如: 1 或 1,2,3">
                     </div>
                     <div class="col-md-4 mb-3">
-                        <label class="form-label">环数量</label>
+                        <label class="form-label">环数量
+                            <span class="badge bg-secondary ms-2"
+                                  data-inheritance-indicator="ring_num"
+                                  data-shape-index="{index}">继承中</span>
+                        </label>
                         <input type="number" class="form-control" name="shapes[{index}].ring_num" value="3" min="1">
                     </div>
                 </div>
@@ -597,22 +609,77 @@
                 </div>
                 <div class="row">
                     <div class="col-12 mb-3">
-                        <label class="form-label">基础图形顶点</label>
-                        <textarea class="form-control" name="shapes[{index}].vertices" rows="3" readonly data-base-vertices="{base_vertices}">{base_vertices}</textarea>
+                        <label class="form-label">基础图形顶点
+                            <span class="badge bg-secondary ms-2" data-inheritance-indicator="vertices" data-shape-index="{index}">继承中</span>
+                        </label>
+                        <textarea class="form-control" name="shapes[{index}].vertices" rows="3" data-base-vertices="{base_vertices}">{base_vertices}</textarea>
                     </div>
                 </div>
                 <div class="card mb-3">
                     <div class="card-header">
-                        <h6 class="mb-0">倒角配置 (继承自: {base_shape_name})</h6>
+                        <h6 class="mb-0">倒角配置</h6>
                     </div>
                     <div class="card-body">
-                        <input type="hidden" name="shapes[{index}].fillet.type" value="{base_fillet_type}">
-                        <input type="hidden" name="shapes[{index}].fillet.radius" value="{base_fillet_radius}">
-                        <input type="hidden" name="shapes[{index}].fillet.precision" value="{base_fillet_precision}">
-                        <input type="hidden" name="shapes[{index}].fillet.convex_radius" value="{base_fillet_convex_radius}">
-                        <input type="hidden" name="shapes[{index}].fillet.concave_radius" value="{base_fillet_concave_radius}">
-                        <p>类型: {base_fillet_type_display}</p>
-                        <p>半径/参数: {base_fillet_params_display}</p>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">倒角类型</label>
+                                <select class="form-select" name="shapes[{index}].fillet.type">
+                                    <option value="none">无</option>
+                                    <option value="arc">圆弧</option>
+                                    <option value="adaptive">自适应</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">倒角半径
+                                    <span class="badge bg-secondary ms-2"
+                                          data-inheritance-indicator="fillet.radius"
+                                          data-shape-index="{index}">继承中</span>
+                                </label>
+                                <div class="input-group">
+                                    <input type="number" class="form-control" name="shapes[{index}].fillet.radius" placeholder="倒角半径" step="0.1">
+                                    <button type="button" class="btn btn-outline-secondary toggle-radius-list-btn" data-shape-index="{index}">
+                                        <i class="bi bi-list"></i> 切换到半径列表
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row radius-list-container" style="display: none;" data-shape-index="{index}">
+                            <div class="col-md-12 mb-3">
+                                <label class="form-label">倒角半径列表 (逗号分隔)</label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" name="shapes[{index}].fillet.radii" placeholder="例如: 1,2,0.5,1.5" value="">
+                                    <button type="button" class="btn btn-outline-secondary toggle-single-radius-btn" data-shape-index="{index}">
+                                        <i class="bi bi-1-circle"></i> 切换到单一半径
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">精度
+                                    <span class="badge bg-secondary ms-2"
+                                          data-inheritance-indicator="fillet.precision"
+                                          data-shape-index="{index}">继承中</span>
+                                </label>
+                                <input type="number" class="form-control" name="shapes[{index}].fillet.precision" step="0.01">
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">凸角半径
+                                    <span class="badge bg-secondary ms-2"
+                                          data-inheritance-indicator="fillet.convex_radius"
+                                          data-shape-index="{index}">继承中</span>
+                                </label>
+                                <input type="number" class="form-control" name="shapes[{index}].fillet.convex_radius" step="0.1">
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">凹角半径
+                                    <span class="badge bg-secondary ms-2"
+                                          data-inheritance-indicator="fillet.concave_radius"
+                                          data-shape-index="{index}">继承中</span>
+                                </label>
+                                <input type="number" class="form-control" name="shapes[{index}].fillet.concave_radius" step="0.1">
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

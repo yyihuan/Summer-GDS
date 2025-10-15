@@ -13,7 +13,10 @@ window.LinkageCore = {
         'fillet.convex_radius',
         'fillet.concave_radius',
         'zoom',
-        '_metadata'
+        '_metadata',
+        'ring_width',
+        'ring_space',
+        'ring_num'
     ],
 
     // 属性路径工具

@@ -173,8 +173,80 @@ window.LinkageStage4Test = {
         return passed;
     },
 
+    testRingPropertiesInheritance() {
+        console.log('\n=== 测试5：环阵列属性继承 ===');
+
+        const originalConfig = JSON.parse(JSON.stringify(window.config || { shapes: [] }));
+
+        try {
+            const baseShape = {
+                id: 'test-ring-base',
+                type: 'rings',
+                name: '基础环阵列',
+                vertices: '0,0:10,0:10,10:0,10',
+                ring_width: '1,2,3',
+                ring_space: '0.5,0.5,0.5',
+                ring_num: 3,
+                fillet: { type: 'none' }
+            };
+
+            const derivedShape = {
+                id: 'test-ring-derived',
+                type: 'rings',
+                name: '派生环阵列',
+                layer: [baseShape.layer?.[0] || 2, 0],
+                derivation: {
+                    base_shape_id: 'test-ring-base',
+                    derive_type: 'offset',
+                    derive_params: {},
+                    created_at: new Date().toISOString(),
+                    overrides: {}
+                }
+            };
+
+            window.config.shapes = [baseShape, derivedShape];
+            LinkageIdManager.buildIdMap(window.config.shapes);
+
+            const resolved = LinkagePropertyResolver.resolveShapeProperties(derivedShape);
+            window.config.shapes[1] = resolved;
+
+            const before = {
+                ring_width: resolved._computed?.ring_width,
+                ring_space: resolved._computed?.ring_space,
+                ring_num: resolved._computed?.ring_num
+            };
+            console.log('同步前环阵列属性:', before);
+
+            window.config.shapes[0].ring_width = '2,2,2';
+            window.config.shapes[0].ring_space = '1,1,1';
+            window.config.shapes[0].ring_num = 4;
+
+            LinkageSyncManager.syncDerivedShapes('test-ring-base', ['ring_width', 'ring_space', 'ring_num']);
+
+            const afterResolved = LinkagePropertyResolver.resolveShapeProperties(window.config.shapes[1]);
+            const after = {
+                ring_width: afterResolved._computed?.ring_width,
+                ring_space: afterResolved._computed?.ring_space,
+                ring_num: afterResolved._computed?.ring_num
+            };
+
+            console.log('同步后环阵列属性:', after);
+
+            const passed =
+                after.ring_width === window.config.shapes[0].ring_width &&
+                after.ring_space === window.config.shapes[0].ring_space &&
+                after.ring_num === window.config.shapes[0].ring_num;
+
+            console.log('测试5结果:', passed ? '✅ 通过' : '❌ 失败');
+            return passed;
+        } finally {
+            window.config = originalConfig;
+            LinkageIdManager.buildIdMap(window.config.shapes || []);
+        }
+    },
+
     testSyncPerformance() {
-        console.log('\n=== 测试5：性能测试 ===');
+        console.log('\n=== 测试6：性能测试 ===');
 
         const baseShape = JSON.parse(JSON.stringify(this.testData.baseShape));
         const shapes = [baseShape];
@@ -205,13 +277,13 @@ window.LinkageStage4Test = {
 
         const passed = duration < 50;
         console.log(`10个派生形状同步耗时: ${duration.toFixed(2)}ms`);
-        console.log('测试5结果:', passed ? '✅ 通过' : '❌ 失败');
+        console.log('测试6结果:', passed ? '✅ 通过' : '❌ 失败');
 
         return { passed, duration };
     },
 
     testSilentJSONUpdate() {
-        console.log('\n=== 测试6：JSON编辑器静默更新 ===');
+        console.log('\n=== 测试7：JSON编辑器静默更新 ===');
 
         let changeTriggered = false;
 
@@ -252,8 +324,9 @@ window.LinkageStage4Test = {
             test2: this.testPropertyComparison(),
             test3: this.testDerivedShapeSync(),
             test4: this.testOverrideSkipSync(),
-            test5: this.testSyncPerformance(),
-            test6: this.testSilentJSONUpdate()
+            test5: this.testRingPropertiesInheritance(),
+            test6: this.testSyncPerformance(),
+            test7: this.testSilentJSONUpdate()
         };
 
         this.teardownTestEnvironment();
@@ -265,8 +338,9 @@ window.LinkageStage4Test = {
         console.log('测试2 - 属性比较准确性:', results.test2 ? '✅' : '❌');
         console.log('测试3 - 派生形状同步:', results.test3 ? '✅' : '❌');
         console.log('测试4 - 覆盖属性跳过:', results.test4 ? '✅' : '❌');
-        console.log('测试5 - 性能测试:', results.test5.passed ? '✅' : '❌', `(${results.test5.duration.toFixed(2)}ms)`);
-        console.log('测试6 - 静默更新:', results.test6 ? '✅' : '❌');
+        console.log('测试5 - 环阵列属性继承:', results.test5 ? '✅' : '❌');
+        console.log('测试6 - 性能测试:', results.test6.passed ? '✅' : '❌', `(${results.test6.duration.toFixed(2)}ms)`);
+        console.log('测试7 - 静默更新:', results.test7 ? '✅' : '❌');
 
         console.log('\n🎯 总体结果:', allPassed ? '✅ 全部通过' : '❌ 部分失败');
 

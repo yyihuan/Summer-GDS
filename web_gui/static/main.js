@@ -335,6 +335,9 @@ function bindShapeCardEvents(cardElement, shape, index) {
 
 // 填充形状表单值
 function fillShapeFormValues(cardElement, shape, index) {
+    const computed = shape._computed || {};
+    const computedFillet = computed.fillet || {};
+
     // 设置名称
     cardElement.querySelector(`[name="shapes[${index}].name"]`).value = shape.name || '';
     
@@ -347,121 +350,112 @@ function fillShapeFormValues(cardElement, shape, index) {
     }
     
     // 设置顶点
-    if (shape.type === 'polygon' || shape.type === 'rings') {
-        const computed = shape._computed || {};
-
+    if (['polygon', 'rings', 'via'].includes(shape.type)) {
         const verticesValue = shape.vertices !== undefined ? shape.vertices : computed.vertices;
         if (verticesValue !== undefined) {
             const verticesInput = cardElement.querySelector(`[name="shapes[${index}].vertices"]`);
-            if(verticesInput) verticesInput.value = verticesValue;
+            if (verticesInput) verticesInput.value = verticesValue;
         }
 
         const zoomValue = shape.zoom !== undefined ? shape.zoom : computed.zoom;
         if (zoomValue !== undefined) {
             const zoomInput = cardElement.querySelector(`[name="shapes[${index}].zoom"]`);
-            if(zoomInput) zoomInput.value = zoomValue;
-        }
-    } else if (shape.type === 'via') { // via 类型的顶点是只读的，从 base_vertices 填充
-        const verticesTextarea = cardElement.querySelector(`[name="shapes[${index}].vertices"]`);
-        if (verticesTextarea && shape.base_shape_info && shape.base_shape_info.vertices) {
-            verticesTextarea.value = shape.base_shape_info.vertices;
+            if (zoomInput) zoomInput.value = zoomValue;
         }
     }
-    
+
     // 设置倒角
-    const computedFillet = shape._computed?.fillet;
-    const filletData = (shape.fillet || computedFillet) && (shape.type === 'polygon' || shape.type === 'rings');
+    const fillet = shape.fillet || {};
+    const filletTypeSelect = cardElement.querySelector(`[name="shapes[${index}].fillet.type"]`);
+    if (filletTypeSelect) {
+        const filletType = fillet.type !== undefined ? fillet.type : computedFillet.type;
+        filletTypeSelect.value = filletType || 'none';
+    }
 
-    if (filletData) {
-        const fillet = shape.fillet || {};
-        const computed = computedFillet || {};
-
-        const filletTypeSelect = cardElement.querySelector(`[name="shapes[${index}].fillet.type"]`);
-        const filletType = fillet.type !== undefined ? fillet.type : computed.type;
-        if (filletTypeSelect && filletType) {
-            filletTypeSelect.value = filletType;
-        }
-
-        const radiusInput = cardElement.querySelector(`[name="shapes[${index}].fillet.radius"]`);
-        const radiusValue = fillet.radius !== undefined ? fillet.radius : computed.radius;
-        if (radiusInput && radiusValue !== undefined) {
+    const radiusInput = cardElement.querySelector(`[name="shapes[${index}].fillet.radius"]`);
+    if (radiusInput) {
+        const radiusValue = fillet.radius !== undefined ? fillet.radius : computedFillet.radius;
+        if (radiusValue !== undefined) {
             radiusInput.value = radiusValue;
         }
+    }
 
-        if (fillet.radii || computed.radii) {
-            const radiiSource = fillet.radii !== undefined ? fillet.radii : computed.radii;
-            const radiusListContainer = cardElement.querySelector(`.radius-list-container[data-shape-index="${index}"]`);
-            const radiiInput = cardElement.querySelector(`[name="shapes[${index}].fillet.radii"]`);
-            if (radiusListContainer && radiiInput) {
-                radiusListContainer.style.display = 'flex';
-                const singleRadiusRow = radiusListContainer.previousElementSibling;
-                if (singleRadiusRow) {
-                    singleRadiusRow.style.display = 'none';
-                }
-                radiiInput.value = Array.isArray(radiiSource) ? radiiSource.join(',') : radiiSource;
+    const radiiInput = cardElement.querySelector(`[name="shapes[${index}].fillet.radii"]`);
+    const radiusListContainer = cardElement.querySelector(`.radius-list-container[data-shape-index="${index}"]`);
+    const radiiSource = fillet.radii !== undefined ? fillet.radii : computedFillet.radii;
+    if (radiiInput && radiiSource !== undefined) {
+        if (radiusListContainer) {
+            radiusListContainer.style.display = 'flex';
+            const singleRadiusRow = radiusListContainer.previousElementSibling;
+            if (singleRadiusRow) {
+                singleRadiusRow.style.display = 'none';
             }
         }
+        radiiInput.value = Array.isArray(radiiSource) ? radiiSource.join(',') : radiiSource;
+    }
 
-        const precisionInput = cardElement.querySelector(`[name="shapes[${index}].fillet.precision"]`);
-        const precisionValue = fillet.precision !== undefined ? fillet.precision : computed.precision;
-        if (precisionInput && precisionValue !== undefined) {
+    const precisionInput = cardElement.querySelector(`[name="shapes[${index}].fillet.precision"]`);
+    if (precisionInput) {
+        const precisionValue = fillet.precision !== undefined ? fillet.precision : computedFillet.precision;
+        if (precisionValue !== undefined) {
             precisionInput.value = precisionValue;
         }
+    }
 
-        const convexInput = cardElement.querySelector(`[name="shapes[${index}].fillet.convex_radius"]`);
-        const convexValue = fillet.convex_radius !== undefined ? fillet.convex_radius : computed.convex_radius;
-        if (convexInput && convexValue !== undefined) {
+    const convexInput = cardElement.querySelector(`[name="shapes[${index}].fillet.convex_radius"]`);
+    if (convexInput) {
+        const convexValue = fillet.convex_radius !== undefined ? fillet.convex_radius : computedFillet.convex_radius;
+        if (convexValue !== undefined) {
             convexInput.value = convexValue;
         }
+    }
 
-        const concaveInput = cardElement.querySelector(`[name="shapes[${index}].fillet.concave_radius"]`);
-        const concaveValue = fillet.concave_radius !== undefined ? fillet.concave_radius : computed.concave_radius;
-        if (concaveInput && concaveValue !== undefined) {
+    const concaveInput = cardElement.querySelector(`[name="shapes[${index}].fillet.concave_radius"]`);
+    if (concaveInput) {
+        const concaveValue = fillet.concave_radius !== undefined ? fillet.concave_radius : computedFillet.concave_radius;
+        if (concaveValue !== undefined) {
             concaveInput.value = concaveValue;
         }
-
-    } else if (shape.type === 'via' && shape.base_shape_info) { // via 的倒角信息通过 hidden input 填充
-        const filletTypeInput = cardElement.querySelector(`[name="shapes[${index}].fillet.type"]`);
-        if(filletTypeInput) filletTypeInput.value = shape.base_shape_info.fillet_type || 'none';
-        
-        const radiusInput = cardElement.querySelector(`[name="shapes[${index}].fillet.radius"]`);
-        if(radiusInput) radiusInput.value = shape.base_shape_info.fillet_radius || '';
-
-        const precisionInput = cardElement.querySelector(`[name="shapes[${index}].fillet.precision"]`);
-        if(precisionInput) precisionInput.value = shape.base_shape_info.fillet_precision || '0.01';
-
-        const convexRadiusInput = cardElement.querySelector(`[name="shapes[${index}].fillet.convex_radius"]`);
-        if(convexRadiusInput) convexRadiusInput.value = shape.base_shape_info.fillet_convex_radius || '';
-
-        const concaveRadiusInput = cardElement.querySelector(`[name="shapes[${index}].fillet.concave_radius"]`);
-        if(concaveRadiusInput) concaveRadiusInput.value = shape.base_shape_info.fillet_concave_radius || '';
     }
-    
+
     // 环阵列特有属性
     if (shape.type === 'rings') {
         const ringWidthInput = cardElement.querySelector(`[name="shapes[${index}].ring_width"]`);
         const ringSpaceInput = cardElement.querySelector(`[name="shapes[${index}].ring_space"]`);
         const ringNumInput = cardElement.querySelector(`[name="shapes[${index}].ring_num"]`);
 
-        if (ringWidthInput && shape.ring_width !== undefined) {
-            // 直接显示字符串
-            ringWidthInput.value = shape.ring_width.toString();
+        if (ringWidthInput) {
+            const ringWidthValue = shape._computed?.ring_width ?? shape.ring_width;
+            if (ringWidthValue !== undefined) {
+                ringWidthInput.value = ringWidthValue.toString();
+            }
         }
 
-        if (ringSpaceInput && shape.ring_space !== undefined) {
-            // 直接显示字符串
-            ringSpaceInput.value = shape.ring_space.toString();
+        if (ringSpaceInput) {
+            const ringSpaceValue = shape._computed?.ring_space ?? shape.ring_space;
+            if (ringSpaceValue !== undefined) {
+                ringSpaceInput.value = ringSpaceValue.toString();
+            }
         }
 
-        if (ringNumInput && shape.ring_num !== undefined) {
-            ringNumInput.value = shape.ring_num;
+        if (ringNumInput) {
+            const ringNumValue = shape._computed?.ring_num ?? shape.ring_num;
+            if (ringNumValue !== undefined) {
+                ringNumInput.value = ringNumValue;
+            }
         }
     } else if (shape.type === 'via') {
         const innerZoomInput = cardElement.querySelector(`[name="shapes[${index}].inner_zoom"]`);
-        if(innerZoomInput && shape.inner_zoom !== undefined) innerZoomInput.value = shape.inner_zoom;
+        if(innerZoomInput) {
+            const innerZoom = shape.inner_zoom ?? shape.derivation?.derive_params?.inner_zoom ?? 0;
+            innerZoomInput.value = innerZoom;
+        }
 
         const outerZoomInput = cardElement.querySelector(`[name="shapes[${index}].outer_zoom"]`);
-        if(outerZoomInput && shape.outer_zoom !== undefined) outerZoomInput.value = shape.outer_zoom;
+        if(outerZoomInput) {
+            const outerZoom = shape.outer_zoom ?? shape.derivation?.derive_params?.outer_zoom ?? 0;
+            outerZoomInput.value = outerZoom;
+        }
     }
 
     // 恢复几何类型和圆形参数（基于元数据）
@@ -661,35 +655,52 @@ function updateJSONFromForm() {
                 
                 shape.ring_num = parseInt(card.querySelector(`[name="shapes[${shapeIndex}].ring_num"]`).value);
             }
-        } else if (shapeType === 'via') {
-            // Via 特有属性
-            shape.vertices = card.querySelector(`[name="shapes[${shapeIndex}].vertices"]`).value;
-            shape.inner_zoom = parseFloat(card.querySelector(`[name="shapes[${shapeIndex}].inner_zoom"]`).value);
-            shape.outer_zoom = parseFloat(card.querySelector(`[name="shapes[${shapeIndex}].outer_zoom"]`).value);
-            
-            // 保存基础形状信息
-            shape.base_shape_info = {
-                name: card.querySelector(`[data-base-shape-name]`)?.getAttribute('data-base-shape-name') || '未知基础图形',
-                vertices: card.querySelector(`[data-base-vertices]`)?.getAttribute('data-base-vertices') || '',
-                fillet_type: card.querySelector(`[name="shapes[${shapeIndex}].fillet.type"]`).value,
-                fillet_radius: parseFloat(card.querySelector(`[name="shapes[${shapeIndex}].fillet.radius"]`).value || '0'),
-                fillet_precision: parseFloat(card.querySelector(`[name="shapes[${shapeIndex}].fillet.precision"]`).value || '0.01'),
-                fillet_convex_radius: parseFloat(card.querySelector(`[name="shapes[${shapeIndex}].fillet.convex_radius"]`).value || '0'),
-                fillet_concave_radius: parseFloat(card.querySelector(`[name="shapes[${shapeIndex}].fillet.concave_radius"]`).value || '0')
-            };
-            
-            // 复制倒角配置
-            shape.fillet = {
-                type: shape.base_shape_info.fillet_type,
-                radius: shape.base_shape_info.fillet_radius,
-                precision: shape.base_shape_info.fillet_precision
-            };
-            
-            if (shape.base_shape_info.fillet_type === 'adaptive') {
-                shape.fillet.convex_radius = shape.base_shape_info.fillet_convex_radius;
-                shape.fillet.concave_radius = shape.base_shape_info.fillet_concave_radius;
-            }
+    } else if (shapeType === 'via') {
+        // Via 特有属性
+        shape.vertices = card.querySelector(`[name="shapes[${shapeIndex}].vertices"]`).value;
+        shape.inner_zoom = parseFloat(card.querySelector(`[name="shapes[${shapeIndex}].inner_zoom"]`).value);
+        shape.outer_zoom = parseFloat(card.querySelector(`[name="shapes[${shapeIndex}].outer_zoom"]`).value);
+        
+        const filletType = card.querySelector(`[name="shapes[${shapeIndex}].fillet.type"]`).value;
+        const filletRadiusValue = card.querySelector(`[name="shapes[${shapeIndex}].fillet.radius"]`).value;
+        const filletRadiiValue = card.querySelector(`[name="shapes[${shapeIndex}].fillet.radii"]`)?.value || '';
+        const filletPrecisionValue = card.querySelector(`[name="shapes[${shapeIndex}].fillet.precision"]`).value;
+        const filletConvexValue = card.querySelector(`[name="shapes[${shapeIndex}].fillet.convex_radius"]`).value;
+        const filletConcaveValue = card.querySelector(`[name="shapes[${shapeIndex}].fillet.concave_radius"]`).value;
+
+        shape.fillet = {
+            type: filletType,
+            radius: filletRadiusValue === '' ? undefined : parseFloat(filletRadiusValue),
+            precision: filletPrecisionValue === '' ? undefined : parseFloat(filletPrecisionValue)
+        };
+
+        if (filletRadiiValue.trim()) {
+            shape.fillet.radii = filletRadiiValue
+                .split(',')
+                .map(item => item.trim())
+                .filter(item => item !== '')
+                .map(item => parseFloat(item));
         }
+
+        if (filletConvexValue !== '') {
+            shape.fillet.convex_radius = parseFloat(filletConvexValue);
+        }
+
+        if (filletConcaveValue !== '') {
+            shape.fillet.concave_radius = parseFloat(filletConcaveValue);
+        }
+
+        // 保存基础形状信息，用于模板展示
+        shape.base_shape_info = {
+            name: card.querySelector(`[data-base-shape-name]`)?.getAttribute('data-base-shape-name') || shape.base_shape_info?.name || '未知基础图形',
+            vertices: card.querySelector(`[data-base-vertices]`)?.getAttribute('data-base-vertices') || shape.base_shape_info?.vertices || '',
+            fillet_type: filletType,
+            fillet_radius: shape.fillet.radius,
+            fillet_precision: shape.fillet.precision,
+            fillet_convex_radius: shape.fillet.convex_radius,
+            fillet_concave_radius: shape.fillet.concave_radius
+        };
+    }
         
         config.shapes.push(shape);
     });
@@ -1185,6 +1196,16 @@ function confirmAddVia() {
                     },
                     created_at: new Date().toISOString(),
                     overrides: {}  // 初始无覆盖
+                },
+
+                base_shape_info: {
+                    name: baseShape.name || `多边形${baseShapeIndex}`,
+                    vertices: baseShape.vertices || (baseShape.vertices_gen ? '由配置生成' : ''),
+                    fillet_type: baseShape.fillet ? baseShape.fillet.type : 'none',
+                    fillet_radius: baseShape.fillet ? baseShape.fillet.radius : undefined,
+                    fillet_precision: baseShape.fillet ? baseShape.fillet.precision : (config.global.fillet.precision || 0.01),
+                    fillet_convex_radius: baseShape.fillet ? baseShape.fillet.convex_radius : undefined,
+                    fillet_concave_radius: baseShape.fillet ? baseShape.fillet.concave_radius : undefined
                 },
 
                 // 运行时计算属性将在解析时生成
