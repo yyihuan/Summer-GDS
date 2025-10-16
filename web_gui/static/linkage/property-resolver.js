@@ -20,6 +20,9 @@ window.LinkagePropertyResolver = {
         }
 
         const computed = {};
+        const overrideEntries = Object.entries(shape.derivation.overrides || {})
+            .filter(([, meta]) => meta?.overridden);
+        const overridePaths = overrideEntries.map(([path]) => path);
 
         // 解析所有可继承属性
         LinkageCore.INHERITABLE_PROPERTIES.forEach(propPath => {
@@ -39,16 +42,50 @@ window.LinkagePropertyResolver = {
             }
         });
 
-        // 应用派生参数（覆盖继承值）
-        if (shape.derivation.derive_params) {
-            Object.assign(computed, shape.derivation.derive_params);
+        // 应用派生参数，但跳过已覆盖字段
+        if (shape.derivation.derive_params && typeof shape.derivation.derive_params === 'object') {
+            this.applyDerivedParams(computed, shape.derivation.derive_params, overridePaths);
             LinkageCore.log('debug', `应用派生参数: ${shape.name}`, shape.derivation.derive_params);
         }
+
+        // 再次应用覆盖值，确保优先级最高
+        overrideEntries.forEach(([propPath, meta]) => {
+            LinkageCore.setNestedProperty(computed, propPath, meta.value);
+        });
 
         return {
             ...shape,
             _computed: computed
         };
+    },
+
+    applyDerivedParams(target, source, overridePaths, parentPath = '') {
+        Object.entries(source).forEach(([key, value]) => {
+            const currentPath = parentPath ? `${parentPath}.${key}` : key;
+            const isDirectOverride = overridePaths.includes(currentPath);
+            const hasNestedOverride = overridePaths.some(path => path.startsWith(`${currentPath}.`));
+
+            if (isDirectOverride) {
+                LinkageCore.log('debug', `派生参数跳过已覆盖属性: ${currentPath}`);
+                return;
+            }
+
+            if (value && typeof value === 'object' && !Array.isArray(value)) {
+                const existing = target[key];
+                if (!existing || typeof existing !== 'object' || Array.isArray(existing)) {
+                    target[key] = {};
+                }
+                this.applyDerivedParams(target[key], value, overridePaths, currentPath);
+                return;
+            }
+
+            if (hasNestedOverride) {
+                LinkageCore.log('debug', `派生参数部分字段被覆盖，跳过路径: ${currentPath}`);
+                return;
+            } else {
+                target[key] = value;
+            }
+        });
     },
 
     // 提取计算属性

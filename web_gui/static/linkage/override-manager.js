@@ -114,6 +114,23 @@ window.LinkageOverrideManager = {
             return;
         }
 
+        window.__linkageDebugCounters = window.__linkageDebugCounters || {};
+        window.__linkageDebugCounters.handleUserOverride = (window.__linkageDebugCounters.handleUserOverride || 0) + 1;
+        const overrideCallId = window.__linkageDebugCounters.handleUserOverride;
+
+        const overrideEntry = {
+            phase: 'handleUserOverride',
+            callId: overrideCallId,
+            propertyPath,
+            newValue,
+            shapeId: shape.id,
+            shapeName: shape.name,
+            beforeOverrides: Object.keys(shape.derivation.overrides || {})
+        };
+        window.__linkageDebugLog = window.__linkageDebugLog || [];
+        window.__linkageDebugLog.push(overrideEntry);
+        LinkageCore.log('info', '[DEBUG] handleUserOverride triggered', overrideEntry);
+
         const inheritedValue = LinkagePropertyResolver.getInheritedValue(shape, propertyPath);
 
         if (!LinkageCore.deepEqual(newValue, inheritedValue)) {
@@ -134,6 +151,14 @@ window.LinkageOverrideManager = {
         this.isSystemUpdate = true;
         updateJSONFromForm();
         this.isSystemUpdate = false;
+
+        const afterEntry = {
+            phase: 'handleUserOverride:afterUpdate',
+            callId: overrideCallId,
+            overrides: shape.derivation.overrides || {}
+        };
+        window.__linkageDebugLog.push(afterEntry);
+        LinkageCore.log('info', '[DEBUG] handleUserOverride post-update', afterEntry);
     },
 
     createOverride(shape, propertyPath, value, previousInheritedValue, shapeIndex) {

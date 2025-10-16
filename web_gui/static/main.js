@@ -539,6 +539,35 @@ function refreshShapesContainer() {
 // 从表单更新JSON
 function updateJSONFromForm() {
     console.log('从表单更新JSON...');
+
+    window.__linkageDebugCounters = window.__linkageDebugCounters || {};
+    window.__linkageDebugCounters.updateJSONFromForm = (window.__linkageDebugCounters.updateJSONFromForm || 0) + 1;
+    const updateCallId = window.__linkageDebugCounters.updateJSONFromForm;
+
+    const captureShapeState = (shapes) => (
+        (shapes || []).map(shape => ({
+            id: shape?.id,
+            name: shape?.name,
+            type: shape?.type,
+            zoom: shape?.zoom,
+            deriveZoom: shape?.derivation?.derive_params?.zoom,
+            overrideZoom: shape?.derivation?.overrides?.zoom?.value,
+            overrideKeys: shape?.derivation ? Object.keys(shape.derivation.overrides || {}) : []
+        }))
+    );
+
+    window.__linkageDebugLog = window.__linkageDebugLog || [];
+    const preUpdateSnapshot = captureShapeState(config.shapes);
+    const updateStartEntry = {
+        phase: 'updateJSONFromForm:start',
+        callId: updateCallId,
+        isSystemUpdate: typeof LinkageOverrideManager !== 'undefined' ? !!LinkageOverrideManager.isSystemUpdate : null,
+        snapshot: preUpdateSnapshot
+    };
+    window.__linkageDebugLog.push(updateStartEntry);
+    if (typeof LinkageCore !== 'undefined') {
+        LinkageCore.log('info', '[DEBUG] updateJSONFromForm start', updateStartEntry);
+    }
     
     // 更新全局设置
     config.global.dbu = parseFloat(document.getElementById('dbu').value);
@@ -558,7 +587,7 @@ function updateJSONFromForm() {
     const shapesContainer = document.getElementById('shapesContainer');
     const shapeCards = shapesContainer.querySelectorAll('.shape-card');
     config.shapes = [];
-    
+
     shapeCards.forEach((card, index) => {
         const shapeIndex = card.getAttribute('data-shape-index');
         const shapeType = card.querySelector(`[name="shapes[${shapeIndex}].type"]`).value;
@@ -710,6 +739,17 @@ function updateJSONFromForm() {
     }
 
     window.config = config;
+
+    const postUpdateSnapshot = captureShapeState(config.shapes);
+    const updateEndEntry = {
+        phase: 'updateJSONFromForm:end',
+        callId: updateCallId,
+        snapshot: postUpdateSnapshot
+    };
+    window.__linkageDebugLog.push(updateEndEntry);
+    if (typeof LinkageCore !== 'undefined') {
+        LinkageCore.log('info', '[DEBUG] updateJSONFromForm end', updateEndEntry);
+    }
 
     // 更新JSON编辑器和YAML预览
     jsonEditor.set(config);

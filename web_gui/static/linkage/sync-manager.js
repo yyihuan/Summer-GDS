@@ -314,13 +314,33 @@ window.LinkageSyncManager = {
             return;
         }
 
+        window.__linkageDebugCounters = window.__linkageDebugCounters || {};
+        window.__linkageDebugCounters.normalizeDerivedShapeData = (window.__linkageDebugCounters.normalizeDerivedShapeData || 0) + 1;
+        const normalizeCallId = window.__linkageDebugCounters.normalizeDerivedShapeData;
+
+        const normalizeEntry = {
+            phase: 'normalizeDerivedShapeData',
+            callId: normalizeCallId,
+            shapeId: shape.id,
+            shapeName: shape.name,
+            propertyPath,
+            incomingBaseValue: baseValue,
+            currentDeriveValue: deriveParams[rootKey]
+        };
+        window.__linkageDebugLog = window.__linkageDebugLog || [];
+
         if (baseValue === undefined) {
             delete deriveParams[rootKey];
+            normalizeEntry.action = 'delete';
             LinkageCore.log('debug', `移除派生参数: ${shape.name}.${rootKey}`);
         } else {
             deriveParams[rootKey] = baseValue;
+            normalizeEntry.action = 'sync';
             LinkageCore.log('debug', `同步派生参数: ${shape.name}.${rootKey} = ${JSON.stringify(baseValue)}`);
         }
+
+        window.__linkageDebugLog.push(normalizeEntry);
+        LinkageCore.log('info', '[DEBUG] normalizeDerivedShapeData', normalizeEntry);
     },
 
     // 维护 _computed 缓存，便于测试读取
