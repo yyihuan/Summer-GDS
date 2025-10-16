@@ -428,6 +428,11 @@ function fillShapeFormValues(cardElement, shape, index) {
             const ringWidthValue = shape._computed?.ring_width ?? shape.ring_width;
             if (ringWidthValue !== undefined) {
                 ringWidthInput.value = ringWidthValue.toString();
+                LinkageCore?.log?.('info', `[DEBUG] 更新环宽: 形状${index}`, {
+                    raw: shape.ring_width,
+                    computed: shape._computed?.ring_width,
+                    inputValue: ringWidthInput.value
+                });
             }
         }
 
@@ -435,6 +440,11 @@ function fillShapeFormValues(cardElement, shape, index) {
             const ringSpaceValue = shape._computed?.ring_space ?? shape.ring_space;
             if (ringSpaceValue !== undefined) {
                 ringSpaceInput.value = ringSpaceValue.toString();
+                LinkageCore?.log?.('info', `[DEBUG] 更新环距: 形状${index}`, {
+                    raw: shape.ring_space,
+                    computed: shape._computed?.ring_space,
+                    inputValue: ringSpaceInput.value
+                });
             }
         }
 
@@ -442,6 +452,11 @@ function fillShapeFormValues(cardElement, shape, index) {
             const ringNumValue = shape._computed?.ring_num ?? shape.ring_num;
             if (ringNumValue !== undefined) {
                 ringNumInput.value = ringNumValue;
+                LinkageCore?.log?.('info', `[DEBUG] 更新环数: 形状${index}`, {
+                    raw: shape.ring_num,
+                    computed: shape._computed?.ring_num,
+                    inputValue: ringNumInput.value
+                });
             }
         }
     } else if (shape.type === 'via') {
@@ -480,6 +495,16 @@ function fillShapeFormValues(cardElement, shape, index) {
                     if (centerYInput) centerYInput.value = params.center_y !== undefined ? params.center_y : 0;
                     if (radiusInput) radiusInput.value = params.radius || 10;
                     if (segmentsInput) segmentsInput.value = params.segments || 64;
+
+                    LinkageCore?.log?.('info', `[DEBUG] 更新圆形参数: 形状${index}`, {
+                        params,
+                        inputs: {
+                            center_x: centerXInput?.value,
+                            center_y: centerYInput?.value,
+                            radius: radiusInput?.value,
+                            segments: segmentsInput?.value
+                        }
+                    });
                 }
 
                 // 切换UI显示到圆形模式

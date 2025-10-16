@@ -151,7 +151,47 @@ window.LinkageSyncManager = {
                 const baseValue = LinkageCore.getNestedProperty(baseShape, propPath);
                 this.normalizeDerivedShapeData(shape, propPath, baseValue);
                 this.updateComputedCache(shape, propPath, baseValue);
+
+                const isRingProperty = /^ring_(width|space|num)$/.test(propPath);
+                const isCircleMetadata = propPath === '_metadata' && ((baseValue && baseValue.source === 'circle') || (shape._metadata && shape._metadata.source === 'circle'));
+
+                if (isRingProperty) {
+                    LinkageCore.setNestedProperty(shape, propPath, baseValue);
+                }
                 LinkageCore.log('debug', `同步属性: ${shape.name}.${propPath}`);
+
+                if (isRingProperty) {
+                    window.__linkageDebugCounters = window.__linkageDebugCounters || {};
+                    window.__linkageDebugCounters.ringSync = (window.__linkageDebugCounters.ringSync || 0) + 1;
+                    const debugEntry = {
+                        phase: 'syncDerivedShapes:ringPreResolve',
+                        callId: window.__linkageDebugCounters.ringSync,
+                        shapeId: shape.id,
+                        shapeName: shape.name,
+                        propertyPath: propPath,
+                        baseValue,
+                        derivedRawValue: LinkageCore.getNestedProperty(shape, propPath),
+                        derivedComputedValue: LinkageCore.getNestedProperty(shape._computed || {}, propPath)
+                    };
+                    window.__linkageDebugLog = window.__linkageDebugLog || [];
+                    window.__linkageDebugLog.push(debugEntry);
+                    LinkageCore.log('info', '[DEBUG] ring inheritance pre-resolve', debugEntry);
+                } else if (isCircleMetadata) {
+                    window.__linkageDebugCounters = window.__linkageDebugCounters || {};
+                    window.__linkageDebugCounters.circleSync = (window.__linkageDebugCounters.circleSync || 0) + 1;
+                    const circleEntry = {
+                        phase: 'syncDerivedShapes:circleMetadataPreResolve',
+                        callId: window.__linkageDebugCounters.circleSync,
+                        shapeId: shape.id,
+                        shapeName: shape.name,
+                        propertyPath: propPath,
+                        baseMetadata: baseValue,
+                        derivedMetadata: shape._metadata
+                    };
+                    window.__linkageDebugLog = window.__linkageDebugLog || [];
+                    window.__linkageDebugLog.push(circleEntry);
+                    LinkageCore.log('info', '[DEBUG] circle metadata pre-resolve', circleEntry);
+                }
             });
 
             if (!needsUpdate) {
@@ -161,6 +201,44 @@ window.LinkageSyncManager = {
             const resolved = LinkagePropertyResolver.resolveShapeProperties(shape);
             activeConfig.shapes[index] = resolved;
             this.updateShapeCardDisplay(index, resolved);
+
+            changedProperties.forEach(propPath => {
+                const isRingProperty = /^ring_(width|space|num)$/.test(propPath);
+                const isCircleMetadata = propPath === '_metadata' && ((resolved._metadata && resolved._metadata.source === 'circle') || (LinkageCore.getNestedProperty(resolved, propPath)?.source === 'circle'));
+
+                if (!isRingProperty && !isCircleMetadata) {
+                    return;
+                }
+                window.__linkageDebugLog = window.__linkageDebugLog || [];
+
+                if (isRingProperty) {
+                    const postEntry = {
+                        phase: 'syncDerivedShapes:ringPostResolve',
+                        callId: window.__linkageDebugCounters?.ringSync,
+                        shapeId: resolved.id,
+                        shapeName: resolved.name,
+                        propertyPath: propPath,
+                        resolvedRawValue: LinkageCore.getNestedProperty(resolved, propPath),
+                        resolvedComputedValue: LinkageCore.getNestedProperty(resolved._computed || {}, propPath)
+                    };
+                    window.__linkageDebugLog.push(postEntry);
+                    LinkageCore.log('info', '[DEBUG] ring inheritance post-resolve', postEntry);
+                }
+
+                if (isCircleMetadata) {
+                    const circlePostEntry = {
+                        phase: 'syncDerivedShapes:circleMetadataPostResolve',
+                        callId: window.__linkageDebugCounters?.circleSync,
+                        shapeId: resolved.id,
+                        shapeName: resolved.name,
+                        propertyPath: propPath,
+                        resolvedMetadata: resolved._metadata,
+                        resolvedComputedMetadata: LinkageCore.getNestedProperty(resolved._computed || {}, propPath)
+                    };
+                    window.__linkageDebugLog.push(circlePostEntry);
+                    LinkageCore.log('info', '[DEBUG] circle metadata post-resolve', circlePostEntry);
+                }
+            });
         });
 
         LinkageIdManager.buildIdMap(activeConfig.shapes);
@@ -192,7 +270,11 @@ window.LinkageSyncManager = {
             overrideManager.isSystemUpdate = true;
         }
 
-        this.updateFormValues(card, resolvedShape, shapeIndex);
+        if (typeof fillShapeFormValues === 'function') {
+            fillShapeFormValues(card, resolvedShape, shapeIndex);
+        } else {
+            this.updateFormValues(card, resolvedShape, shapeIndex);
+        }
 
         if (overrideManager) {
             overrideManager.isSystemUpdate = false;

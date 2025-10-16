@@ -53,10 +53,20 @@ window.LinkagePropertyResolver = {
             LinkageCore.setNestedProperty(computed, propPath, meta.value);
         });
 
-        return {
-            ...shape,
-            _computed: computed
-        };
+        const resolvedShape = { ...shape };
+        LinkageCore.INHERITABLE_PROPERTIES.forEach(propPath => {
+            const computedValue = LinkageCore.getNestedProperty(computed, propPath);
+            if (computedValue !== undefined) {
+                LinkageCore.setNestedProperty(resolvedShape, propPath, computedValue);
+                LinkageCore.setNestedProperty(shape, propPath, computedValue);
+            } else {
+                this.removeNestedProperty(resolvedShape, propPath);
+                this.removeNestedProperty(shape, propPath);
+            }
+        });
+
+        resolvedShape._computed = computed;
+        return resolvedShape;
     },
 
     applyDerivedParams(target, source, overridePaths, parentPath = '') {
@@ -86,6 +96,24 @@ window.LinkagePropertyResolver = {
                 target[key] = value;
             }
         });
+    },
+
+    removeNestedProperty(target, path) {
+        if (!target || !path) {
+            return;
+        }
+
+        const keys = path.split('.');
+        const lastKey = keys.pop();
+        if (!lastKey) {
+            delete target[path];
+            return;
+        }
+
+        const parent = keys.reduce((current, key) => (current ? current[key] : undefined), target);
+        if (parent && Object.prototype.hasOwnProperty.call(parent, lastKey)) {
+            delete parent[lastKey];
+        }
     },
 
     // 提取计算属性
