@@ -1353,8 +1353,8 @@ function generateCircleVertices(centerX, centerY, radius, segments = 64) {
         throw new Error('半径必须大于0');
     }
 
-    if (segments < 8 || segments > 256) {
-        console.warn(`精度值${segments}超出范围，使用默认值64`);
+    if (segments < 3 || segments > 512) {
+        console.warn(`精度值${segments}超出范围(3-512)，使用默认值64`);
         segments = 64; // 使用默认值
     }
 
@@ -1453,8 +1453,8 @@ function validateCircleParams(centerX, centerY, radius, segments) {
         errors.push('半径必须大于0');
     }
 
-    if (segments && (segments < 8 || segments > 256)) {
-        errors.push('精度必须在8-256之间');
+    if (segments && (segments < 3 || segments > 512)) {
+        errors.push('精度必须在3-512之间');
     }
 
     return errors;
