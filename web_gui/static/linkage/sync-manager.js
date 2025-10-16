@@ -270,11 +270,7 @@ window.LinkageSyncManager = {
             overrideManager.isSystemUpdate = true;
         }
 
-        if (typeof fillShapeFormValues === 'function') {
-            fillShapeFormValues(card, resolvedShape, shapeIndex);
-        } else {
-            this.updateFormValues(card, resolvedShape, shapeIndex);
-        }
+        this.updateFormValues(card, resolvedShape, shapeIndex);
 
         if (overrideManager) {
             overrideManager.isSystemUpdate = false;
@@ -342,6 +338,78 @@ window.LinkageSyncManager = {
                 metadataInput.value = typeof computed._metadata === 'object'
                     ? JSON.stringify(computed._metadata)
                     : computed._metadata;
+            }
+        }
+
+        if (shape.type === 'rings') {
+            const overrideWidth = shape.derivation?.overrides?.ring_width?.value;
+            const overrideSpace = shape.derivation?.overrides?.ring_space?.value;
+            const overrideNum = shape.derivation?.overrides?.ring_num?.value;
+
+            const ringWidthInput = card.querySelector(`[name="shapes[${index}].ring_width"]`);
+            if (ringWidthInput) {
+                const value = overrideWidth ?? computed.ring_width ?? shape.ring_width;
+                if (value !== undefined) {
+                    ringWidthInput.value = value.toString();
+                }
+            }
+
+            const ringSpaceInput = card.querySelector(`[name="shapes[${index}].ring_space"]`);
+            if (ringSpaceInput) {
+                const value = overrideSpace ?? computed.ring_space ?? shape.ring_space;
+                if (value !== undefined) {
+                    ringSpaceInput.value = value.toString();
+                }
+            }
+
+            const ringNumInput = card.querySelector(`[name="shapes[${index}].ring_num"]`);
+            if (ringNumInput) {
+                const value = overrideNum ?? computed.ring_num ?? shape.ring_num;
+                if (value !== undefined) {
+                    ringNumInput.value = value;
+                }
+            }
+        }
+
+        const metadata = computed._metadata || shape._metadata;
+        if (metadata?.source === 'circle') {
+            const geometrySelect = card.querySelector('.geometry-type-select');
+            const verticesContainer = card.querySelector('.vertices-container');
+            const circleContainer = card.querySelector('.circle-params-container');
+
+            if (geometrySelect) {
+                geometrySelect.value = 'circle';
+            }
+            if (verticesContainer) {
+                verticesContainer.style.display = 'none';
+            }
+            if (circleContainer) {
+                circleContainer.style.display = 'block';
+            }
+
+            const params = metadata.params || {};
+            const centerXInput = card.querySelector(`[name="shapes[${index}].circle.center_x"]`);
+            const centerYInput = card.querySelector(`[name="shapes[${index}].circle.center_y"]`);
+            const radiusInput = card.querySelector(`[name="shapes[${index}].circle.radius"]`);
+            const segmentsInput = card.querySelector(`[name="shapes[${index}].circle.segments"]`);
+
+            if (centerXInput) centerXInput.value = params.center_x ?? 0;
+            if (centerYInput) centerYInput.value = params.center_y ?? 0;
+            if (radiusInput) radiusInput.value = params.radius ?? 0;
+            if (segmentsInput) segmentsInput.value = params.segments ?? 64;
+        } else {
+            const geometrySelect = card.querySelector('.geometry-type-select');
+            const verticesContainer = card.querySelector('.vertices-container');
+            const circleContainer = card.querySelector('.circle-params-container');
+
+            if (geometrySelect) {
+                geometrySelect.value = 'vertices';
+            }
+            if (verticesContainer) {
+                verticesContainer.style.display = 'block';
+            }
+            if (circleContainer) {
+                circleContainer.style.display = 'none';
             }
         }
 

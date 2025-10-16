@@ -84,7 +84,9 @@ window.LinkageOverrideManager = {
 
             const newValue = this.parseInputValue(event.target, propertyPath);
             this.handleUserOverride(shape, propertyPath, newValue, shapeIndex);
-        });
+            event.stopImmediatePropagation();
+            event.stopPropagation();
+        }, true);
 
         input.addEventListener('focus', () => {
             this.lastFocusedInput = { shapeIndex, propertyPath };
