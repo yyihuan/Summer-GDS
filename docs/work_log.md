@@ -8,3 +8,7 @@
 - 调整继承链，确保环宽/环距/环数以及圆形元数据在 UI 中实时同步
 - 修复派生侧覆写被继承值覆盖的问题，覆盖后徽章状态与 YAML 输出保持一致
 - 添加调试脚本 `runRingsInheritanceDebugScenario`、`runCircleInheritanceDebugScenario` 协助验证
+
+## 2024-10-16 圆形精度范围扩展
+- 放宽圆形精度（segments）输入范围至 3-512，可用于生成任意正多边形
+- 同步更新前端表单、算法校验以及相关文档，将旋转角度作为后续增强目标
