@@ -6,9 +6,13 @@
 
 from __future__ import annotations
 
+import os
+from pathlib import Path
 from typing import TYPE_CHECKING
 
 from PySide6.QtCore import QTimer, Qt, QUrl
+from PySide6.QtGui import QTextCursor
+from PySide6.QtWebEngineCore import QWebEngineDownloadRequest
 from PySide6.QtWidgets import (
     QMainWindow,
     QMessageBox,
@@ -19,6 +23,21 @@ from PySide6.QtWidgets import (
     QWidget,
 )
 from PySide6.QtWebEngineWidgets import QWebEngineView
+
+
+def _resolve_state(name: str, fallback: int) -> int:
+    try:
+        return getattr(QWebEngineDownloadRequest, name)
+    except AttributeError:
+        state_enum = getattr(QWebEngineDownloadRequest, "DownloadState", None)
+        if state_enum is not None:
+            return getattr(state_enum, name, fallback)
+        return fallback
+
+
+DOWNLOAD_COMPLETED = _resolve_state("DownloadCompleted", 2)
+DOWNLOAD_CANCELLED = _resolve_state("DownloadCancelled", 3)
+DOWNLOAD_INTERRUPTED = _resolve_state("DownloadInterrupted", 4)
 
 if TYPE_CHECKING:  # pragma: no cover - 仅用于类型提示
     from web_gui.log_bridge import LogBridge, LogEvent
@@ -69,6 +88,8 @@ class MainWindow(QMainWindow):
         self._timer.timeout.connect(self._drain_logs)
         self._timer.start()
 
+        self._setup_download_handler()
+
         if options.open_browser:
             self._web_view.setUrl(QUrl(self._server.url))
         else:
@@ -106,6 +127,49 @@ class MainWindow(QMainWindow):
         widget.setMinimumHeight(160)
         return widget
 
+    def _setup_download_handler(self) -> None:
+        page = self._web_view.page()
+        profile = page.profile()
+        profile.downloadRequested.connect(self._handle_download)
+
+    def _handle_download(self, request) -> None:  # pragma: no cover - 需 Qt 运行环境
+        target_dir = Path.cwd() / "downloads"
+        target_dir.mkdir(parents=True, exist_ok=True)
+
+        file_name = request.downloadFileName() or "download.gds"
+        target_path = target_dir / file_name
+
+        if target_path.exists():
+            base = target_path.stem
+            suffix = target_path.suffix
+            counter = 1
+            while True:
+                candidate = target_dir / f"{base}_{counter}{suffix}"
+                if not candidate.exists():
+                    target_path = candidate
+                    break
+                counter += 1
+
+        request.setDownloadDirectory(str(target_dir))
+        request.setDownloadFileName(target_path.name)
+        request.accept()
+
+        self._log_message("INFO", "download", f"GDS 下载开始 -> {target_path}")
+
+        def _on_finished(state):
+            if state == DOWNLOAD_COMPLETED:
+                self._log_message("INFO", "download", f"下载完成: {target_path}")
+            elif state == DOWNLOAD_CANCELLED:
+                self._log_message("WARNING", "download", "下载被取消")
+            else:
+                if state == DOWNLOAD_INTERRUPTED:
+                    self._log_message("ERROR", "download", f"下载中断: {target_path}")
+                else:
+                    self._log_message("ERROR", "download", f"下载失败: {target_path}")
+            request.stateChanged.disconnect(_on_finished)
+
+        request.stateChanged.connect(_on_finished)
+
     def _drain_logs(self) -> None:
         for event in self._bridge.drain():
             self._append_event(event)
@@ -116,12 +180,12 @@ class MainWindow(QMainWindow):
         if event.exc_text:
             self._log_view.appendPlainText(event.exc_text)
         cursor = self._log_view.textCursor()
-        cursor.movePosition(cursor.End)
+        cursor.movePosition(QTextCursor.MoveOperation.End)
         self._log_view.setTextCursor(cursor)
 
     def _log_message(self, level_name: str, logger_name: str, message: str) -> None:
         prefix = f"[{level_name}] {logger_name}: {message}"
         self._log_view.appendPlainText(prefix)
         cursor = self._log_view.textCursor()
-        cursor.movePosition(cursor.End)
+        cursor.movePosition(QTextCursor.MoveOperation.End)
         self._log_view.setTextCursor(cursor)
