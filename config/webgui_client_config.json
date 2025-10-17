@@ -1,7 +1,7 @@
 {
   "webgui_host": "127.0.0.1",
-  "webgui_port": 5000,
+  "webgui_port": 5002,
   "debug": false,
-  "auto_open_browser": true,
+  "auto_open_browser": false,
   "auto_start_server": false
 }
