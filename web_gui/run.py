@@ -7,6 +7,7 @@ Summer-GDS Web GUI 启动脚本
 
 import os
 import sys
+import json
 import argparse
 import webbrowser
 import threading
@@ -35,8 +36,36 @@ def main():
     parser.add_argument('--port', type=int, default=5000, help='服务器端口')
     parser.add_argument('--debug', action='store_true', help='启用调试模式')
     parser.add_argument('--no-browser', action='store_true', help='不自动打开浏览器')
+    parser.add_argument('--config', type=str, help='可选配置文件，覆盖 host/port 等默认值')
 
     args = parser.parse_args()
+
+    config_data = None
+    if args.config:
+        config_path = os.path.abspath(args.config)
+        if not os.path.isfile(config_path):
+            raise FileNotFoundError(f"配置文件不存在: {config_path}")
+        with open(config_path, 'r', encoding='utf-8') as f:
+            config_data = json.load(f)
+
+        provided_args = sys.argv[1:]
+        def has_flag(prefix):
+            return any(item == prefix or item.startswith(prefix + '=') for item in provided_args)
+
+        if config_data:
+            host = config_data.get('webgui_host')
+            port = config_data.get('webgui_port')
+            debug_flag = config_data.get('debug')
+            auto_open = config_data.get('auto_open_browser')
+
+            if host is not None and not has_flag('--host'):
+                args.host = host
+            if port is not None and not has_flag('--port'):
+                args.port = port
+            if debug_flag is not None and not has_flag('--debug'):
+                args.debug = bool(debug_flag)
+            if auto_open is not None and not has_flag('--no-browser'):
+                args.no_browser = not bool(auto_open)
 
     # 导入应用
     from app import app
@@ -46,9 +75,11 @@ def main():
         threading.Thread(target=open_browser, args=(args.host, args.port), daemon=True).start()
 
     # 运行应用
-    print(f"Summer-GDS Web GUI 正在启动...")
+    print("Summer-GDS Web GUI 正在启动...")
     print(f"访问地址: http://{args.host if args.host != '0.0.0.0' else 'localhost'}:{args.port}")
-    print(f"按 Ctrl+C 停止服务器")
+    if config_data:
+        print(f"使用配置文件: {os.path.abspath(args.config)}")
+    print("按 Ctrl+C 停止服务器")
 
     app.run(host=args.host, port=args.port, debug=args.debug)
 
