@@ -6,14 +6,16 @@
 
 from __future__ import annotations
 
+import json
 import os
 from pathlib import Path
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Optional
 
 from PySide6.QtCore import QTimer, Qt, QUrl
 from PySide6.QtGui import QTextCursor
 from PySide6.QtWebEngineCore import QWebEngineDownloadRequest
 from PySide6.QtWidgets import (
+    QFileDialog,
     QMainWindow,
     QMessageBox,
     QPlainTextEdit,
@@ -38,6 +40,9 @@ def _resolve_state(name: str, fallback: int) -> int:
 DOWNLOAD_COMPLETED = _resolve_state("DownloadCompleted", 2)
 DOWNLOAD_CANCELLED = _resolve_state("DownloadCancelled", 3)
 DOWNLOAD_INTERRUPTED = _resolve_state("DownloadInterrupted", 4)
+
+SETTINGS_DIR = Path.home() / ".summer_gds"
+SETTINGS_FILE = SETTINGS_DIR / "qt_settings.json"
 
 if TYPE_CHECKING:  # pragma: no cover - 仅用于类型提示
     from web_gui.log_bridge import LogBridge, LogEvent
@@ -134,6 +139,38 @@ class MainWindow(QMainWindow):
         profile = page.profile()
         profile.downloadRequested.connect(self._handle_download)
 
+    def _load_last_download_path(self, file_name: str) -> Path:
+        if SETTINGS_FILE.exists():
+            try:
+                data = json.loads(SETTINGS_FILE.read_text(encoding="utf-8"))
+                stored = data.get("last_download_path")
+                if stored:
+                    candidate = Path(stored)
+                    if candidate.parent.exists():
+                        return candidate
+            except (OSError, json.JSONDecodeError):
+                pass
+
+        return self._default_download_path(file_name)
+
+    def _save_last_download_path(self, path: Path) -> None:
+        try:
+            SETTINGS_DIR.mkdir(parents=True, exist_ok=True)
+            payload = {"last_download_path": str(path)}
+            SETTINGS_FILE.write_text(json.dumps(payload), encoding="utf-8")
+        except OSError as exc:
+            self._log_message("WARNING", "download", f"无法保存下载历史: {exc}")
+
+    def _default_download_path(self, file_name: str) -> Path:
+        default_dir = Path.cwd() / "downloads"
+        if not default_dir.exists():
+            try:
+                default_dir.mkdir(parents=True, exist_ok=True)
+            except OSError as exc:
+                self._log_message("WARNING", "download", f"无法创建默认目录: {exc}")
+                return Path.cwd() / file_name
+        return default_dir / file_name
+
     def _apply_initial_split_ratio(self) -> None:
         total = self._splitter.size().height()
         if total <= 0:
@@ -148,32 +185,44 @@ class MainWindow(QMainWindow):
         self._splitter.setSizes([top, bottom])
 
     def _handle_download(self, request) -> None:  # pragma: no cover - 需 Qt 运行环境
-        target_dir = Path.cwd() / "downloads"
-        target_dir.mkdir(parents=True, exist_ok=True)
+        suggested_name = request.downloadFileName() or "download.gds"
+        initial_path = self._load_last_download_path(suggested_name)
 
-        file_name = request.downloadFileName() or "download.gds"
-        target_path = target_dir / file_name
+        dialog_path, _ = QFileDialog.getSaveFileName(
+            self,
+            "保存 GDS 文件",
+            str(initial_path),
+            "GDS 文件 (*.gds);;所有文件 (*)",
+        )
 
-        if target_path.exists():
-            base = target_path.stem
-            suffix = target_path.suffix
-            counter = 1
-            while True:
-                candidate = target_dir / f"{base}_{counter}{suffix}"
-                if not candidate.exists():
-                    target_path = candidate
-                    break
-                counter += 1
+        if not dialog_path:
+            self._log_message("WARNING", "download", "用户取消 GDS 下载")
+            request.cancel()
+            return
 
-        request.setDownloadDirectory(str(target_dir))
+        target_path = Path(dialog_path)
+        try:
+            target_path.parent.mkdir(parents=True, exist_ok=True)
+        except OSError as exc:
+            self._log_message("ERROR", "download", f"无法创建目录 {target_path.parent}: {exc}")
+            request.cancel()
+            return
+
+        request.setDownloadDirectory(str(target_path.parent))
         request.setDownloadFileName(target_path.name)
         request.accept()
 
+        self._save_last_download_path(target_path)
         self._log_message("INFO", "download", f"GDS 下载开始 -> {target_path}")
 
         def _on_finished(state):
             if state == DOWNLOAD_COMPLETED:
                 self._log_message("INFO", "download", f"下载完成: {target_path}")
+                QMessageBox.information(
+                    self,
+                    "Summer-GDS",
+                    f"GDS 文件已保存至:\n{target_path}",
+                )
             elif state == DOWNLOAD_CANCELLED:
                 self._log_message("WARNING", "download", "下载被取消")
             else:
