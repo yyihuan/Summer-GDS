@@ -213,11 +213,9 @@ class MainWindow(QMainWindow):
         request.accept()
 
         self._save_last_download_path(target_path)
-        self._log_message("INFO", "download", f"GDS 下载开始 -> {target_path}")
 
         def _on_finished(state):
             if state == DOWNLOAD_COMPLETED:
-                self._log_message("INFO", "download", f"下载完成: {target_path}")
                 QMessageBox.information(
                     self,
                     "Summer-GDS",

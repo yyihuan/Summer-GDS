@@ -25,7 +25,7 @@ class QueueLogHandler(logging.Handler):
     """将日志消息写入 queue.Queue 的 handler。"""
 
     def __init__(self, queue: Queue):
-        super().__init__(level=logging.WARNING)
+        super().__init__(level=logging.ERROR)
         self._queue = queue
 
     def emit(self, record: logging.LogRecord) -> None:  # pragma: no cover - 运行时验证
@@ -66,8 +66,8 @@ class LogBridge:
             if self._handler not in target.handlers:
                 target.addHandler(self._handler)
             original_level = target.level
-            if target.level == logging.NOTSET or target.level > logging.WARNING:
-                target.setLevel(logging.WARNING)
+            if target.level == logging.NOTSET or target.level > logging.ERROR:
+                target.setLevel(logging.ERROR)
             self._targets.append((target, original_level))
 
     def detach(self) -> None:

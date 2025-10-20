@@ -15,7 +15,7 @@ def test_log_bridge_captures_warning():
 
     bridge = LogBridge([logger])
     try:
-        logger.warning("bridge warning %s", 1)
+        logger.error("bridge error %s", 1)
         events = bridge.drain()
     finally:
         logger.setLevel(original_level)
@@ -23,5 +23,5 @@ def test_log_bridge_captures_warning():
 
     assert events, "expected at least one log event"
     event = events[0]
-    assert event.level_name == "WARNING"
-    assert "bridge warning" in event.message
+    assert event.level_name == "ERROR"
+    assert "bridge error" in event.message
