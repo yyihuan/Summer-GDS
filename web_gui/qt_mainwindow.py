@@ -88,6 +88,8 @@ class MainWindow(QMainWindow):
         self._timer.timeout.connect(self._drain_logs)
         self._timer.start()
 
+        QTimer.singleShot(0, self._apply_initial_split_ratio)
+
         self._setup_download_handler()
 
         if options.open_browser:
@@ -131,6 +133,19 @@ class MainWindow(QMainWindow):
         page = self._web_view.page()
         profile = page.profile()
         profile.downloadRequested.connect(self._handle_download)
+
+    def _apply_initial_split_ratio(self) -> None:
+        total = self._splitter.size().height()
+        if total <= 0:
+            total = max(self.height(), self._log_view.minimumHeight() * 5)
+
+        top = max(1, int(total * 0.8))
+        bottom = max(self._log_view.minimumHeight(), total - top)
+        if bottom <= 0:
+            bottom = self._log_view.minimumHeight()
+            top = max(1, total - bottom)
+
+        self._splitter.setSizes([top, bottom])
 
     def _handle_download(self, request) -> None:  # pragma: no cover - 需 Qt 运行环境
         target_dir = Path.cwd() / "downloads"
