@@ -1,0 +1,19 @@
+# Via 测试配置文件
+
+global:
+  dbu: 0.001
+  precision: 0.01
+  fillet:
+    interactive: false
+
+gds:
+  output_file: test_via.gds
+  cell_name: TEST
+
+shapes:
+  - name: test_via
+    type: via
+    vertices: "0,0:10,0:10,10:0,10"
+    layer: [1, 0]
+    inner_zoom: -1
+    outer_zoom: 1

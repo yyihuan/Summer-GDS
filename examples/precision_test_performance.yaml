@@ -1,0 +1,21 @@
+global:
+  dbu: 0.001
+  precision: 0.01
+
+gds:
+  output_file: "output_performance.gds"
+  cell_name: "TOP"
+
+shapes:
+  - type: "polygon"
+    name: "large_polygon"
+    vertices: "0,0:100,0:100,100:0,100"
+    layer: [1, 0]
+
+  - type: "rings"
+    name: "many_rings"
+    vertices: "10,10:90,10:90,90:10,90"
+    layer: [2, 0]
+    ring_num: 20
+    ring_width: 1.5
+    ring_space: 0.5

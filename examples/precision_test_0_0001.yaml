@@ -1,0 +1,20 @@
+global:
+  dbu: 0.0001         # 0.1 nm（高精度）
+  precision: 0.0001   # 精度也是 0.1 nm
+
+gds:
+  output_file: "output_precision_0_0001.gds"
+  cell_name: "TOP"
+  default_layer: [1, 0]
+
+shapes:
+  - type: "polygon"
+    name: "high_precision_polygon"
+    vertices: "0.1234,0.5678:10.9876,0.5678:10.9876,10.4321:0.1234,10.4321"
+    layer: [1, 0]
+
+  - type: "polygon"
+    name: "high_precision_inner"
+    vertices: "2.3456,2.3456:8.7654,2.3456:8.7654,8.7654:2.3456,8.7654"
+    layer: [1, 0]
+    zoom: -1.5

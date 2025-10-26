@@ -1,0 +1,18 @@
+global:
+  dbu: 0.001
+  # precision 不指定，保持原有行为
+
+gds:
+  output_file: "output_default.gds"
+  cell_name: "TOP"
+  default_layer: [1, 0]
+
+shapes:
+  - type: "polygon"
+    name: "simple_square"
+    vertices: "0,0:10,0:10,10:0,10"
+    layer: [1, 0]
+    fillet:
+      type: "arc"
+      radius: 1.0
+      interactive: false

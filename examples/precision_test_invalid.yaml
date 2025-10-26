@@ -1,0 +1,12 @@
+global:
+  dbu: 0.001
+  precision: 0.0001      # ❌ 不兼容！0.0001 / 0.001 = 0.1（非整数）
+
+gds:
+  output_file: "output_invalid.gds"
+  cell_name: "TOP"
+  default_layer: [1, 0]
+
+shapes:
+  - type: "polygon"
+    vertices: "0,0:10,0:10,10:0,10"

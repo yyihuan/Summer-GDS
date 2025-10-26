@@ -104,13 +104,19 @@ def main():
     global_config = config.get('global', {})
     gds_config = config.get('gds', {})
     shapes_config = config.get('shapes', [])
-    
-    # 创建GDS对象
+
+    # 提取 dbu 和 precision 参数
+    dbu = global_config.get('dbu', 0.001)
+    precision = global_config.get('precision')
+    logger.info(f"从 YAML 读取参数：dbu={dbu} μm, precision={precision} μm")
+
+    # 创建GDS对象（验证会在 GDS.__init__ 中进行）
     gds = GDS(
         input_file=gds_config.get('input_file'),
         cell_name=gds_config.get('cell_name', 'TOP'),
         layer_info=tuple(gds_config.get('default_layer', [1, 0])),
-        dbu=global_config.get('dbu', 0.001)
+        dbu=dbu,
+        precision=precision
     )
     
     # 处理每个形状
@@ -129,10 +135,9 @@ def main():
         if not vertices:
             logger.error(f"形状 '{shape_name}' 的顶点数据无效或生成失败，跳过此形状")
             continue
-        
-        # 创建 Frame
-        frame = Frame(vertices)
-        # ensure_counterclockwise() 现在由 Region 类的 create_polygon/create_rings 内部更好地处理
+
+        # 创建 Frame 时传递 precision 参数
+        frame = Frame(vertices, precision=precision)
         
         # 获取或创建目标单元格
         cell_name = shape_data.get('cell', gds_config.get('cell_name', 'TOP'))

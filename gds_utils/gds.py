@@ -1,26 +1,39 @@
 import klayout.db as db
 import os
 from .cell import Cell
-from .utils import logger
+from .utils import logger, set_global_dbu, validate_precision_dbu
 
 class GDS:
     """操作 GDS 文件的类"""
-    
-    def __init__(self, input_file=None, cell_name="TOP", layer_info=(1, 0), dbu=0.001):
+
+    def __init__(self, input_file=None, cell_name="TOP", layer_info=(1, 0), dbu=0.001, precision=None):
         """初始化 GDS 对象
-        
+
         参数:
             input_file: GDS 输入文件路径，如果为None则创建新的布局
             cell_name: 默认单元格名称
             layer_info: 默认图层信息 (layer_num, datatype)
-            dbu: 数据库单位（默认0.001，即1纳米）
+            dbu: 数据库单位（从YAML传入，单位μm，默认0.001）
+            precision: 顶点精度（从YAML传入，单位μm，None表示不控制）
         """
+        # 验证 precision 和 dbu 的兼容性
+        validate_precision_dbu(precision, dbu)
+
+        # 存储参数
+        self.dbu = dbu
+        self.precision = precision
+
+        # 设置全局dbu（供um_to_db函数使用）
+        set_global_dbu(dbu)
+
+        # 初始化KLayout
         self.kdb_layout = db.Layout()
         self.cells = {}
-        self.dbu = dbu
-        
+
         # 设置数据库单位
         self.kdb_layout.dbu = dbu
+
+        logger.info(f"初始化 GDS：dbu={dbu} μm, precision={precision} μm")
         
         if input_file:
             try:

@@ -1,0 +1,41 @@
+global:
+  dbu: 0.001
+  precision: 0.01
+
+gds:
+  output_file: "output_precision_complex.gds"
+  cell_name: "TOP"
+  default_layer: [1, 0]
+
+shapes:
+  # 第一层：基础多边形
+  - type: "polygon"
+    name: "layer1_base"
+    vertices: "0,0:50,0:50,50:0,50"
+    layer: [1, 0]
+    fillet:
+      type: "arc"
+      radius: 2.0
+      interactive: false
+
+  # 第二层：内部孔洞
+  - type: "polygon"
+    name: "layer1_hole"
+    vertices: "10.123,10.123:40.789,10.123:40.789,40.789:10.123,40.789"
+    layer: [1, 0]
+    zoom: -2.5
+    fillet:
+      type: "arc"
+      radius: 1.0
+      interactive: false
+
+  # 第三层：另一个图案
+  - type: "polygon"
+    name: "layer2_pattern"
+    vertices: "5.5,5.5:45.5,5.5:45.5,45.5:5.5,45.5"
+    layer: [2, 0]
+    fillet:
+      type: "adaptive"
+      convex_radius: 1.5
+      concave_radius: 0.5
+      interactive: false

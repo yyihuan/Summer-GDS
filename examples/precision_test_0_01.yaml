@@ -1,0 +1,28 @@
+global:
+  dbu: 0.001          # 1 nm
+  precision: 0.01     # 10 nm精度（整数倍）
+
+gds:
+  output_file: "output_precision_0_01.gds"
+  cell_name: "TOP"
+  default_layer: [1, 0]
+
+shapes:
+  - type: "polygon"
+    name: "polygon_with_precision"
+    vertices: "0.0,0.0:10.123,0.0:10.123,10.456:0.0,10.456"
+    layer: [1, 0]
+    fillet:
+      type: "arc"
+      radius: 0.5
+      interactive: false
+
+  - type: "polygon"
+    name: "inner_hole"
+    vertices: "2.123,2.123:8.789,2.123:8.789,8.789:2.123,8.789"
+    layer: [2, 0]
+    zoom: -1.0
+    fillet:
+      type: "arc"
+      radius: 0.3
+      interactive: false

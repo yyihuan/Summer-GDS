@@ -1,0 +1,21 @@
+global:
+  dbu: 0.001
+  precision: 0.01
+
+gds:
+  output_file: "output_precision_rings.gds"
+  cell_name: "TOP"
+  default_layer: [1, 0]
+
+shapes:
+  - type: "rings"
+    name: "ring_array_with_precision"
+    vertices: "0,0:50,0:50,50:0,50"
+    layer: [1, 0]
+    ring_num: 5
+    ring_width: 2.5
+    ring_space: 1.25
+    fillet:
+      type: "arc"
+      radius: 0.5
+      interactive: false

@@ -1,0 +1,94 @@
+global:
+  dbu: 0.0001
+  precision: 0.0001
+  fillet:
+    interactive: false
+    default_action: auto
+  layer_mapping:
+    save: true
+    file: layer_mapping.txt
+gds:
+  input_file: null
+  output_file: output.gds
+  cell_name: TOP
+  default_layer:
+    - 1
+    - 0
+
+shapes:
+  - type: polygon
+    name: 多边形0
+    layer:
+      - 1
+      - 0
+    id: shape_1761467102670_3xjqp9seb
+    vertices: >-
+      56.2623,193:193,56.2623:193,-56.2623:56.2623,-193:-56.2623,-193:-193,-56.2623:-193,56.2623:-56.2623,193
+    zoom: 0
+    fillet:
+      type: arc
+      radius: 1
+    _metadata: &ref_0
+      source: vertices
+      generated_at: '2025-10-26T08:25:06.140Z'
+      version: '1.0'
+  - type: via
+    id: shape_1761467129162_24q3oi863
+    name: 多边形0_via
+    inner_zoom: -15
+    outer_zoom: -5
+    layer:
+      - 2
+      - 0
+    derivation:
+      base_shape_id: shape_1761467102670_3xjqp9seb
+      derive_type: via
+      derive_params:
+        inner_zoom: -15
+        outer_zoom: -5
+      created_at: '2025-10-26T08:25:29.162Z'
+      overrides: {}
+    base_shape_info:
+      name: 多边形0
+      vertices: >-
+        56.2623,193:193,56.2623:193,-56.2623:56.2623,-193:-56.2623,-193:-193,-56.2623:-193,56.2623:-56.2623,193
+      fillet_type: arc
+      fillet_radius: 1
+    _computed: {}
+    vertices: >-
+      56.2623,193:193,56.2623:193,-56.2623:56.2623,-193:-56.2623,-193:-193,-56.2623:-193,56.2623:-56.2623,193
+    fillet:
+      type: arc
+      radius: 1
+    zoom: 0
+    _metadata: *ref_0
+  - type: via
+    id: shape_1761467142669_j3leshxcc
+    name: 多边形0_via
+    inner_zoom: -20
+    outer_zoom: 10
+    layer:
+      - 3
+      - 0
+    derivation:
+      base_shape_id: shape_1761467102670_3xjqp9seb
+      derive_type: via
+      derive_params:
+        inner_zoom: -20
+        outer_zoom: 10
+      created_at: '2025-10-26T08:25:42.669Z'
+      overrides: {}
+    base_shape_info:
+      name: 多边形0
+      vertices: >-
+        56.2623,193:193,56.2623:193,-56.2623:56.2623,-193:-56.2623,-193:-193,-56.2623:-193,56.2623:-56.2623,193
+      fillet_type: arc
+      fillet_radius: 1
+    _computed: {}
+    vertices: >-
+      56.2623,193:193,56.2623:193,-56.2623:56.2623,-193:-56.2623,-193:-193,-56.2623:-193,56.2623:-56.2623,193
+    fillet:
+      type: arc
+      radius: 1
+    zoom: 0
+    _metadata: *ref_0

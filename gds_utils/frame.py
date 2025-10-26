@@ -1,10 +1,17 @@
 import numpy as np
 import math
-from .utils import logger
+from .utils import logger, round_vertices
 
 class Frame:
-    def __init__(self, vertices):
-        self.vertices = vertices
+    def __init__(self, vertices, precision=None):
+        """初始化 Frame
+
+        参数:
+            vertices: 顶点列表 [(x1,y1), (x2,y2), ...]
+            precision: 精度（μm），None表示不转换
+        """
+        # 应用精度转换
+        self.vertices = round_vertices(vertices, precision)
 
     def is_clockwise(self):
         """检查多边形顶点是否为顺时针方向"""

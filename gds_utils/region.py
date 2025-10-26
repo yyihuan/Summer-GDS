@@ -403,16 +403,27 @@ class Region:
         返回:
             Region: 包含via结构的Region对象
         """
-        logger.info(f"创建via结构: 内部缩放={inner_zoom}, 外部缩放={outer_zoom}")
-        
+        logger.info(f"[Via开始] 内部缩放={inner_zoom}, 外部缩放={outer_zoom}")
+
         # 创建外部区域
         outer_region = cls.create_polygon(frame, fillet_config, outer_zoom)
-        
+        outer_kdbregion = outer_region.get_klayout_region()
+        logger.info(f"[外部区域] 多边形数={outer_kdbregion.count()}, 是否为空={outer_kdbregion.is_empty()}")
+
         # 创建内部区域
         inner_region = cls.create_polygon(frame, fillet_config, inner_zoom)
-        
+        inner_kdbregion = inner_region.get_klayout_region()
+        logger.info(f"[内部区域] 多边形数={inner_kdbregion.count()}, 是否为空={inner_kdbregion.is_empty()}")
+
         # 使用布尔减法得到via环
         result = outer_region - inner_region
-        
-        logger.info("via结构创建完成")
+        result_kdbregion = result.get_klayout_region()
+
+        # ⭐ 关键诊断日志
+        if result_kdbregion.is_empty():
+            logger.error(f"❌ VIA失效: 布尔减法结果为空！outer={outer_kdbregion.count()}, inner={inner_kdbregion.count()}")
+        else:
+            logger.info(f"✓ VIA成功: 布尔减法得到{result_kdbregion.count()}个多边形")
+
+        logger.info("[Via结束]")
         return result 
