@@ -149,14 +149,26 @@
                                         </div>
                                         <div class="card-body">
                                             <div class="row">
-                                                <div class="col-md-6 mb-3">
+                                                <div class="col-md-4 mb-3">
                                                     <label for="dbu" class="form-label">数据库单位 (微米)</label>
-                                                    <input type="number" class="form-control" id="dbu" name="global.dbu" value="0.001" step="0.001">
+                                                    <input type="number" class="form-control" id="dbu" name="global.dbu" value="0.001" step="0.0001" min="0.00001" max="1.0" data-validation="dbu">
+                                                    <small class="form-text text-muted">推荐值: 0.0001 ~ 0.001</small>
                                                 </div>
-                                                <div class="col-md-6 mb-3">
+                                                <div class="col-md-4 mb-3">
+                                                    <label for="globalPrecision" class="form-label">全局精度控制 (微米)</label>
+                                                    <input type="number" class="form-control" id="globalPrecision" name="global.precision" value="" placeholder="留空表示不控制" step="0.0001" min="0.00001" max="1.0" data-validation="precision">
+                                                    <small class="form-text text-muted">留空则不进行精度控制</small>
+                                                </div>
+                                                <div class="col-md-4 mb-3">
                                                     <label for="filletPrecision" class="form-label">倒角精度 (微米)</label>
                                                     <input type="number" class="form-control" id="filletPrecision" name="global.fillet.precision" value="0.01" step="0.01">
                                                 </div>
+                                            </div>
+                                            <!-- 精度验证提示 -->
+                                            <div id="precisionWarning" class="alert alert-warning alert-dismissible fade hide" role="alert" style="display:none; margin-top: 10px;">
+                                                <i class="bi bi-exclamation-triangle"></i>
+                                                <strong>精度校验警告:</strong> <span id="warningText"></span>
+                                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-6 mb-3">
@@ -761,6 +773,82 @@
     <script src="{{ url_for('static', filename='linkage/debug-test.js') }}"></script>
     <script src="{{ url_for('static', filename='linkage/zoom-override-test.js') }}"></script>
     <script src="{{ url_for('static', filename='linkage/rings-inheritance-test.js') }}"></script>
+
+    <!-- 全局精度控制验证脚本 -->
+    <script>
+    // 精度/dbu 验证函数
+    function validatePrecisionAndDbu() {
+        const dbuInput = document.getElementById('dbu');
+        const precisionInput = document.getElementById('globalPrecision');
+        const warningDiv = document.getElementById('precisionWarning');
+        const warningText = document.getElementById('warningText');
+
+        if (!dbuInput || !precisionInput) return;
+
+        const dbu = parseFloat(dbuInput.value) || 0;
+        const precision = precisionInput.value ? parseFloat(precisionInput.value) : null;
+
+        // 如果precision为空,则不进行验证
+        if (precision === null || precision === undefined || precisionInput.value.trim() === '') {
+            warningDiv.style.display = 'none';
+            dbuInput.classList.remove('is-invalid');
+            precisionInput.classList.remove('is-invalid');
+            return;
+        }
+
+        // 检查precision是否为正数
+        if (precision <= 0) {
+            warningDiv.style.display = 'block';
+            warningText.textContent = '全局精度必须大于0';
+            precisionInput.classList.add('is-invalid');
+            dbuInput.classList.remove('is-invalid');
+            return;
+        }
+
+        // 检查dbu是否为正数
+        if (dbu <= 0) {
+            warningDiv.style.display = 'block';
+            warningText.textContent = 'dbu必须大于0';
+            dbuInput.classList.add('is-invalid');
+            precisionInput.classList.remove('is-invalid');
+            return;
+        }
+
+        // 计算比例
+        const ratio = precision / dbu;
+        const isValidRatio = Math.abs(ratio - Math.round(ratio)) < 1e-10;
+
+        if (!isValidRatio) {
+            warningDiv.style.display = 'block';
+            warningText.textContent = `精度 (${precision}) 与 dbu (${dbu}) 不兼容: 比例为 ${ratio.toFixed(4)}, 必须为整数!`;
+            dbuInput.classList.add('is-invalid');
+            precisionInput.classList.add('is-invalid');
+        } else {
+            warningDiv.style.display = 'none';
+            dbuInput.classList.remove('is-invalid');
+            precisionInput.classList.remove('is-invalid');
+        }
+    }
+
+    // 页面加载时初始化
+    document.addEventListener('DOMContentLoaded', function() {
+        const dbuInput = document.getElementById('dbu');
+        const precisionInput = document.getElementById('globalPrecision');
+
+        if (dbuInput) {
+            dbuInput.addEventListener('change', validatePrecisionAndDbu);
+            dbuInput.addEventListener('input', validatePrecisionAndDbu);
+        }
+
+        if (precisionInput) {
+            precisionInput.addEventListener('change', validatePrecisionAndDbu);
+            precisionInput.addEventListener('input', validatePrecisionAndDbu);
+        }
+
+        // 初始验证
+        validatePrecisionAndDbu();
+    });
+    </script>
 
     <!-- 主应用脚本 -->
     <script src="{{ url_for('static', filename='main.js') }}"></script>

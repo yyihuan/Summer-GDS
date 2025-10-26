@@ -70,6 +70,7 @@ app.config['TEMP_FOLDER'] = TEMP_FOLDER
 DEFAULT_CONFIG = {
     "global": {
         "dbu": 0.001,
+        "precision": None,  # 全局精度控制参数,None表示不进行精度控制
         "fillet": {
             "interactive": False,
             "default_action": "auto",
@@ -224,19 +225,48 @@ def validate_config():
         config_data = ensure_string_values(config_data)
 
         # 基本验证
+        errors = []
         if not isinstance(config_data, dict):
-            return jsonify({"valid": False, "errors": ["配置必须是一个有效的YAML对象"]}), 400
+            errors.append("配置必须是一个有效的YAML对象")
+            return jsonify({"valid": False, "errors": errors}), 400
 
         if "global" not in config_data:
-            return jsonify({"valid": False, "errors": ["缺少'global'配置部分"]}), 400
+            errors.append("缺少'global'配置部分")
+            return jsonify({"valid": False, "errors": errors}), 400
 
         if "gds" not in config_data:
-            return jsonify({"valid": False, "errors": ["缺少'gds'配置部分"]}), 400
+            errors.append("缺少'gds'配置部分")
+            return jsonify({"valid": False, "errors": errors}), 400
 
         if "shapes" not in config_data or not isinstance(config_data["shapes"], list):
-            return jsonify({"valid": False, "errors": ["缺少'shapes'配置部分或者不是列表类型"]}), 400
+            errors.append("缺少'shapes'配置部分或者不是列表类型")
+            return jsonify({"valid": False, "errors": errors}), 400
 
-        # 可以添加更多详细的验证规则
+        # 验证全局精度参数
+        global_config = config_data.get("global", {})
+        dbu = global_config.get("dbu", 0.001)
+        precision = global_config.get("precision")
+
+        # 验证dbu范围
+        if not (0.00001 <= dbu <= 1.0):
+            errors.append(f"dbu 必须在 0.00001 ~ 1.0 范围内，当前值: {dbu}")
+
+        # 验证precision（如果指定了）
+        if precision is not None:
+            if not (0.00001 <= precision <= 1.0):
+                errors.append(f"precision 必须在 0.00001 ~ 1.0 范围内，当前值: {precision}")
+            else:
+                # 验证precision/dbu的整数比关系
+                ratio = precision / dbu
+                if abs(ratio - round(ratio)) > 1e-10:
+                    errors.append(
+                        f"precision 和 dbu 不兼容: {precision} / {dbu} = {ratio:.6f}, "
+                        f"必须是整数倍关系!"
+                    )
+
+        # 如果有错误，返回
+        if errors:
+            return jsonify({"valid": False, "errors": errors}), 400
 
         return jsonify({"valid": True})
     except Exception as e:
