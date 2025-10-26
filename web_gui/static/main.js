@@ -56,7 +56,20 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // 绑定表单变化事件
     document.getElementById('configForm').addEventListener('change', updateJSONFromForm);
-    
+
+    // 绑定顶点输入字段的实时验证（委托事件）
+    document.getElementById('configForm').addEventListener('change', function(e) {
+        if (e.target && e.target.getAttribute('name') && e.target.getAttribute('name').includes('vertices')) {
+            // 从name属性中提取shapeIndex
+            const nameAttr = e.target.getAttribute('name');
+            const match = nameAttr.match(/shapes\[(\d+)\]/);
+            if (match) {
+                const shapeIndex = match[1];
+                updateVertexValidationFeedback(shapeIndex);
+            }
+        }
+    }, true); // 使用捕获阶段确保能捕获到所有事件
+
     // 绑定形状类型选择按钮
     document.querySelectorAll('#shapeTypeModal button[data-shape-type]').forEach(button => {
         button.addEventListener('click', function() {
@@ -1458,4 +1471,99 @@ function validateCircleParams(centerX, centerY, radius, segments) {
     }
 
     return errors;
+}
+
+/**
+ * 更新顶点验证反馈信息
+ * @param {number} shapeIndex - 形状索引
+ */
+function updateVertexValidationFeedback(shapeIndex) {
+    const card = document.querySelector(`.shape-card[data-shape-index="${shapeIndex}"]`);
+    if (!card) {
+        return;
+    }
+
+    const verticesInput = card.querySelector(`[name="shapes[${shapeIndex}].vertices"]`);
+    if (!verticesInput) {
+        return;
+    }
+
+    const vertexString = verticesInput.value;
+    const errorContainer = card.querySelector(`.vertex-error-feedback[data-shape-index="${shapeIndex}"]`);
+    if (!errorContainer) {
+        return;
+    }
+
+    // 如果顶点为空，隐藏错误反馈
+    if (!vertexString || !vertexString.trim()) {
+        errorContainer.style.display = 'none';
+        verticesInput.classList.remove('is-invalid');
+        return;
+    }
+
+    // 使用验证器进行验证
+    if (typeof VertexValidator === 'undefined') {
+        console.warn('VertexValidator未加载');
+        return;
+    }
+
+    const validationResult = VertexValidator.validateVertices(vertexString);
+
+    if (validationResult.valid) {
+        // 验证通过
+        errorContainer.style.display = 'none';
+        verticesInput.classList.remove('is-invalid');
+        verticesInput.classList.add('is-valid');
+    } else {
+        // 验证失败
+        errorContainer.style.display = 'block';
+        verticesInput.classList.remove('is-valid');
+        verticesInput.classList.add('is-invalid');
+
+        // 错误提示格式化：符号错误用醒目提示，其他错误用列表
+        const errors = validationResult.errors;
+        let feedbackText = '';
+
+        // 检查是否包含符号错误（包含"符号"、"冒号"、"逗号"等关键字）
+        const symbolErrorIndex = errors.findIndex(err =>
+            err.includes('符号') ||
+            err.includes('冒号') ||
+            err.includes('逗号') ||
+            err.includes('分号') ||
+            err.includes('斜杠') ||
+            err.includes('管道') ||
+            err.includes('波浪')
+        );
+
+        if (symbolErrorIndex !== -1) {
+            // 优先显示符号错误（通常更有针对性）
+            feedbackText = '⚠️ ' + errors[symbolErrorIndex];
+            // 如果有其他错误，添加到后面
+            if (errors.length > 1) {
+                const otherErrors = errors.filter((_, idx) => idx !== symbolErrorIndex);
+                feedbackText += '\n' + otherErrors.join('\n');
+            }
+        } else {
+            // 没有符号错误，直接显示所有错误
+            feedbackText = errors.join('\n');
+        }
+
+        errorContainer.innerHTML = `<div class="alert alert-danger" role="alert"><small><pre style="margin: 0; white-space: pre-wrap; word-wrap: break-word;">${escapeHtml(feedbackText)}</pre></small></div>`;
+    }
+}
+
+/**
+ * HTML转义函数
+ * @param {string} text - 要转义的文本
+ * @returns {string} 转义后的文本
+ */
+function escapeHtml(text) {
+    const map = {
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#039;'
+    };
+    return text.replace(/[&<>"']/g, m => map[m]);
 }

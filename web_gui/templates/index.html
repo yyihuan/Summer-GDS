@@ -368,6 +368,7 @@
                                   data-shape-index="{index}">继承中</span>
                         </label>
                             <input type="text" class="form-control" name="shapes[{index}].vertices" placeholder="0,0:10,0:10,10:0,10">
+                            <div class="vertex-error-feedback" data-shape-index="{index}" style="display: none; margin-top: 8px;"></div>
                         </div>
                     </div>
                 </div>
@@ -507,6 +508,7 @@
                                   data-shape-index="{index}">继承中</span>
                         </label>
                             <input type="text" class="form-control" name="shapes[{index}].vertices" placeholder="0,0:10,0:10,10:0,10">
+                            <div class="vertex-error-feedback" data-shape-index="{index}" style="display: none; margin-top: 8px;"></div>
                         </div>
                     </div>
                 </div>
@@ -756,6 +758,9 @@
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jsoneditor@9.9.0/dist/jsoneditor.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js"></script>
+
+    <!-- 顶点验证器 -->
+    <script src="{{ url_for('static', filename='validators.js') }}"></script>
 
     <!-- 形状联动系统 -->
     <script src="{{ url_for('static', filename='linkage/core.js') }}"></script>
