@@ -33,14 +33,14 @@ class TestGDSUtils(unittest.TestCase):
             'shapes': [
                 {
                     'type': 'polygon',
-                    'vertices': '0,0:10,0:10,10:0,10',
+                    'vertices': '0,0;10,0;10,10;0,10',
                     'cell': 'TEST',
                     'layer': [1, 0],
                     'fillet_radius': 0
                 },
                 {
                     'type': 'rings',
-                    'vertices': '0,0:10,0:10,10:0,10',
+                    'vertices': '0,0;10,0;10,10;0,10',
                     'cell': 'TEST',
                     'layer': [2, 0],
                     'fillet_radius': 0,

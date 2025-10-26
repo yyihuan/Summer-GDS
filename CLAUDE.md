@@ -154,7 +154,7 @@ gds:
 
 shapes:
   - type: "polygon" | "rings" | "via"
-    vertices: "x1,y1:x2,y2:..."
+    vertices: "x1,y1;x2,y2;..."
     layer: [layer_num, datatype]
     zoom: float or [outer, inner]  # 注意：zoom 参数格式
     fillet:

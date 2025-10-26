@@ -1029,10 +1029,10 @@ function toggleToRadiusList(event) {
     const singleRadius = document.querySelector(`[name="shapes[${shapeIndex}].fillet.radius"]`).value;
     const verticesInput = document.querySelector(`[name="shapes[${shapeIndex}].vertices"]`);
     let vertexCount = 0;
-    
+
     if (verticesInput && verticesInput.value) {
         // 计算顶点数量
-        vertexCount = verticesInput.value.split(':').length;
+        vertexCount = verticesInput.value.split(';').length;
     }
     
     // 生成相同数量的半径值
@@ -1379,7 +1379,7 @@ function generateCircleVertices(centerX, centerY, radius, segments = 64) {
         vertices.push(`${x.toFixed(3)},${y.toFixed(3)}`);
     }
 
-    const result = vertices.join(':');
+    const result = vertices.join(';');
     console.log(`生成的顶点: ${result.substring(0, 50)}...`);
     return result;
 }

@@ -13,8 +13,8 @@ const VertexValidator = {
         const chineseChecks = [
             {
                 char: '：',
-                english: ':',
-                message: '顶点分隔符格式错误，检测到中文冒号 `：`，请改用英文冒号 `:` 分隔顶点'
+                english: ';',
+                message: '顶点分隔符格式错误，检测到中文冒号 `：`，请改用英文分号 `;` 分隔顶点'
             },
             {
                 char: '，',
@@ -23,8 +23,8 @@ const VertexValidator = {
             },
             {
                 char: '；',
-                english: ':',
-                message: '顶点分隔符格式错误，检测到中文分号 `；`，应使用英文冒号 `:`'
+                english: ';',
+                message: '顶点分隔符格式错误，检测到中文分号 `；`，应使用英文分号 `;`'
             },
             {
                 char: '\u3000',
@@ -43,29 +43,29 @@ const VertexValidator = {
     },
 
     /**
-     * 检测无效的分隔符（分号、斜杠等）
+     * 检测无效的分隔符（冒号、斜杠等）
      * @param {string} vertexString - 顶点字符串
      * @returns {string|null} 错误信息或 null
      */
     detectInvalidSeparators(vertexString) {
-        // 分号作为主要分隔符（冒号已是合法分隔符，分号不是）
-        if (vertexString.includes(';')) {
-            return '顶点分隔符格式错误，检测到分号 `;`，应使用英文冒号 `:` 分隔顶点';
+        // 冒号不再是合法分隔符
+        if (vertexString.includes(':')) {
+            return '顶点分隔符格式错误，检测到冒号 `:`，应使用英文分号 `;` 分隔顶点';
         }
 
         // 斜杠（可能用作分隔符）
         if (vertexString.includes('/')) {
-            return '坐标分隔符格式错误，检测到斜杠 `/`，应使用英文逗号 `,` 分隔坐标，用英文冒号 `:` 分隔顶点';
+            return '坐标分隔符格式错误，检测到斜杠 `/`，应使用英文逗号 `,` 分隔坐标，用英文分号 `;` 分隔顶点';
         }
 
         // 管道符
         if (vertexString.includes('|')) {
-            return '顶点分隔符格式错误，检测到管道符 `|`，应使用英文冒号 `:` 分隔顶点';
+            return '顶点分隔符格式错误，检测到管道符 `|`，应使用英文分号 `;` 分隔顶点';
         }
 
         // 波浪线
         if (vertexString.includes('~')) {
-            return '顶点格式错误，检测到波浪线 `~`，应使用英文冒号 `:` 分隔顶点';
+            return '顶点格式错误，检测到波浪线 `~`，应使用英文分号 `;` 分隔顶点';
         }
 
         return null;
@@ -93,7 +93,7 @@ const VertexValidator = {
     },
 
     /**
-     * 验证顶点字符串格式是否符合 x1,y1:x2,y2:...
+     * 验证顶点字符串格式是否符合 x1,y1;x2,y2;...
      * @param {string} vertexString - 顶点字符串
      * @returns {boolean} 格式是否正确
      */
@@ -110,14 +110,14 @@ const VertexValidator = {
             return false;
         }
 
-        // 检查基本格式：冒号分隔，每个坐标由逗号分隔的两个数字组成
-        const vertexPattern = /^[\d.,:\s+-]+$/;
+        // 检查基本格式：分号分隔，每个坐标由逗号分隔的两个数字组成
+        const vertexPattern = /^[\d.,;\s+-]+$/;
         if (!vertexPattern.test(trimmed)) {
             return false;
         }
 
-        // 检查冒号和逗号的基本结构
-        const vertices = trimmed.split(':');
+        // 检查分号和逗号的基本结构
+        const vertices = trimmed.split(';');
         if (vertices.length < 3) {
             return false; // 至少需要3个顶点
         }
@@ -147,7 +147,7 @@ const VertexValidator = {
             const trimmed = vertexString.trim();
             const vertexArray = [];
 
-            const vertices = trimmed.split(':');
+            const vertices = trimmed.split(';');
 
             for (const vertex of vertices) {
                 const parts = vertex.trim().split(',');
@@ -278,7 +278,7 @@ const VertexValidator = {
         // 检查格式
         if (!this.validateVertexFormat(vertexString)) {
             result.valid = false;
-            result.errors.push('顶点格式错误，应为 "x1,y1:x2,y2:x3,y3"，例如 "0,0:10,0:10,10"');
+            result.errors.push('顶点格式错误，应为 "x1,y1;x2,y2;x3,y3"，例如 "0,0;10,0;10,10"');
             return result;
         }
 

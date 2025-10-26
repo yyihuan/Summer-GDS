@@ -129,7 +129,7 @@ gds:
 ```yaml
 - type: "polygon"
   name: "Square"
-  vertices: "0,0:10,0:10,10:0,10"  # 顶点坐标，格式：x1,y1:x2,y2:...
+  vertices: "0,0;10,0;10,10;0,10"  # 顶点坐标，格式：x1,y1;x2,y2;...
   layer: [1, 0]
   fillet:
     type: "arc"
@@ -145,7 +145,7 @@ gds:
 - type: "polygon"
   name: "Circle"
   # 圆形通过前端Web GUI生成，最终保存为顶点坐标
-  vertices: "10.000,0.000:9.951,0.980:9.808,1.951:..."  # 自动生成的圆形顶点
+  vertices: "10.000,0.000;9.951,0.980;9.808,1.951;..."  # 自动生成的圆形顶点
   layer: [1, 0]
   fillet:
     type: "arc"
@@ -175,7 +175,7 @@ gds:
 ```yaml
 - type: "polygon"
   name: "Variable_Fillet_Square"
-  vertices: "0,0:10,0:10,10:0,10"
+  vertices: "0,0;10,0;10,10;0,10"
   layer: [1, 0]
   fillet:
     type: "arc"
@@ -193,7 +193,7 @@ gds:
 ```yaml
 - type: "rings"
   name: "Square_Rings"
-  vertices: "0,0:10,0:10,10:0,10"
+  vertices: "0,0;10,0;10,10;0,10"
   ring_width: 1    # 环宽度
   ring_space: 1    # 环间距
   ring_num: 3      # 环数量

@@ -20,7 +20,7 @@ shapes:
     name: "Square_Basic"
     cell: "TOP"
     layer: [1, 0]
-    vertices: "0,0:10,0:10,10:0,10"
+    vertices: "0,0;10,0;10,10;0,10"
     fillet:
       type: "arc"
       radius: 1
@@ -32,7 +32,7 @@ shapes:
     name: "Square_Zoom_Out"
     cell: "TOP"
     layer: [2, 0]
-    vertices: "0,0:10,0:10,10:0,10"
+    vertices: "0,0;10,0;10,10;0,10"
     zoom: [1, 0]
     fillet:
       type: "arc"
@@ -45,7 +45,7 @@ shapes:
     name: "Square_Rings"
     cell: "TOP"
     layer: [3, 0]
-    vertices: "0,0:10,0:10,10:0,10"
+    vertices: "0,0;10,0;10,10;0,10"
     ring_width: 2
     ring_space: 3
     ring_num: 3
@@ -60,7 +60,7 @@ shapes:
     name: "Square_Rings_Zoom"
     cell: "TOP"
     layer: [4, 0]
-    vertices: "0,0:10,0:10,10:0,10"
+    vertices: "0,0;10,0;10,10;0,10"
     ring_width: 2
     ring_space: 3
     ring_num: 3

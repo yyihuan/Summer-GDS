@@ -49,7 +49,7 @@ def parse_vertices(vertices_str: str) -> list:
     """
     try:
         vertices = []
-        for pair in vertices_str.split(':'):
+        for pair in vertices_str.split(';'):
             x, y = map(float, pair.split(','))
             vertices.append((float(x), float(y)))  # 确保是浮点数
         
