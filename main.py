@@ -174,8 +174,45 @@ def main():
         logger.debug(f"形状 '{shape_name}' 的倒角配置: {fillet_config}")
 
         # 获取缩放配置
-        zoom_config = shape_data.get('zoom', [0, 0])
+        zoom_raw = shape_data.get('zoom', 0)
+        if isinstance(zoom_raw, (int, float)):
+            zoom_config = float(zoom_raw)
+        elif isinstance(zoom_raw, list) and zoom_raw:
+            first_val = zoom_raw[0]
+            if isinstance(first_val, (int, float)):
+                zoom_config = float(first_val)
+            else:
+                logger.warning(f"形状 '{shape_name}' 的缩放配置列表首项不是数值，使用默认0")
+                zoom_config = 0.0
+        else:
+            if zoom_raw not in (None,):
+                logger.warning(f"形状 '{shape_name}' 的缩放配置格式不正确，应为数值，当前类型: {type(zoom_raw)}")
+            zoom_config = 0.0
         logger.debug(f"形状 '{shape_name}' 的缩放配置: {zoom_config}")
+
+        # rings 专用缩放配置
+        inner_zoom_val = shape_data.get('inner_zoom')
+        outer_zoom_val = shape_data.get('outer_zoom')
+
+        def _parse_optional_zoom(value, label):
+            if value is None:
+                return None
+            if isinstance(value, (int, float)):
+                return float(value)
+            logger.error(f"形状 '{shape_name}' 的 {label} 格式错误，期望数值类型，已忽略。实际类型: {type(value)}")
+            return None
+
+        inner_zoom_config = _parse_optional_zoom(inner_zoom_val, "inner_zoom")
+        outer_zoom_config = _parse_optional_zoom(outer_zoom_val, "outer_zoom")
+
+        if inner_zoom_config is None and outer_zoom_config is None:
+            inner_zoom_config = zoom_config
+            outer_zoom_config = zoom_config
+        else:
+            inner_zoom_config = inner_zoom_config if inner_zoom_config is not None else 0.0
+            outer_zoom_config = outer_zoom_config if outer_zoom_config is not None else 0.0
+        logger.debug(
+            f"形状 '{shape_name}' 的内外缩放配置: inner_zoom={inner_zoom_config}, outer_zoom={outer_zoom_config}")
 
         region_obj = None # 重命名 region 为 region_obj
 
@@ -277,7 +314,9 @@ def main():
                 ring_space=shape_data.get('ring_space'),
                 ring_num=shape_data.get('ring_num'),
                 fillet_config=fillet_config,
-                zoom_config=zoom_config 
+                zoom_config=zoom_config,
+                inner_zoom=inner_zoom_config,
+                outer_zoom=outer_zoom_config
             )
         elif shape_data.get('type') == 'via':
             region_obj = Region.polygon2ring(

@@ -202,7 +202,8 @@ class Region:
 
     @classmethod
     def create_rings(cls, initial_frame: Frame, ring_width: Union[float, List[float]], ring_space: Union[float, List[float]], 
-                   ring_num: int, fillet_config: dict = None, zoom_config: Union[int, float] = 0):
+                   ring_num: int, fillet_config: dict = None, zoom_config: Union[int, float] = 0,
+                   inner_zoom: Union[int, float] = 0, outer_zoom: Union[int, float] = 0):
         """从 Frame 对象创建多个环
         
         参数:
@@ -212,6 +213,8 @@ class Region:
             ring_num: 环数量
             fillet_config: 倒角配置字典
             zoom_config: 缩放值（正值表示向外扩展，负值表示向内收缩）
+            inner_zoom: 环内边界额外缩放值
+            outer_zoom: 环外边界额外缩放值
             
         返回:
             Region: 包含所有环的 Region 对象
@@ -219,6 +222,7 @@ class Region:
         logger.info(f"创建多边形环: 宽度={ring_width}, 间距={ring_space}, 环数={ring_num}")
         logger.info(f"环倒角配置: {fillet_config}")
         logger.info(f"环缩放配置: {zoom_config}")
+        logger.info(f"环内外独立缩放配置: inner_zoom={inner_zoom}, outer_zoom={outer_zoom}")
 
         # 确保初始 Frame 是逆时针的
         initial_frame.ensure_counterclockwise()
