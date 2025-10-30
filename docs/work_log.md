@@ -28,3 +28,8 @@
 - 新增 rings `ring_mode`（`custom` / `concentric`）并通过 `build_ring_radius_series` 生成逐环倒角列表，`Region.create_rings` 可按圈覆盖 `radius_list`，同时兼容旧配置。
 - 补充 `tests/test_fillet_radius_parsing.py`、`tests/test_ring_radius_series.py` 展示输入/输出快照；新增 `region_applies_series` 用例验证按圈覆盖逻辑。
 - 新增示例 `examples/rings_fillet_modes.yaml`，并更新 `docs/region.md`、`docs/fillet_radius_list.md` 说明严格校验与两种模式的用法。
+
+## 2025-10-30 环阵列 GUI 更新
+- rings 卡片新增 ring_mode 下拉以及 inner/outer 独立缩放输入，默认值 0，保持与 CLI 参数一致。
+- 修正 polygon 卡片布局被误改的问题，确保仅 rings 模板包含环特有配置。
+- README 与示例说明补充环模式与倒角半径列表长度规则，帮助前端操作与 YAML 输出来回映射。

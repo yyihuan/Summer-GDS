@@ -154,6 +154,9 @@ function addShape(shapeType) {
         newShape.ring_width = "1";
         newShape.ring_space = "1";
         newShape.ring_num = 3;
+        newShape.ring_mode = "custom";
+        newShape.inner_zoom = 0;
+        newShape.outer_zoom = 0;
     }
     
     // 添加到配置中
@@ -433,9 +436,17 @@ function fillShapeFormValues(cardElement, shape, index) {
 
     // 环阵列特有属性
     if (shape.type === 'rings') {
+        const ringModeSelect = cardElement.querySelector(`[name="shapes[${index}].ring_mode"]`);
+        if (ringModeSelect) {
+            const modeValue = (shape.ring_mode ?? shape._computed?.ring_mode ?? 'custom').toLowerCase();
+            ringModeSelect.value = modeValue === 'concentric' ? 'concentric' : 'custom';
+        }
+
         const ringWidthInput = cardElement.querySelector(`[name="shapes[${index}].ring_width"]`);
         const ringSpaceInput = cardElement.querySelector(`[name="shapes[${index}].ring_space"]`);
         const ringNumInput = cardElement.querySelector(`[name="shapes[${index}].ring_num"]`);
+        const innerZoomInput = cardElement.querySelector(`[name="shapes[${index}].inner_zoom"]`);
+        const outerZoomInput = cardElement.querySelector(`[name="shapes[${index}].outer_zoom"]`);
 
         if (ringWidthInput) {
             const ringWidthValue = shape._computed?.ring_width ?? shape.ring_width;
@@ -471,6 +482,16 @@ function fillShapeFormValues(cardElement, shape, index) {
                     inputValue: ringNumInput.value
                 });
             }
+        }
+
+        if (innerZoomInput) {
+            const innerZoomValue = shape.inner_zoom ?? shape._computed?.inner_zoom ?? 0;
+            innerZoomInput.value = innerZoomValue;
+        }
+
+        if (outerZoomInput) {
+            const outerZoomValue = shape.outer_zoom ?? shape._computed?.outer_zoom ?? 0;
+            outerZoomInput.value = outerZoomValue;
         }
     } else if (shape.type === 'via') {
         const innerZoomInput = cardElement.querySelector(`[name="shapes[${index}].inner_zoom"]`);
@@ -721,6 +742,35 @@ function updateJSONFromForm() {
                 shape.ring_space = ringSpaceStr;
                 
                 shape.ring_num = parseInt(card.querySelector(`[name="shapes[${shapeIndex}].ring_num"]`).value);
+
+                const ringModeSelect = card.querySelector(`[name="shapes[${shapeIndex}].ring_mode"]`);
+                shape.ring_mode = (ringModeSelect?.value || 'custom').toLowerCase();
+
+                const innerZoomField = card.querySelector(`[name="shapes[${shapeIndex}].inner_zoom"]`);
+                const innerZoomRaw = innerZoomField ? innerZoomField.value.trim() : '';
+                if (innerZoomRaw === '') {
+                    delete shape.inner_zoom;
+                } else {
+                    const innerZoomVal = Number(innerZoomRaw);
+                    if (Number.isFinite(innerZoomVal)) {
+                        shape.inner_zoom = innerZoomVal;
+                    } else {
+                        delete shape.inner_zoom;
+                    }
+                }
+
+                const outerZoomField = card.querySelector(`[name="shapes[${shapeIndex}].outer_zoom"]`);
+                const outerZoomRaw = outerZoomField ? outerZoomField.value.trim() : '';
+                if (outerZoomRaw === '') {
+                    delete shape.outer_zoom;
+                } else {
+                    const outerZoomVal = Number(outerZoomRaw);
+                    if (Number.isFinite(outerZoomVal)) {
+                        shape.outer_zoom = outerZoomVal;
+                    } else {
+                        delete shape.outer_zoom;
+                    }
+                }
             }
     } else if (shapeType === 'via') {
         // Via 特有属性

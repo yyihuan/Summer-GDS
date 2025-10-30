@@ -414,7 +414,9 @@
                                 <i class="bi bi-1-circle"></i> 切换到单一半径
                             </button>
                         </div>
-                        <small class="form-text text-muted">请按顶点顺序输入每个角的倒角半径，用逗号分隔。0表示不倒角。</small>
+                        <small class="form-text text-muted">
+                            顶点数长度表示所有环共用；长度为 (环数×顶点数) 时按顺序映射到各环。
+                        </small>
                     </div>
                 </div>
             </div>
@@ -538,15 +540,36 @@
                         <input type="number" class="form-control" name="shapes[{index}].ring_num" value="3" min="1">
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-md-6 mb-3">
-                        <label class="form-label">缩放
+                <div class="row gy-3">
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label">倒角模式</label>
+                        <select class="form-select" name="shapes[{index}].ring_mode">
+                            <option value="custom" selected>custom（自定义/独立）</option>
+                            <option value="concentric">concentric（同心）</option>
+                        </select>
+                        <small class="form-text text-muted">
+                            custom 支持顶点数或 (环数×顶点数) 长度的半径列表。
+                        </small>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label">基础缩放
                             <span class="badge bg-secondary ms-2"
                                   data-inheritance-indicator="zoom"
                                   data-shape-index="{index}">继承中</span>
                         </label>
-                        <input type="number" class="form-control" name="shapes[{index}].zoom" placeholder="缩放值" step="0.1" value="0">
+                        <input type="number" class="form-control" name="shapes[{index}].zoom" placeholder="基础缩放" step="0.1" value="0">
+                        <small class="form-text text-muted">对内外边界同时生效的基准偏移。</small>
                     </div>
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label">内/外独立缩放</label>
+                        <div class="input-group">
+                            <input type="number" class="form-control" name="shapes[{index}].inner_zoom" placeholder="inner" step="0.1" value="0">
+                            <input type="number" class="form-control" name="shapes[{index}].outer_zoom" placeholder="outer" step="0.1" value="0">
+                        </div>
+                        <small class="form-text text-muted">正值外扩，负值内缩，留空表示 0。</small>
+                    </div>
+                </div>
+                <div class="row">
                     <div class="col-md-6 mb-3">
                         <label class="form-label">倒角类型</label>
                         <select class="form-select" name="shapes[{index}].fillet.type">
@@ -580,7 +603,9 @@
                                 <i class="bi bi-1-circle"></i> 切换到单一半径
                             </button>
                         </div>
-                        <small class="form-text text-muted">请按顶点顺序输入每个角的倒角半径，用逗号分隔。0表示不倒角。</small>
+                        <small class="form-text text-muted">
+                            顶点数长度表示所有环共用；长度为 (环数×顶点数) 时按顺序映射到各环。
+                        </small>
                     </div>
                 </div>
             </div>

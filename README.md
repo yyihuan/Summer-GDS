@@ -197,6 +197,7 @@ gds:
   ring_width: 1    # 环宽度
   ring_space: 1    # 环间距
   ring_num: 3      # 环数量
+  ring_mode: "custom"  # 环倒角控制模式
   layer: [2, 0]
   fillet:
     type: "arc"
@@ -204,6 +205,16 @@ gds:
     precision: 0.01
     interactive: false
   zoom: [1, -1]    # [外径缩放, 内径缩放]
+
+##### 环操作模式
+
+- `ring_mode` 默认为 `custom`，支持两种模式：
+  - `custom`：可通过 `fillet.radius_list` 定义倒角半径。长度等于顶点数时，所有环复用同一组半径；长度等于 `ring_num × 顶点数` 时，可按分段方式精确控制每一层环的倒角（例如 3 层环、4 个顶点时，索引 `0~3`、`4~7`、`8~11` 分别对应三层环）。若只提供单值 `radius`，解析器会自动扩展为顶点数长度的列表。
+  - `concentric`：所有环共享同一组半径，并结合 `ring_width`、`ring_space` 以及缩放参数计算同心偏移后的实际倒角半径。
+- `ring_width` 与 `ring_space` 支持单值或列表；提供列表时须与 `ring_num` 对应。
+- `inner_zoom` / `outer_zoom`（默认 0）分别控制内外边界的额外偏移，可为正（外扩）或负（内缩）。
+- Web GUI 的“环阵列”卡片已支持直接选择 `ring_mode`、填写内外缩放，并在 `radius_list` 中按圈传入倒角半径。
+- 更完整的说明与示例配置可参考 `examples/rings_user_concentric_tests.yaml` 以及文档 [docs/fillet_radius_list.md](docs/fillet_radius_list.md)。
 ```
 
 ### 缩放功能说明
