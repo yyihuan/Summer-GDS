@@ -3,7 +3,7 @@ import numpy as np
 import math
 from .frame import Frame
 from .utils import logger, um_to_db
-from typing import Union, List
+from typing import Union, List, Optional
 
 class Region:
     """封装 KLayout Region 对象的类，用于创建和操作多边形区域"""
@@ -116,6 +116,7 @@ class Region:
             fillet_type = fillet_config["type"]
             precision = fillet_config.get("precision", 0.01)
             interactive = fillet_config.get("interactive", True) # 默认为 True，与 Frame 中一致
+            preserve_radius_list = fillet_config.get("preserve_radius_list", False)
 
             # 确保帧是逆时针的，这对于某些倒角逻辑（如凹凸判断）可能很重要
             # Frame的倒角方法内部似乎没有强制，但作为最佳实践，在这里处理
@@ -133,7 +134,7 @@ class Region:
                     if "radius_list" in fillet_config:
                         radius_list = fillet_config.get("radius_list")
                         # 根据zoom_config调整半径列表
-                        if isinstance(zoom_config, (int, float)) and zoom_config != 0:
+                        if isinstance(zoom_config, (int, float)) and zoom_config != 0 and not preserve_radius_list:
                             # 对于向外扩展(zoom_config > 0)，凸角半径增加，凹角半径减少
                             # 对于向内收缩(zoom_config < 0)，凸角半径减少，凹角半径增加
                             convex_radius = [r + zoom_config for r in radius_list]
@@ -200,22 +201,25 @@ class Region:
             logger.error(f"创建多边形失败: {e}. 顶点数: {len(vertices)}")
             return cls()
 
+
     @classmethod
-    def create_rings(cls, initial_frame: Frame, ring_width: Union[float, List[float]], ring_space: Union[float, List[float]], 
-                   ring_num: int, fillet_config: dict = None, zoom_config: Union[int, float] = 0,
-                   inner_zoom: Union[int, float] = 0, outer_zoom: Union[int, float] = 0):
+    def create_rings(cls, initial_frame: Frame, ring_width: Union[float, List[float]], ring_space: Union[float, List[float]],
+                     ring_num: int, fillet_config: dict = None, zoom_config: Union[int, float] = 0,
+                     inner_zoom: Optional[Union[int, float]] = None, outer_zoom: Optional[Union[int, float]] = None,
+                     ring_radii_series: Optional[List[List[float]]] = None,
+                     preserve_radius_list: bool = False) -> 'Region':
         """从 Frame 对象创建多个环
-        
+
         参数:
             initial_frame: 初始 Frame 对象
             ring_width: 环宽度，可以是单一值或列表（每个环单独指定宽度）
             ring_space: 环间距，可以是单一值或列表（每个环单独指定间距）
             ring_num: 环数量
             fillet_config: 倒角配置字典
-            zoom_config: 缩放值（正值表示向外扩展，负值表示向内收缩）
-            inner_zoom: 环内边界额外缩放值
-            outer_zoom: 环外边界额外缩放值
-            
+            zoom_config: 统一缩放值（正值向外扩展，负值向内收缩），与旧逻辑保持兼容
+            inner_zoom: 对内边界额外施加的缩放调整量（delta），None 表示沿用旧逻辑
+            outer_zoom: 对外边界额外施加的缩放调整量（delta），None 表示沿用旧逻辑
+
         返回:
             Region: 包含所有环的 Region 对象
         """
@@ -224,175 +228,111 @@ class Region:
         logger.info(f"环缩放配置: {zoom_config}")
         logger.info(f"环内外独立缩放配置: inner_zoom={inner_zoom}, outer_zoom={outer_zoom}")
 
-        # 确保初始 Frame 是逆时针的
         initial_frame.ensure_counterclockwise()
-        logger.debug(f"初始Frame顶点已确保为逆时针: {initial_frame.get_vertices()}")
+        base_vertices = [tuple(pt) for pt in initial_frame.get_vertices()]
+        if not base_vertices:
+            logger.error("初始 Frame 顶点为空，无法生成环结构")
+            return cls()
+        logger.debug(f"初始Frame顶点已确保为逆时针: {base_vertices}")
 
-        # 1. 处理缩放，获得新的初始Frame以及ring_width和ring_space
-        if isinstance(zoom_config, (int, float)) and zoom_config != 0:
-            logger.info(f"根据缩放配置: {zoom_config}，对初始Frame进行缩放，并调整ring_width和ring_space: {ring_width}, {ring_space}")
-            initial_frame = initial_frame.offset(-zoom_config)
-            if isinstance(ring_width, list):  ring_width = [width + 2 * zoom_config for width in ring_width]
-            else:  ring_width = ring_width + 2 * zoom_config
-            if isinstance(ring_space, list):  ring_space = [space - 2 * zoom_config for space in ring_space]
-            else:  ring_space = ring_space - 2 * zoom_config
+        if ring_num <= 0:
+            logger.warning("环数量小于等于0，返回空 Region")
+            return cls()
+
+        if isinstance(zoom_config, (int, float)):
+            zoom_value = float(zoom_config)
         else:
-            logger.info(f"无需缩放")
-            
+            logger.warning(f"缩放配置类型异常({type(zoom_config)}), 按0处理")
+            zoom_value = 0.0
 
-        # 2. 生成所有环的边界Frame列表
-        outer_frames = []  # 存储所有外边界Frame
-        inner_frames = []  # 存储所有内边界Frame
-        current_frame = initial_frame
+        inner_adjust = float(inner_zoom) if inner_zoom is not None else 0.0
+        outer_adjust = float(outer_zoom) if outer_zoom is not None else 0.0
+        logger.debug(f"环额外缩放调整: inner_adjust={inner_adjust}, outer_adjust={outer_adjust}")
 
-        raw_ring_width = ring_width
-        raw_ring_space = ring_space
-        
-        try:
-            for i in range(ring_num):
-                # 如果raw_ring_width和raw_ring_space是列表，则取列表中的值，否则取原始值
-                if isinstance(raw_ring_width, list):  ring_width = raw_ring_width[i]
-                else:  ring_width = raw_ring_width
-                if isinstance(raw_ring_space, list):  ring_space = raw_ring_space[i]
-                else:  ring_space = raw_ring_space
-
-                # 生成内边界（当前frame就是内边界）
-                inner_frames.append(current_frame)
-
-                # 生成外边界
-                outer_frame = current_frame.offset(ring_width)
-                outer_frames.append(outer_frame)
-                
-                # 为下一个环准备起始frame
-                current_frame = outer_frame.offset(ring_space)
-
-        except Exception as e:
-            logger.error(f"创建环的frame失败: {e}", exc_info=True)
-
-        # 3. 对每个边界Frame应用缩放和倒角
-        # 读取配置
-        if fillet_config and fillet_config.get("type"):
-            fillet_type = fillet_config["type"]
-            precision = fillet_config.get("precision", 0.01)
-            interactive = fillet_config.get("interactive", True)
-            if "radius_list" in fillet_config:
-                inner_radius = fillet_config.get("radius_list")
-                # 如果倒角列表里都是0，直接跳过倒角
-                if all(r == 0 for r in inner_radius):
-                    logger.info("倒角列表里都是0，不进行倒角")
-                    fillet_flag = False
-                else:
-                    logger.info(f"使用半径列表进行倒角: {inner_radius}")
-            else:
-                inner_radius = fillet_config.get("radius")
-                # 如果倒角半径为0，直接跳过倒角
-                if inner_radius == 0:
-                    logger.info("倒角半径为0，不进行倒角")
-                    fillet_flag = False
-                else:
-                    logger.info(f"使用单一半径进行倒角: {inner_radius}")
-                    fillet_flag = True
-        else:
-            logger.info(f"无需倒角，skip。。。。。。")
-            fillet_flag = False
-
-        processed_outer_frames = []
-        processed_inner_frames = []
-        
-        # 校验倒角flag
-        
-        # 外边界倒角
-        i = -1
-        for processed_frame in outer_frames:
-            i += 1
-
-            # 如果raw_ring_width和raw_ring_space是列表，则取列表中的值，否则取原始值
-            if isinstance(raw_ring_width, list):  ring_width = raw_ring_width[i]    
-            else:  ring_width = raw_ring_width
-            if isinstance(raw_ring_space, list):  ring_space = raw_ring_space[i]
-            else:  ring_space = raw_ring_space
-            
-            # 应用倒角
-            if fillet_flag:
-                if fillet_type == "arc":
-                    if isinstance(inner_radius, list):
-                        convex_radius = [radius - zoom_config + ring_width for radius in inner_radius]
-                        concave_radius = [radius + zoom_config - ring_width for radius in inner_radius]
-                        logger.info(f"外边界使用半径列表进行倒角")
+        def _normalize_sequence(value, length, name, default=0.0):
+            if isinstance(value, list):
+                seq = [float(v) for v in value]
+                if len(seq) < length:
+                    logger.warning(f"{name} 列表长度不足 {length}，使用最后一个值填充剩余部分")
+                    if not seq:
+                        seq = [default] * length
                     else:
-                        convex_radius = inner_radius - zoom_config + ring_width
-                        concave_radius = inner_radius + zoom_config - ring_width
-                        logger.info(f"外边界使用单一半径进行倒角: {convex_radius}, {concave_radius}")  
-                    processed_frame = processed_frame.apply_adaptive_fillet(convex_radius, concave_radius, precision, interactive)
-                elif fillet_type == "adaptive":
-                    convex_radius = fillet_config.get("convex_radius") 
-                    concave_radius = fillet_config.get("concave_radius")
-                    if convex_radius > 0 or concave_radius > 0:
-                        processed_frame = processed_frame.apply_adaptive_fillet(convex_radius+ring_width, concave_radius - ring_width, precision, interactive)
-            else:
-                logger.info(f"外边界无需倒角，skip。。。。。。")
-            
-            processed_outer_frames.append(processed_frame)
-        
-        # 内边界倒角
-        for processed_frame in inner_frames:
-            # 应用倒角
-            if fillet_flag:
-                if fillet_type == "arc":
-                    if isinstance(inner_radius, list):
-                        convex_radius = [radius - zoom_config for radius in inner_radius]
-                        concave_radius = [radius + zoom_config for radius in inner_radius]
-                        logger.info(f"外边界使用半径列表进行倒角")
-                    else:
-                        convex_radius = inner_radius - zoom_config
-                        concave_radius = inner_radius + zoom_config
-                    processed_frame = processed_frame.apply_adaptive_fillet(convex_radius, concave_radius, precision, interactive)
-                elif fillet_type == "adaptive":
-                    convex_radius = fillet_config.get("convex_radius")
-                    concave_radius = fillet_config.get("concave_radius")
-                    if convex_radius > 0 or concave_radius > 0:
-                        processed_frame = processed_frame.apply_adaptive_fillet(convex_radius, concave_radius, precision, interactive)
-            
-            processed_inner_frames.append(processed_frame)
+                        seq.extend([seq[-1]] * (length - len(seq)))
+                return seq
+            try:
+                scalar = float(value)
+            except (TypeError, ValueError):
+                logger.error(f"{name} 配置无法解析为数值，使用默认值 {default}")
+                scalar = default
+            return [scalar] * length
 
-        # 3. 创建最终的Region
+        ring_width_list = _normalize_sequence(ring_width, ring_num, "ring_width", default=0.0)
+        ring_space_list = _normalize_sequence(ring_space, ring_num, "ring_space", default=0.0)
+
+        if ring_radii_series is not None and len(ring_radii_series) != ring_num:
+            raise ValueError(
+                f"ring_radii_series 长度({len(ring_radii_series)})与 ring_num({ring_num}) 不一致"
+            )
+
         result_region = cls()
-        
-        # 使用处理后的内外边界创建环
-        for i in range(len(processed_outer_frames)):
-            if i >= len(processed_inner_frames):
-                break
-                
-            outer_frame = processed_outer_frames[i]
-            inner_frame = processed_inner_frames[i]
-            
-            # 获取顶点
-            outer_vertices = outer_frame.get_vertices()
-            inner_vertices = inner_frame.get_vertices()
-            
-            if not outer_vertices or len(outer_vertices) < 3 or not inner_vertices or len(inner_vertices) < 3:
-                logger.error(f"环 {i + 1}: 内外边界顶点数量不足 (外: {len(outer_vertices)}, 内: {len(inner_vertices)})。跳过此环。")
-                continue
-            
-            # 创建DPolygon
-            outer_dpoints = [db.DPoint(um_to_db(x), um_to_db(y)) for x, y in outer_vertices]
-            inner_dpoints = [db.DPoint(um_to_db(x), um_to_db(y)) for x, y in inner_vertices]
-            
-            outer_dpoly = db.DPolygon(outer_dpoints)
-            inner_dpoly = db.DPolygon(inner_dpoints)
-            
-            # 创建Region并执行布尔运算
-            outer_region = db.Region(outer_dpoly)
-            inner_region = db.Region(inner_dpoly)
-            ring_region = outer_region - inner_region
-            
-            # 合并到结果
-            result_region.kdb_region += ring_region
+        offset_accumulator = 0.0
 
-        logger.info(f"已完成环的处理和合并，创建了 {len(processed_outer_frames)} 个环")
-        
-        
-        return result_region 
+        for idx in range(ring_num):
+            width = ring_width_list[idx]
+            if width <= 0:
+                logger.warning(f"环 {idx + 1}: 宽度({width}) 非正值，跳过生成")
+                space_after = ring_space_list[idx] if idx < len(ring_space_list) else 0.0
+                offset_accumulator += max(space_after, 0.0)
+                continue
+
+            baseline_inner = offset_accumulator - zoom_value
+            effective_width = width + 2 * zoom_value
+            baseline_outer = baseline_inner + effective_width
+            inner_offset = baseline_inner + inner_adjust
+            outer_offset = baseline_outer + outer_adjust
+
+            if outer_offset <= inner_offset:
+                logger.error(
+                    f"环 {idx + 1}: 外边界缩放({outer_offset}) 不大于内边界({inner_offset})，跳过此环")
+                space_after = ring_space_list[idx] if idx < len(ring_space_list) else 0.0
+                offset_accumulator += width + max(space_after, 0.0)
+                continue
+
+            try:
+                ring_frame = Frame(base_vertices)
+
+                fillet_for_ring = fillet_config
+                if fillet_config and fillet_config.get("type") == "arc":
+                    if ring_radii_series is not None:
+                        ring_radius_list = ring_radii_series[idx]
+                        fillet_for_ring = dict(fillet_config)
+                        fillet_for_ring["radius_list"] = list(ring_radius_list)
+                    elif "radius_list" in fillet_config:
+                        fillet_for_ring = dict(fillet_config)
+                        fillet_for_ring["radius_list"] = list(fillet_config["radius_list"])
+
+                    if preserve_radius_list:
+                        fillet_for_ring = dict(fillet_for_ring)
+                        fillet_for_ring["preserve_radius_list"] = True
+
+                ring_region = cls.polygon2ring(
+                    ring_frame,
+                    inner_zoom=inner_offset,
+                    outer_zoom=outer_offset,
+                    fillet_config=fillet_for_ring
+                )
+                result_region.kdb_region += ring_region.get_klayout_region()
+                logger.debug(
+                    f"环 {idx + 1}: baseline_inner={baseline_inner}, baseline_outer={baseline_outer}, "
+                    f"inner_offset={inner_offset}, outer_offset={outer_offset}")
+            except Exception as exc:
+                logger.error(f"环 {idx + 1}: 通过 polygon2ring 生成失败: {exc}", exc_info=True)
+
+            space_after = ring_space_list[idx] if idx < len(ring_space_list) else 0.0
+            offset_accumulator += width + space_after
+
+        logger.info(f"已完成环的处理和合并，创建了 {ring_num} 个环")
+        return result_region
 
     @classmethod
     def polygon2ring(cls, frame: Frame, inner_zoom: Union[int, float], outer_zoom: Union[int, float], fillet_config: dict = None) -> 'Region':

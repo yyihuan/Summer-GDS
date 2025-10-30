@@ -1,0 +1,175 @@
+global:
+  dbu: 0.001
+  precision: 0.01
+  fillet:
+    interactive: false
+
+gds:
+  output_file: "output_rings_user_concentric_tests.gds"
+  cell_name: "TOP"
+  default_layer: [1, 0]
+
+shapes:
+  # 自定义模式（用户模式）测试用例
+  - name: "custom_case1_radius_single_no_zoom"
+    type: "rings"
+    layer: [1, 0]
+    vertices: "0,0;60,0;60,60;0,60"
+    ring_num: 3
+    ring_mode: "custom"
+    ring_width: [10, 10, 10]
+    ring_space: [5, 5, 5]
+    fillet:
+      type: "arc"
+      radius: 2
+
+  - name: "custom_case2_radius_quad_no_zoom"
+    type: "rings"
+    layer: [2, 0]
+    vertices: "0,0;60,0;60,60;0,60"
+    ring_num: 3
+    ring_mode: "custom"
+    ring_width: [10, 10, 10]
+    ring_space: [5, 5, 5]
+    fillet:
+      type: "arc"
+      radius_list: [1, 2, 3, 4]
+
+  - name: "custom_case3_radius_single_inner_neg1_outer_neg0_5"
+    type: "rings"
+    layer: [3, 0]
+    vertices: "0,0;60,0;60,60;0,60"
+    ring_num: 3
+    ring_mode: "custom"
+    ring_width: [10, 10, 10]
+    ring_space: [5, 5, 5]
+    inner_zoom: -1
+    outer_zoom: -0.5
+    fillet:
+      type: "arc"
+      radius: 2
+
+  - name: "custom_case4_radius_single_inner_neg1_outer_pos0_5"
+    type: "rings"
+    layer: [4, 0]
+    vertices: "0,0;60,0;60,60;0,60"
+    ring_num: 3
+    ring_mode: "custom"
+    ring_width: [10, 10, 10]
+    ring_space: [5, 5, 5]
+    inner_zoom: -1
+    outer_zoom: 0.5
+    fillet:
+      type: "arc"
+      radius: 2
+
+  - name: "custom_case5_radius_quad_inner_neg1_outer_neg0_5"
+    type: "rings"
+    layer: [5, 0]
+    vertices: "0,0;60,0;60,60;0,60"
+    ring_num: 3
+    ring_mode: "custom"
+    ring_width: [10, 10, 10]
+    ring_space: [5, 5, 5]
+    inner_zoom: -1
+    outer_zoom: -0.5
+    fillet:
+      type: "arc"
+      radius_list: [1, 2, 3, 4]
+
+  - name: "custom_case6_radius_full_series_inner_neg1_outer_neg0_5"
+    type: "rings"
+    layer: [6, 0]
+    vertices: "0,0;60,0;60,60;0,60"
+    ring_num: 3
+    ring_mode: "custom"
+    ring_width: [10, 10, 10]
+    ring_space: [5, 5, 5]
+    inner_zoom: -1
+    outer_zoom: -0.5
+    fillet:
+      type: "arc"
+      # radius_list: [1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3]
+      radius_list: [1]
+
+  # concentric 模式对应测试用例
+  - name: "concentric_case1_radius_single_no_zoom"
+    type: "rings"
+    layer: [7, 0]
+    vertices: "0,0;60,0;60,60;0,60"
+    ring_num: 3
+    ring_mode: "concentric"
+    ring_width: [10, 10, 10]
+    ring_space: [5, 5, 5]
+    fillet:
+      type: "arc"
+      radius: 2
+
+  - name: "concentric_case2_radius_quad_no_zoom"
+    type: "rings"
+    layer: [8, 0]
+    vertices: "0,0;60,0;60,60;0,60"
+    ring_num: 3
+    ring_mode: "concentric"
+    ring_width: [10, 10, 10]
+    ring_space: [5, 5, 5]
+    fillet:
+      type: "arc"
+      radius_list: [1, 2, 3, 4]
+
+  - name: "concentric_case3_radius_single_inner_neg1_outer_neg0_5"
+    type: "rings"
+    layer: [9, 0]
+    vertices: "0,0;60,0;60,60;0,60"
+    ring_num: 3
+    ring_mode: "concentric"
+    ring_width: [10, 10, 10]
+    ring_space: [5, 5, 5]
+    inner_zoom: -1
+    outer_zoom: -0.5
+    fillet:
+      type: "arc"
+      radius: 2
+
+  - name: "concentric_case4_radius_single_inner_neg1_outer_pos0_5"
+    type: "rings"
+    layer: [10, 0]
+    vertices: "0,0;60,0;60,60;0,60"
+    ring_num: 3
+    ring_mode: "concentric"
+    ring_width: [10, 10, 10]
+    ring_space: [5, 5, 5]
+    inner_zoom: -1
+    outer_zoom: 0.5
+    fillet:
+      type: "arc"
+      radius: 2
+
+  - name: "concentric_case5_radius_quad_inner_neg1_outer_neg0_5"
+    type: "rings"
+    layer: [11, 0]
+    vertices: "0,0;60,0;60,60;0,60"
+    ring_num: 3
+    ring_mode: "concentric"
+    ring_width: [10, 10, 10]
+    ring_space: [5, 5, 5]
+    inner_zoom: -1
+    outer_zoom: -0.5
+    fillet:
+      type: "arc"
+      radius_list: [1, 2, 3, 4]
+
+  - name: "concentric_case6_radius_full_series_inner_neg1_outer_neg0_5"
+    type: "rings"
+    layer: [12, 0]
+    vertices: "0,0;60,0;60,60;0,60"
+    ring_num: 3
+    ring_mode: "concentric"
+    ring_width: [10, 10, 10]
+    ring_space: [5, 5, 5]
+    inner_zoom: -1
+    outer_zoom: -0.5
+    fillet:
+      type: "arc"
+      # radius_list: [1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3]
+      radius_list: [1]

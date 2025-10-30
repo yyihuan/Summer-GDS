@@ -131,5 +131,74 @@ class TestRegion(unittest.TestCase):
         plt.savefig('test_region_rings_fillet.png')
         plt.close()
 
+    def test_create_rings_independent_zoom(self):
+        frame = Frame(gen_square(size=10))
+        result = Region.create_rings(
+            frame,
+            ring_width=3,
+            ring_space=4,
+            ring_num=2,
+            inner_zoom=-1,
+            outer_zoom=1
+        )
+        self.assertFalse(result.kdb_region.is_empty())
+
+        expected = Region()
+        inner_adjust = -1.0
+        outer_adjust = 1.0
+        zoom_value = 0.0
+        ring_width_list = [3, 3]
+        ring_space_list = [4, 4]
+        offset_accumulator = 0.0
+        base_vertices = gen_square(size=10)
+
+        for width, space in zip(ring_width_list, ring_space_list):
+            baseline_inner = offset_accumulator - zoom_value
+            baseline_outer = baseline_inner + width
+            inner_offset = baseline_inner + inner_adjust
+            outer_offset = baseline_outer + outer_adjust
+            ring_region = Region.polygon2ring(
+                Frame(base_vertices),
+                inner_zoom=inner_offset,
+                outer_zoom=outer_offset
+            )
+            expected.kdb_region += ring_region.get_klayout_region()
+            offset_accumulator += width + space
+
+        diff_region = result.get_klayout_region() ^ expected.get_klayout_region()
+        self.assertTrue(diff_region.is_empty())
+
+    def test_create_rings_zoom_compatibility(self):
+        frame = Frame(gen_square(size=10))
+        result = Region.create_rings(
+            frame,
+            ring_width=3,
+            ring_space=5,
+            ring_num=2,
+            zoom_config=1
+        )
+        self.assertFalse(result.kdb_region.is_empty())
+
+        expected = Region()
+        zoom_value = 1.0
+        base_vertices = gen_square(size=10)
+        ring_width_list = [3 + 2 * zoom_value, 3 + 2 * zoom_value]
+        ring_space_list = [5 - 2 * zoom_value, 5 - 2 * zoom_value]
+        offset_accumulator = 0.0
+
+        for width, space in zip(ring_width_list, ring_space_list):
+            baseline_inner = offset_accumulator - zoom_value
+            baseline_outer = baseline_inner + width
+            ring_region = Region.polygon2ring(
+                Frame(base_vertices),
+                inner_zoom=baseline_inner,
+                outer_zoom=baseline_outer
+            )
+            expected.kdb_region += ring_region.get_klayout_region()
+            offset_accumulator += width + space
+
+        diff_region = result.get_klayout_region() ^ expected.get_klayout_region()
+        self.assertTrue(diff_region.is_empty())
+
 if __name__ == '__main__':
     unittest.main() 

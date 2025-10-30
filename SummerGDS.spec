@@ -59,7 +59,7 @@ except Exception:
 
 # 分析主程序
 a = Analysis(
-    [os.path.join(project_root, 'web_gui', 'run.py')],
+    [os.path.join(project_root, 'web_gui', 'qt_launcher.py')],
     pathex=[project_root],
     binaries=binaries,
     datas=datas,

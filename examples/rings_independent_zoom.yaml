@@ -1,0 +1,37 @@
+global:
+  dbu: 0.001
+  precision: 0.01
+  fillet:
+    interactive: false
+
+gds:
+  output_file: "output_rings_independent_zoom.gds"
+  cell_name: "TOP"
+  default_layer: [1, 0]
+
+shapes:
+  - type: "rings"
+    name: "independent_zoom_demo"
+    vertices: "0,0;40,0;40,40;0,40"
+    layer: [1, 0]
+    ring_num: 3
+    ring_width: [2.0, 2.0, 2.5]
+    ring_space: [5, 5, 5]
+    inner_zoom: -1.0   # 内边界整体内缩 1μm
+    outer_zoom: 2    # 外边界整体外扩 1.5μm
+    fillet:
+      type: "arc"
+      radius: 0.8
+      precision: 0.01
+    
+  - type: "rings"
+    name: "demo"
+    vertices: "0,0;40,0;40,40;0,40"
+    layer: [2, 0]
+    ring_num: 3
+    ring_width: [2.0, 2.0, 2.5]
+    ring_space: [5, 5, 5]
+    fillet:
+      type: "arc"
+      radius: 0.8
+      precision: 0.01

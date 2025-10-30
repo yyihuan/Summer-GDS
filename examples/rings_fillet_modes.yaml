@@ -1,0 +1,37 @@
+global:
+  dbu: 0.001
+  precision: 0.01
+  fillet:
+    interactive: false
+
+gds:
+  output_file: "output_rings_fillet_modes.gds"
+  cell_name: "TOP"
+  default_layer: [1, 0]
+
+shapes:
+  - name: "custom_mode_demo"
+    type: "rings"
+    layer: [1, 0]
+    vertices: "0,0;40,0;40,40;0,40"
+    ring_num: 3
+    ring_mode: "custom"
+    ring_width: [5, 5, 5]
+    ring_space: [5, 5, 5]
+    fillet:
+      type: "arc"
+      radius_list: [3]
+
+  - name: "concentric_mode_demo"
+    type: "rings"
+    layer: [2, 0]
+    vertices: "0,0;40,0;40,40;0,40"
+    ring_num: 2
+    ring_mode: "concentric"
+    ring_width: [5, 5]
+    ring_space: [5, 5]
+    inner_zoom: -0.8
+    outer_zoom: 1.2
+    fillet:
+      type: "arc"
+      radius_list: [0.6, 0.6, 0.6, 0.6]
