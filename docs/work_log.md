@@ -33,3 +33,23 @@
 - rings 卡片新增 ring_mode 下拉以及 inner/outer 独立缩放输入，默认值 0，保持与 CLI 参数一致。
 - 修正 polygon 卡片布局被误改的问题，确保仅 rings 模板包含环特有配置。
 - README 与示例说明补充环模式与倒角半径列表长度规则，帮助前端操作与 YAML 输出来回映射。
+
+## 2025-10-31 Via 倒角自定义改造
+- CLI 在解析阶段保留基础多边形的 `radius_list`，via 生成时对短列表进行继承比对。
+- 若 via 与基础倒角一致，继续沿用缩放修正逻辑，实现内外边界同心。
+- 若 via 提供的短列表不同，内边界倒角保持用户配置，外边界半径按 `inner`/`outer` 缩放差自动推导; `preserve_radius_list` 设置确保不再二次修正。
+- `tests/test_via_radius_series.py` 增补快照，覆盖继承/显式/自定义三种模式。
+
+## 2025-10-31 Via 倒角自定义改造
+- CLI 在解析阶段保留基础多边形的 `radius_list`，via 生成时对短列表进行继承比对。
+- 若 via 与基础倒角一致，继续沿用缩放修正逻辑，实现内外边界同心。
+- 若 via 提供的短列表不同，内边界倒角保持用户配置，外边界半径按 `inner`/`outer` 缩放差自动推导; `preserve_radius_list` 设置确保不再二次修正。
+- `tests/test_via_radius_series.py` 增补快照，覆盖继承/显式/自定义三种模式。
+
+
+## 2025-10-31 Via 倒角自定义改造
+- CLI 在解析阶段保留基础多边形的 `radius_list`，via 生成时对短列表进行继承比对。
+- 若 via 与基础倒角一致，继续沿用缩放修正逻辑，实现内外边界同心。
+- 若 via 提供的短列表不同，内边界倒角保持用户配置，外边界半径按 `inner`/`outer` 缩放差自动推导; `preserve_radius_list` 设置确保不再二次修正。
+- `tests/test_via_radius_series.py` 增补快照，覆盖继承/显式/自定义三种模式。
+

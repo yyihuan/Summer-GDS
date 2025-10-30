@@ -1,0 +1,23 @@
+{
+  "input_yaml": "shape:\n  name: via_custom\n  type: via\n  vertices: 0,0;10,0;10,10;0,10\n  inner_zoom: -1.0\n  outer_zoom: 1.0\n  fillet:\n    type: arc\n    radius_list: [1.2, 1.2, 1.2, 1.2]",
+  "base_config": {
+    "type": "arc",
+    "precision": 0.01,
+    "interactive": false,
+    "radius_list": [
+      1.2,
+      1.2,
+      1.2,
+      1.2
+    ],
+    "preserve_radius_list": true
+  },
+  "inner_config": null,
+  "outer_config": null,
+  "base_radius_reference": [
+    1.0,
+    1.0,
+    1.0,
+    1.0
+  ]
+}

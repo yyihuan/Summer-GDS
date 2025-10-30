@@ -1,0 +1,4 @@
+{
+  "input_yaml": "shapes:\n  - name: via_fail\n    type: via\n    vertices: 0,0;10,0;10,10;0,10\n    fillet:\n      type: arc\n      radius_list: [0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2]",
+  "error": "形状 'via_fail' 的倒角半径长度(8)不符合要求; 允许长度: [1, 4]"
+}

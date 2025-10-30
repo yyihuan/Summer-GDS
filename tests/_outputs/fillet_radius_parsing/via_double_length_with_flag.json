@@ -1,0 +1,16 @@
+{
+  "input_yaml": "shapes:\n  - name: via_success\n    type: via\n    vertices: 0,0;10,0;10,10;0,10\n    fillet:\n      type: arc\n      radius_list: [0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2]",
+  "normalized_radius_list": [
+    0.2,
+    0.2,
+    0.2,
+    0.2
+  ],
+  "normalized_outer_list": [
+    0.2,
+    0.2,
+    0.2,
+    0.2
+  ],
+  "inner_outer_split": true
+}

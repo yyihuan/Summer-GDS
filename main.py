@@ -2,8 +2,9 @@ import yaml
 import sys
 import os
 import math # 需要 math 来生成五角星
+import copy
 from gds_utils import GDS, Frame, Region
-from gds_utils.fillet_utils import normalize_arc_fillet_config
+from gds_utils.fillet_utils import normalize_arc_fillet_config, resolve_via_fillet_configs
 from gds_utils.ring_utils import build_ring_radius_series
 from gds_utils.utils import setup_logging, logger
 import klayout.db as db  # 添加这行导入
@@ -123,6 +124,8 @@ def main():
         precision=precision
     )
     
+    shape_fillet_registry = {}
+
     # 处理每个形状
     for shape_data in shapes_config: # 重命名 `shape` 为 `shape_data`
         shape_name = shape_data.get('name', f"Unnamed_{shape_data.get('type')}")
@@ -165,15 +168,23 @@ def main():
         if fillet_config and "interactive" not in fillet_config:  # 从全局配置继承interactive
             fillet_config["interactive"] = global_config.get('fillet', {}).get('interactive', True)
 
-        ring_num_hint = shape_data.get('ring_num') if shape_data.get('type') == 'rings' else None
+        shape_type = shape_data.get('type')
+        ring_num_hint = shape_data.get('ring_num') if shape_type == 'rings' else None
+        allow_inner_outer_split = shape_type == 'via'
         fillet_config = normalize_arc_fillet_config(
             shape_name,
             fillet_config,
             vertex_count=len(frame.get_vertices()),
             ring_num_hint=ring_num_hint,
+            allow_inner_outer_split=allow_inner_outer_split,
         )
 
         logger.debug(f"形状 '{shape_name}' 的倒角配置: {fillet_config}")
+
+        shape_id = shape_data.get('id')
+        if shape_id:
+            stored_fillet = copy.deepcopy(fillet_config) if fillet_config else None
+            shape_fillet_registry[shape_id] = stored_fillet
 
         # 获取缩放配置
         zoom_raw = shape_data.get('zoom', 0)
@@ -385,12 +396,41 @@ def main():
                 ring_radius_profile=ring_radius_profile,
                 preserve_radius_list=False
             )
-        elif shape_data.get('type') == 'via':
+        elif shape_type == 'via':
+            derivation_info = shape_data.get('derivation') or {}
+            base_shape_id = derivation_info.get('base_shape_id')
+            base_radius_list = None
+            if base_shape_id:
+                base_fillet = shape_fillet_registry.get(base_shape_id)
+                if base_fillet and base_fillet.get('radius_list'):
+                    base_radius_list = base_fillet.get('radius_list')
+
+            inner_zoom_effective_via = shape_data.get('inner_zoom', -1)
+            outer_zoom_effective_via = shape_data.get('outer_zoom', 1)
+            try:
+                inner_zoom_effective_via = float(inner_zoom_effective_via)
+            except (TypeError, ValueError):
+                inner_zoom_effective_via = -1.0
+            try:
+                outer_zoom_effective_via = float(outer_zoom_effective_via)
+            except (TypeError, ValueError):
+                outer_zoom_effective_via = 1.0
+
+            zoom_delta = outer_zoom_effective_via - inner_zoom_effective_via
+
+            via_base_fillet, via_inner_fillet, via_outer_fillet = resolve_via_fillet_configs(
+                shape_name,
+                fillet_config,
+                base_radius_list=base_radius_list,
+                zoom_delta=zoom_delta,
+            )
             region_obj = Region.polygon2ring(
                 frame,
                 inner_zoom=shape_data.get('inner_zoom', -1),
                 outer_zoom=shape_data.get('outer_zoom', 1),
-                fillet_config=fillet_config
+                fillet_config=via_base_fillet,
+                inner_fillet_config=via_inner_fillet,
+                outer_fillet_config=via_outer_fillet
             )
         else:
             logger.error(f"形状 '{shape_name}' 的类型未知: {shape_data.get('type')}")

@@ -116,6 +116,63 @@ shapes:
     assert len(normalized["radius_list"]) == 24
 
 
+def test_normalize_via_double_length_requires_flag():
+    explicit_list = [0.2] * 8
+    fillet_config = _build_config({"radius_list": explicit_list})
+    with pytest.raises(ValueError) as excinfo:
+        normalize_arc_fillet_config("via_fail", fillet_config, vertex_count=4)
+
+    record_snapshot(
+        "fillet_radius_parsing",
+        "via_double_length_without_flag",
+        {
+            "input_yaml": """
+shapes:
+  - name: via_fail
+    type: via
+    vertices: 0,0;10,0;10,10;0,10
+    fillet:
+      type: arc
+      radius_list: [0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2]
+""".strip(),
+            "error": str(excinfo.value),
+        },
+    )
+
+
+def test_normalize_via_explicit_inner_outer_pass_through():
+    explicit_list = [0.2] * 8
+    fillet_config = _build_config({"radius_list": explicit_list})
+    normalized = normalize_arc_fillet_config(
+        "via_success",
+        fillet_config,
+        vertex_count=4,
+        allow_inner_outer_split=True,
+    )
+
+    record_snapshot(
+        "fillet_radius_parsing",
+        "via_double_length_with_flag",
+        {
+            "input_yaml": """
+shapes:
+  - name: via_success
+    type: via
+    vertices: 0,0;10,0;10,10;0,10
+    fillet:
+      type: arc
+      radius_list: [0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2]
+""".strip(),
+            "normalized_radius_list": normalized["radius_list"],
+            "normalized_outer_list": normalized["radius_outer_list"],
+            "inner_outer_split": normalized["radius_inner_outer_split"],
+        },
+    )
+    assert normalized["radius_list"] == [0.2, 0.2, 0.2, 0.2]
+    assert normalized["radius_outer_list"] == [0.2, 0.2, 0.2, 0.2]
+    assert normalized["radius_inner_outer_split"] is True
+
+
 def test_normalize_invalid_length_raises():
     fillet_config = _build_config({"radius_list": [0.5, 0.6, 0.7]})
     with pytest.raises(ValueError) as excinfo:
