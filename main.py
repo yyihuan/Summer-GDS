@@ -351,7 +351,7 @@ def main():
             shape_data['ring_width'] = ring_width_list_final
             shape_data['ring_space'] = ring_space_list_final
 
-            ring_radii_series = None
+            ring_radius_profile = None
             if fillet_config and fillet_config.get('type') == 'arc':
                 base_radius_list = fillet_config.get('radius_list')
                 if base_radius_list is None:
@@ -364,7 +364,7 @@ def main():
                     'outer_adjust': outer_zoom_effective if outer_zoom_effective is not None else 0.0,
                 }
 
-                ring_radii_series = build_ring_radius_series(
+                ring_radius_profile = build_ring_radius_series(
                     mode=ring_mode,
                     base_radius_list=base_radius_list,
                     ring_width_list=ring_width_list_final,
@@ -382,8 +382,8 @@ def main():
                 zoom_config=zoom_config,
                 inner_zoom=inner_zoom_effective,
                 outer_zoom=outer_zoom_effective,
-                ring_radii_series=ring_radii_series,
-                preserve_radius_list=(ring_mode == 'custom')
+                ring_radius_profile=ring_radius_profile,
+                preserve_radius_list=False
             )
         elif shape_data.get('type') == 'via':
             region_obj = Region.polygon2ring(

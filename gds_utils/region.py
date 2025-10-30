@@ -3,6 +3,7 @@ import numpy as np
 import math
 from .frame import Frame
 from .utils import logger, um_to_db
+from .ring_utils import RingRadiusProfile
 from typing import Union, List, Optional
 
 class Region:
@@ -206,7 +207,7 @@ class Region:
     def create_rings(cls, initial_frame: Frame, ring_width: Union[float, List[float]], ring_space: Union[float, List[float]],
                      ring_num: int, fillet_config: dict = None, zoom_config: Union[int, float] = 0,
                      inner_zoom: Optional[Union[int, float]] = None, outer_zoom: Optional[Union[int, float]] = None,
-                     ring_radii_series: Optional[List[List[float]]] = None,
+                     ring_radius_profile: Optional[RingRadiusProfile] = None,
                      preserve_radius_list: bool = False) -> 'Region':
         """从 Frame 对象创建多个环
 
@@ -269,10 +270,15 @@ class Region:
         ring_width_list = _normalize_sequence(ring_width, ring_num, "ring_width", default=0.0)
         ring_space_list = _normalize_sequence(ring_space, ring_num, "ring_space", default=0.0)
 
-        if ring_radii_series is not None and len(ring_radii_series) != ring_num:
-            raise ValueError(
-                f"ring_radii_series 长度({len(ring_radii_series)})与 ring_num({ring_num}) 不一致"
-            )
+        if ring_radius_profile is not None:
+            if len(ring_radius_profile.inner_series) != ring_num:
+                raise ValueError(
+                    f"ring_radius_profile 的 inner_series 长度({len(ring_radius_profile.inner_series)})与 ring_num({ring_num}) 不一致"
+                )
+            if ring_radius_profile.outer_series is not None and len(ring_radius_profile.outer_series) != ring_num:
+                raise ValueError(
+                    f"ring_radius_profile 的 outer_series 长度({len(ring_radius_profile.outer_series)})与 ring_num({ring_num}) 不一致"
+                )
 
         result_region = cls()
         offset_accumulator = 0.0
@@ -301,25 +307,48 @@ class Region:
             try:
                 ring_frame = Frame(base_vertices)
 
-                fillet_for_ring = fillet_config
+                fillet_for_ring_inner = fillet_config
+                fillet_for_ring_outer = fillet_config
                 if fillet_config and fillet_config.get("type") == "arc":
-                    if ring_radii_series is not None:
-                        ring_radius_list = ring_radii_series[idx]
-                        fillet_for_ring = dict(fillet_config)
-                        fillet_for_ring["radius_list"] = list(ring_radius_list)
-                    elif "radius_list" in fillet_config:
-                        fillet_for_ring = dict(fillet_config)
-                        fillet_for_ring["radius_list"] = list(fillet_config["radius_list"])
+                    if ring_radius_profile is not None:
+                        inner_radius_list = ring_radius_profile.inner_series[idx]
+                        outer_radius_list = (
+                            ring_radius_profile.outer_series[idx]
+                            if ring_radius_profile.outer_series is not None
+                            else ring_radius_profile.inner_series[idx]
+                        )
 
-                    if preserve_radius_list:
-                        fillet_for_ring = dict(fillet_for_ring)
-                        fillet_for_ring["preserve_radius_list"] = True
+                        fillet_for_ring_inner = dict(fillet_config)
+                        fillet_for_ring_inner["radius_list"] = list(inner_radius_list)
+                        if ring_radius_profile.preserve_inner or preserve_radius_list:
+                            fillet_for_ring_inner["preserve_radius_list"] = True
+                        else:
+                            fillet_for_ring_inner.pop("preserve_radius_list", None)
+
+                        fillet_for_ring_outer = dict(fillet_config)
+                        fillet_for_ring_outer["radius_list"] = list(outer_radius_list)
+                        if ring_radius_profile.preserve_outer or preserve_radius_list:
+                            fillet_for_ring_outer["preserve_radius_list"] = True
+                        else:
+                            fillet_for_ring_outer.pop("preserve_radius_list", None)
+                    elif "radius_list" in fillet_config:
+                        fillet_for_ring_inner = dict(fillet_config)
+                        fillet_for_ring_inner["radius_list"] = list(fillet_config["radius_list"])
+                        fillet_for_ring_outer = dict(fillet_for_ring_inner)
+
+                    if preserve_radius_list and ring_radius_profile is None:
+                        fillet_for_ring_inner = dict(fillet_for_ring_inner)
+                        fillet_for_ring_inner["preserve_radius_list"] = True
+                        fillet_for_ring_outer = dict(fillet_for_ring_outer)
+                        fillet_for_ring_outer["preserve_radius_list"] = True
 
                 ring_region = cls.polygon2ring(
                     ring_frame,
                     inner_zoom=inner_offset,
                     outer_zoom=outer_offset,
-                    fillet_config=fillet_for_ring
+                    fillet_config=fillet_config,
+                    inner_fillet_config=fillet_for_ring_inner,
+                    outer_fillet_config=fillet_for_ring_outer,
                 )
                 result_region.kdb_region += ring_region.get_klayout_region()
                 logger.debug(
@@ -335,7 +364,9 @@ class Region:
         return result_region
 
     @classmethod
-    def polygon2ring(cls, frame: Frame, inner_zoom: Union[int, float], outer_zoom: Union[int, float], fillet_config: dict = None) -> 'Region':
+    def polygon2ring(cls, frame: Frame, inner_zoom: Union[int, float], outer_zoom: Union[int, float],
+                     fillet_config: dict = None, inner_fillet_config: dict = None,
+                     outer_fillet_config: dict = None) -> 'Region':
         """从Frame创建一个环结构，主要用于溅铝、刻孔工艺
         
         参数:
@@ -350,12 +381,15 @@ class Region:
         logger.info(f"[Via开始] 内部缩放={inner_zoom}, 外部缩放={outer_zoom}")
 
         # 创建外部区域
-        outer_region = cls.create_polygon(frame, fillet_config, outer_zoom)
+        outer_config = outer_fillet_config if outer_fillet_config is not None else fillet_config
+        inner_config = inner_fillet_config if inner_fillet_config is not None else fillet_config
+
+        outer_region = cls.create_polygon(frame, outer_config, outer_zoom)
         outer_kdbregion = outer_region.get_klayout_region()
         logger.info(f"[外部区域] 多边形数={outer_kdbregion.count()}, 是否为空={outer_kdbregion.is_empty()}")
 
         # 创建内部区域
-        inner_region = cls.create_polygon(frame, fillet_config, inner_zoom)
+        inner_region = cls.create_polygon(frame, inner_config, inner_zoom)
         inner_kdbregion = inner_region.get_klayout_region()
         logger.info(f"[内部区域] 多边形数={inner_kdbregion.count()}, 是否为空={inner_kdbregion.is_empty()}")
 

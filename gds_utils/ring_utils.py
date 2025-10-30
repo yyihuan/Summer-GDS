@@ -1,7 +1,17 @@
 import logging
-from typing import Iterable, List
+from dataclasses import dataclass
+from typing import Iterable, List, Literal, Optional
 
 logger = logging.getLogger("gds_utils")
+
+
+@dataclass
+class RingRadiusProfile:
+    mode: Literal["custom", "concentric"]
+    inner_series: List[List[float]]
+    outer_series: Optional[List[List[float]]]
+    preserve_inner: bool = False
+    preserve_outer: bool = False
 
 
 def _ensure_float_sequence(values: object, label: str) -> List[float]:
@@ -35,7 +45,7 @@ def build_ring_radius_series(
     ring_space_list: object,
     zoom_params: dict,
     ring_num: int,
-) -> List[List[float]]:
+) -> RingRadiusProfile:
     if not isinstance(ring_num, int) or ring_num <= 0:
         raise ValueError(f"ring_num 必须为正整数，当前值: {ring_num}")
 
@@ -113,4 +123,33 @@ def build_ring_radius_series(
         vertex_count,
         offsets,
     )
-    return ring_series
+
+    inner_series = [radii[:] for radii in ring_series]
+    outer_series: Optional[List[List[float]]] = None
+    preserve_inner = False
+    preserve_outer = False
+
+    if normalized_mode == "custom":
+        outer_series = []
+        for idx, radii in enumerate(inner_series):
+            inner_offset, outer_offset = offsets[idx]
+            delta = outer_offset - inner_offset
+            if delta <= 0:
+                raise ValueError(
+                    f"环 {idx} 的外边界偏移({outer_offset}) 不大于内边界({inner_offset})"
+                )
+            outer_series.append([radius + delta for radius in radii])
+        preserve_inner = True
+        preserve_outer = True
+    else:
+        outer_series = None
+        preserve_inner = False
+        preserve_outer = False
+
+    return RingRadiusProfile(
+        mode=normalized_mode,
+        inner_series=inner_series,
+        outer_series=outer_series,
+        preserve_inner=preserve_inner,
+        preserve_outer=preserve_outer,
+    )

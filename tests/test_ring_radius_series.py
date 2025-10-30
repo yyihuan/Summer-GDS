@@ -50,6 +50,7 @@ assert spec and spec.loader
 spec.loader.exec_module(ring_utils)
 
 build_ring_radius_series = ring_utils.build_ring_radius_series
+RingRadiusProfile = ring_utils.RingRadiusProfile
 Frame = None
 Region = None
 
@@ -74,7 +75,7 @@ def zoom_defaults():
 
 
 def test_custom_mode_repeat_base(zoom_defaults):
-    series = build_ring_radius_series(
+    profile = build_ring_radius_series(
         mode="custom",
         base_radius_list=[1.0, 1.0, 1.0, 1.0],
         ring_width_list=[2.0, 2.0],
@@ -98,14 +99,20 @@ zoom_params:
   outer_adjust: 0.0
 ring_num: 2
 """.strip(),
-            "series": series,
+            "inner_series": profile.inner_series,
+            "outer_series": profile.outer_series,
+            "preserve_inner": profile.preserve_inner,
+            "preserve_outer": profile.preserve_outer,
         },
     )
-    assert series == [[1.0, 1.0, 1.0, 1.0], [1.0, 1.0, 1.0, 1.0]]
+    assert profile.inner_series == [[1.0, 1.0, 1.0, 1.0], [1.0, 1.0, 1.0, 1.0]]
+    assert profile.outer_series == [[3.0, 3.0, 3.0, 3.0], [3.0, 3.0, 3.0, 3.0]]
+    assert profile.preserve_inner
+    assert profile.preserve_outer
 
 
 def test_custom_mode_per_ring_values(zoom_defaults):
-    series = build_ring_radius_series(
+    profile = build_ring_radius_series(
         mode="custom",
         base_radius_list=[1.0, 1.2, 1.4, 1.6, 0.8, 0.9, 1.0, 1.1],
         ring_width_list=[2.0, 2.0],
@@ -129,13 +136,20 @@ zoom_params:
   outer_adjust: 0.0
 ring_num: 2
 """.strip(),
-            "series": series,
+            "inner_series": profile.inner_series,
+            "outer_series": profile.outer_series,
         },
     )
-    assert series == [
+    assert profile.inner_series == [
         [1.0, 1.2, 1.4, 1.6],
         [0.8, 0.9, 1.0, 1.1],
     ]
+    assert profile.outer_series == [
+        [3.0, 3.2, 3.4, 3.6],
+        [2.8, 2.9, 3.0, 3.1],
+    ]
+    assert profile.preserve_inner
+    assert profile.preserve_outer
 
 
 def test_custom_mode_invalid_length_raises(zoom_defaults):
@@ -171,7 +185,7 @@ ring_num: 2
 
 def test_concentric_mode_accumulates_offsets(zoom_defaults):
     zoom_defaults.update({"inner_adjust": -0.5, "outer_adjust": 0.75})
-    series = build_ring_radius_series(
+    profile = build_ring_radius_series(
         mode="concentric",
         base_radius_list=[0.5, 0.6, 0.7, 0.8],
         ring_width_list=[3.0, 4.0],
@@ -210,12 +224,20 @@ zoom_params:
   outer_adjust: 0.75
 ring_num: 2
 """.strip(),
-            "series": series,
+            "inner_series": profile.inner_series,
+            "outer_series": profile.outer_series,
+            "preserve_inner": profile.preserve_inner,
+            "preserve_outer": profile.preserve_outer,
             "computed_offsets": offsets,
         },
     )
 
-    for idx, radii in enumerate(series):
+    assert profile.mode == "concentric"
+    assert profile.outer_series is None
+    assert not profile.preserve_inner
+    assert not profile.preserve_outer
+
+    for idx, radii in enumerate(profile.inner_series):
         inner_offset = offsets[idx]["inner_offset"]
         outer_offset = offsets[idx]["outer_offset"]
         actual_inner = [round(val + inner_offset, 6) for val in radii]
@@ -258,13 +280,21 @@ ring_num: 2
 def test_region_create_rings_applies_series(monkeypatch):
     _lazy_load_region_dependencies()
 
-    ring_radii_series = [
-        [1.0, 1.0, 1.0, 1.0],
-        [2.0, 2.0, 2.0, 2.0],
-    ]
+    profile = RingRadiusProfile(
+        mode="custom",
+        inner_series=[
+            [1.0, 1.0, 1.0, 1.0],
+            [2.0, 2.0, 2.0, 2.0],
+        ],
+        outer_series=[
+            [3.0, 3.0, 3.0, 3.0],
+            [4.0, 4.0, 4.0, 4.0],
+        ],
+        preserve_inner=True,
+        preserve_outer=True,
+    )
 
     captured = []
-    preserve_flags = []
 
     class _DummyKdbRegion:
         def __init__(self):
@@ -277,9 +307,15 @@ def test_region_create_rings_applies_series(monkeypatch):
     def _fake_init(self):
         self.kdb_region = _DummyKdbRegion()
 
-    def _fake_polygon2ring(cls, frame, inner_zoom, outer_zoom, fillet_config=None):
-        captured.append(list(fillet_config.get("radius_list", [])) if fillet_config else None)
-        preserve_flags.append(fillet_config.get("preserve_radius_list"))
+    def _fake_polygon2ring(cls, frame, inner_zoom, outer_zoom, fillet_config=None, inner_fillet_config=None, outer_fillet_config=None):
+        captured.append(
+            {
+                "inner_radius": list(inner_fillet_config.get("radius_list", [])) if inner_fillet_config else None,
+                "outer_radius": list(outer_fillet_config.get("radius_list", [])) if outer_fillet_config else None,
+                "preserve_inner": inner_fillet_config.get("preserve_radius_list") if inner_fillet_config else None,
+                "preserve_outer": outer_fillet_config.get("preserve_radius_list") if outer_fillet_config else None,
+            }
+        )
 
         dummy = types.SimpleNamespace()
         dummy.get_klayout_region = lambda: object()
@@ -295,8 +331,7 @@ def test_region_create_rings_applies_series(monkeypatch):
         ring_space=[1.0, 1.0],
         ring_num=2,
         fillet_config={"type": "arc", "radius_list": [1.0, 1.0, 1.0, 1.0]},
-        ring_radii_series=ring_radii_series,
-        preserve_radius_list=True,
+        ring_radius_profile=profile,
     )
 
     record_snapshot(
@@ -309,11 +344,26 @@ ring_width: [2.0, 2.0]
 ring_space: [1.0, 1.0]
 ring_num: 2
 """.strip(),
-            "series": ring_radii_series,
+            "profile": {
+                "mode": profile.mode,
+                "inner_series": profile.inner_series,
+                "outer_series": profile.outer_series,
+            },
             "captured_radius_lists": captured,
-            "preserve_flags": preserve_flags,
         },
     )
 
-    assert captured == ring_radii_series
-    assert all(flag for flag in preserve_flags)
+    assert captured == [
+        {
+            "inner_radius": [1.0, 1.0, 1.0, 1.0],
+            "outer_radius": [3.0, 3.0, 3.0, 3.0],
+            "preserve_inner": True,
+            "preserve_outer": True,
+        },
+        {
+            "inner_radius": [2.0, 2.0, 2.0, 2.0],
+            "outer_radius": [4.0, 4.0, 4.0, 4.0],
+            "preserve_inner": True,
+            "preserve_outer": True,
+        },
+    ]
