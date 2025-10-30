@@ -1,0 +1,9 @@
+{
+  "input_yaml": "shapes:\n  - name: quad\n    type: polygon\n    vertices: 0,0;10,0;10,10;0,10\n    fillet:\n      type: arc\n      radius_list: [0.8, 0.9, 1.0, 1.1]",
+  "normalized_radius_list": [
+    0.8,
+    0.9,
+    1.0,
+    1.1
+  ]
+}

@@ -12,6 +12,7 @@ class RingRadiusProfile:
     outer_series: Optional[List[List[float]]]
     preserve_inner: bool = False
     preserve_outer: bool = False
+    explicit_outer: bool = False
 
 
 def _ensure_float_sequence(values: object, label: str) -> List[float]:
@@ -85,6 +86,7 @@ def build_ring_radius_series(
 
     flat_radii = _ensure_float_sequence(base_radius_list, "base_radius_list")
     ring_series: List[List[float]]
+    explicit_outer = False
 
     if normalized_mode == "custom":
         if len(flat_radii) == vertex_count:
@@ -94,11 +96,29 @@ def build_ring_radius_series(
                 [float(val) for val in flat_radii[i * vertex_count:(i + 1) * vertex_count]]
                 for i in range(ring_num)
             ]
+        elif len(flat_radii) == ring_num * vertex_count * 2:
+            ring_series = [
+                [float(val) for val in flat_radii[i * vertex_count:(i + 1) * vertex_count]]
+                for i in range(ring_num)
+            ]
+            explicit_outer = True
         else:
             raise ValueError(
-                f"custom 模式的半径长度({len(flat_radii)})与顶点数({vertex_count})或"
-                f" ring_num*vertex_count({ring_num * vertex_count}) 不匹配"
+                f"custom 模式的半径长度({len(flat_radii)})不符合要求; 允许长度: 1, "
+                f"{vertex_count}, {ring_num * vertex_count}, {ring_num * vertex_count * 2}"
             )
+        if explicit_outer:
+            inner_series = [
+                [float(val) for val in flat_radii[i * vertex_count:(i + 1) * vertex_count]]
+                for i in range(ring_num)
+            ]
+            outer_series_explicit = [
+                [float(val) for val in flat_radii[(ring_num + i) * vertex_count:(ring_num + i + 1) * vertex_count]]
+                for i in range(ring_num)
+            ]
+        else:
+            inner_series = [radii[:] for radii in ring_series]
+            outer_series_explicit = None
     else:
         if len(flat_radii) == 1 and vertex_count > 1:
             flat_radii = flat_radii * vertex_count
@@ -107,8 +127,10 @@ def build_ring_radius_series(
                 f"concentric 模式需要 {vertex_count} 个半径值，当前长度: {len(flat_radii)}"
             )
         ring_series = [flat_radii[:] for _ in range(ring_num)]
+        inner_series = [radii[:] for radii in ring_series]
+        outer_series_explicit = None
 
-    for idx, radii in enumerate(ring_series):
+    for idx, radii in enumerate(inner_series):
         if len(radii) != vertex_count:
             raise ValueError(
                 f"环 {idx} 的半径列表长度({len(radii)})与顶点数({vertex_count})不符"
@@ -124,21 +146,31 @@ def build_ring_radius_series(
         offsets,
     )
 
-    inner_series = [radii[:] for radii in ring_series]
     outer_series: Optional[List[List[float]]] = None
     preserve_inner = False
     preserve_outer = False
 
     if normalized_mode == "custom":
-        outer_series = []
-        for idx, radii in enumerate(inner_series):
-            inner_offset, outer_offset = offsets[idx]
-            delta = outer_offset - inner_offset
-            if delta <= 0:
-                raise ValueError(
-                    f"环 {idx} 的外边界偏移({outer_offset}) 不大于内边界({inner_offset})"
-                )
-            outer_series.append([radius + delta for radius in radii])
+        if explicit_outer:
+            outer_series = []
+            for idx, radii in enumerate(outer_series_explicit or []):
+                if len(radii) != vertex_count:
+                    raise ValueError(
+                        f"环 {idx} 的显式外半径列表长度({len(radii)})与顶点数({vertex_count})不符"
+                    )
+                if any(radius < 0 for radius in radii):
+                    raise ValueError(f"环 {idx} 的显式外半径存在负值: {radii}")
+                outer_series.append(radii[:])
+        else:
+            outer_series = []
+            for idx, radii in enumerate(inner_series):
+                inner_offset, outer_offset = offsets[idx]
+                delta = outer_offset - inner_offset
+                if delta <= 0:
+                    raise ValueError(
+                        f"环 {idx} 的外边界偏移({outer_offset}) 不大于内边界({inner_offset})"
+                    )
+                outer_series.append([radius + delta for radius in radii])
         preserve_inner = True
         preserve_outer = True
     else:
@@ -152,4 +184,5 @@ def build_ring_radius_series(
         outer_series=outer_series,
         preserve_inner=preserve_inner,
         preserve_outer=preserve_outer,
+        explicit_outer=explicit_outer,
     )

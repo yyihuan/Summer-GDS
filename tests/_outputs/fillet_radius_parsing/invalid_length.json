@@ -1,0 +1,4 @@
+{
+  "input_yaml": "shapes:\n  - name: bad_shape\n    type: polygon\n    vertices: 0,0;10,0;10,10;0,10\n    fillet:\n      type: arc\n      radius_list: [0.5, 0.6, 0.7]",
+  "error": "形状 'bad_shape' 的倒角半径长度(3)不符合要求; 允许长度: [1, 4]"
+}

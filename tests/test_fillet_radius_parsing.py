@@ -92,6 +92,30 @@ shapes:
     assert len(normalized["radius_list"]) == 12
 
 
+def test_normalize_ring_explicit_inner_outer_pass_through():
+    explicit_list = [0.5] * 12 + [0.6] * 12
+    fillet_config = _build_config({"radius_list": explicit_list})
+    normalized = normalize_arc_fillet_config("ring_explicit", fillet_config, vertex_count=4, ring_num_hint=3)
+    record_snapshot(
+        "fillet_radius_parsing",
+        "ring_explicit_radius_list",
+        {
+            "input_yaml": """
+shapes:
+  - name: ring_explicit
+    type: rings
+    ring_num: 3
+    vertices: 0,0;10,0;10,10;0,10
+    fillet:
+      type: arc
+      radius_list: [0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.6,0.6,0.6,0.6,0.6,0.6,0.6,0.6,0.6,0.6,0.6,0.6]
+""".strip(),
+            "normalized_radius_list_len": len(normalized["radius_list"]),
+        },
+    )
+    assert len(normalized["radius_list"]) == 24
+
+
 def test_normalize_invalid_length_raises():
     fillet_config = _build_config({"radius_list": [0.5, 0.6, 0.7]})
     with pytest.raises(ValueError) as excinfo:

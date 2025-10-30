@@ -48,7 +48,9 @@ def normalize_arc_fillet_config(
 
     allowed_lengths = {vertex_count}
     if ring_num_hint and isinstance(ring_num_hint, int) and ring_num_hint > 0:
-        allowed_lengths.add(ring_num_hint * vertex_count)
+        ring_vertices_len = ring_num_hint * vertex_count
+        allowed_lengths.add(ring_vertices_len)
+        allowed_lengths.add(ring_vertices_len * 2)
 
     if len(radius_values) == 1:
         radius_values = radius_values * vertex_count

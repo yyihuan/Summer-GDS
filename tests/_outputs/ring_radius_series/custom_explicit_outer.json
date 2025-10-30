@@ -1,0 +1,34 @@
+{
+  "input_yaml": "ring_mode: custom\nbase_radius_list: [1,1,1,1,2,2,2,2,3,3,3,3,4,4,4,4]\nring_width_list: [2.0, 2.5]\nring_space_list: [1.0, 1.5]\nzoom_params:\n  vertex_count: 4\n  base_zoom: 0.0\n  inner_adjust: 0.0\n  outer_adjust: 0.0\nring_num: 2",
+  "inner_series": [
+    [
+      1.0,
+      1.0,
+      1.0,
+      1.0
+    ],
+    [
+      2.0,
+      2.0,
+      2.0,
+      2.0
+    ]
+  ],
+  "outer_series": [
+    [
+      3.0,
+      3.0,
+      3.0,
+      3.0
+    ],
+    [
+      4.0,
+      4.0,
+      4.0,
+      4.0
+    ]
+  ],
+  "preserve_inner": true,
+  "preserve_outer": true,
+  "explicit_outer": true
+}

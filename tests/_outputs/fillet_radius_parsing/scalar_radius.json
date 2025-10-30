@@ -1,0 +1,9 @@
+{
+  "input_yaml": "shapes:\n  - name: demo_shape\n    type: rings\n    ring_num: 1\n    vertices: 0,0;10,0;10,10;0,10\n    fillet:\n      type: arc\n      radius: 1.5",
+  "normalized_radius_list": [
+    1.5,
+    1.5,
+    1.5,
+    1.5
+  ]
+}
