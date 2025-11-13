@@ -118,6 +118,20 @@ class TestFrame(unittest.TestCase):
         plt.savefig('test_frame_adaptive_fillet.png')
         plt.close()
 
+    def test_arc_fillet_supports_large_radius(self):
+        """大半径倒角应允许跨越中间顶点"""
+        verts = [
+            (0, 0), (3, 0), (6, 0), (10, 0),
+            (10, 6), (10, 10), (0, 10)
+        ]
+        frame = Frame(verts)
+        radius_list = [7, 0, 0, 0, 0, 0, 0]
+        fillet_frame = frame.apply_arc_fillet(radius_list, precision=0.1, interactive=False)
+        new_vertices = fillet_frame.get_vertices()
+        self.assertTrue(len(new_vertices) > len(verts), "大倒角应生成更高分辨率的顶点")
+        self.assertNotIn((3, 0), new_vertices)
+        self.assertNotIn((6, 0), new_vertices)
+
     def test_is_convex_vertex_and_line_intersection(self):
         # 只做简单的API调用覆盖
         square = self.shapes['square']

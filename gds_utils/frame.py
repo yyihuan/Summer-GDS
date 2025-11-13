@@ -224,98 +224,149 @@ class Frame:
             logger.warning(f"无效的半径参数类型: {type(radius_or_radii_list)}")
             return self.vertices
             
-        result = []
+        result_segments = []
+        owner_segments = [[] for _ in range(n)]
+        skip_flags = [False] * n
+
+        def append_segment(owner_idx, points):
+            segment = {"owner": owner_idx, "points": points, "active": True}
+            owner_segments[owner_idx].append(len(result_segments))
+            result_segments.append(segment)
+
+        def deactivate_owner_segments(owner_idx):
+            for seg_idx in owner_segments[owner_idx]:
+                if 0 <= seg_idx < len(result_segments):
+                    result_segments[seg_idx]["active"] = False
+
+        def mark_vertex_skipped(idx, reason):
+            if skip_flags[idx]:
+                return
+            skip_flags[idx] = True
+            effective_radii[idx] = 0.0
+            deactivate_owner_segments(idx)
+            logger.debug(f"顶点{idx}被跳过: {reason}")
+
+        def find_active_neighbor(idx, step):
+            next_idx = (idx + step + n) % n
+            traversed = 0
+            while skip_flags[next_idx]:
+                traversed += 1
+                if traversed >= n:
+                    raise ValueError("未找到可参与倒角的有效邻点，可能是倒角半径过大")
+                next_idx = (next_idx + step + n) % n
+            return next_idx
+
+        def advance_along_edges(start_idx, step, target_dist, baseline_direction):
+            if target_dist <= 1e-9:
+                return np.array(self.vertices[start_idx])
+            remaining = target_dist
+            current_idx = start_idx
+            current_point = np.array(self.vertices[current_idx])
+            safety_counter = 0
+            while remaining > 1e-9:
+                safety_counter += 1
+                if safety_counter > n * 2:
+                    raise ValueError("倒角半径过大，遍历所有边仍无法定位切点")
+                neighbor_idx = find_active_neighbor(current_idx, step)
+                neighbor_point = np.array(self.vertices[neighbor_idx])
+                edge_vec = neighbor_point - current_point
+                edge_len = np.linalg.norm(edge_vec)
+                if edge_len < 1e-9:
+                    mark_vertex_skipped(neighbor_idx, "零长度边")
+                    current_idx = neighbor_idx
+                    current_point = neighbor_point
+                    continue
+                current_dir = edge_vec / edge_len
+                if baseline_direction is not None:
+                    alignment = abs(np.dot(current_dir, baseline_direction))
+                    if alignment < 0.99:
+                        logger.warning(
+                            f"顶点{start_idx}: 大半径沿{'前' if step < 0 else '后'}侧跨越了转折边，可能导致倒角与预期不符"
+                        )
+                        baseline_direction = current_dir
+                if remaining < edge_len - 1e-9:
+                    fraction = remaining / edge_len
+                    tangent_point = current_point + edge_vec * fraction
+                    return tangent_point
+                remaining -= edge_len
+                mark_vertex_skipped(neighbor_idx, "大倒角跨越顶点")
+                current_idx = neighbor_idx
+                current_point = neighbor_point
+            return current_point
+
         all_non_positive = all(r <= 0 for r in effective_radii)
         if all_non_positive:
             logger.info("所有半径都小于等于0，不进行倒角")
             return self.vertices
-        
-        user_choice = None
+
         for i in range(n):
+            if skip_flags[i]:
+                logger.debug(f"顶点{i}已被更大的倒角覆盖，跳过处理")
+                continue
+
             original_radius = effective_radii[i]
             if original_radius <= 0:
-                result.append(self.vertices[i])
+                append_segment(i, [self.vertices[i]])
                 continue
-                
-            prev_idx = (i - 1 + n) % n
-            curr_idx = i
-            next_idx = (i + 1) % n
-            
+
+            prev_idx = find_active_neighbor(i, -1)
+            next_idx = find_active_neighbor(i, 1)
+
             prev_point = np.array(self.vertices[prev_idx])
-            curr_point = np.array(self.vertices[curr_idx])
+            curr_point = np.array(self.vertices[i])
             next_point = np.array(self.vertices[next_idx])
-            
+
             vec_curr_prev = prev_point - curr_point
             vec_curr_next = next_point - curr_point
-            
+
             norm_vec_curr_prev = np.linalg.norm(vec_curr_prev)
             norm_vec_curr_next = np.linalg.norm(vec_curr_next)
 
             if norm_vec_curr_prev < 1e-9 or norm_vec_curr_next < 1e-9:
-                result.append(tuple(curr_point))
+                append_segment(i, [tuple(curr_point)])
+                mark_vertex_skipped(i, "存在零长度邻边")
                 continue
-                
+
             unit_vec_curr_prev = vec_curr_prev / norm_vec_curr_prev
             unit_vec_curr_next = vec_curr_next / norm_vec_curr_next
-            
+
             cos_angle = np.dot(unit_vec_curr_prev, unit_vec_curr_next)
             cos_angle = np.clip(cos_angle, -1.0, 1.0)
             angle_wedge = np.arccos(cos_angle)
 
             if angle_wedge < 1e-6 or abs(angle_wedge - math.pi) < 1e-6:
-                result.append(tuple(curr_point))
+                append_segment(i, [tuple(curr_point)])
                 continue
-            
+
             radius = original_radius
             dist_tangent = radius / math.tan(angle_wedge / 2.0)
-            
-            half_min_edge = min(norm_vec_curr_prev, norm_vec_curr_next) * 0.5
-            max_allowed_dist = min(norm_vec_curr_prev, norm_vec_curr_next) * 0.8
-            
-            if dist_tangent > max_allowed_dist:
-                error_msg = (f"错误: 顶点{i}的切点距离({dist_tangent:.4f})超过边长的0.8倍({max_allowed_dist:.4f}).")
-                logger.error(error_msg)
-                raise ValueError(error_msg)
-                
-            elif dist_tangent > half_min_edge and interactive:
-                if user_choice is None:
-                    print(f"\n警告: 检测到切点距离超过边长的一半，可能导致不理想的倒角效果")
-                    print(f"请选择处理方式: 1. 强制按原来指定半径倒角 2. 自动缩小倒角半径")
-                    while user_choice not in ['1', '2']:
-                        user_choice = input("请输入选项(1或2): ")
-                    logger.info(f"用户选择了选项{user_choice}")
-                
-                if user_choice == '2':
-                    radius = half_min_edge * math.tan(angle_wedge / 2.0) * 0.95
-                    dist_tangent = half_min_edge * 0.95
-                    logger.info(f"顶点{i}: 根据用户选择，调整半径从{original_radius}到{radius}")
-                else:
-                    logger.info(f"顶点{i}: 根据用户选择，强制使用原半径{radius}")
-                    
-            p1 = curr_point + unit_vec_curr_prev * dist_tangent
-            p2 = curr_point + unit_vec_curr_next * dist_tangent
-            
+
+            p1 = advance_along_edges(i, -1, dist_tangent, unit_vec_curr_prev.copy())
+            p2 = advance_along_edges(i, 1, dist_tangent, unit_vec_curr_next.copy())
+
             bisector_vec = unit_vec_curr_prev + unit_vec_curr_next
             if np.linalg.norm(bisector_vec) < 1e-9:
-                result.append(tuple(curr_point))
+                append_segment(i, [tuple(curr_point)])
                 continue
             bisector_norm_vec = bisector_vec / np.linalg.norm(bisector_vec)
-            
+
             dist_curr_to_center = radius / math.sin(angle_wedge / 2.0)
             fillet_center = curr_point + bisector_norm_vec * dist_curr_to_center
-            
+
             vec_center_p1 = p1 - fillet_center
             angle_of_p1_raw = math.atan2(vec_center_p1[1], vec_center_p1[0])
-            
+
             is_convex_turn = Frame.is_convex_vertex(prev_point, curr_point, next_point)
-            
+
             arc_span_at_center = math.pi - angle_wedge
-            if arc_span_at_center < 0: arc_span_at_center += 2*math.pi
-            if arc_span_at_center > math.pi: arc_span_at_center = 2*math.pi - arc_span_at_center
+            if arc_span_at_center < 0:
+                arc_span_at_center += 2 * math.pi
+            if arc_span_at_center > math.pi:
+                arc_span_at_center = 2 * math.pi - arc_span_at_center
 
             num_segments = max(1, int(math.ceil(radius * arc_span_at_center / precision)))
             sweep_direction = 1.0 if is_convex_turn else -1.0
-            
+
             arc_points = []
             for j in range(num_segments + 1):
                 current_sweep_fraction = j / num_segments
@@ -323,8 +374,14 @@ class Frame:
                 x = fillet_center[0] + radius * math.cos(current_interpolated_angle)
                 y = fillet_center[1] + radius * math.sin(current_interpolated_angle)
                 arc_points.append((x, y))
-            
-            result.extend(arc_points)
-                
+
+            append_segment(i, arc_points)
+
+        result = []
+        for segment in result_segments:
+            if not segment["active"]:
+                continue
+            result.extend(segment["points"])
+
         logger.info(f"圆弧倒角完成，输出顶点数: {len(result)}")
-        return result 
+        return result
