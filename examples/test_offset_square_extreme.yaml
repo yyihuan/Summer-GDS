@@ -1,0 +1,42 @@
+# 测试用例：正方形极限内缩
+# 场景：40x40 正方形内缩 25μm（接近边长的一半，测试边界情况）
+global:
+  dbu: 0.001
+  fillet:
+    interactive: false
+    precision: 0.01
+
+gds:
+  output_file: "test_offset_square_extreme.gds"
+  cell_name: "TOP"
+  default_layer: [1, 0]
+
+shapes:
+  # 测试1: 正方形内缩15μm（正常）
+  - type: polygon
+    name: "正方形_内缩15"
+    vertices: "0,0;40,0;40,40;0,40"
+    layer: [1, 0]
+    zoom: -15
+
+  # 测试2: 正方形内缩19μm（接近极限）
+  - type: polygon
+    name: "正方形_内缩19"
+    vertices: "50,0;90,0;90,40;50,40"
+    layer: [2, 0]
+    zoom: -19
+
+  # 测试3: 正方形内缩21μm（应该消失或退化成点）
+  - type: polygon
+    name: "正方形_内缩21_应消失"
+    vertices: "100,0;140,0;140,40;100,40"
+    layer: [3, 0]
+    zoom: -21
+
+  # 测试4: via 结构，内缩30μm
+  - type: via
+    name: "正方形_via_内缩30"
+    vertices: "0,50;60,50;60,110;0,110"
+    layer: [4, 0]
+    inner_zoom: -30
+    outer_zoom: 5

@@ -1,0 +1,48 @@
+# 测试用例：L型多边形大幅度内缩（可能分裂）
+# 场景：L型形状内缩可能导致分裂成两个矩形
+global:
+  dbu: 0.001
+  fillet:
+    interactive: false
+    precision: 0.01
+
+gds:
+  output_file: "test_offset_lshape_split.gds"
+  cell_name: "TOP"
+  default_layer: [1, 0]
+
+shapes:
+  # 测试1: L型内缩5μm（正常，不分裂）
+  - type: polygon
+    name: "L型_内缩5"
+    vertices: "0,0;60,0;60,20;20,20;20,60;0,60"
+    layer: [1, 0]
+    zoom: -5
+
+  # 测试2: L型内缩9μm（临界状态）
+  - type: polygon
+    name: "L型_内缩9"
+    vertices: "70,0;130,0;130,20;90,20;90,60;70,60"
+    layer: [2, 0]
+    zoom: -9
+
+  # 测试3: L型内缩12μm（应该分裂成两个矩形）
+  - type: polygon
+    name: "L型_内缩12_可能分裂"
+    vertices: "140,0;200,0;200,20;160,20;160,60;140,60"
+    layer: [3, 0]
+    zoom: -12
+
+  # 测试4: T型内缩10μm
+  - type: polygon
+    name: "T型_内缩10"
+    vertices: "0,70;80,70;80,90;50,90;50,130;30,130;30,90;0,90"
+    layer: [4, 0]
+    zoom: -10
+
+  # 测试5: 带凹槽的矩形内缩
+  - type: polygon
+    name: "凹槽矩形_内缩8"
+    vertices: "100,70;180,70;180,130;140,130;140,100;120,100;120,130;100,130"
+    layer: [5, 0]
+    zoom: -8

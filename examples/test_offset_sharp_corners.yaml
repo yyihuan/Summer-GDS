@@ -1,0 +1,55 @@
+# 测试用例：尖角三角形和多边形内缩
+# 场景：测试尖角在大幅度内缩时的处理
+global:
+  dbu: 0.001
+  fillet:
+    interactive: false
+    precision: 0.01
+
+gds:
+  output_file: "test_offset_sharp_corners.gds"
+  cell_name: "TOP"
+  default_layer: [1, 0]
+
+shapes:
+  # 测试1: 等边三角形（边长40）内缩5μm
+  - type: polygon
+    name: "等边三角形_内缩5"
+    vertices: "0,0;40,0;20,34.64"
+    layer: [1, 0]
+    zoom: -5
+
+  # 测试2: 等边三角形内缩10μm（接近内切圆半径11.55）
+  - type: polygon
+    name: "等边三角形_内缩10"
+    vertices: "50,0;90,0;70,34.64"
+    layer: [2, 0]
+    zoom: -10
+
+  # 测试3: 等边三角形内缩12μm（超过内切圆半径，应该消失）
+  - type: polygon
+    name: "等边三角形_内缩12_应消失"
+    vertices: "100,0;140,0;120,34.64"
+    layer: [3, 0]
+    zoom: -12
+
+  # 测试4: 锐角三角形（10度尖角）
+  - type: polygon
+    name: "锐角三角形_内缩5"
+    vertices: "0,50;60,50;30,110"
+    layer: [4, 0]
+    zoom: -5
+
+  # 测试5: 五角星（极端尖角）
+  - type: polygon
+    name: "五角星_内缩3"
+    vertices: "120,50;125,65;140,70;127,78;130,93;120,85;110,93;113,78;100,70;115,65"
+    layer: [5, 0]
+    zoom: -3
+
+  # 测试6: 菱形（45度角）内缩
+  - type: polygon
+    name: "菱形_内缩8"
+    vertices: "70,110;90,130;70,150;50,130"
+    layer: [6, 0]
+    zoom: -8

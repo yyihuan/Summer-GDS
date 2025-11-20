@@ -107,6 +107,7 @@ def main():
     
     # 获取全局配置
     global_config = config.get('global', {})
+    global_fillet_config = global_config.get('fillet', {})  # 便于复用全局倒角配置
     gds_config = config.get('gds', {})
     shapes_config = config.get('shapes', [])
 
@@ -165,8 +166,11 @@ def main():
 
         # 提取倒角配置
         fillet_config = shape_data.get('fillet')
-        if fillet_config and "interactive" not in fillet_config:  # 从全局配置继承interactive
-            fillet_config["interactive"] = global_config.get('fillet', {}).get('interactive', True)
+        if fillet_config:
+            if "interactive" not in fillet_config:  # 从全局配置继承 interactive
+                fillet_config["interactive"] = global_fillet_config.get('interactive', True)
+            if "precision" not in fillet_config and "precision" in global_fillet_config:
+                fillet_config["precision"] = global_fillet_config.get('precision')
 
         shape_type = shape_data.get('type')
         ring_num_hint = shape_data.get('ring_num') if shape_type == 'rings' else None
