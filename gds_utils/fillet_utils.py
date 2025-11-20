@@ -1,4 +1,5 @@
 import logging
+import math
 from typing import Iterable, List, Optional, Tuple
 
 logger = logging.getLogger("gds_utils")
@@ -160,3 +161,32 @@ def resolve_via_fillet_configs(
         return None, inner_config, outer_config
 
     return base_config, None, None
+
+
+def calc_segments_for_arc_span(radius: float, arc_span: float, sagitta_limit: float) -> int:
+    """
+    根据弦高（圆弧到 chord 中点的距离）限制计算分段数。
+
+    Args:
+        radius: 圆弧半径，要求 > 0
+        arc_span: 圆心角弧度
+        sagitta_limit: 允许的最大弦高（精度控制参数）
+
+    Returns:
+        int: 分段数，至少为 1
+    """
+    if radius <= 0 or arc_span <= 0:
+        return 1
+
+    arc_span = min(abs(arc_span), 2 * math.pi)  # 防御性约束
+    if sagitta_limit <= 0:
+        return 1
+
+    # 弦高公式：s = r - r * cos(theta/2)，解出每段最大圆心角
+    cos_term = 1 - sagitta_limit / radius
+    cos_term = max(min(cos_term, 1.0), -1.0)  # 避免超出 acos 定义域
+    theta_max = 2 * math.acos(cos_term)
+    if theta_max <= 0:
+        return 1
+
+    return max(1, int(math.ceil(arc_span / theta_max)))

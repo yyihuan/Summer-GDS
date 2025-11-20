@@ -1,6 +1,7 @@
 import numpy as np
 import math
 from .utils import logger, round_vertices
+from .fillet_utils import calc_segments_for_arc_span
 
 class Frame:
     def __init__(self, vertices, precision=None):
@@ -364,7 +365,7 @@ class Frame:
             if arc_span_at_center > math.pi:
                 arc_span_at_center = 2 * math.pi - arc_span_at_center
 
-            num_segments = max(1, int(math.ceil(radius * arc_span_at_center / precision)))
+            num_segments = calc_segments_for_arc_span(radius, arc_span_at_center, precision)
             sweep_direction = 1.0 if is_convex_turn else -1.0
 
             arc_points = []
