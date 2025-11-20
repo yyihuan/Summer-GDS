@@ -86,6 +86,7 @@ document.addEventListener('DOMContentLoaded', function() {
     console.log('开始绑定倒角半径切换按钮事件...');
     setTimeout(() => {
         bindRadiusListToggleEvents();
+        bindPrecisionListToggleEvents();
         console.log('倒角半径切换按钮事件绑定完成（延迟执行）');
     }, 500);
     
@@ -172,8 +173,9 @@ function addShape(shapeType) {
     // 增加索引计数
     currentShapeIndex++;
     
-    // 绑定倒角半径列表切换按钮事件
+    // 绑定倒角半径/精度列表切换按钮事件
     bindRadiusListToggleEvents();
+    bindPrecisionListToggleEvents();
 }
 
 // 渲染形状卡片
@@ -416,6 +418,19 @@ function fillShapeFormValues(cardElement, shape, index) {
         if (precisionValue !== undefined) {
             precisionInput.value = precisionValue;
         }
+    }
+    const precisionListInput = cardElement.querySelector(`[name="shapes[${index}].fillet.precision_list"]`);
+    const precisionListContainer = cardElement.querySelector(`.precision-list-container[data-shape-index="${index}"]`);
+    const precisionListSource = fillet.precision_list !== undefined ? fillet.precision_list : computedFillet.precision_list;
+    if (precisionListInput && precisionListSource !== undefined) {
+        if (precisionListContainer) {
+            precisionListContainer.style.display = 'flex';
+            const singlePrecisionRow = precisionListContainer.previousElementSibling;
+            if (singlePrecisionRow) {
+                singlePrecisionRow.style.display = 'none';
+            }
+        }
+        precisionListInput.value = Array.isArray(precisionListSource) ? precisionListSource.join(',') : precisionListSource;
     }
 
     const convexInput = cardElement.querySelector(`[name="shapes[${index}].fillet.convex_radius"]`);
@@ -695,6 +710,28 @@ function updateJSONFromForm() {
                 shape.fillet.radius = parseFloat(card.querySelector(`[name="shapes[${shapeIndex}].fillet.radius"]`).value || 0);
             }
 
+            // 处理倒角精度（支持单值/列表）
+            const precisionListContainer = card.querySelector(`.precision-list-container[data-shape-index="${shapeIndex}"]`);
+            if (precisionListContainer && precisionListContainer.style.display !== 'none') {
+                const precisionStr = card.querySelector(`[name="shapes[${shapeIndex}].fillet.precision_list"]`).value || '';
+                const precisionVals = precisionStr
+                    .split(',')
+                    .map(v => v.trim())
+                    .filter(v => v !== '')
+                    .map(v => parseFloat(v));
+                if (precisionVals.length > 0) {
+                    shape.fillet.precision_list = precisionVals;
+                }
+            } else {
+                const precisionRaw = card.querySelector(`[name="shapes[${shapeIndex}].fillet.precision"]`).value;
+                if (precisionRaw !== '') {
+                    const precisionVal = parseFloat(precisionRaw);
+                    if (!Number.isNaN(precisionVal)) {
+                        shape.fillet.precision = precisionVal;
+                    }
+                }
+            }
+
             // 检查是否为圆形生成的形状，保存元数据
             const geometrySelect = card.querySelector('.geometry-type-select');
             if (geometrySelect && geometrySelect.value === 'circle') {
@@ -782,6 +819,7 @@ function updateJSONFromForm() {
         const filletRadiusValue = card.querySelector(`[name="shapes[${shapeIndex}].fillet.radius"]`).value;
         const filletRadiiValue = card.querySelector(`[name="shapes[${shapeIndex}].fillet.radii"]`)?.value || '';
         const filletPrecisionValue = card.querySelector(`[name="shapes[${shapeIndex}].fillet.precision"]`).value;
+        const filletPrecisionListValue = card.querySelector(`[name="shapes[${shapeIndex}].fillet.precision_list"]`)?.value || '';
         const filletConvexValue = card.querySelector(`[name="shapes[${shapeIndex}].fillet.convex_radius"]`).value;
         const filletConcaveValue = card.querySelector(`[name="shapes[${shapeIndex}].fillet.concave_radius"]`).value;
 
@@ -797,6 +835,16 @@ function updateJSONFromForm() {
                 .map(item => item.trim())
                 .filter(item => item !== '')
                 .map(item => parseFloat(item));
+        }
+
+        if (filletPrecisionListValue.trim()) {
+            shape.fillet.precision_list = filletPrecisionListValue
+                .split(',')
+                .map(item => item.trim())
+                .filter(item => item !== '')
+                .map(item => parseFloat(item));
+        } else {
+            delete shape.fillet.precision_list;
         }
 
         if (filletConvexValue !== '') {
@@ -836,8 +884,8 @@ function updateJSONFromForm() {
     };
     window.__linkageDebugLog.push(updateEndEntry);
     if (typeof LinkageCore !== 'undefined') {
-        LinkageCore.log('info', '[DEBUG] updateJSONFromForm end', updateEndEntry);
-    }
+            LinkageCore.log('info', '[DEBUG] updateJSONFromForm end', updateEndEntry);
+        }
 
     // 更新JSON编辑器和YAML预览
     jsonEditor.set(config);
@@ -1129,6 +1177,67 @@ function toggleToSingleRadius(event) {
     updateJSONFromForm();
 }
 
+// 绑定倒角精度列表切换按钮事件
+function bindPrecisionListToggleEvents() {
+    const listButtons = document.querySelectorAll('.toggle-precision-list-btn');
+    const singleButtons = document.querySelectorAll('.toggle-single-precision-btn');
+
+    listButtons.forEach(button => {
+        button.removeEventListener('click', toggleToPrecisionList);
+        button.addEventListener('click', toggleToPrecisionList);
+    });
+
+    singleButtons.forEach(button => {
+        button.removeEventListener('click', toggleToSinglePrecision);
+        button.addEventListener('click', toggleToSinglePrecision);
+    });
+}
+
+function toggleToPrecisionList(event) {
+    const shapeIndex = event.currentTarget.getAttribute('data-shape-index');
+    const singlePrecisionRow = event.currentTarget.closest('.row');
+    const precisionListContainer = document.querySelector(`.precision-list-container[data-shape-index="${shapeIndex}"]`);
+    if (!precisionListContainer) return;
+
+    singlePrecisionRow.style.display = 'none';
+    precisionListContainer.style.display = 'flex';
+
+    const singlePrecision = document.querySelector(`[name="shapes[${shapeIndex}].fillet.precision"]`).value;
+    const verticesInput = document.querySelector(`[name="shapes[${shapeIndex}].vertices"]`);
+    let vertexCount = 0;
+    if (verticesInput && verticesInput.value) {
+        vertexCount = verticesInput.value.split(';').length;
+    }
+    if (vertexCount > 0) {
+        const precisionList = Array(vertexCount).fill(singlePrecision).join(',');
+        document.querySelector(`[name="shapes[${shapeIndex}].fillet.precision_list"]`).value = precisionList;
+    }
+    updateJSONFromForm();
+}
+
+function toggleToSinglePrecision(event) {
+    const shapeIndex = event.currentTarget.getAttribute('data-shape-index');
+    const precisionListContainer = event.currentTarget.closest('.precision-list-container');
+    const singlePrecisionRow = precisionListContainer.previousElementSibling;
+    if (!singlePrecisionRow) return;
+
+    precisionListContainer.style.display = 'none';
+    singlePrecisionRow.style.display = 'flex';
+
+    const precInput = document.querySelector(`[name="shapes[${shapeIndex}].fillet.precision_list"]`);
+    if (precInput && precInput.value) {
+        const precVals = precInput.value
+            .split(',')
+            .map(v => parseFloat(v.trim()))
+            .filter(v => !isNaN(v));
+        if (precVals.length > 0) {
+            const avg = precVals.reduce((acc, v) => acc + v, 0) / precVals.length;
+            document.querySelector(`[name="shapes[${shapeIndex}].fillet.precision"]`).value = avg.toFixed(4);
+        }
+    }
+    updateJSONFromForm();
+}
+
 // 扩大/缩小形状 - 增强版支持派生关系
 function offsetShape(sourceIndex) {
     console.log(`开始扩大/缩小形状: 源索引=${sourceIndex}`);
@@ -1155,6 +1264,7 @@ function offsetShape(sourceIndex) {
         updateYAMLPreview();
         currentShapeIndex++;
         bindRadiusListToggleEvents();
+        bindPrecisionListToggleEvents();
         console.log(`形状扩大/缩小完成: 新索引=${config.shapes.length - 1}`);
         showAlert('形状扩大/缩小成功', 'success', true);
         return;
@@ -1207,6 +1317,7 @@ function offsetShape(sourceIndex) {
 
     currentShapeIndex++;
     bindRadiusListToggleEvents();
+    bindPrecisionListToggleEvents();
 
     LinkageCore.log('info', `派生形状创建完成: ${newShape.name} <- ${sourceShape.name}`);
     showAlert('形状扩大/缩小成功', 'success', true);

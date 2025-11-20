@@ -419,6 +419,35 @@
                         </small>
                     </div>
                 </div>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">倒角精度 (弦高控制)
+                            <span class="badge bg-secondary ms-2"
+                                  data-inheritance-indicator="fillet.precision"
+                                  data-shape-index="{index}">继承中</span>
+                        </label>
+                        <div class="input-group">
+                            <input type="number" class="form-control" name="shapes[{index}].fillet.precision" placeholder="弦高/精度" step="0.01">
+                            <button type="button" class="btn btn-outline-secondary toggle-precision-list-btn" data-shape-index="{index}">
+                                <i class="bi bi-list"></i> 切换到精度列表
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="row precision-list-container" style="display: none;" data-shape-index="{index}">
+                    <div class="col-md-12 mb-3">
+                        <label class="form-label">倒角精度列表 (每个角的弦高限制，逗号分隔)</label>
+                        <div class="input-group">
+                            <input type="text" class="form-control" name="shapes[{index}].fillet.precision_list" placeholder="例如: 0.05,0.1,0.1,0.05" value="">
+                            <button type="button" class="btn btn-outline-secondary toggle-single-precision-btn" data-shape-index="{index}">
+                                <i class="bi bi-1-circle"></i> 切换到单一精度
+                            </button>
+                        </div>
+                        <small class="form-text text-muted">
+                            多边形长度需等于顶点数；环/via 可给 2×顶点数控制内外侧，或给顶点数长度自动复制为内外。
+                        </small>
+                    </div>
+                </div>
             </div>
         </div>
     </template>
@@ -608,6 +637,35 @@
                         </small>
                     </div>
                 </div>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">倒角精度 (弦高控制)
+                            <span class="badge bg-secondary ms-2"
+                                  data-inheritance-indicator="fillet.precision"
+                                  data-shape-index="{index}">继承中</span>
+                        </label>
+                        <div class="input-group">
+                            <input type="number" class="form-control" name="shapes[{index}].fillet.precision" placeholder="弦高/精度" step="0.01">
+                            <button type="button" class="btn btn-outline-secondary toggle-precision-list-btn" data-shape-index="{index}">
+                                <i class="bi bi-list"></i> 切换到精度列表
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="row precision-list-container" style="display: none;" data-shape-index="{index}">
+                    <div class="col-md-12 mb-3">
+                        <label class="form-label">倒角精度列表 (每个角的弦高限制，逗号分隔)</label>
+                        <div class="input-group">
+                            <input type="text" class="form-control" name="shapes[{index}].fillet.precision_list" placeholder="例如: 0.05,0.1,0.1,0.05" value="">
+                            <button type="button" class="btn btn-outline-secondary toggle-single-precision-btn" data-shape-index="{index}">
+                                <i class="bi bi-1-circle"></i> 切换到单一精度
+                            </button>
+                        </div>
+                        <small class="form-text text-muted">
+                            多边形长度需等于顶点数；环/via 可给 2×顶点数控制内外侧，或给顶点数长度自动复制为内外。
+                        </small>
+                    </div>
+                </div>
             </div>
         </div>
     </template>
@@ -700,7 +758,12 @@
                                           data-inheritance-indicator="fillet.precision"
                                           data-shape-index="{index}">继承中</span>
                                 </label>
-                                <input type="number" class="form-control" name="shapes[{index}].fillet.precision" step="0.01">
+                                <div class="input-group">
+                                    <input type="number" class="form-control" name="shapes[{index}].fillet.precision" step="0.01">
+                                    <button type="button" class="btn btn-outline-secondary toggle-precision-list-btn" data-shape-index="{index}">
+                                        <i class="bi bi-list"></i> 切换到精度列表
+                                    </button>
+                                </div>
                             </div>
                             <div class="col-md-4 mb-3">
                                 <label class="form-label">凸角半径
@@ -717,6 +780,20 @@
                                           data-shape-index="{index}">继承中</span>
                                 </label>
                                 <input type="number" class="form-control" name="shapes[{index}].fillet.concave_radius" step="0.1">
+                            </div>
+                        </div>
+                        <div class="row precision-list-container" style="display: none;" data-shape-index="{index}">
+                            <div class="col-md-12 mb-3">
+                                <label class="form-label">倒角精度列表 (每个角的弦高限制，逗号分隔)</label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" name="shapes[{index}].fillet.precision_list" placeholder="例如: 0.05,0.1,0.1,0.05" value="">
+                                    <button type="button" class="btn btn-outline-secondary toggle-single-precision-btn" data-shape-index="{index}">
+                                        <i class="bi bi-1-circle"></i> 切换到单一精度
+                                    </button>
+                                </div>
+                                <small class="form-text text-muted">
+                                    多边形长度需等于顶点数；环/via 可给 2×顶点数控制内外侧，或给顶点数长度自动复制为内外。
+                                </small>
                             </div>
                         </div>
                     </div>

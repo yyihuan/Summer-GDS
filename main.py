@@ -181,6 +181,7 @@ def main():
             vertex_count=len(frame.get_vertices()),
             ring_num_hint=ring_num_hint,
             allow_inner_outer_split=allow_inner_outer_split,
+            allow_precision_inner_outer_split=shape_type in ('rings', 'via'),
         )
 
         logger.debug(f"形状 '{shape_name}' 的倒角配置: {fillet_config}")

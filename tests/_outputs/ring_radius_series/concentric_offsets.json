@@ -17,6 +17,7 @@
   "outer_series": null,
   "preserve_inner": false,
   "preserve_outer": false,
+  "explicit_outer": false,
   "computed_offsets": [
     {
       "inner_offset": -0.5,

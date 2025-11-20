@@ -29,7 +29,8 @@
         4.0,
         4.0
       ]
-    ]
+    ],
+    "explicit_outer": false
   },
   "captured_radius_lists": [
     {

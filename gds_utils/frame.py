@@ -211,6 +211,25 @@ class Frame:
         logger.debug(f"输入顶点列表: {self.vertices}")
         
         effective_radii = []
+        precision_list = None
+        precision_scalar = None
+        if isinstance(precision, list):
+            if len(precision) == n:
+                precision_list = []
+                for p in precision:
+                    try:
+                        num = float(p)
+                    except (TypeError, ValueError):
+                        num = None
+                    precision_list.append(num)
+            else:
+                logger.warning(
+                    f"精度列表长度({len(precision)})与顶点数({n})不匹配，忽略列表按标量处理"
+                )
+        elif isinstance(precision, (int, float)):
+            precision_scalar = float(precision)
+        else:
+            precision_scalar = 0.01
         if isinstance(radius_or_radii_list, (int, float)):
             single_radius = float(radius_or_radii_list)
             effective_radii = [single_radius] * n
@@ -365,7 +384,15 @@ class Frame:
             if arc_span_at_center > math.pi:
                 arc_span_at_center = 2 * math.pi - arc_span_at_center
 
-            num_segments = calc_segments_for_arc_span(radius, arc_span_at_center, precision)
+            sagitta_limit = None
+            if precision_list is not None:
+                fallback_prec = precision_scalar if precision_scalar is not None else 0.01
+                sagitta_limit = precision_list[i]
+                if sagitta_limit is None or sagitta_limit <= 0:
+                    sagitta_limit = fallback_prec
+            else:
+                sagitta_limit = precision_scalar if precision_scalar is not None else 0.01
+            num_segments = calc_segments_for_arc_span(radius, arc_span_at_center, sagitta_limit)
             sweep_direction = 1.0 if is_convex_turn else -1.0
 
             arc_points = []

@@ -115,7 +115,23 @@ class Region:
         # 然后应用倒角
         if fillet_config and fillet_config.get("type"):
             fillet_type = fillet_config["type"]
-            precision = fillet_config.get("precision", 0.01)
+            precision_scalar = fillet_config.get("precision", 0.01)
+            precision_list = fillet_config.get("precision_list")
+            if precision_list is not None:
+                def _fill_precision_list(values, fallback):
+                    filled = []
+                    for val in values:
+                        try:
+                            num = float(val)
+                        except (TypeError, ValueError):
+                            num = fallback
+                        if num <= 0:
+                            num = fallback
+                        filled.append(num)
+                    return filled
+                precision = _fill_precision_list(precision_list, precision_scalar)
+            else:
+                precision = precision_scalar
             interactive = fillet_config.get("interactive", True) # 默认为 True，与 Frame 中一致
             preserve_radius_list = fillet_config.get("preserve_radius_list", False)
 
@@ -342,6 +358,55 @@ class Region:
                         fillet_for_ring_outer = dict(fillet_for_ring_outer)
                         fillet_for_ring_outer["preserve_radius_list"] = True
 
+                    # 精度分裂：precision_list / precision_outer_list
+                    precision_list = fillet_config.get("precision_list")
+                    precision_outer_list = fillet_config.get("precision_outer_list")
+                    if fillet_config.get("precision_inner_outer_split") and precision_list is not None:
+                        def _fill_prec_list(values, fallback):
+                            filled = []
+                            for val in values:
+                                try:
+                                    num = float(val)
+                                except (TypeError, ValueError):
+                                    num = fallback
+                                if num <= 0:
+                                    num = fallback
+                                filled.append(num)
+                            return filled
+                        inner_precision = _fill_prec_list(precision_list, fillet_config.get("precision", 0.01))
+                        outer_precision = _fill_prec_list(
+                            precision_outer_list if precision_outer_list is not None else precision_list,
+                            fillet_config.get("precision", 0.01),
+                        )
+                        fillet_for_ring_inner = dict(fillet_for_ring_inner)
+                        fillet_for_ring_inner["precision_list"] = inner_precision
+                        fillet_for_ring_inner.pop("precision", None)
+
+                        fillet_for_ring_outer = dict(fillet_for_ring_outer)
+                        fillet_for_ring_outer["precision_list"] = outer_precision
+                        fillet_for_ring_outer.pop("precision", None)
+                    elif precision_list is not None:
+                        def _fill_prec_list(values, fallback):
+                            filled = []
+                            for val in values:
+                                try:
+                                    num = float(val)
+                                except (TypeError, ValueError):
+                                    num = fallback
+                                if num <= 0:
+                                    num = fallback
+                                filled.append(num)
+                            return filled
+                        filled_inner = _fill_prec_list(precision_list, fillet_config.get("precision", 0.01))
+
+                        fillet_for_ring_inner = dict(fillet_for_ring_inner)
+                        fillet_for_ring_inner["precision_list"] = filled_inner
+                        fillet_for_ring_inner.pop("precision", None)
+
+                        fillet_for_ring_outer = dict(fillet_for_ring_outer)
+                        fillet_for_ring_outer["precision_list"] = list(filled_inner)
+                        fillet_for_ring_outer.pop("precision", None)
+
                 ring_region = cls.polygon2ring(
                     ring_frame,
                     inner_zoom=inner_offset,
@@ -383,6 +448,27 @@ class Region:
         # 创建外部区域
         outer_config = outer_fillet_config if outer_fillet_config is not None else fillet_config
         inner_config = inner_fillet_config if inner_fillet_config is not None else fillet_config
+
+        # 如果存在精度分裂标志但尚未拆分，自动拆分内外精度列表
+        if (
+            outer_fillet_config is None
+            and fillet_config
+            and fillet_config.get("precision_inner_outer_split")
+            and fillet_config.get("precision_list") is not None
+        ):
+            base_precision_list = fillet_config.get("precision_list") or []
+            outer_precision_list = fillet_config.get("precision_outer_list") or base_precision_list
+
+            inner_cfg = dict(fillet_config)
+            inner_cfg["precision_list"] = list(base_precision_list)
+            inner_cfg.pop("precision", None)
+
+            outer_cfg = dict(fillet_config)
+            outer_cfg["precision_list"] = list(outer_precision_list)
+            outer_cfg.pop("precision", None)
+
+            inner_config = inner_cfg
+            outer_config = outer_cfg
 
         outer_region = cls.create_polygon(frame, outer_config, outer_zoom)
         outer_kdbregion = outer_region.get_klayout_region()

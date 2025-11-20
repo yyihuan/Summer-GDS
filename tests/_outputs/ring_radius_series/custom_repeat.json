@@ -29,5 +29,6 @@
     ]
   ],
   "preserve_inner": true,
-  "preserve_outer": true
+  "preserve_outer": true,
+  "explicit_outer": false
 }
