@@ -1,0 +1,69 @@
+{
+  "input_yaml": "ring_mode: custom\nring_width: [2.0, 2.0]\nring_space: [1.0, 1.0]\nring_num: 2",
+  "profile": {
+    "mode": "custom",
+    "inner_series": [
+      [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      [
+        2.0,
+        2.0,
+        2.0,
+        2.0
+      ]
+    ],
+    "outer_series": [
+      [
+        5.0,
+        5.0,
+        5.0,
+        5.0
+      ],
+      [
+        6.0,
+        6.0,
+        6.0,
+        6.0
+      ]
+    ],
+    "explicit_outer": true
+  },
+  "captured_radius_lists": [
+    {
+      "inner_radius": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "outer_radius": [
+        5.0,
+        5.0,
+        5.0,
+        5.0
+      ],
+      "preserve_inner": true,
+      "preserve_outer": true
+    },
+    {
+      "inner_radius": [
+        2.0,
+        2.0,
+        2.0,
+        2.0
+      ],
+      "outer_radius": [
+        6.0,
+        6.0,
+        6.0,
+        6.0
+      ],
+      "preserve_inner": true,
+      "preserve_outer": true
+    }
+  ]
+}

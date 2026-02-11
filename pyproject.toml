@@ -16,3 +16,8 @@ dependencies = [
     "PySide6-Addons>=6.7.0",
     "werkzeug>=2.0.0",
 ]
+
+[dependency-groups]
+dev = [
+    "pytest>=9.0.2",
+]
