@@ -1,0 +1,21 @@
+schema_version: 1
+
+global:
+  dbu: 0.001
+  precision: null
+
+gds:
+  output_file: "bowtie.gds"
+  cell_name: "TOP"
+  default_layer: [1, 0]
+
+shapes:
+  - id: "bowtie"
+    type: "base_shape"
+    geometry_type: "polygon"
+    vertices:
+      - [0, 0]
+      - [100, 100]
+      - [0, 100]
+      - [100, 0]
+    fillet: null

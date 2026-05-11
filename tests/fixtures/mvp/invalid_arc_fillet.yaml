@@ -1,0 +1,23 @@
+schema_version: 1
+
+global:
+  dbu: 0.001
+  precision: null
+
+gds:
+  output_file: "arc.gds"
+  cell_name: "TOP"
+  default_layer: [1, 0]
+
+shapes:
+  - id: "main_pad"
+    type: "base_shape"
+    geometry_type: "polygon"
+    vertices:
+      - [0, 0]
+      - [100, 0]
+      - [100, 80]
+      - [0, 80]
+    fillet:
+      mode: "arc"
+      radii: [5, 5, 5, 5]
