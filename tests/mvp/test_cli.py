@@ -30,6 +30,22 @@ def test_cli_generate_writes_gds(tmp_path, capsys):
     assert "polygons_written: 1" in captured.out
 
 
+def test_cli_generate_invalid_config_does_not_write_gds(tmp_path, capsys):
+    output = tmp_path / "should_not_exist.gds"
+    code = main(["generate", str(FIXTURES / "invalid_old_polygon.yaml"), "--out", str(output)])
+    captured = capsys.readouterr()
+    assert code == 2
+    assert not output.exists()
+    assert "old_schema_detected" in captured.err
+
+
+def test_cli_missing_file_returns_file_io(capsys):
+    code = main(["validate", str(FIXTURES / "missing.yaml")])
+    captured = capsys.readouterr()
+    assert code == 1
+    assert "ERROR file_io" in captured.err
+
+
 def test_cli_argument_error_returns_4(capsys):
     code = main([])
     captured = capsys.readouterr()

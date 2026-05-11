@@ -49,7 +49,7 @@ def normalize_config(raw):
     schema_version = raw.get("schema_version")
     if schema_version is None:
         issues.append(_missing("schema_version"))
-    elif schema_version != 1 or isinstance(schema_version, bool):
+    elif not isinstance(schema_version, int) or isinstance(schema_version, bool) or schema_version != 1:
         issues.append(
             ConfigIssue(
                 path="schema_version",
@@ -258,7 +258,7 @@ def _parse_shape(value, path, default_layer, issues):
         issues.append(_invalid_type("%s.name" % path, "string"))
         name = ""
 
-    layer = _parse_layer(value.get("layer", default_layer.as_tuple()), "%s.layer" % path, issues)
+    layer = _parse_layer(value.get("layer", default_layer), "%s.layer" % path, issues)
 
     if geometry_type == "polygon":
         return _parse_polygon_shape(value, path, shape_id, name, layer, issues)
