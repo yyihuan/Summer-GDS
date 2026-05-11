@@ -6,6 +6,7 @@ by schema validation until the fab-approved precision model exists.
 
 from summer_gds.config.errors import ConfigIssue
 from summer_gds.geometry.primitives import EPSILON, distance, is_convex_polygon
+from summer_gds.model import Point
 
 
 def validate_bevel_distances(points, distances, path):
@@ -57,3 +58,40 @@ def validate_bevel_distances(points, distances, path):
                 )
             )
     return issues
+
+
+def apply_bevel(points, distances):
+    """Apply a straight-line bevel to a convex polygon.
+
+    The schema validator runs the same constraints before this function is
+    reached. This function still checks them so direct geometry callers fail
+    loudly instead of producing malformed polygons.
+    """
+    issues = validate_bevel_distances(points, distances, "fillet.distances")
+    if issues:
+        raise ValueError("; ".join(issue.message for issue in issues))
+
+    output = []
+    count = len(points)
+    for index, point in enumerate(points):
+        cut_distance = distances[index]
+        if cut_distance == 0:
+            output.append(point)
+            continue
+
+        previous_point = points[(index - 1) % count]
+        next_point = points[(index + 1) % count]
+        output.append(_point_toward(point, previous_point, cut_distance))
+        output.append(_point_toward(point, next_point, cut_distance))
+    return output
+
+
+def _point_toward(origin, target, length):
+    segment_length = distance(origin, target)
+    if segment_length <= EPSILON:
+        raise ValueError("Cannot bevel a zero-length edge.")
+    ratio = length / segment_length
+    return Point(
+        x=origin.x + (target.x - origin.x) * ratio,
+        y=origin.y + (target.y - origin.y) * ratio,
+    )
