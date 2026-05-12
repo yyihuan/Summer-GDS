@@ -127,6 +127,17 @@ parser 只接受 canonical YAML v1。
 
 MVP 的 `bevel` 是接口占位，不是最终 fab 方案。未来 `arc_v2` 必须复用同一个 fillet strategy 接口，而不是侵入 parser、CLI 或 GDS writer。
 
+`arc_v2` 的核心设计决策：
+
+- YAML 继续面向用户，保持 `radii[i]` 对应 `vertices[i]` 的完整列表协议。
+- 角对象只作为内部几何模型，不直接暴露到 YAML。
+- 内部必须先构建 `CornerContext`，再由 fillet strategy 生成输出点。
+- `CornerContext` 保存角的拓扑事实，例如用户序号、内部序号、前点、当前点、后点、凹凸性、半径。
+- `ArcCornerPlan` 保存算法结果，例如切点、圆心、扫描方向、段数和输出点。
+- 后续 GUI 可以支持“指定角”“所有凸角”“所有凹角”等编辑方式，但落盘必须展开为 canonical YAML。
+
+这样做的目的不是增加抽象，而是把隐式规则显式化。倒角天然是逐角算法，如果继续在多个函数中手写 `points[i]`、`radii[i]`、方向翻转和凹凸判断，后续支持凹角、指定角、rings/via 时会形成不可读的隐式耦合。
+
 ### 3.4 模块边界优先于功能数量
 
 MVP 功能少，但边界要完整：
@@ -161,6 +172,7 @@ mvp/
       model.py               # NormalizedConfig / Shape / Layer 等领域模型
       geometry/
         primitives.py        # Point / Polygon 数据结构与基础校验
+        corners.py           # CornerContext / CornerKind / ArcCornerPlan
         circle.py            # circle 离散化
         fillet.py            # fillet strategy，占位 bevel
       gds/
@@ -195,6 +207,11 @@ mvp/
 - 稳定接口建议：
   - `ShapeRenderer`
   - `FilletStrategy`
+- 允许新增一个轻量数据模型族：
+  - `CornerContext`
+  - `ArcCornerPlan`
+
+`CornerContext` 不是 service，不算新业务边界；它是几何算法的显式输入数据结构。
 
 如果实现开始触碰超过 10 个核心文件，说明设计开始膨胀，需要停下来拆回 MVP。
 
@@ -496,6 +513,82 @@ distance_at_edge_start + distance_at_edge_end < edge_length
 
 不要自动缩小距离。自动修正会让用户以为参数生效，但实际输出不同。
 
+### 8.4 下一阶段：`arc_v2`
+
+下一阶段在 MVP 内加入圆弧倒角，但不替换 `bevel`。`bevel` 保留为占位实现和回归对照。
+
+```yaml
+fillet:
+  mode: "arc_v2"
+  radii: [5, 0, 10, 3]
+```
+
+协议语义：
+
+- `mode` 必须显式为 `arc_v2`
+- `radii.length == vertices.length`
+- 第 `i` 个半径严格对应用户输入的第 `i` 个顶点
+- `radius = 0` 表示该角不倒角
+- `radius < 0` 必须报错
+- circle 继续禁止 fillet
+- 旧 `mode: "arc"` 继续报错
+- 裸 `fillet.radii` 继续报错，避免和旧协议混淆
+
+内部数据流：
+
+```text
+PolygonShape.vertices + ArcFillet.radii
+        |
+        v
+build_corner_contexts()
+        |
+        v
+CornerContext[]
+  ├── user_index          # 用户输入顶点序号
+  ├── normalized_index    # CCW normalize 后的内部序号
+  ├── prev_point
+  ├── vertex
+  ├── next_point
+  ├── incoming_edge
+  ├── outgoing_edge
+  ├── turn_sign
+  ├── corner_kind         # convex / concave / collinear
+  └── radius
+        |
+        v
+ArcCornerPlan[]
+  ├── tangent_start
+  ├── tangent_end
+  ├── center
+  ├── sweep_direction
+  ├── segment_count
+  └── output_points
+```
+
+规划边界：
+
+- 第一版 `arc_v2` 只支持 simple + convex polygon。
+- 如果存在 concave corner，报 `arc_v2_requires_convex_polygon`，不尝试自动处理。
+- 如果相邻两个角在同一边上的 tangent distance 之和大于等于边长，报 `arc_radius_too_large`。
+- 不自动缩小半径。
+- 不暴露 YAML `tolerance`，段数由内部策略根据半径和精度计算。
+- 不复用旧 `gds_utils.Frame._apply_arc_fillet_internal()`。
+
+后续能力通过 `CornerContext` 实现，不改变 canonical YAML：
+
+```text
+GUI / authoring layer
+  ├── 指定 user_index = 2 的角
+  ├── 选择所有 convex 角
+  └── 选择所有 concave 角
+          |
+          v
+展开为完整 radii 列表
+          |
+          v
+canonical YAML v1
+```
+
 ---
 
 ## 9. Validator 规则
@@ -682,15 +775,24 @@ writer 不负责：
 fillet:
   mode: "arc_v2"
   radii: [5, 5, 5, 5]
-  tolerance: 0.01
 ```
+
+设计约束：
+
+- `arc_v2` 复用第 8.4 节的 `CornerContext` 管线。
+- YAML 不暴露角对象，只暴露完整 `radii` 列表。
+- `radii[i]` 永远对应用户输入的第 `i` 个顶点。
+- 顶点被 normalize 为 CCW 时，内部必须同步维护 `user_index` 映射，不能让半径错位。
+- 第一版只支持 convex polygon；concave polygon 必须显式报错。
+- 段数和精度策略内部计算，不在 YAML 暴露 `tolerance`。
 
 进入条件：
 
-- fab 精度定义已确认
+- 有 `CornerContext` 单元测试
 - 有最小制造验收样例
 - 有几何误差测试
 - 有不同 dbu/precision 下的输出一致性测试
+- 有 PNG visual snapshot，方便人工审查
 
 禁止复用旧 `mode: arc` 名称，避免和旧语义混淆。
 
@@ -771,6 +873,25 @@ bevel fillet
   ├── too large for edge                        unit: rejected
   └── concave polygon                           unit: rejected
 
+corner context
+  ├── user_index preserved                      unit: input order remains traceable
+  ├── normalized_index assigned                 unit: internal CCW order is explicit
+  ├── clockwise input                           unit: radius mapping follows user_index
+  ├── convex corner classified                  unit: corner_kind = convex
+  ├── concave corner classified                 unit: corner_kind = concave
+  └── collinear corner classified               unit: corner_kind = collinear
+
+arc_v2 fillet
+  ├── valid radii                               unit: deterministic arc points
+  ├── mixed per-corner radii                    unit: each radius affects its own corner
+  ├── zero radius                               unit: original corner preserved
+  ├── length mismatch                           unit: rejected
+  ├── negative radius                           unit: rejected
+  ├── too large for edge                        unit: rejected
+  ├── clockwise input                           unit: user_index/radius mapping preserved
+  ├── concave polygon                           unit: rejected in first arc_v2 phase
+  └── bare fillet.radii                         unit: rejected as old/ambiguous schema
+
 GDS writer
   ├── writes output file                        integration
   ├── correct cell name                         integration via KLayout load
@@ -781,6 +902,7 @@ Visual snapshots
   ├── valid polygon renders PNG                 integration via parser + renderer
   ├── bevel polygon renders PNG                 integration via parser + renderer
   ├── circle approximation renders PNG          integration via parser + renderer
+  ├── arc_v2 polygon renders PNG                integration via parser + renderer
   └── output is non-empty                        smoke: file exists and has bytes
 ```
 
@@ -790,9 +912,13 @@ Visual snapshots
 mvp/tests/fixtures/
   valid_polygon.yaml
   valid_polygon_bevel.yaml
+  valid_polygon_arc_v2.yaml
+  valid_polygon_arc_v2_mixed.yaml
   valid_circle.yaml
   invalid_old_polygon.yaml
   invalid_arc_fillet.yaml
+  invalid_arc_v2_concave.yaml
+  invalid_arc_v2_too_large.yaml
   invalid_self_intersection.yaml
   invalid_bevel_too_large.yaml
 ```
@@ -805,7 +931,7 @@ mvp/tests/fixtures/
 |---|---|
 | shape 解析失败后被跳过，仍生成 GDS | 任一 shape 无效时整个 generate 失败 |
 | 新 fillet schema 被旧代码静默忽略 | `fillet.radii` without `mode` 必须报错 |
-| 顶点方向和 radii 顺序错位 | clockwise 输入 + bevel distances 必须按用户顺序报错 |
+| 顶点方向和 radii 顺序错位 | clockwise 输入 + `CornerContext.user_index` 必须保持用户角位映射 |
 | via 布尔差为空但继续输出 | via 不在 MVP，输入必须直接失败 |
 | 旧字符串 vertices 分隔符混乱 | 字符串 vertices 必须报错 |
 
@@ -913,6 +1039,26 @@ mixed polygon/circle 100 shapes
 - KLayout 手工打开通过
 - 没有 silent skip
 
+### Phase 5：`arc_v2` 圆弧倒角迭代
+
+输出：
+
+- `CornerContext` / `CornerKind` / `ArcCornerPlan` 内部模型
+- `arc_v2` YAML parser 和 validator
+- convex-only `arc_v2` 几何实现
+- `arc_v2` fixtures
+- `arc_v2` geometry、CLI、GDS、PNG visual tests
+
+完成标准：
+
+- `radii[i]` 与用户输入顶点 `vertices[i]` 的角位绑定可测试
+- clockwise 输入 normalize 后不丢失 `user_index` 映射
+- mixed per-corner radii 输出确定性点集
+- concave polygon 明确报 `arc_v2_requires_convex_polygon`
+- 过大半径明确报 `arc_radius_too_large`
+- 裸 `fillet.radii` 继续被拒绝，避免旧协议回流
+- `valid_polygon_arc_v2.yaml` 可生成 GDS 和 PNG 快照
+
 ---
 
 ## 16. 验收标准
@@ -939,6 +1085,10 @@ MVP 完成必须同时满足：
 | 旧 YAML | 不运行时兼容 | 避免兼容泥潭，未来 migrator 单独做 |
 | 顶点格式 | 数值对列表 | 强类型、易校验、少分隔符边界 |
 | 倒角 | `bevel` 占位 | 不复用 fab 已反馈有问题的旧 arc |
+| 下一阶段倒角 | `mode: arc_v2` + `radii` | 显式区分新旧圆弧语义 |
+| 角对象 | 内部 `CornerContext`，不进入 YAML | 保持用户协议简单，同时让算法显式可读 |
+| `arc_v2` 范围 | 第一版只支持 convex polygon | concave 语义复杂，先识别并明确报错 |
+| `arc_v2` 精度 | 内部策略，不暴露 YAML `tolerance` | 减少用户配置面，避免精度参数和 dbu/precision 混乱 |
 | circle 精度 | 固定 128 段 | MVP 保持确定性，不提前暴露调参 |
 | shape 范围 | 仅 `base_shape` | rings/via 都依赖更复杂几何和布尔差 |
 | 错误策略 | fail fast | 禁止 silent skip 和部分成功 |
@@ -949,7 +1099,7 @@ MVP 完成必须同时满足：
 
 这些问题不阻塞 MVP，但需要在后续迭代前确认：
 
-1. `arc_v2` 的 fab 精度定义是什么：弦高误差、半径误差、还是 GDS 网格误差？
+1. `arc_v2` 内部精度策略的 fab 验收口径是什么：弦高误差、半径误差、还是 GDS 网格误差？
 2. circle 后续是否需要用户控制 `segments` 或 `chord_error`？
 3. old YAML migrator 是否需要保证 GDS 等价，还是只保证字段语义迁移？
 4. `rings` 的 `ring_spaces` 是否应为 `ring_count` 项还是 `ring_count - 1` 项？
@@ -959,13 +1109,15 @@ MVP 完成必须同时满足：
 
 ## 19. 推荐下一步
 
-下一步不要直接写 generator。先冻结 parser 和 fixture。
+下一步不要直接写 arc 算法。先把角对象和协议边界钉住。
 
 建议顺序：
 
-1. 新建 `mvp/tests/fixtures/`
-2. 写 3 个 valid YAML 和 5 个 invalid YAML
-3. 实现 parser/validator 到所有 fixture 通过
-4. 再实现 geometry 和 GDS writer
+1. 新增 `CornerContext` / `CornerKind` / `ArcCornerPlan` 设计与测试
+2. 用 `CornerContext` 覆盖 clockwise normalize、user_index、convex/concave/collinear 分类
+3. 新增 `arc_v2` fixtures：valid、mixed radii、concave invalid、too-large invalid
+4. 实现 parser/validator 到所有 `arc_v2` fixture 通过
+5. 实现 convex-only arc geometry
+6. 加 GDS smoke test 和 PNG visual snapshot
 
-这样可以把协议边界先钉住，避免后续几何实现反过来污染 YAML。
+这样可以先验证“每个角是显式对象”的设计，避免圆弧算法把隐式状态重新塞回 `points[i]` 和 `radii[i]`。
