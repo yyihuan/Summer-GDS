@@ -176,6 +176,9 @@ mvp/
       test_bevel_fillet.py
       test_cli.py
       test_gds_writer.py
+    visual/
+      test_png_snapshots.py
+    _visual_output/          # pytest 生成的人工审查 PNG
 ```
 
 目录原则：
@@ -773,6 +776,12 @@ GDS writer
   ├── correct cell name                         integration via KLayout load
   ├── correct layer/datatype                    integration via KLayout load
   └── no silent empty output                    integration: rejected earlier
+
+Visual snapshots
+  ├── valid polygon renders PNG                 integration via parser + renderer
+  ├── bevel polygon renders PNG                 integration via parser + renderer
+  ├── circle approximation renders PNG          integration via parser + renderer
+  └── output is non-empty                        smoke: file exists and has bytes
 ```
 
 ### 13.2 Required fixtures
@@ -918,6 +927,7 @@ MVP 完成必须同时满足：
 6. `invalid_arc_fillet.yaml` 明确失败，错误码为 `unsupported_fillet_mode`
 7. 任意 shape 无效时不生成部分 GDS
 8. 测试覆盖 parser、validator、geometry、CLI、GDS writer
+9. `uv run python -m pytest mvp/tests/visual` 生成可人工审查的 PNG 快照
 
 ---
 

@@ -23,5 +23,11 @@ uv run summer-gds validate mvp/tests/fixtures/valid_polygon.yaml
 uv run summer-gds generate mvp/tests/fixtures/valid_polygon.yaml --out /tmp/polygon.gds
 ```
 
+The visual tests generate PNG snapshots under `mvp/tests/_visual_output/`:
+
+```bash
+uv run python -m pytest mvp/tests/visual
+```
+
 Future PRD or technical-spec iterations should first update the YAML fixtures and
 tests under this directory, then update the implementation.
