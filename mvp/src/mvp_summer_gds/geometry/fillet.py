@@ -118,8 +118,6 @@ def validate_arc_radii(points, radii, path, user_indices=None):
                 )
             )
             continue
-        if context.radius == 0:
-            continue
         if context.corner_kind == CornerKind.CONCAVE:
             issues.append(
                 ConfigIssue(
@@ -129,6 +127,8 @@ def validate_arc_radii(points, radii, path, user_indices=None):
                     hint="Use fillet: null, bevel, or wait for the concave arc phase.",
                 )
             )
+            continue
+        if context.radius == 0:
             continue
         if context.corner_kind == CornerKind.COLLINEAR:
             issues.append(

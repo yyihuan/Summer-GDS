@@ -112,6 +112,19 @@ def test_validate_arc_v2_rejects_negative_radius():
     assert {issue.code for issue in issues} == {"negative_arc_radius"}
 
 
+def test_arc_v2_rejects_concave_polygon_even_when_concave_radius_is_zero():
+    points = [
+        Point(0, 0),
+        Point(10, 0),
+        Point(10, 10),
+        Point(5, 5),
+        Point(0, 10),
+    ]
+    issues = validate_arc_radii(points, [1, 1, 1, 0, 1], "fillet.radii")
+
+    assert "arc_v2_requires_convex_polygon" in {issue.code for issue in issues}
+
+
 def test_validate_arc_v2_reports_user_index_after_normalization():
     issues = validate_arc_radii(
         [Point(10, 0), Point(10, 10), Point(0, 10), Point(0, 0)],
