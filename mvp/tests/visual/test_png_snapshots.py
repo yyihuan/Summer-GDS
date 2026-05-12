@@ -62,9 +62,9 @@ def _render_fixture_png(fixture_name, output_name):
 
 
 def _annotate_vertices(ax, points):
+    if len(points) > 16:
+        return
     for index, (x_coord, y_coord) in enumerate(points):
-        if index >= 16:
-            break
         ax.plot(x_coord, y_coord, marker="o", markersize=2.5, color="#0b3954")
         ax.text(x_coord, y_coord, str(index), fontsize=6, color="#1f2933")
 
