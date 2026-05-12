@@ -1,13 +1,13 @@
 from pathlib import Path
 
-from summer_gds.config.loader import load_yaml_file
-from summer_gds.config.schema import normalize_config
-from summer_gds.geometry.fillet import apply_bevel
-from summer_gds.geometry.primitives import signed_area
-from summer_gds.geometry.renderer import render_config
-from summer_gds.model import Point
+from mvp_summer_gds.config.loader import load_yaml_file
+from mvp_summer_gds.config.schema import normalize_config
+from mvp_summer_gds.geometry.fillet import apply_bevel
+from mvp_summer_gds.geometry.primitives import signed_area
+from mvp_summer_gds.geometry.renderer import render_config
+from mvp_summer_gds.model import Point
 
-FIXTURES = Path(__file__).resolve().parents[1] / "fixtures" / "mvp"
+FIXTURES = Path(__file__).resolve().parents[1] / "fixtures"
 
 
 def test_apply_bevel_to_square_outputs_deterministic_points():

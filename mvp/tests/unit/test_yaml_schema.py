@@ -2,12 +2,12 @@ from pathlib import Path
 
 import pytest
 
-from summer_gds.config.errors import ConfigValidationError
-from summer_gds.config.loader import load_yaml_file
-from summer_gds.config.schema import normalize_config
-from summer_gds.model import CircleShape, PolygonShape
+from mvp_summer_gds.config.errors import ConfigValidationError
+from mvp_summer_gds.config.loader import load_yaml_file
+from mvp_summer_gds.config.schema import normalize_config
+from mvp_summer_gds.model import CircleShape, PolygonShape
 
-FIXTURES = Path(__file__).resolve().parents[1] / "fixtures" / "mvp"
+FIXTURES = Path(__file__).resolve().parents[1] / "fixtures"
 
 
 def load_fixture(name):

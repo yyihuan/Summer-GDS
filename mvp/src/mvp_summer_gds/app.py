@@ -3,10 +3,10 @@
 from dataclasses import dataclass
 from pathlib import Path
 
-from summer_gds.config.loader import load_yaml_file
-from summer_gds.config.schema import normalize_config
-from summer_gds.gds.writer import write_gds
-from summer_gds.geometry.renderer import render_config
+from mvp_summer_gds.config.loader import load_yaml_file
+from mvp_summer_gds.config.schema import normalize_config
+from mvp_summer_gds.gds.writer import write_gds
+from mvp_summer_gds.geometry.renderer import render_config
 
 
 @dataclass(frozen=True)

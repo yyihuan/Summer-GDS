@@ -6,7 +6,7 @@ KLayout. GDS writing is the only layer that imports KLayout.
 
 import math
 
-from summer_gds.model import Point
+from mvp_summer_gds.model import Point
 
 EPSILON = 1e-9
 

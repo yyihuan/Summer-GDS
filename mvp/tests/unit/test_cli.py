@@ -1,8 +1,8 @@
 from pathlib import Path
 
-from summer_gds.cli import main
+from mvp_summer_gds.cli import main
 
-FIXTURES = Path(__file__).resolve().parents[1] / "fixtures" / "mvp"
+FIXTURES = Path(__file__).resolve().parents[1] / "fixtures"
 
 
 def test_cli_validate_success(capsys):

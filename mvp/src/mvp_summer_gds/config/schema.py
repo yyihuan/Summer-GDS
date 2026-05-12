@@ -2,8 +2,8 @@
 
 import re
 
-from summer_gds.geometry.fillet import validate_bevel_distances
-from summer_gds.geometry.primitives import (
+from mvp_summer_gds.geometry.fillet import validate_bevel_distances
+from mvp_summer_gds.geometry.primitives import (
     EPSILON,
     has_consecutive_duplicate_points,
     has_duplicate_points,
@@ -12,7 +12,7 @@ from summer_gds.geometry.primitives import (
     normalize_counterclockwise,
     signed_area,
 )
-from summer_gds.model import (
+from mvp_summer_gds.model import (
     BevelFillet,
     CircleShape,
     GdsConfig,

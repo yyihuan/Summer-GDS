@@ -1,9 +1,9 @@
 """Render normalized shapes into GDS-ready polygons."""
 
-from summer_gds.config.errors import ConfigIssue, ConfigValidationError
-from summer_gds.geometry.circle import DEFAULT_CIRCLE_SEGMENTS, approximate_circle
-from summer_gds.geometry.fillet import apply_bevel
-from summer_gds.model import CircleShape, PolygonShape, RenderedPolygon
+from mvp_summer_gds.config.errors import ConfigIssue, ConfigValidationError
+from mvp_summer_gds.geometry.circle import DEFAULT_CIRCLE_SEGMENTS, approximate_circle
+from mvp_summer_gds.geometry.fillet import apply_bevel
+from mvp_summer_gds.model import CircleShape, PolygonShape, RenderedPolygon
 
 MAX_RENDERED_VERTICES_PER_SHAPE = 20000
 MAX_RENDERED_VERTICES_TOTAL = 100000

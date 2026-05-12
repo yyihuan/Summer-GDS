@@ -1,4 +1,4 @@
-"""Run the MVP CLI with python -m summer_gds."""
+"""Run the MVP CLI with python -m mvp_summer_gds."""
 
 import sys
 

@@ -2,7 +2,7 @@
 
 from pathlib import Path
 
-from summer_gds.config.errors import GDSWriteError
+from mvp_summer_gds.config.errors import GDSWriteError
 
 
 def write_gds(polygons, cell_name, dbu, output_file):

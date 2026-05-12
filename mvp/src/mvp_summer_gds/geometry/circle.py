@@ -2,7 +2,7 @@
 
 import math
 
-from summer_gds.model import Point
+from mvp_summer_gds.model import Point
 
 DEFAULT_CIRCLE_SEGMENTS = 128
 

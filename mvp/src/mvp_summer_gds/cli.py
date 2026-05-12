@@ -3,8 +3,8 @@
 import argparse
 import sys
 
-from summer_gds.app import generate_config_file, validate_config_file
-from summer_gds.config.errors import ConfigValidationError, GDSWriteError, format_issues
+from mvp_summer_gds.app import generate_config_file, validate_config_file
+from mvp_summer_gds.config.errors import ConfigValidationError, GDSWriteError, format_issues
 
 
 class CliArgumentError(Exception):

@@ -148,28 +148,42 @@ MVP 功能少，但边界要完整：
 这是实施建议，不要求一次性完全照搬文件名，但边界必须保留。
 
 ```text
-summer_gds/
-  cli.py                 # CLI 参数解析，调用 application service
-  app.py                 # validate/generate 用例编排
-  config/
-    loader.py            # 读取 YAML，禁止业务推导
-    schema.py            # 字段白名单、类型校验、版本分发
-    errors.py            # 结构化错误模型
-  model.py               # NormalizedConfig / Shape / Layer 等领域模型
-  geometry/
-    primitives.py        # Point / Polygon 数据结构与基础校验
-    circle.py            # circle 离散化
-    fillet.py            # fillet strategy，占位 bevel
-  gds/
-    writer.py            # 将 normalized geometry 写成 GDS
-tests/
-  test_yaml_schema.py
-  test_validator.py
-  test_geometry_base_shape.py
-  test_bevel_fillet.py
-  test_cli.py
-  test_gds_writer.py
+mvp/
+  README.md
+  src/
+    mvp_summer_gds/
+      cli.py                 # CLI 参数解析，调用 application service
+      app.py                 # validate/generate 用例编排
+      config/
+        loader.py            # 读取 YAML，禁止业务推导
+        schema.py            # 字段白名单、类型校验、版本分发
+        errors.py            # 结构化错误模型
+      model.py               # NormalizedConfig / Shape / Layer 等领域模型
+      geometry/
+        primitives.py        # Point / Polygon 数据结构与基础校验
+        circle.py            # circle 离散化
+        fillet.py            # fillet strategy，占位 bevel
+      gds/
+        writer.py            # 将 normalized geometry 写成 GDS
+  tests/
+    fixtures/
+      valid_polygon.yaml
+      valid_polygon_bevel.yaml
+      valid_circle.yaml
+    unit/
+      test_yaml_schema.py
+      test_geometry_base_shape.py
+      test_bevel_fillet.py
+      test_cli.py
+      test_gds_writer.py
 ```
+
+目录原则：
+
+- `mvp/` 是第一阶段唯一可运行的新实现边界，旧系统代码不得 import MVP 内部模块。
+- `mvp_summer_gds` 是内部包名，避免和旧系统或未来重构后的正式包名冲突。
+- 对外 CLI 仍保持 `summer-gds`，降低用户命令层面的迁移成本。
+- 后续 `rings`、`via`、`arc_v2`、GUI 适配应先在 `mvp/` 内完成协议和测试迭代，再决定是否提升为正式核心。
 
 复杂度预算：
 
@@ -764,7 +778,7 @@ GDS writer
 ### 13.2 Required fixtures
 
 ```text
-tests/fixtures/mvp/
+mvp/tests/fixtures/
   valid_polygon.yaml
   valid_polygon_bevel.yaml
   valid_circle.yaml
@@ -896,8 +910,8 @@ mixed polygon/circle 100 shapes
 
 MVP 完成必须同时满足：
 
-1. `summer-gds validate tests/fixtures/mvp/valid_polygon.yaml` 成功
-2. `summer-gds generate tests/fixtures/mvp/valid_polygon.yaml --out /tmp/polygon.gds` 成功
+1. `summer-gds validate mvp/tests/fixtures/valid_polygon.yaml` 成功
+2. `summer-gds generate mvp/tests/fixtures/valid_polygon.yaml --out /tmp/polygon.gds` 成功
 3. `valid_circle.yaml` 生成的 GDS 可被 KLayout 读取
 4. `valid_polygon_bevel.yaml` 输出确定性 GDS
 5. `invalid_old_polygon.yaml` 明确失败，错误码为 `old_schema_detected`
@@ -939,7 +953,7 @@ MVP 完成必须同时满足：
 
 建议顺序：
 
-1. 新建 `tests/fixtures/mvp/`
+1. 新建 `mvp/tests/fixtures/`
 2. 写 3 个 valid YAML 和 5 个 invalid YAML
 3. 实现 parser/validator 到所有 fixture 通过
 4. 再实现 geometry 和 GDS writer

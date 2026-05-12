@@ -4,9 +4,9 @@ Only bevel is implemented. Arc and adaptive fillets are intentionally rejected
 by schema validation until the fab-approved precision model exists.
 """
 
-from summer_gds.config.errors import ConfigIssue
-from summer_gds.geometry.primitives import EPSILON, distance, is_convex_polygon
-from summer_gds.model import Point
+from mvp_summer_gds.config.errors import ConfigIssue
+from mvp_summer_gds.geometry.primitives import EPSILON, distance, is_convex_polygon
+from mvp_summer_gds.model import Point
 
 
 def validate_bevel_distances(points, distances, path):
