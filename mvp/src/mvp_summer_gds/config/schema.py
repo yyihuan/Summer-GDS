@@ -13,6 +13,7 @@ from mvp_summer_gds.geometry.primitives import (
     signed_area,
 )
 from mvp_summer_gds.model import (
+    ArcFillet,
     BevelFillet,
     CircleShape,
     GdsConfig,
@@ -282,14 +283,27 @@ def _parse_polygon_shape(value, path, shape_id, name, layer, issues):
         return None
 
     normalized_vertices, reversed_order = normalize_counterclockwise(vertices)
+    vertex_user_indices = list(range(len(vertices)))
+    if reversed_order:
+        vertex_user_indices = list(reversed(vertex_user_indices))
     fillet = _parse_fillet(value.get("fillet"), "%s.fillet" % path, len(vertices), issues)
     if fillet and reversed_order:
-        fillet = BevelFillet(distances=list(reversed(fillet.distances)))
+        if isinstance(fillet, BevelFillet):
+            fillet = BevelFillet(distances=list(reversed(fillet.distances)))
+        elif isinstance(fillet, ArcFillet):
+            fillet = ArcFillet(radii=list(reversed(fillet.radii)))
 
     if fillet:
         issues.extend(validate_bevel_distances(normalized_vertices, fillet.distances, "%s.fillet.distances" % path))
 
-    return PolygonShape(id=shape_id, name=name, layer=layer, vertices=normalized_vertices, fillet=fillet)
+    return PolygonShape(
+        id=shape_id,
+        name=name,
+        layer=layer,
+        vertices=normalized_vertices,
+        vertex_user_indices=vertex_user_indices,
+        fillet=fillet,
+    )
 
 
 def _parse_circle_shape(value, path, shape_id, name, layer, issues):
