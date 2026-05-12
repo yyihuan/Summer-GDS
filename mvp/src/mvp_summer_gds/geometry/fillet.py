@@ -162,6 +162,11 @@ def validate_arc_radii(points, radii, path, user_indices=None):
 
 
 def apply_arc_v2(points, radii):
+    """Apply arc_v2 to a normalized CCW polygon.
+
+    YAML parsing owns clockwise-to-CCW normalization and radius reordering. This
+    geometry layer assumes that contract has already been enforced.
+    """
     issues = validate_arc_radii(points, radii, "fillet.radii")
     if issues:
         raise ValueError("; ".join(issue.message for issue in issues))
@@ -173,6 +178,7 @@ def apply_arc_v2(points, radii):
 
 
 def build_arc_corner_plans(points, radii, user_indices=None):
+    """Build per-corner arc plans for a normalized CCW polygon."""
     plans = []
     for context in build_corner_contexts(points, radii, user_indices):
         if context.radius == 0:
