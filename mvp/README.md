@@ -21,6 +21,7 @@ Use the MVP tests as the first compatibility gate:
 uv run python -m pytest mvp/tests
 uv run summer-gds validate mvp/tests/fixtures/valid_polygon.yaml
 uv run summer-gds generate mvp/tests/fixtures/valid_polygon.yaml --out /tmp/polygon.gds
+uv run summer-gds generate mvp/tests/fixtures/valid_polygon_arc_v2.yaml --out /tmp/arc_v2.gds
 ```
 
 The visual tests generate PNG snapshots under `mvp/tests/_visual_output/`:
@@ -28,6 +29,13 @@ The visual tests generate PNG snapshots under `mvp/tests/_visual_output/`:
 ```bash
 uv run python -m pytest mvp/tests/visual
 ```
+
+## Current Scope
+
+- `base_shape` polygon and circle.
+- `bevel` straight-cut fillet for polygon.
+- `arc_v2` radius-based fillet for simple convex polygon.
+- Strict rejection for legacy `mode: arc`, bare `fillet.radii`, rings, via, and circle fillet.
 
 Future PRD or technical-spec iterations should first update the YAML fixtures and
 tests under this directory, then update the implementation.

@@ -8,14 +8,14 @@
 
 ## 0. 结论
 
-MVP 采用 **CLI-first + 严格 YAML v1 + 基础图形生成 + 倒角占位接口**。
+MVP 采用 **CLI-first + 严格 YAML v1 + 基础图形生成 + 显式倒角策略**。
 
 这不是完整重构 v1，也不是继续在旧 `main.py` 上补兼容。MVP 的目标是先建立一个可信、可测试、可扩展的窄内核：
 
 - 支持 `base_shape`：`polygon` 和 `circle`
 - 支持 CLI：`validate` 和 `generate`
 - 支持严格 YAML 解析器：拒绝模糊输入、未知字段和旧协议
-- 支持最小倒角占位：`bevel` 直线切角
+- 支持倒角策略：`bevel` 直线切角和 convex-only `arc_v2` 圆弧倒角
 - 输出可被 KLayout 打开的 GDS
 - 不承诺 fab 可用的圆弧倒角精度
 
@@ -41,7 +41,7 @@ MVP 与长期规格的差异：
 | 主入口 | GUI | CLI |
 | YAML 顶点 | `"x1,y1;x2,y2"` 字符串 | `[[x, y], ...]` 数值对列表 |
 | 图形类型 | `base_shape` / `rings` / `via` | 仅 `base_shape` |
-| 倒角 | 圆弧倒角，未来替换新方案 | `bevel` 直线切角占位 |
+| 倒角 | 圆弧倒角，未来扩展 rings/via | `bevel` + convex-only `arc_v2` |
 | 兼容旧 YAML | 未定 | 不在运行时兼容，未来单独 migrator |
 | GDS scale | 预留 | 不实现 |
 | GUI 元数据 | YAML 注释 | 不实现 |
@@ -68,8 +68,9 @@ MVP 与长期规格的差异：
    - `base_shape + polygon`
    - `base_shape + circle`
 
-4. 倒角占位
-   - 仅 `mode: bevel`
+4. 倒角策略
+   - `mode: bevel`
+   - `mode: arc_v2`
    - 仅 polygon 支持
    - circle 的 `fillet` 必须为 `null` 或省略
 
@@ -93,7 +94,8 @@ MVP 与长期规格的差异：
 | GUI | 长期重要，但会拖入状态管理、下载、表单校验，影响核心内核收敛 |
 | `rings` | 需要偏移链、环间距、布尔差和 fillet 半径序列，复杂度高 |
 | `via` | 依赖内外偏移和布尔差，旧实现有 silent empty risk |
-| `arc` fillet | fab 已反馈旧精度不对，新方案未定，不能在 MVP 中伪装可用 |
+| 旧 `mode: arc` fillet | fab 已反馈旧精度不对，必须使用 `arc_v2` 区分新旧语义 |
+| `arc_v2` concave polygon | 第一版只识别并报错，凹角圆弧语义后续单独设计 |
 | `adaptive` fillet | 明确从长期规格中移除 |
 | 旧 YAML 自动兼容 | 会污染新 parser，未来做单独 migrator |
 | `gds.scale` | 容易和 dbu/precision/KLayout 单位耦合，先不做 |
@@ -434,9 +436,9 @@ precision / dbu 是整数
 
 ---
 
-## 8. 倒角占位接口
+## 8. 倒角接口
 
-### 8.1 支持的唯一模式：`bevel`
+### 8.1 `bevel` 直线切角
 
 ```yaml
 fillet:
@@ -475,7 +477,25 @@ bevel 后:
    Pprev
 ```
 
-### 8.2 明确不支持
+### 8.2 `arc_v2` 圆弧倒角
+
+```yaml
+fillet:
+  mode: "arc_v2"
+  radii: [5, 0, 10, 3]
+```
+
+语义：
+
+- `radii.length == vertices.length`
+- 第 `i` 个半径严格对应用户输入的第 `i` 个顶点
+- `radius = 0`：该角不处理
+- `radius > 0`：用指定半径的圆弧替代该角
+- 第一版只支持 simple + convex polygon
+- 如果存在 concave corner，报 `arc_v2_requires_convex_polygon`
+- 如果相邻两个角在同一边上的 tangent distance 之和大于等于边长，报 `arc_radius_too_large`
+
+### 8.3 明确不支持
 
 以下输入必须报错：
 
@@ -496,7 +516,7 @@ fillet:
 
 原因：旧圆弧倒角存在 fab 精度问题，MVP 不应暴露会被误解为生产可用的接口。
 
-### 8.3 bevel 校验
+### 8.4 bevel 校验
 
 对每个顶点 `i`：
 
@@ -513,26 +533,7 @@ distance_at_edge_start + distance_at_edge_end < edge_length
 
 不要自动缩小距离。自动修正会让用户以为参数生效，但实际输出不同。
 
-### 8.4 下一阶段：`arc_v2`
-
-下一阶段在 MVP 内加入圆弧倒角，但不替换 `bevel`。`bevel` 保留为占位实现和回归对照。
-
-```yaml
-fillet:
-  mode: "arc_v2"
-  radii: [5, 0, 10, 3]
-```
-
-协议语义：
-
-- `mode` 必须显式为 `arc_v2`
-- `radii.length == vertices.length`
-- 第 `i` 个半径严格对应用户输入的第 `i` 个顶点
-- `radius = 0` 表示该角不倒角
-- `radius < 0` 必须报错
-- circle 继续禁止 fillet
-- 旧 `mode: "arc"` 继续报错
-- 裸 `fillet.radii` 继续报错，避免和旧协议混淆
+### 8.5 `arc_v2` 内部角对象
 
 内部数据流：
 
@@ -565,7 +566,7 @@ ArcCornerPlan[]
   └── output_points
 ```
 
-规划边界：
+实现边界：
 
 - 第一版 `arc_v2` 只支持 simple + convex polygon。
 - 如果存在 concave corner，报 `arc_v2_requires_convex_polygon`，不尝试自动处理。
@@ -1059,6 +1060,8 @@ mixed polygon/circle 100 shapes
 - 裸 `fillet.radii` 继续被拒绝，避免旧协议回流
 - `valid_polygon_arc_v2.yaml` 可生成 GDS 和 PNG 快照
 
+状态：已在 MVP 中实现第一版 convex-only `arc_v2`。
+
 ---
 
 ## 16. 验收标准
@@ -1069,11 +1072,14 @@ MVP 完成必须同时满足：
 2. `summer-gds generate mvp/tests/fixtures/valid_polygon.yaml --out /tmp/polygon.gds` 成功
 3. `valid_circle.yaml` 生成的 GDS 可被 KLayout 读取
 4. `valid_polygon_bevel.yaml` 输出确定性 GDS
-5. `invalid_old_polygon.yaml` 明确失败，错误码为 `old_schema_detected`
-6. `invalid_arc_fillet.yaml` 明确失败，错误码为 `unsupported_fillet_mode`
-7. 任意 shape 无效时不生成部分 GDS
-8. 测试覆盖 parser、validator、geometry、CLI、GDS writer
-9. `uv run python -m pytest mvp/tests/visual` 生成可人工审查的 PNG 快照
+5. `valid_polygon_arc_v2.yaml` 输出确定性 GDS
+6. `invalid_old_polygon.yaml` 明确失败，错误码为 `old_schema_detected`
+7. `invalid_arc_fillet.yaml` 明确失败，错误码为 `unsupported_fillet_mode`
+8. `invalid_arc_v2_concave.yaml` 明确失败，错误码为 `arc_v2_requires_convex_polygon`
+9. `invalid_arc_v2_too_large.yaml` 明确失败，错误码为 `arc_radius_too_large`
+10. 任意 shape 无效时不生成部分 GDS
+11. 测试覆盖 parser、validator、geometry、CLI、GDS writer
+12. `uv run python -m pytest mvp/tests/visual` 生成可人工审查的 PNG 快照
 
 ---
 
@@ -1084,8 +1090,7 @@ MVP 完成必须同时满足：
 | MVP 主入口 | CLI-first | 降低重构面，先验证核心生成链路 |
 | 旧 YAML | 不运行时兼容 | 避免兼容泥潭，未来 migrator 单独做 |
 | 顶点格式 | 数值对列表 | 强类型、易校验、少分隔符边界 |
-| 倒角 | `bevel` 占位 | 不复用 fab 已反馈有问题的旧 arc |
-| 下一阶段倒角 | `mode: arc_v2` + `radii` | 显式区分新旧圆弧语义 |
+| 倒角 | `bevel` + `mode: arc_v2` | 保留占位实现，同时支持第一版圆弧倒角 |
 | 角对象 | 内部 `CornerContext`，不进入 YAML | 保持用户协议简单，同时让算法显式可读 |
 | `arc_v2` 范围 | 第一版只支持 convex polygon | concave 语义复杂，先识别并明确报错 |
 | `arc_v2` 精度 | 内部策略，不暴露 YAML `tolerance` | 减少用户配置面，避免精度参数和 dbu/precision 混乱 |
