@@ -2,7 +2,7 @@
 
 import re
 
-from mvp_summer_gds.geometry.fillet import validate_bevel_distances
+from mvp_summer_gds.geometry.fillet import validate_arc_radii, validate_bevel_distances
 from mvp_summer_gds.geometry.primitives import (
     EPSILON,
     has_consecutive_duplicate_points,
@@ -294,7 +294,23 @@ def _parse_polygon_shape(value, path, shape_id, name, layer, issues):
             fillet = ArcFillet(radii=list(reversed(fillet.radii)))
 
     if fillet:
-        issues.extend(validate_bevel_distances(normalized_vertices, fillet.distances, "%s.fillet.distances" % path))
+        if isinstance(fillet, BevelFillet):
+            issues.extend(
+                validate_bevel_distances(
+                    normalized_vertices,
+                    fillet.distances,
+                    "%s.fillet.distances" % path,
+                )
+            )
+        elif isinstance(fillet, ArcFillet):
+            issues.extend(
+                validate_arc_radii(
+                    normalized_vertices,
+                    fillet.radii,
+                    "%s.fillet.radii" % path,
+                    vertex_user_indices,
+                )
+            )
 
     return PolygonShape(
         id=shape_id,
@@ -431,30 +447,37 @@ def _parse_fillet(value, path, vertex_count, issues):
             )
         )
         return None
-    if "radii" in value:
+
+    mode = value.get("mode")
+    if mode is None and "radii" in value:
         issues.append(
             ConfigIssue(
                 path="%s.radii" % path,
                 code="old_fillet_schema",
-                message="fillet.radii is not accepted in MVP.",
-                hint='Use fillet: {mode: "bevel", distances: [...]} for the placeholder fillet.',
+                message="bare fillet.radii is not accepted in MVP.",
+                hint='Use fillet: {mode: "arc_v2", radii: [...]} for radius-based fillets.',
             )
         )
         return None
 
+    if mode == "bevel":
+        return _parse_bevel_fillet(value, path, vertex_count, issues)
+    if mode == "arc_v2":
+        return _parse_arc_v2_fillet(value, path, vertex_count, issues)
+
+    issues.append(
+        ConfigIssue(
+            path="%s.mode" % path,
+            code="unsupported_fillet_mode",
+            message='MVP supports fillet.mode = "bevel" or "arc_v2".',
+            hint="Use fillet: null, fillet.mode: bevel, or fillet.mode: arc_v2.",
+        )
+    )
+    return None
+
+
+def _parse_bevel_fillet(value, path, vertex_count, issues):
     _reject_unknown(value, {"mode", "distances"}, path, issues)
-    mode = value.get("mode")
-    if mode != "bevel":
-        issues.append(
-            ConfigIssue(
-                path="%s.mode" % path,
-                code="unsupported_fillet_mode",
-                message='MVP only supports fillet.mode = "bevel".',
-                hint="Use fillet: null or fillet.mode: bevel.",
-            )
-        )
-        return None
-
     distances = value.get("distances")
     if not isinstance(distances, list):
         issues.append(_invalid_type("%s.distances" % path, "list[float]"))
@@ -477,6 +500,32 @@ def _parse_fillet(value, path, vertex_count, issues):
         )
         return None
     return BevelFillet(distances=parsed)
+
+
+def _parse_arc_v2_fillet(value, path, vertex_count, issues):
+    _reject_unknown(value, {"mode", "radii"}, path, issues)
+    radii = value.get("radii")
+    if not isinstance(radii, list):
+        issues.append(_invalid_type("%s.radii" % path, "list[float]"))
+        return None
+    parsed = []
+    for index, raw_radius in enumerate(radii):
+        parsed_radius = _finite_float(raw_radius, "%s.radii[%d]" % (path, index), issues)
+        if parsed_radius is not None:
+            parsed.append(parsed_radius)
+    if len(parsed) != len(radii):
+        return None
+    if len(parsed) != vertex_count:
+        issues.append(
+            ConfigIssue(
+                path="%s.radii" % path,
+                code="arc_radii_length_mismatch",
+                message="arc_v2 radii length must match vertex count.",
+                hint="Provide exactly one radius per polygon vertex.",
+            )
+        )
+        return None
+    return ArcFillet(radii=parsed)
 
 
 def _parse_point(value, path, issues):

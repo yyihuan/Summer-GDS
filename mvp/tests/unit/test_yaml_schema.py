@@ -5,7 +5,7 @@ import pytest
 from mvp_summer_gds.config.errors import ConfigValidationError
 from mvp_summer_gds.config.loader import load_yaml_file
 from mvp_summer_gds.config.schema import normalize_config
-from mvp_summer_gds.model import CircleShape, PolygonShape
+from mvp_summer_gds.model import ArcFillet, CircleShape, PolygonShape
 
 FIXTURES = Path(__file__).resolve().parents[1] / "fixtures"
 
@@ -43,6 +43,13 @@ def test_valid_bevel_normalizes_fillet():
     assert config.shapes[0].fillet.distances == [5.0, 5.0, 5.0, 5.0]
 
 
+def test_valid_arc_v2_normalizes_fillet():
+    config = load_fixture("valid_polygon_arc_v2.yaml")
+    assert isinstance(config.shapes[0].fillet, ArcFillet)
+    assert config.shapes[0].fillet.mode == "arc_v2"
+    assert config.shapes[0].fillet.radii == [5.0, 5.0, 5.0, 5.0]
+
+
 def test_shape_layer_defaults_to_gds_default_layer():
     raw = load_yaml_file(FIXTURES / "valid_polygon.yaml")
     raw["gds"]["default_layer"] = [7, 3]
@@ -65,6 +72,14 @@ def test_self_intersecting_polygon_is_rejected():
 
 def test_bevel_too_large_is_rejected():
     assert_error_code("invalid_bevel_too_large.yaml", "bevel_distance_too_large")
+
+
+def test_arc_v2_concave_polygon_is_rejected():
+    assert_error_code("invalid_arc_v2_concave.yaml", "arc_v2_requires_convex_polygon")
+
+
+def test_arc_v2_too_large_is_rejected():
+    assert_error_code("invalid_arc_v2_too_large.yaml", "arc_radius_too_large")
 
 
 def test_schema_version_must_be_integer_one():
@@ -97,6 +112,14 @@ def test_circle_fillet_is_rejected():
     with pytest.raises(ConfigValidationError) as exc_info:
         normalize_config(raw)
     assert "circle_fillet_not_supported" in {issue.code for issue in exc_info.value.issues}
+
+
+def test_bare_radii_are_rejected_as_old_schema():
+    raw = load_yaml_file(FIXTURES / "valid_polygon.yaml")
+    raw["shapes"][0]["fillet"] = {"radii": [1, 1, 1, 1]}
+    with pytest.raises(ConfigValidationError) as exc_info:
+        normalize_config(raw)
+    assert "old_fillet_schema" in {issue.code for issue in exc_info.value.issues}
 
 
 def test_precision_must_be_integer_multiple_of_dbu():

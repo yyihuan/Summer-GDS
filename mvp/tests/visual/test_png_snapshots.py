@@ -19,6 +19,7 @@ def test_visual_png_snapshots_are_generated_for_valid_shapes():
     outputs = [
         _render_fixture_png("valid_polygon.yaml", "valid_polygon.png"),
         _render_fixture_png("valid_polygon_bevel.yaml", "valid_polygon_bevel.png"),
+        _render_fixture_png("valid_polygon_arc_v2.yaml", "valid_polygon_arc_v2.png"),
         _render_fixture_png("valid_circle.yaml", "valid_circle.png"),
     ]
 

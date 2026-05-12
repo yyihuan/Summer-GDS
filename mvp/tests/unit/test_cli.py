@@ -30,6 +30,15 @@ def test_cli_generate_writes_gds(tmp_path, capsys):
     assert "polygons_written: 1" in captured.out
 
 
+def test_cli_generate_arc_v2_writes_gds(tmp_path, capsys):
+    output = tmp_path / "cli_arc_v2.gds"
+    code = main(["generate", str(FIXTURES / "valid_polygon_arc_v2.yaml"), "--out", str(output)])
+    captured = capsys.readouterr()
+    assert code == 0
+    assert output.exists()
+    assert "polygons_written: 1" in captured.out
+
+
 def test_cli_generate_invalid_config_does_not_write_gds(tmp_path, capsys):
     output = tmp_path / "should_not_exist.gds"
     code = main(["generate", str(FIXTURES / "invalid_old_polygon.yaml"), "--out", str(output)])
@@ -37,6 +46,13 @@ def test_cli_generate_invalid_config_does_not_write_gds(tmp_path, capsys):
     assert code == 2
     assert not output.exists()
     assert "old_schema_detected" in captured.err
+
+
+def test_cli_validate_invalid_arc_v2_returns_config_error(capsys):
+    code = main(["validate", str(FIXTURES / "invalid_arc_v2_concave.yaml")])
+    captured = capsys.readouterr()
+    assert code == 2
+    assert "arc_v2_requires_convex_polygon" in captured.err
 
 
 def test_cli_missing_file_returns_file_io(capsys):

@@ -1,0 +1,24 @@
+schema_version: 1
+
+global:
+  dbu: 0.001
+  precision: null
+
+gds:
+  output_file: "valid_polygon_arc_v2_mixed.gds"
+  cell_name: "TOP"
+  default_layer: [1, 0]
+
+shapes:
+  - id: "mixed_pad"
+    type: "base_shape"
+    geometry_type: "polygon"
+    layer: [2, 0]
+    vertices:
+      - [0, 0]
+      - [100, 0]
+      - [100, 80]
+      - [0, 80]
+    fillet:
+      mode: "arc_v2"
+      radii: [0, 4, 8, 2]
