@@ -18,14 +18,43 @@ VISUAL_OUTPUT = Path(__file__).resolve().parents[1] / "_visual_output"
 def test_visual_png_snapshots_are_generated_for_valid_shapes():
     outputs = [
         _render_fixture_png("valid_polygon.yaml", "valid_polygon.png"),
-        _render_fixture_png("valid_polygon_bevel.yaml", "valid_polygon_bevel.png"),
-        _render_fixture_png("valid_polygon_arc_v2.yaml", "valid_polygon_arc_v2.png"),
+        _render_fixture_png("valid_polygon_arc.yaml", "valid_polygon_arc.png"),
+        _render_fixture_png("valid_polygon_arc_mixed.yaml", "valid_polygon_arc_mixed.png"),
+        _render_fixture_png(
+            "valid_polygon_arc_sharp_convex.yaml",
+            "valid_polygon_arc_sharp_convex.png",
+        ),
+        _render_fixture_png("valid_polygon_arc_arrow_concave.yaml", "valid_polygon_arc_arrow_concave.png"),
+        _render_fixture_png("valid_polygon_arc_star_concave.yaml", "valid_polygon_arc_star_concave.png"),
+        _render_fixture_png("valid_polygon_arc_octagon_um.yaml", "valid_polygon_arc_octagon_um.png"),
+        _render_fixture_png("valid_polygon_arc_octagon_scaled.yaml", "valid_polygon_arc_octagon_scaled.png"),
         _render_fixture_png("valid_circle.yaml", "valid_circle.png"),
     ]
 
     for output in outputs:
         assert output.exists()
         assert output.stat().st_size > 1_000
+
+
+def test_dense_arc_points_are_not_annotated_as_individual_vertices():
+    class FakeAxes:
+        def __init__(self):
+            self.plot_calls = 0
+            self.text_calls = 0
+
+        def plot(self, *args, **kwargs):
+            self.plot_calls += 1
+
+        def text(self, *args, **kwargs):
+            self.text_calls += 1
+
+    axes = FakeAxes()
+    dense_points = [(float(index), 0.0) for index in range(17)]
+
+    _annotate_vertices(axes, dense_points)
+
+    assert axes.plot_calls == 0
+    assert axes.text_calls == 0
 
 
 def _render_fixture_png(fixture_name, output_name):

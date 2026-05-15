@@ -5,19 +5,18 @@ global:
   precision: null
 
 gds:
-  output_file: "bad_bevel.gds"
+  output_file: "invalid_arc_too_large_sharp.gds"
   cell_name: "TOP"
   default_layer: [1, 0]
 
 shapes:
-  - id: "main_pad"
+  - id: "too_large_sharp_pad"
     type: "base_shape"
     geometry_type: "polygon"
+    layer: [2, 0]
     vertices:
       - [0, 0]
-      - [10, 0]
-      - [10, 10]
-      - [0, 10]
+      - [100, 0]
+      - [1, 0.1]
     fillet:
-      mode: "bevel"
-      distances: [6, 6, 6, 6]
+      radii: [0.1, 0.1, 0.1]

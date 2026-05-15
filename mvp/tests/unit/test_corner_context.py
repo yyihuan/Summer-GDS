@@ -18,6 +18,11 @@ def test_corner_context_preserves_user_index_for_counterclockwise_points():
     assert [context.normalized_index for context in contexts] == [0, 1, 2, 3]
     assert [context.radius for context in contexts] == [1.0, 2.0, 3.0, 4.0]
     assert {context.corner_kind for context in contexts} == {CornerKind.CONVEX}
+    assert contexts[0].prev_point == Point(0, 10)
+    assert contexts[0].vertex == Point(0, 0)
+    assert contexts[0].next_point == Point(10, 0)
+    assert contexts[0].incoming_edge == Point(0, -10)
+    assert contexts[0].outgoing_edge == Point(10, 0)
 
 
 def test_corner_context_preserves_user_index_after_clockwise_normalization():
@@ -47,7 +52,8 @@ def test_corner_context_classifies_concave_and_collinear_corners():
         Point(0, 10),
     ]
     concave_contexts = build_corner_contexts(concave_points)
-    assert CornerKind.CONCAVE in {context.corner_kind for context in concave_contexts}
+    concave_by_vertex = {context.vertex.as_tuple(): context.corner_kind for context in concave_contexts}
+    assert concave_by_vertex[(5, 5)] == CornerKind.CONCAVE
 
     collinear_points = [
         Point(0, 0),
@@ -58,6 +64,9 @@ def test_corner_context_classifies_concave_and_collinear_corners():
     ]
     collinear_contexts = build_corner_contexts(collinear_points)
     assert collinear_contexts[1].corner_kind == CornerKind.COLLINEAR
+    assert collinear_contexts[1].prev_point == Point(0, 0)
+    assert collinear_contexts[1].vertex == Point(5, 0)
+    assert collinear_contexts[1].next_point == Point(10, 0)
 
 
 def test_normalized_polygon_shape_stores_user_indices_for_clockwise_input(tmp_path):
@@ -84,12 +93,11 @@ shapes:
       - [10, 10]
       - [10, 0]
     fillet:
-      mode: "bevel"
-      distances: [1, 2, 3, 4]
+      radii: [1, 2, 3, 4]
 """,
         encoding="utf-8",
     )
     config = normalize_config(load_yaml_file(config_path))
 
     assert config.shapes[0].vertex_user_indices == [3, 2, 1, 0]
-    assert config.shapes[0].fillet.distances == [4.0, 3.0, 2.0, 1.0]
+    assert config.shapes[0].fillet.radii == [4.0, 3.0, 2.0, 1.0]

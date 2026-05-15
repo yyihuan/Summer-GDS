@@ -2,7 +2,7 @@
 
 import re
 
-from mvp_summer_gds.geometry.fillet import validate_arc_radii, validate_bevel_distances
+from mvp_summer_gds.geometry.fillet import validate_arc_radii
 from mvp_summer_gds.geometry.primitives import (
     EPSILON,
     has_consecutive_duplicate_points,
@@ -14,7 +14,6 @@ from mvp_summer_gds.geometry.primitives import (
 )
 from mvp_summer_gds.model import (
     ArcFillet,
-    BevelFillet,
     CircleShape,
     GdsConfig,
     GlobalConfig,
@@ -288,29 +287,19 @@ def _parse_polygon_shape(value, path, shape_id, name, layer, issues):
         vertex_user_indices = list(reversed(vertex_user_indices))
     fillet = _parse_fillet(value.get("fillet"), "%s.fillet" % path, len(vertices), issues)
     if fillet and reversed_order:
-        if isinstance(fillet, BevelFillet):
-            fillet = BevelFillet(distances=list(reversed(fillet.distances)))
-        elif isinstance(fillet, ArcFillet):
-            fillet = ArcFillet(radii=list(reversed(fillet.radii)))
+        fillet = ArcFillet(radii=list(reversed(fillet.radii)), precision=fillet.precision)
 
     if fillet:
-        if isinstance(fillet, BevelFillet):
-            issues.extend(
-                validate_bevel_distances(
-                    normalized_vertices,
-                    fillet.distances,
-                    "%s.fillet.distances" % path,
-                )
+        issues.extend(
+            validate_arc_radii(
+                normalized_vertices,
+                fillet.radii,
+                "%s.fillet.radii" % path,
+                vertex_user_indices,
+                fillet.precision,
+                "%s.fillet.precision" % path,
             )
-        elif isinstance(fillet, ArcFillet):
-            issues.extend(
-                validate_arc_radii(
-                    normalized_vertices,
-                    fillet.radii,
-                    "%s.fillet.radii" % path,
-                    vertex_user_indices,
-                )
-            )
+        )
 
     return PolygonShape(
         id=shape_id,
@@ -443,67 +432,28 @@ def _parse_fillet(value, path, vertex_count, issues):
                 path="%s.type" % path,
                 code="old_fillet_schema",
                 message="Old fillet.type schema is not accepted in MVP.",
-                hint='Use fillet: null or fillet: {mode: "bevel", distances: [...]}.',
+                hint="Use fillet: null or fillet: {radii: [...], precision: null}.",
             )
         )
         return None
 
     mode = value.get("mode")
-    if mode is None and "radii" in value:
+    if mode is not None and mode != "arc":
         issues.append(
             ConfigIssue(
-                path="%s.radii" % path,
-                code="old_fillet_schema",
-                message="bare fillet.radii is not accepted in MVP.",
-                hint='Use fillet: {mode: "arc_v2", radii: [...]} for radius-based fillets.',
+                path="%s.mode" % path,
+                code="unsupported_fillet_mode",
+                message='MVP supports only arc fillet mode.',
+                hint='Use fillet: {radii: [...]} or fillet: {mode: "arc", radii: [...]}.',
             )
         )
         return None
 
-    if mode == "bevel":
-        return _parse_bevel_fillet(value, path, vertex_count, issues)
-    if mode == "arc_v2":
-        return _parse_arc_v2_fillet(value, path, vertex_count, issues)
-
-    issues.append(
-        ConfigIssue(
-            path="%s.mode" % path,
-            code="unsupported_fillet_mode",
-            message='MVP supports fillet.mode = "bevel" or "arc_v2".',
-            hint="Use fillet: null, fillet.mode: bevel, or fillet.mode: arc_v2.",
-        )
-    )
-    return None
+    return _parse_arc_fillet(value, path, vertex_count, issues)
 
 
-def _parse_bevel_fillet(value, path, vertex_count, issues):
-    _reject_unknown(value, {"mode", "distances"}, path, issues)
-    distances = value.get("distances")
-    if not isinstance(distances, list):
-        issues.append(_invalid_type("%s.distances" % path, "list[float]"))
-        return None
-    parsed = []
-    for index, raw_distance in enumerate(distances):
-        parsed_distance = _finite_float(raw_distance, "%s.distances[%d]" % (path, index), issues)
-        if parsed_distance is not None:
-            parsed.append(parsed_distance)
-    if len(parsed) != len(distances):
-        return None
-    if len(parsed) != vertex_count:
-        issues.append(
-            ConfigIssue(
-                path="%s.distances" % path,
-                code="fillet_length_mismatch",
-                message="bevel distances length must match vertex count.",
-                hint="Provide exactly one distance per polygon vertex.",
-            )
-        )
-        return None
-    return BevelFillet(distances=parsed)
-
-
-def _parse_arc_v2_fillet(value, path, vertex_count, issues):
-    _reject_unknown(value, {"mode", "radii"}, path, issues)
+def _parse_arc_fillet(value, path, vertex_count, issues):
+    _reject_unknown(value, {"mode", "radii", "precision"}, path, issues)
     radii = value.get("radii")
     if not isinstance(radii, list):
         issues.append(_invalid_type("%s.radii" % path, "list[float]"))
@@ -520,12 +470,31 @@ def _parse_arc_v2_fillet(value, path, vertex_count, issues):
             ConfigIssue(
                 path="%s.radii" % path,
                 code="arc_radii_length_mismatch",
-                message="arc_v2 radii length must match vertex count.",
+                message="arc radii length must match vertex count.",
                 hint="Provide exactly one radius per polygon vertex.",
             )
         )
         return None
-    return ArcFillet(radii=parsed)
+    precision = value.get("precision")
+    parsed_precision = None
+    invalid_precision = False
+    if precision is not None:
+        parsed_precision = _finite_float(precision, "%s.precision" % path, issues)
+        if parsed_precision is None:
+            invalid_precision = True
+        elif not (0.00001 <= parsed_precision <= 1.0):
+            issues.append(
+                ConfigIssue(
+                    path="%s.precision" % path,
+                    code="arc_precision_out_of_range",
+                    message="arc precision must be between 0.00001 and 1.0 microns.",
+                    hint="Omit precision for automatic selection or choose a positive value in range.",
+                )
+            )
+            invalid_precision = True
+    if invalid_precision:
+        return None
+    return ArcFillet(radii=parsed, precision=parsed_precision)
 
 
 def _parse_point(value, path, issues):
@@ -601,7 +570,7 @@ def _detect_old_or_unsupported_shape(value, path, issues):
                 path="%s.fillet.type" % path,
                 code="old_fillet_schema",
                 message="Old fillet.type schema is not accepted in MVP.",
-                hint='Use fillet: null or fillet.mode: bevel.',
+                hint="Use fillet: null or fillet: {radii: [...]}.",
             )
         )
         has_issue = True

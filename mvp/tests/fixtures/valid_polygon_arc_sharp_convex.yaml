@@ -5,20 +5,18 @@ global:
   precision: null
 
 gds:
-  output_file: "valid_polygon_arc_v2_mixed.gds"
+  output_file: "valid_polygon_arc_sharp_convex.gds"
   cell_name: "TOP"
   default_layer: [1, 0]
 
 shapes:
-  - id: "mixed_pad"
+  - id: "sharp_convex_pad"
     type: "base_shape"
     geometry_type: "polygon"
     layer: [2, 0]
     vertices:
       - [0, 0]
       - [100, 0]
-      - [100, 80]
-      - [0, 80]
+      - [1, 0.1]
     fillet:
-      mode: "arc_v2"
-      radii: [0, 4, 8, 2]
+      radii: [0.001, 0.001, 0.001]

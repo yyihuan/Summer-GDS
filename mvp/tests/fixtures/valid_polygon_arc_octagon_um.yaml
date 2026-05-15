@@ -1,0 +1,27 @@
+schema_version: 1
+
+global:
+  dbu: 0.001
+  precision: null
+
+gds:
+  output_file: "valid_polygon_arc_octagon_um.gds"
+  cell_name: "TOP"
+  default_layer: [1, 0]
+
+shapes:
+  - id: "octagon_um"
+    type: "base_shape"
+    geometry_type: "polygon"
+    layer: [2, 0]
+    vertices:
+      - [-3314, 8000]
+      - [-8000, 3314]
+      - [-8000, -3314]
+      - [-3314, -8000]
+      - [3314, -8000]
+      - [8000, -3314]
+      - [8000, 3314]
+      - [3314, 8000]
+    fillet:
+      radii: [500, 500, 500, 500, 500, 500, 500, 500]

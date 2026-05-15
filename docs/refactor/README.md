@@ -1,281 +1,83 @@
-# 重构文档索引
+# Summer-GDS Refactor Docs
 
-> **Summer-GDS 重构方案文档集**  
-> **版本**: v1.0  
-> **日期**: 2025-02-11
-
----
-
-## 📚 文档导航
-
-### 核心文档
-
-1. **[分析报告](./ANALYSIS_REPORT.md)** ⭐ 必读
-   - V2 方案的深度分析
-   - 代码库现状评估
-   - 过度工程化问题识别
-   - 核心建议和结论
-
-2. **[简化版重构方案](./SIMPLIFIED_PLAN.md)** ⭐ 必读
-   - 推荐的实施方案
-   - 4周完成计划
-   - 详细的实施步骤
-   - 每个阶段的验收标准
-
-3. **[测试验证指南](./TESTING_GUIDE.md)** ⭐ 必读
-   - 每个阶段的详细测试步骤
-   - 可人工执行的验证清单
-   - 测试记录表格
-   - 失败处理流程
-
-4. **[方案对比分析](./COMPARISON.md)**
-   - V2 vs 简化方案详细对比
-   - 成本收益分析
-   - 适用场景分析
-   - 决策矩阵
+文档版本：v2.0
+日期：2026-05-16
+状态：完整产品架构规划
 
 ---
 
-## 🎯 快速开始
+## 阅读顺序
 
-### 如果你想...
+1. [PRD](./PRD.md)
+   产品边界、用户目标、当前 MVP 与完整产品的关系。
 
-**了解为什么需要重构**
-→ 阅读 [分析报告](./ANALYSIS_REPORT.md) 第一、二章
+2. [技术规格总览](./technical-spec.md)
+   完整产品的关键决策、模块清单、开发原则和文档导航。
 
-**了解如何重构**
-→ 阅读 [简化版重构方案](./SIMPLIFIED_PLAN.md)
+3. [YAML v2 协议](./yaml-protocol.md)
+   GUI 与 CLI 之间的正式配置协议。
 
-**了解如何测试**
-→ 阅读 [测试验证指南](./TESTING_GUIDE.md)
+4. [CLI 契约](./cli-contract.md)
+   CLI 命令、退出码、debug 输出和 GUI 调用约定。
 
-**对比两个方案**
-→ 阅读 [方案对比分析](./COMPARISON.md)
+5. [程序架构](./architecture.md)
+   CLI-first 架构、模块边界、依赖方向、Mermaid 图。
 
----
+6. [处理流水线](./processing-pipeline.md)
+   `base_shape`、`rings`、`via` 如何统一走 Boundary/Region 流水线。
 
-## 📖 阅读顺序建议
+7. [数据模型](./data-model.md)
+   `sid`、`cid`、BoundaryObject、RegionObject、ShapeResult 等内部对象。
 
-### 方案一：快速了解（30分钟）
+8. [校验与错误模型](./validation-and-errors.md)
+   必须做的最低限度校验、错误码、错误路径格式。
 
-1. [分析报告](./ANALYSIS_REPORT.md) - 第一、二章（10分钟）
-2. [简化版重构方案](./SIMPLIFIED_PLAN.md) - 第一、二章（10分钟）
-3. [测试验证指南](./TESTING_GUIDE.md) - 浏览目录（5分钟）
-4. [方案对比分析](./COMPARISON.md) - 第七章（5分钟）
+9. [测试策略](./testing-strategy.md)
+   单元测试、集成测试、PNG/GDS 可视化测试矩阵。
 
-### 方案二：深入理解（2小时）
+10. [性能与限制](./performance-and-limits.md)
+    默认上限、benchmark 场景、rings/via 规模风险。
 
-1. [分析报告](./ANALYSIS_REPORT.md) - 完整阅读（30分钟）
-2. [方案对比分析](./COMPARISON.md) - 完整阅读（40分钟）
-3. [简化版重构方案](./SIMPLIFIED_PLAN.md) - 完整阅读（30分钟）
-4. [测试验证指南](./TESTING_GUIDE.md) - 完整阅读（20分钟）
+11. [实施路线](./implementation-roadmap.md)
+   后续开发阶段、每阶段目标、验收标准、并行开发策略。
 
-### 方案三：准备实施（1天）
-
-1. 完整阅读所有文档（2小时）
-2. 执行 [测试验证指南](./TESTING_GUIDE.md) 的准备阶段（4小时）
-3. 制定详细的实施计划（2小时）
+12. [倒角测试设计](./fillet-test-design.md)
+    倒角算法和可视化测试的专项设计。
 
 ---
 
-## 🔑 核心结论
+## 核心结论
 
-### 主要发现
-
-1. **V2 方案整体优秀**，但对于 2000 行的项目来说**过度工程化**
-2. **简化方案**在保持核心收益的同时，**降低 60% 实施成本**
-3. **每个阶段都有明确的测试验证方案**，确保重构安全可控
-
-### 关键建议
-
-| 建议 | 说明 |
-|------|------|
-| ✅ **采用简化方案** | 4周完成，风险低，收益高 |
-| ✅ **保持简单** | 不引入不必要的抽象和设计模式 |
-| ✅ **测试先行** | 每个阶段都要通过全部测试 |
-| ✅ **渐进式重构** | 小步快跑，随时可回滚 |
-
-### 删除的部分
-
-| 删除项 | 理由 |
-|--------|------|
-| ❌ 配置数据模型（dataclass） | 当前 dict 方式已足够 |
-| ❌ 形状工厂模式 | 只有 3 种形状，if-elif 更直观 |
-| ❌ 功能开关机制 | 小项目无需灰度发布 |
-| ❌ 复杂目录结构 | 保持扁平结构更易维护 |
+- GUI 负责生成 YAML，CLI 是唯一稳定执行入口。
+- YAML 中声明的每个 `shape` 都是公开输出对象。
+- 内部临时对象如 inner/outer 不进入 YAML。
+- `base_shape`、`rings`、`via` 共用同一套 Boundary/Region 流水线。
+- offset 必须发生在倒角前。
+- boolean 必须发生在倒角后。
+- GDS writer 和 image renderer 都只接受 RegionObject。
+- PNG 是标准输出模式，用于 GUI 预览，不是临时 debug 附属能力。
+- `validate` 只做协议级预检，backend 校验使用 `export --dry-run --format ...`。
+- 输出路径由 CLI/app service 统一解析，默认不覆盖，正式写出使用 atomic rename。
+- 第一版不做复杂拓扑分类，但必须做流水线前置条件校验。
 
 ---
 
-## 📊 方案对比速查表
+## 当前 MVP 与完整产品的关系
 
-| 维度 | V2 方案 | 简化方案 | 推荐 |
-|------|---------|---------|------|
-| **实施周期** | 8-10周 | 4周 | ✅ 简化 |
-| **代码变动** | ~1500行 | ~500行 | ✅ 简化 |
-| **新增文件** | 15+ | 5 | ✅ 简化 |
-| **学习成本** | 高 | 低 | ✅ 简化 |
-| **维护成本** | 中 | 低 | ✅ 简化 |
-| **扩展性** | 极高 | 够用 | ✅ 简化 |
+当前 `mvp/` 已完成：
 
----
+- `base_shape` polygon/circle
+- polygon 圆弧倒角
+- CLI validate/generate
+- PNG/GDS 测试产物
+- KLayout-backed GDS writer
 
-## 🗓️ 实施时间表
+完整产品在此基础上增加：
 
-### 简化方案（4周）
-
-```
-Week 1: 准备 + utils拆分 + Web GUI拆分
-├─ Day 1-2:  准备阶段（建立测试基准）
-├─ Day 3-4:  utils.py 拆分
-└─ Day 5-7:  Web GUI 路由拆分
-
-Week 2: Region优化 + 测试补充
-├─ Day 8-10:  Region 方法提取
-└─ Day 11-14: 测试补充
-
-Week 3: 文档编写 + 代码审查
-├─ Day 15-17: 文档编写
-└─ Day 18-21: 代码审查
-
-Week 4: 验证和清理
-├─ Day 22-25: 全量测试
-└─ Day 26-28: 清理和发布
-```
-
----
-
-## ✅ 验收标准
-
-### 功能验收
-- [ ] 所有现有功能正常工作
-- [ ] 所有测试通过（覆盖率 > 70%）
-- [ ] 所有 examples 配置可生成 GDS
-- [ ] 基准 GDS 输出一致
-
-### 质量验收
-- [ ] 代码可读性提升
-- [ ] 模块职责清晰
-- [ ] 文档完整
-- [ ] 无性能退化
-
-### 兼容性验收
-- [ ] 现有配置 100% 兼容
-- [ ] API 接口保持稳定
-- [ ] 向后兼容
-
----
-
-## 🚀 开始实施
-
-### 准备工作
-
-1. **阅读文档**
-   ```bash
-   # 阅读核心文档
-   cat docs/refactor/ANALYSIS_REPORT.md
-   cat docs/refactor/SIMPLIFIED_PLAN.md
-   cat docs/refactor/TESTING_GUIDE.md
-   ```
-
-2. **建立测试基准**
-   ```bash
-   # 按照测试验证指南的 Phase 0 执行
-   mkdir -p tests/baseline_outputs
-   # ... 详见 TESTING_GUIDE.md
-   ```
-
-3. **创建分支**
-   ```bash
-   git checkout -b refactor/simplified
-   git tag refactor-start
-   ```
-
-4. **开始重构**
-   - 按照 [简化版重构方案](./SIMPLIFIED_PLAN.md) 逐步执行
-   - 每个阶段完成后，按照 [测试验证指南](./TESTING_GUIDE.md) 进行验证
-   - 记录测试结果
-
----
-
-## 📞 问题反馈
-
-### 如果遇到问题
-
-1. **查看文档**
-   - 先查看相关文档的常见问题部分
-   - 查看测试验证指南的失败处理流程
-
-2. **记录问题**
-   - 在测试记录表中记录问题
-   - 记录复现步骤和错误信息
-
-3. **决策处理**
-   - 轻微问题：修复后继续
-   - 严重问题：回滚到上一个标签
-   - 设计问题：重新评估方案
-
----
-
-## 📈 成功案例
-
-### 预期收益
-
-完成重构后，你将获得：
-
-1. **更清晰的代码结构**
-   - utils.py 职责单一
-   - Web GUI 路由清晰
-   - Region 逻辑易读
-
-2. **更低的维护成本**
-   - 新人上手更快
-   - Bug 修复更容易
-   - 功能扩展更简单
-
-3. **更好的测试覆盖**
-   - 单元测试覆盖率 > 70%
-   - 完整的回归测试
-   - 自动化测试流程
-
-4. **完善的文档**
-   - 架构文档
-   - 开发者指南
-   - API 文档
-
----
-
-## 🎓 学习资源
-
-### 设计原则
-
-- **KISS**: Keep It Simple, Stupid - 保持简单
-- **YAGNI**: You Aren't Gonna Need It - 不要过度设计
-- **DRY**: Don't Repeat Yourself - 不要重复
-
-### 推荐阅读
-
-- 《重构：改善既有代码的设计》- Martin Fowler
-- 《代码整洁之道》- Robert C. Martin
-- 《实用主义程序员》- Andrew Hunt
-
----
-
-## 📝 版本历史
-
-| 版本 | 日期 | 说明 |
-|------|------|------|
-| v1.0 | 2025-02-11 | 初始版本，包含完整的重构方案 |
-
----
-
-## 👥 贡献者
-
-- AI Assistant - 方案设计和文档编写
-- 项目维护者 - 需求提供和方案审核
-
----
-
-**最后更新**: 2025-02-11  
-**文档状态**: ✅ 已完成  
-**推荐方案**: 简化版重构方案
-
+- YAML v2 的 `sid` / `name` / `source`
+- `base_shape.source.ref + offset`
+- `rings`
+- `via`
+- BoundaryObject / RegionObject 流水线
+- KLayout Region offset / boolean
+- output backend 统一接受 RegionObject

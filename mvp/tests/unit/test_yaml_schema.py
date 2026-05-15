@@ -37,17 +37,32 @@ def test_valid_circle_normalizes_to_model():
     assert config.shapes[0].radius == 30.0
 
 
-def test_valid_bevel_normalizes_fillet():
-    config = load_fixture("valid_polygon_bevel.yaml")
-    assert config.shapes[0].fillet.mode == "bevel"
-    assert config.shapes[0].fillet.distances == [5.0, 5.0, 5.0, 5.0]
-
-
-def test_valid_arc_v2_normalizes_fillet():
-    config = load_fixture("valid_polygon_arc_v2.yaml")
+def test_valid_arc_normalizes_fillet_without_mode():
+    config = load_fixture("valid_polygon_arc.yaml")
     assert isinstance(config.shapes[0].fillet, ArcFillet)
-    assert config.shapes[0].fillet.mode == "arc_v2"
+    assert config.shapes[0].fillet.mode == "arc"
     assert config.shapes[0].fillet.radii == [5.0, 5.0, 5.0, 5.0]
+    assert config.shapes[0].fillet.precision is None
+
+
+def test_valid_arc_normalizes_optional_mode():
+    config = load_fixture("valid_polygon_arc_mode.yaml")
+    assert isinstance(config.shapes[0].fillet, ArcFillet)
+    assert config.shapes[0].fillet.mode == "arc"
+    assert config.shapes[0].fillet.radii == [5.0, 5.0, 5.0, 5.0]
+
+
+def test_valid_arc_precision_normalizes():
+    config = load_fixture("valid_polygon_arc_precision.yaml")
+    assert config.shapes[0].fillet.precision == 0.1
+
+
+def test_valid_concave_arc_fixtures_normalize():
+    arrow = load_fixture("valid_polygon_arc_arrow_concave.yaml")
+    star = load_fixture("valid_polygon_arc_star_concave.yaml")
+
+    assert isinstance(arrow.shapes[0].fillet, ArcFillet)
+    assert isinstance(star.shapes[0].fillet, ArcFillet)
 
 
 def test_shape_layer_defaults_to_gds_default_layer():
@@ -62,24 +77,50 @@ def test_old_schema_is_rejected_with_specific_code():
     assert_error_code("invalid_old_polygon.yaml", "old_schema_detected")
 
 
-def test_arc_fillet_is_rejected():
-    assert_error_code("invalid_arc_fillet.yaml", "unsupported_fillet_mode")
+def test_unsupported_fillet_mode_is_rejected():
+    assert_error_code("invalid_unsupported_fillet_mode.yaml", "unsupported_fillet_mode")
+
+
+def test_unsupported_fillet_payload_is_rejected():
+    raw = load_yaml_file(FIXTURES / "valid_polygon.yaml")
+    raw["shapes"][0]["fillet"] = {"mode": "legacy", "distances": [1, 1, 1, 1]}
+    with pytest.raises(ConfigValidationError) as exc_info:
+        normalize_config(raw)
+    assert "unsupported_fillet_mode" in {issue.code for issue in exc_info.value.issues}
 
 
 def test_self_intersecting_polygon_is_rejected():
     assert_error_code("invalid_self_intersection.yaml", "self_intersecting_polygon")
 
 
-def test_bevel_too_large_is_rejected():
-    assert_error_code("invalid_bevel_too_large.yaml", "bevel_distance_too_large")
+def test_arc_too_large_is_rejected():
+    assert_error_code("invalid_arc_too_large.yaml", "arc_radius_too_large")
 
 
-def test_arc_v2_concave_polygon_is_rejected():
-    assert_error_code("invalid_arc_v2_concave.yaml", "arc_v2_requires_convex_polygon")
+def test_arc_too_large_sharp_corner_is_rejected():
+    assert_error_code("invalid_arc_too_large_sharp.yaml", "arc_radius_too_large")
 
 
-def test_arc_v2_too_large_is_rejected():
-    assert_error_code("invalid_arc_v2_too_large.yaml", "arc_radius_too_large")
+def test_arc_collinear_positive_radius_is_rejected():
+    assert_error_code("invalid_arc_collinear_positive.yaml", "arc_collinear_corner")
+
+
+def test_arc_length_mismatch_fixture_is_rejected():
+    assert_error_code("invalid_arc_length_mismatch.yaml", "arc_radii_length_mismatch")
+
+
+def test_arc_precision_fixture_is_rejected():
+    assert_error_code("invalid_arc_precision.yaml", "arc_precision_out_of_range")
+
+
+def test_circle_fillet_fixture_is_rejected():
+    assert_error_code("invalid_circle_fillet.yaml", "circle_fillet_not_supported")
+
+
+def test_valid_arc_sharp_convex_fixture_normalizes():
+    config = load_fixture("valid_polygon_arc_sharp_convex.yaml")
+    assert isinstance(config.shapes[0].fillet, ArcFillet)
+    assert config.shapes[0].fillet.radii == [0.001, 0.001, 0.001]
 
 
 def test_schema_version_must_be_integer_one():
@@ -108,18 +149,17 @@ def test_string_vertices_are_rejected():
 
 def test_circle_fillet_is_rejected():
     raw = load_yaml_file(FIXTURES / "valid_circle.yaml")
-    raw["shapes"][0]["fillet"] = {"mode": "bevel", "distances": [1, 1, 1]}
+    raw["shapes"][0]["fillet"] = {"radii": [1, 1, 1]}
     with pytest.raises(ConfigValidationError) as exc_info:
         normalize_config(raw)
     assert "circle_fillet_not_supported" in {issue.code for issue in exc_info.value.issues}
 
 
-def test_bare_radii_are_rejected_as_old_schema():
+def test_bare_radii_are_valid_arc_schema():
     raw = load_yaml_file(FIXTURES / "valid_polygon.yaml")
     raw["shapes"][0]["fillet"] = {"radii": [1, 1, 1, 1]}
-    with pytest.raises(ConfigValidationError) as exc_info:
-        normalize_config(raw)
-    assert "old_fillet_schema" in {issue.code for issue in exc_info.value.issues}
+    config = normalize_config(raw)
+    assert isinstance(config.shapes[0].fillet, ArcFillet)
 
 
 def test_precision_must_be_integer_multiple_of_dbu():

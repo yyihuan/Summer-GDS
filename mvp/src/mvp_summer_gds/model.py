@@ -1,7 +1,7 @@
 """Normalized domain model for the Summer-GDS MVP."""
 
 from dataclasses import dataclass
-from typing import List, Optional, Union
+from typing import List, Optional
 
 
 @dataclass(frozen=True)
@@ -36,15 +36,10 @@ class GdsConfig:
 
 
 @dataclass(frozen=True)
-class BevelFillet:
-    distances: List[float]
-    mode: str = "bevel"
-
-
-@dataclass(frozen=True)
 class ArcFillet:
     radii: List[float]
-    mode: str = "arc_v2"
+    precision: Optional[float] = None
+    mode: str = "arc"
 
 
 @dataclass(frozen=True)
@@ -54,7 +49,7 @@ class PolygonShape:
     layer: Layer
     vertices: List[Point]
     vertex_user_indices: List[int]
-    fillet: Optional[Union[BevelFillet, ArcFillet]]
+    fillet: Optional[ArcFillet]
     type: str = "base_shape"
     geometry_type: str = "polygon"
 

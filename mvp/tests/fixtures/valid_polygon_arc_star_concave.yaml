@@ -1,0 +1,29 @@
+schema_version: 1
+
+global:
+  dbu: 0.001
+  precision: null
+
+gds:
+  output_file: "valid_polygon_arc_star_concave.gds"
+  cell_name: "TOP"
+  default_layer: [1, 0]
+
+shapes:
+  - id: "star_pad"
+    type: "base_shape"
+    geometry_type: "polygon"
+    layer: [2, 0]
+    vertices:
+      - [50, 10]
+      - [60.6, 35.4]
+      - [88, 37.6]
+      - [67.1, 55.6]
+      - [73.5, 82.4]
+      - [50, 68]
+      - [26.5, 82.4]
+      - [32.9, 55.6]
+      - [12, 37.6]
+      - [39.4, 35.4]
+    fillet:
+      radii: [1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5]

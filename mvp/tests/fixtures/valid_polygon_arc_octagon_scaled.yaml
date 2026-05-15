@@ -1,0 +1,27 @@
+schema_version: 1
+
+global:
+  dbu: 0.001
+  precision: null
+
+gds:
+  output_file: "valid_polygon_arc_octagon_scaled.gds"
+  cell_name: "TOP"
+  default_layer: [1, 0]
+
+shapes:
+  - id: "octagon_scaled"
+    type: "base_shape"
+    geometry_type: "polygon"
+    layer: [2, 0]
+    vertices:
+      - [-33.14, 80]
+      - [-80, 33.14]
+      - [-80, -33.14]
+      - [-33.14, -80]
+      - [33.14, -80]
+      - [80, -33.14]
+      - [80, 33.14]
+      - [33.14, 80]
+    fillet:
+      radii: [5, 5, 5, 5, 5, 5, 5, 5]

@@ -1,0 +1,20 @@
+schema_version: 1
+
+global:
+  dbu: 0.001
+  precision: null
+
+gds:
+  output_file: "invalid_circle_fillet.gds"
+  cell_name: "TOP"
+  default_layer: [1, 0]
+
+shapes:
+  - id: "circle_with_fillet"
+    type: "base_shape"
+    geometry_type: "circle"
+    layer: [3, 0]
+    center: [50, 50]
+    radius: 30
+    fillet:
+      radii: [1, 1, 1, 1]

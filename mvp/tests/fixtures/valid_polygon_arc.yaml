@@ -5,20 +5,19 @@ global:
   precision: null
 
 gds:
-  output_file: "bad_arc_v2_large.gds"
+  output_file: "valid_polygon_arc.gds"
   cell_name: "TOP"
   default_layer: [1, 0]
 
 shapes:
-  - id: "large_arc_pad"
+  - id: "main_pad"
     type: "base_shape"
     geometry_type: "polygon"
     layer: [2, 0]
     vertices:
       - [0, 0]
-      - [10, 0]
-      - [10, 10]
-      - [0, 10]
+      - [100, 0]
+      - [100, 80]
+      - [0, 80]
     fillet:
-      mode: "arc_v2"
-      radii: [8, 8, 8, 8]
+      radii: [5, 5, 5, 5]

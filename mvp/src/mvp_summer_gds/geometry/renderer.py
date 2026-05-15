@@ -2,8 +2,8 @@
 
 from mvp_summer_gds.config.errors import ConfigIssue, ConfigValidationError
 from mvp_summer_gds.geometry.circle import DEFAULT_CIRCLE_SEGMENTS, approximate_circle
-from mvp_summer_gds.geometry.fillet import apply_arc_v2, apply_bevel
-from mvp_summer_gds.model import ArcFillet, BevelFillet, CircleShape, PolygonShape, RenderedPolygon
+from mvp_summer_gds.geometry.fillet import apply_arc
+from mvp_summer_gds.model import ArcFillet, CircleShape, PolygonShape, RenderedPolygon
 
 MAX_RENDERED_VERTICES_PER_SHAPE = 20000
 MAX_RENDERED_VERTICES_TOTAL = 100000
@@ -34,12 +34,9 @@ def render_shape(shape):
     if isinstance(shape, PolygonShape):
         points = shape.vertices
         if shape.fillet:
-            if isinstance(shape.fillet, BevelFillet):
-                points = apply_bevel(points, shape.fillet.distances)
-            elif isinstance(shape.fillet, ArcFillet):
-                points = apply_arc_v2(points, shape.fillet.radii)
-            else:
+            if not isinstance(shape.fillet, ArcFillet):
                 raise TypeError("Unsupported fillet: %r" % (shape.fillet,))
+            points = apply_arc(points, shape.fillet.radii, shape.fillet.precision)
         return _bounded_polygon(shape.id, shape.layer, points)
     if isinstance(shape, CircleShape):
         points = approximate_circle(shape.center, shape.radius, DEFAULT_CIRCLE_SEGMENTS)
