@@ -1,0 +1,16 @@
+schema_version: 2
+global:
+  unit: um
+  dbu: 0.001
+gds:
+  top_cell: TOP
+  output: base_obtuse_wide.gds
+shapes:
+  - type: base_shape
+    sid: 0
+    name: base_obtuse_wide
+    layer: [4, 0]
+    source:
+      vertices: [[0, 0], [160, 0], [165, 20], [150, 40], [30, 45], [0, 20]]
+    fillet:
+      radius: 2

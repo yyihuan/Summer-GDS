@@ -1,0 +1,34 @@
+schema_version: 2
+global:
+  unit: um
+  dbu: 0.001
+gds:
+  top_cell: TOP
+  output: base_ref_offset_stack.gds
+shapes:
+  - type: base_shape
+    sid: 0
+    name: source_pad
+    layer: [10, 0]
+    source:
+      vertices: [[0, 0], [100, 0], [100, 70], [0, 70]]
+    fillet:
+      radius: 2
+  - type: base_shape
+    sid: 1
+    name: outer_margin
+    layer: [11, 0]
+    source:
+      ref: 0
+      offset: 12
+    fillet:
+      radius: 4
+  - type: base_shape
+    sid: 2
+    name: inner_margin
+    layer: [12, 0]
+    source:
+      ref: 0
+      offset: -8
+    fillet:
+      radius: 1

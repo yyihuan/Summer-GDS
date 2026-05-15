@@ -1,0 +1,16 @@
+schema_version: 2
+global:
+  unit: um
+  dbu: 0.001
+gds:
+  top_cell: TOP
+  output: base_concave_arrow.gds
+shapes:
+  - type: base_shape
+    sid: 0
+    name: base_concave_arrow
+    layer: [2, 0]
+    source:
+      vertices: [[0, 0], [120, 0], [120, 35], [70, 35], [70, 70], [120, 70], [120, 105], [0, 105], [35, 52.5]]
+    fillet:
+      radius: 3

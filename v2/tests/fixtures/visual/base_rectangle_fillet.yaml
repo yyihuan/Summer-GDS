@@ -1,0 +1,16 @@
+schema_version: 2
+global:
+  unit: um
+  dbu: 0.001
+gds:
+  top_cell: TOP
+  output: base_rectangle_fillet.gds
+shapes:
+  - type: base_shape
+    sid: 0
+    name: base_rectangle_fillet
+    layer: [1, 0]
+    source:
+      vertices: [[0, 0], [120, 0], [120, 80], [0, 80]]
+    fillet:
+      radius: 5

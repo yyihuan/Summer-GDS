@@ -1,0 +1,16 @@
+schema_version: 2
+global:
+  unit: um
+  dbu: 0.001
+gds:
+  top_cell: TOP
+  output: base_sharp_spike.gds
+shapes:
+  - type: base_shape
+    sid: 0
+    name: base_sharp_spike
+    layer: [3, 0]
+    source:
+      vertices: [[0, 0], [140, 0], [142, 60], [140, 120], [0, 120], [65, 62]]
+    fillet:
+      radius: 1

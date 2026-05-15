@@ -1,0 +1,19 @@
+schema_version: 2
+global:
+  unit: um
+  dbu: 0.001
+shapes:
+  - type: base_shape
+    sid: 0
+    name: source
+    layer: [1, 0]
+    source:
+      vertices: [[0, 0], [100, 0], [100, 80], [0, 80]]
+  - type: via
+    sid: 1
+    name: bad_via
+    layer: [2, 0]
+    source: { ref: 0 }
+    offsets:
+      inner: 10
+      outer: -5

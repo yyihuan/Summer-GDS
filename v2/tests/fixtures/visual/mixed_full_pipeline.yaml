@@ -1,0 +1,46 @@
+schema_version: 2
+global:
+  unit: um
+  dbu: 0.001
+gds:
+  top_cell: TOP
+  output: mixed_full_pipeline.gds
+shapes:
+  - type: base_shape
+    sid: 0
+    name: core
+    layer: [50, 0]
+    source:
+      vertices: [[0, 0], [140, 0], [140, 85], [90, 85], [70, 115], [50, 85], [0, 85]]
+    fillet:
+      radius: 2
+  - type: base_shape
+    sid: 1
+    name: core_margin
+    layer: [51, 0]
+    source:
+      ref: 0
+      offset: 10
+    fillet:
+      radius: 3
+  - type: via
+    sid: 2
+    name: process_window
+    layer: [52, 0]
+    source:
+      ref: 0
+    offsets:
+      inner: -8
+      outer: 6
+    fillet:
+      inner: { radius: 1 }
+      outer: { radius: 2 }
+  - type: rings
+    sid: 3
+    name: perimeter_rings
+    layer: [53, 0]
+    source:
+      ref: 0
+    count: 2
+    pitch: 14
+    width: 4

@@ -1,0 +1,28 @@
+schema_version: 2
+global:
+  unit: um
+  dbu: 0.001
+gds:
+  top_cell: TOP
+  output: via_window.gds
+shapes:
+  - type: base_shape
+    sid: 0
+    name: source_pad
+    layer: [20, 0]
+    source:
+      vertices: [[0, 0], [120, 0], [120, 90], [0, 90]]
+    fillet:
+      radius: 0
+  - type: via
+    sid: 1
+    name: via_window
+    layer: [21, 0]
+    source:
+      ref: 0
+    offsets:
+      inner: -12
+      outer: 10
+    fillet:
+      inner: { radius: 2 }
+      outer: { radius: 4 }
