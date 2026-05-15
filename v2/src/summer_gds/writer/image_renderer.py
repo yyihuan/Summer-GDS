@@ -36,7 +36,7 @@ def render_image(regions: tuple[RegionObject, ...], output: ImageOutputConfig) -
     if max(output.width_px, output.height_px) > output.max_side_px:
         raise ValueError("Image side exceeds max_side_px.")
 
-    bbox = _combined_bbox(regions)
+    bbox = _combined_bbox(regions, output.dbu)
     width_in = max(1, output.width_px) / 100
     height_in = max(1, output.height_px) / 100
     figure, axis = plt.subplots(figsize=(width_in, height_in), dpi=100)
@@ -68,12 +68,12 @@ def render_image(regions: tuple[RegionObject, ...], output: ImageOutputConfig) -
         format=output.format,
         transparent=output.transparent,
         facecolor=figure.get_facecolor(),
-        metadata={"Software": "summer-gds-v2"},
+        metadata=_metadata_for_format(output.format),
     )
     plt.close(figure)
 
 
-def _combined_bbox(regions: tuple[RegionObject, ...]) -> tuple[float, float, float, float]:
+def _combined_bbox(regions: tuple[RegionObject, ...], dbu: float) -> tuple[float, float, float, float]:
     boxes = [region.region.bbox() for region in regions if not region.region.is_empty()]
     if not boxes:
         raise ValueError("Cannot render empty regions.")
@@ -81,7 +81,6 @@ def _combined_bbox(regions: tuple[RegionObject, ...]) -> tuple[float, float, flo
     min_y = min(box.bottom for box in boxes)
     max_x = max(box.right for box in boxes)
     max_y = max(box.top for box in boxes)
-    dbu = 0.001
     return min_x * dbu, min_y * dbu, max_x * dbu, max_y * dbu
 
 
@@ -91,3 +90,9 @@ def _stable_color(layer: LayerSpec) -> str:
     g = 64 + int(digest[2:4], 16) % 160
     b = 64 + int(digest[4:6], 16) % 160
     return f"#{r:02x}{g:02x}{b:02x}"
+
+
+def _metadata_for_format(format_name: str) -> dict[str, str | None]:
+    if format_name == "svg":
+        return {"Creator": "summer-gds-v2", "Date": None}
+    return {"Software": "summer-gds-v2"}

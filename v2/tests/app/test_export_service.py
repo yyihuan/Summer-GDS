@@ -106,3 +106,14 @@ def test_force_allows_overwrite(tmp_path):
 
     assert result.output_path == output
     assert output.stat().st_size > 3
+
+
+def test_svg_export_uses_image_renderer(tmp_path):
+    config_path = write_config(tmp_path)
+    output = config_path.parent / "preview.svg"
+
+    result = export_artifact(config_path, ExportOptions(format="svg", out=output))
+
+    assert result.output_path == output
+    assert output.exists()
+    assert output.read_text().lstrip().startswith("<?xml")

@@ -58,8 +58,8 @@ def export_artifact(path: Path, options: ExportOptions) -> ExportResult:
             if not top_cell:
                 raise ConfigError([issue("gds_top_cell_required", "$.gds.top_cell", "GDS export requires gds.top_cell.")])
             write_gds(regions, temp_path, top_cell=top_cell, dbu=config.global_config.dbu)
-        elif options.format == "png":
-            render_image(regions, ImageOutputConfig(path=temp_path, dbu=config.global_config.dbu))
+        elif options.format in {"png", "svg"}:
+            render_image(regions, ImageOutputConfig(path=temp_path, format=options.format, dbu=config.global_config.dbu))
         else:
             raise ConfigError([issue("unsupported_output_format", "$.format", f"Unsupported output format: {options.format}.")])
         temp_path.replace(output_path)
