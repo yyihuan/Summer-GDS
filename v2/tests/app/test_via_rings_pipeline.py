@@ -141,3 +141,82 @@ def test_rings_with_per_ring_fillet_increases_boundary_point_count():
 
     rings = results[1]
     assert rings.output_regions[0].metadata.point_count_before_region > 8
+
+
+def test_via_inner_and_outer_fillet_are_independent():
+    outer_only = run_config(
+        BASE
+        + """
+  - type: via
+    sid: 2
+    name: outer_only
+    layer: [10, 0]
+    source: { ref: 0 }
+    offsets:
+      inner: -5
+      outer: 8
+    fillet:
+      inner: { radius: 0 }
+      outer: { radius: 2 }
+"""
+    )[1]
+    inner_only = run_config(
+        BASE
+        + """
+  - type: via
+    sid: 2
+    name: inner_only
+    layer: [10, 0]
+    source: { ref: 0 }
+    offsets:
+      inner: -5
+      outer: 8
+    fillet:
+      inner: { radius: 2 }
+      outer: { radius: 0 }
+"""
+    )[1]
+    no_fillet = run_config(
+        BASE
+        + """
+  - type: via
+    sid: 2
+    name: no_fillet
+    layer: [10, 0]
+    source: { ref: 0 }
+    offsets:
+      inner: -5
+      outer: 8
+"""
+    )[1]
+
+    assert no_fillet.output_regions[0].metadata.point_count_before_region == 8
+    assert outer_only.output_regions[0].metadata.point_count_before_region > 8
+    assert inner_only.output_regions[0].metadata.point_count_before_region > 8
+    assert outer_only.output_regions[0].region.area() != inner_only.output_regions[0].region.area()
+
+
+def test_rings_each_ring_inner_and_outer_fillet_are_independent():
+    rings = run_config(
+        BASE
+        + """
+  - type: rings
+    sid: 3
+    name: guard
+    layer: [20, 0]
+    source: { ref: 0 }
+    count: 2
+    pitch: 12
+    width: 4
+    fillet:
+      rings:
+        - inner: { radius: 0 }
+          outer: { radius: 2 }
+        - inner: { radius: 2 }
+          outer: { radius: 0 }
+"""
+    )[1]
+
+    assert len(rings.output_regions) == 2
+    assert all(region.metadata.point_count_before_region > 8 for region in rings.output_regions)
+    assert rings.output_regions[0].region.area() != rings.output_regions[1].region.area()

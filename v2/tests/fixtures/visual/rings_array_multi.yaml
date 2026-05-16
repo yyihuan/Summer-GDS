@@ -1,0 +1,32 @@
+schema_version: 2
+global:
+  unit: um
+  dbu: 0.001
+gds:
+  top_cell: TOP
+  output: rings_array_multi.gds
+shapes:
+  - type: rings
+    sid: 0
+    name: rectangular_rings
+    layer: [60, 0]
+    source:
+      vertices: [[0, 0], [90, 0], [90, 60], [0, 60]]
+    count: 3
+    pitch: 12
+    width: 4
+  - type: rings
+    sid: 1
+    name: concave_rings
+    layer: [61, 0]
+    source:
+      vertices: [[150, 0], [250, 0], [250, 80], [210, 55], [180, 85], [150, 60]]
+    count: 2
+    pitch: 14
+    width: 5
+    fillet:
+      rings:
+        - inner: { radius: 0 }
+          outer: { radius: 2 }
+        - inner: { radius: 1 }
+          outer: { radius: 3 }

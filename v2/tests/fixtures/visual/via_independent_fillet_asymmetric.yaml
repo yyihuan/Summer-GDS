@@ -1,0 +1,32 @@
+schema_version: 2
+global:
+  unit: um
+  dbu: 0.001
+gds:
+  top_cell: TOP
+  output: via_independent_fillet_asymmetric.gds
+shapes:
+  - type: via
+    sid: 0
+    name: outer_rounded_inner_square
+    layer: [70, 0]
+    source:
+      vertices: [[0, 0], [120, 0], [120, 90], [0, 90]]
+    offsets:
+      inner: -12
+      outer: 10
+    fillet:
+      inner: { radius: 0 }
+      outer: { radius: 8 }
+  - type: via
+    sid: 1
+    name: inner_rounded_outer_square
+    layer: [71, 0]
+    source:
+      vertices: [[170, 0], [290, 0], [290, 90], [170, 90]]
+    offsets:
+      inner: -12
+      outer: 10
+    fillet:
+      inner: { radius: 6 }
+      outer: { radius: 0 }

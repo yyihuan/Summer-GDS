@@ -21,6 +21,8 @@ VISUAL_CASES = [
     "via_window",
     "rings_three",
     "rings_fillet",
+    "rings_array_multi",
+    "via_independent_fillet_asymmetric",
     "mixed_full_pipeline",
 ]
 

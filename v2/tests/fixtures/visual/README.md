@@ -30,6 +30,8 @@ Cases:
 | `via_window` | Via inner/outer offset, fillet, boolean diff. |
 | `rings_three` | Three unfilleted rings, no merge. |
 | `rings_fillet` | Per-ring inner/outer fillet. |
+| `rings_array_multi` | Multiple independent rings objects in one YAML. |
+| `via_independent_fillet_asymmetric` | Via objects with inner-only and outer-only fillet. |
 | `mixed_full_pipeline` | Base, offset base, via, and rings in one file. |
 
 Invalid fixtures live in `../invalid` and cover:

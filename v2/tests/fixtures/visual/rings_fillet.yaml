@@ -6,18 +6,12 @@ gds:
   top_cell: TOP
   output: rings_fillet.gds
 shapes:
-  - type: base_shape
-    sid: 0
-    name: source_pad
-    layer: [40, 0]
-    source:
-      vertices: [[0, 0], [120, 0], [120, 90], [0, 90]]
   - type: rings
-    sid: 1
+    sid: 0
     name: filleted_guard_rings
     layer: [41, 0]
     source:
-      ref: 0
+      vertices: [[0, 0], [120, 0], [120, 90], [0, 90]]
     count: 2
     pitch: 16
     width: 6

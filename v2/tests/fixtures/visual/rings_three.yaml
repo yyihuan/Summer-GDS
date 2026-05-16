@@ -6,18 +6,12 @@ gds:
   top_cell: TOP
   output: rings_three.gds
 shapes:
-  - type: base_shape
-    sid: 0
-    name: source_pad
-    layer: [30, 0]
-    source:
-      vertices: [[0, 0], [100, 0], [100, 80], [0, 80]]
   - type: rings
-    sid: 1
+    sid: 0
     name: guard_rings
     layer: [31, 0]
     source:
-      ref: 0
+      vertices: [[0, 0], [100, 0], [100, 80], [0, 80]]
     count: 3
     pitch: 14
     width: 5
