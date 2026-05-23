@@ -48,15 +48,15 @@
 
 | 文档 | 责任 |
 |---|---|
-| [YAML v2 协议](./yaml-protocol.md) | 定义用户/GUI 可写配置 |
-| [CLI 契约](./cli-contract.md) | 定义命令、退出码、debug 输出和 GUI 调用方式 |
+| [YAML v2 协议](../contracts/yaml-protocol.md) | 定义用户/GUI 可写配置 |
+| [CLI 契约](../contracts/cli-contract.md) | 定义命令、退出码、debug 输出和 GUI 调用方式 |
 | [程序架构](./architecture.md) | 定义模块边界和依赖方向 |
 | [处理流水线](./processing-pipeline.md) | 定义 shape 到 Region 的执行顺序 |
 | [数据模型](./data-model.md) | 定义内部对象和 id 命名空间 |
-| [校验与错误模型](./validation-and-errors.md) | 定义错误码、错误路径和最低校验 |
-| [测试策略](./testing-strategy.md) | 定义测试矩阵和验收口径 |
-| [性能与限制](./performance-and-limits.md) | 定义默认上限、benchmark 和规模风险 |
-| [实施路线](./implementation-roadmap.md) | 定义开发阶段和并行策略 |
+| [校验与错误模型](../quality/validation-and-errors.md) | 定义错误码、错误路径和最低校验 |
+| [测试策略](../quality/testing-strategy.md) | 定义测试矩阵和验收口径 |
+| [性能与限制](../quality/performance-and-limits.md) | 定义默认上限、benchmark 和规模风险 |
+| [实施路线](../planning/implementation-roadmap.md) | 定义开发阶段和并行策略 |
 
 ---
 

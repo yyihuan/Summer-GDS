@@ -1,63 +1,78 @@
 # Summer-GDS Refactor Docs
 
-文档版本：v2.0
-日期：2026-05-16
+文档版本：v2.1
+日期：2026-05-24
 状态：完整产品架构规划
 
 ---
 
-## 阅读顺序
+## 文档分区
 
-1. [PRD](./PRD.md)
-   产品边界、用户目标、当前 MVP 与完整产品的关系。
+```text
+docs/refactor/
+├── product/       # 产品边界、用户能力、MVP 历史
+├── contracts/     # YAML 和 CLI/app service 契约
+├── architecture/  # 程序结构、数据模型、处理流水线
+├── quality/       # 校验、测试、性能、专项倒角测试
+├── frontend/      # GUI 架构、交互、HTML/CSS 设计系统
+└── planning/      # 实施路线
+```
 
-2. [技术规格总览](./technical-spec.md)
-   完整产品的关键决策、模块清单、开发原则和文档导航。
+## 推荐阅读顺序
 
-3. [YAML v2 协议](./yaml-protocol.md)
-   GUI 与 CLI 之间的正式配置协议。
+1. [PRD](./product/PRD.md)
+   产品边界、用户目标、GUI 产物范围。
 
-4. [CLI 契约](./cli-contract.md)
-   CLI 命令、退出码、debug 输出和 GUI 调用约定。
+2. [技术规格总览](./architecture/technical-spec.md)
+   已锁定决策、模块边界和文档导航。
 
-5. [程序架构](./architecture.md)
-   CLI-first 架构、模块边界、依赖方向、Mermaid 图。
+3. [YAML v2 协议](./contracts/yaml-protocol.md)
+   GUI、CLI、agent 共享的正式配置协议。
 
-6. [处理流水线](./processing-pipeline.md)
+4. [CLI 契约](./contracts/cli-contract.md)
+   CLI 命令、退出码、app service 和 GUI 调用约定。
+
+5. [程序架构](./architecture/architecture.md)
+   CLI-first 架构、模块边界、依赖方向。
+
+6. [处理流水线](./architecture/processing-pipeline.md)
    `base_shape`、`rings`、`via` 如何统一走 Boundary/Region 流水线。
 
-7. [数据模型](./data-model.md)
+7. [数据模型](./architecture/data-model.md)
    `sid`、`cid`、BoundaryObject、RegionObject、ShapeResult 等内部对象。
 
-8. [校验与错误模型](./validation-and-errors.md)
-   必须做的最低限度校验、错误码、错误路径格式。
+8. [校验与错误模型](./quality/validation-and-errors.md)
+   最低校验、错误码、错误路径格式。
 
-9. [测试策略](./testing-strategy.md)
+9. [测试策略](./quality/testing-strategy.md)
    单元测试、集成测试、GDS smoke 和 image renderer 预览测试矩阵。
 
-10. [性能与限制](./performance-and-limits.md)
+10. [性能与限制](./quality/performance-and-limits.md)
     默认上限、benchmark 场景、rings/via 规模风险。
 
-11. [实施路线](./implementation-roadmap.md)
-   后续开发阶段、每阶段目标、验收标准、并行开发策略。
+11. [前端技术架构](./frontend/frontend-architecture.md)
+    GUI 技术选型、API、安全边界、Windows 打包方案。
 
-12. [倒角测试设计](./fillet-test-design.md)
-    倒角算法和可视化测试的专项设计。
-
-13. [前端技术架构](./frontend-architecture.md)
-    GUI 技术选型、项目结构、API 设计、Windows 打包方案。
-
-14. [前端交互与页面设计](./frontend-interaction-design.md)
+12. [前端交互与页面设计](./frontend/frontend-interaction-design.md)
     页面布局、组件设计、交互流程、模态框设计。
 
-15. [前端设计系统](./frontend-design-system.md)
+13. [前端设计系统](./frontend/frontend-design-system.md)
     HTML/CSS tokens、语义 DOM 骨架、组件 class 和状态属性。
+
+14. [倒角测试设计](./quality/fillet-test-design.md)
+    倒角算法和可视化测试的专项设计。
+
+15. [实施路线](./planning/implementation-roadmap.md)
+    后续开发阶段、每阶段目标、验收标准。
+
+16. [MVP Plan Archive](./product/MVP_PLAN.md)
+    历史参考，不作为当前执行依据。
 
 ---
 
 ## 核心结论
 
-- GUI 负责生成 YAML，CLI 是唯一稳定执行入口。
+- GUI 负责生成 YAML，CLI/app service 是稳定执行入口。
 - YAML 中声明的每个 `shape` 都是公开输出对象。
 - 内部临时对象如 inner/outer 不进入 YAML。
 - `base_shape`、`rings`、`via` 共用同一套 Boundary/Region 流水线。
@@ -71,24 +86,22 @@
 - 输出路径由 CLI/app service 统一解析，默认不覆盖，正式写出使用 atomic rename。
 - 第一版不做复杂拓扑分类，但必须做流水线前置条件校验。
 
----
-
 ## 当前 MVP 与完整产品的关系
 
 当前 `mvp/` 已完成：
 
-- `base_shape` polygon/circle
-- polygon 圆弧倒角
-- CLI validate/generate
-- GDS 测试产物和 image renderer 预览测试
-- KLayout-backed GDS writer
+- `base_shape` polygon/circle。
+- polygon 圆弧倒角。
+- CLI validate/generate。
+- GDS 测试产物和 image renderer 预览测试。
+- KLayout-backed GDS writer。
 
 完整产品在此基础上增加：
 
-- YAML v2 的 `sid` / `name` / `source`
-- `base_shape.source.ref + offset`
-- `rings`
-- `via`
-- BoundaryObject / RegionObject 流水线
-- KLayout Region offset / boolean
-- output backend 统一接受 RegionObject
+- YAML v2 的 `sid` / `name` / `source`。
+- `base_shape.source.ref + offset`。
+- `rings`。
+- `via`。
+- BoundaryObject / RegionObject 流水线。
+- KLayout Region offset / boolean。
+- output backend 统一接受 RegionObject。

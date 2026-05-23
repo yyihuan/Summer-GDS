@@ -22,14 +22,14 @@
 完整产品 refactor 以以下文档为准：
 
 - [PRD](./PRD.md)
-- [技术规格总览](./technical-spec.md)
-- [YAML v2 协议](./yaml-protocol.md)
-- [程序架构](./architecture.md)
-- [处理流水线](./processing-pipeline.md)
-- [数据模型](./data-model.md)
-- [校验与错误模型](./validation-and-errors.md)
-- [测试策略](./testing-strategy.md)
-- [实施路线](./implementation-roadmap.md)
+- [技术规格总览](../architecture/technical-spec.md)
+- [YAML v2 协议](../contracts/yaml-protocol.md)
+- [程序架构](../architecture/architecture.md)
+- [处理流水线](../architecture/processing-pipeline.md)
+- [数据模型](../architecture/data-model.md)
+- [校验与错误模型](../quality/validation-and-errors.md)
+- [测试策略](../quality/testing-strategy.md)
+- [实施路线](../planning/implementation-roadmap.md)
 
 ## 3. MVP 与 v2 的关系
 
