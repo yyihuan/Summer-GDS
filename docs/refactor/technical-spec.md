@@ -33,7 +33,8 @@
 | boolean 顺序 | boolean 在倒角后 |
 | boolean 内核 | 使用 KLayout Region，不自研布尔几何 |
 | 输出 backend 输入 | GDS writer 和 image renderer 都只接受 RegionObject |
-| 图片输出 | PNG/SVG 等图片是标准输出模式，和 GDS writer 同级，不是 debug 附属能力 |
+| GUI 产物 | 第一版 GUI 只暴露 YAML 和 GDS；SVG 仅为程序内部实时预览 |
+| image renderer | 标准 backend，服务 SVG 预览、CI 和开发诊断；PNG 不作为 GUI 产品功能 |
 | YAML 读取 | 文件读取、YAML 解析、schema 映射合并在 `schema/yaml_v2.py`，不单独拆 loader 层 |
 | validate 语义 | `validate` 是协议级预检；backend 前置条件通过 `export --dry-run --format ...` 校验 |
 | 输出路径 | CLI/app service 统一解析输出路径，默认不覆盖，写出使用同目录临时文件再 atomic rename |
@@ -81,4 +82,4 @@ flowchart TD
 - 先实现最小可用流水线，再加复杂拓扑校验。
 - 不把 GUI 表单细节泄漏到 executor。
 - 不把 KLayout Region 泄漏到 YAML。
-- 每个新 shape 类型必须有 YAML fixture、unit test、PNG visual test、GDS readable test。
+- 每个新 shape 类型必须有 YAML fixture、unit test、GDS readable test 和 image renderer smoke test。

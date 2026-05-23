@@ -32,7 +32,8 @@ YAML 业务对象 -> 编译为几何任务 -> KLayout Region 几何内核 -> out
 - 用户可以用 `source.ref + offset` 定义新图形，避免手工重复计算坐标。
 - 用户可以为不同对象配置 layer。
 - 用户可以为 base、via、rings 分别配置倒角。
-- 用户可以把同一份几何结果输出为 GDS 或 PNG 预览。
+- GUI 用户可以保存/加载 YAML，并把同一份几何结果导出为 GDS。
+- GUI 用户可以看到实时 SVG 预览；SVG 是程序内部预览，不是用户导出产物。
 - 用户不需要理解内部 inner/outer、DAG、Region 转换等实现细节。
 
 ### 2.3 非目标
@@ -181,7 +182,8 @@ outer_region - inner_region
 - base_shape 支持 `vertices` 和 `ref + offset` 两种 source。
 - via 和 rings 的 offset、倒角、boolean 顺序正确。
 - `sid` 引用稳定，不依赖 `name`。
-- `export --format gds` 和 `export --format png` 走同一条几何流水线。
+- `export --format gds` 走统一几何流水线。
+- GUI 实时 SVG 预览复用同一条几何流水线，但不暴露为用户导出产物。
 
 ### 5.2 工程标准
 

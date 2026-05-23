@@ -2,7 +2,7 @@
 
 ## 1. 目标
 
-第一版 refactor 不追求超大规模版图生成，但必须有明确上限，防止 CLI 卡死、内存暴涨或输出不可控 GDS/PNG。
+第一版 refactor 不追求超大规模版图生成，但必须有明确上限，防止 CLI 卡死、内存暴涨或输出不可控 GDS/内部预览文件。
 
 性能策略：
 
@@ -24,7 +24,8 @@
 | `rings.count` | `100` |
 | 单个 ring boolean 后 polygon 数量 | `100` |
 | 总 GDS polygon 数量 | `10_000` |
-| PNG 最大像素边长 | `4096` |
+| image renderer 最大像素边长 | `4096` |
+| SVG preview 最大文件大小 | `5 MB` |
 | 单角圆弧采样点 | `512` |
 
 超过限制应报错，不应静默截断。
@@ -125,7 +126,7 @@ boolean operations = rings.count
 | `via_1k_vertices` | inner/outer offset + boolean。 |
 | `rings_count_100` | rings 放大效应。 |
 | `mixed_200_shapes` | 多 shape 编排和 output backend 压力。 |
-| `png_rings_count_100` | image renderer 在多 RegionObject 下的预览压力。 |
+| `svg_rings_count_100` | image renderer 在多 RegionObject 下的实时预览压力。 |
 
 每个 benchmark 记录：
 
@@ -147,7 +148,7 @@ boolean operations = rings.count
 | `rings.count=20` | `< 3s` |
 | `rings.count=100` | `< 15s` |
 | GDS writer smoke | `< 2s` |
-| PNG renderer smoke | `< 2s` |
+| SVG preview renderer smoke | `< 2s` |
 
 这些不是严格 SLA，而是回归警戒线。
 
@@ -164,7 +165,7 @@ boolean operations = rings.count
   "compile_ms": 6,
   "geometry_ms": 183,
   "output_ms": 41,
-  "output_format": "png",
+  "output_format": "gds",
   "regions": 8,
   "polygons": 12
 }

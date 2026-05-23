@@ -167,7 +167,7 @@ def clone_region_object(region_object: RegionObject) -> RegionObject:
 
 这样可以保证：
 
-- 先导出 PNG 再导出 GDS，与先导出 GDS 再导出 PNG 结果一致。
+- 先渲染 SVG 预览再导出 GDS，与先导出 GDS 再渲染 SVG 预览结果一致。
 - `ShapeResultStore` 中保存的 output regions 不会被 writer/image renderer 污染。
 - debug overlay 不能改变生产输出。
 

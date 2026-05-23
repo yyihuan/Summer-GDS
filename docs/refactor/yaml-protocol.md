@@ -47,10 +47,12 @@ shapes:
 
 `gds` 只配置 GDS backend 默认值。
 
-PNG/SVG 等图片输出通过 CLI 或 app service 的 output backend 选择完成：
+GUI 产品层只暴露 YAML 保存/加载和 GDS 导出。实时 SVG 预览由 GUI app service 写入程序内部临时目录并读回，不进入 YAML，也不作为用户导出产物。
+
+CLI 或开发测试仍可直接选择 image renderer backend：
 
 ```bash
-summer-gds export config.yaml --format png --out build/preview.png
+summer-gds export config.yaml --format svg --out build/preview.svg
 summer-gds export config.yaml --format gds --out build/layout.gds
 ```
 
@@ -60,7 +62,8 @@ summer-gds export config.yaml --format gds --out build/layout.gds
 
 - `validate config.yaml` 不要求 `gds.output`，因为它不选择 output backend。
 - `export --format gds --dry-run` 要求能解析出最终 GDS 输出路径。
-- `export --format png --out preview.png` 不读取也不要求 `gds.output`。
+- `export --format svg --out preview.svg` 不读取也不要求 `gds.output`。
+- GUI 导出 GDS 时，保存对话框选择的路径优先于 `gds.output`。
 - 输出路径的解析、后缀、覆盖和 atomic write 规则定义在 CLI 契约中。
 
 不支持字段：

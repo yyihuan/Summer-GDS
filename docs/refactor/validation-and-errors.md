@@ -46,8 +46,8 @@ flowchart TD
 | `vertices` | 必须是二维数值数组，至少 3 点。 |
 | `source.ref` | 必须是整数。 |
 | `source.offset` | 如果存在，必须是数值。 |
-| `gds.top_cell` | `export --format gds` 或 `export --format gds --dry-run` 时必填，协议级 `validate` 和图片输出可省略。 |
-| `gds.output` | `export --format gds` 或 `export --format gds --dry-run` 且 CLI 未传 `--out` 时必填，协议级 `validate` 和图片输出可省略。 |
+| `gds.top_cell` | `export --format gds` 或 `export --format gds --dry-run` 时必填，协议级 `validate` 和非 GDS image renderer 可省略。 |
+| `gds.output` | `export --format gds` 或 `export --format gds --dry-run` 且 CLI 未传 `--out` 时必填，协议级 `validate` 和非 GDS image renderer 可省略。GUI 导出 GDS 时由保存对话框路径覆盖。 |
 | `global.unit` | 第一版必须为 `um`。 |
 | `global.dbu` | 必须是有限正数，建议默认 `0.001`，第一版允许范围 `0.00001 <= dbu <= 1.0`。 |
 | `precision` | 如果存在，必须是有限正数，`precision >= dbu`，且 `precision / dbu` 必须是整数。 |

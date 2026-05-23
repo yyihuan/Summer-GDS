@@ -185,6 +185,6 @@ output backend 接收多种输入会让输出层承担几何语义：
 统一成 RegionObject 后：
 
 - GDS writer 只负责按 layer/datatype 写 KLayout region。
-- image renderer 只负责把 RegionObject 画成 PNG/SVG/PDF 等预览 artifact。
+- image renderer 只负责把 RegionObject 画成 SVG preview 或开发/测试用图片 artifact。
 - base/via/rings 的差异在 output backend 前已经消失。
 - 测试可以只检查每个 backend 是否正确消费 RegionObject。

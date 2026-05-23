@@ -4,7 +4,7 @@
 
 - 先锁协议，再写 GUI。
 - 先把 base 跑通到 RegionObject 和 output backend，再加 via/rings。
-- 每个阶段都必须有 fixture、测试、可打开 GDS 和可渲染 PNG。
+- 每个阶段都必须有 fixture、测试、可打开 GDS 和可渲染 SVG 预览。
 - 不在第一版引入通用复杂拓扑系统。
 - 不在 output backend 里塞几何逻辑。
 
@@ -105,7 +105,7 @@ gantt
 
 - 修改 GDS writer，只接受 `list[RegionObject]`。
 - 新增 image renderer，只接受 `list[RegionObject]`。
-- 现有 base_shape 输出先转 RegionObject，再按 backend 写出 GDS 或 PNG。
+- 现有 base_shape 输出先转 RegionObject，再按 backend 写出 GDS 或 SVG 预览。
 - 实现统一输出路径解析、后缀校验、`--force`、`--dry-run` 和 atomic write。
 
 交付：
@@ -114,7 +114,7 @@ gantt
 - `writer/image_renderer.py`
 - output backend 单元测试
 - base GDS smoke test
-- base PNG smoke test
+- base SVG preview smoke test
 
 验收：
 
@@ -122,10 +122,10 @@ gantt
 - image renderer 不接收 ShapeSpec。
 - output backend 不接收 BoundaryObject。
 - 现有 base_shape 生成 GDS 的测试通过。
-- 现有 base_shape 生成 PNG 的测试通过。
+- 现有 base_shape 生成 SVG 预览的测试通过。
 - `export --format gds --dry-run` 能校验 GDS backend 前置条件但不写文件。
-- `export --format png --out preview.png` 不要求 `gds.output`。
-- PNG viewport、颜色、layer 顺序和 hole 渲染稳定。
+- `export --format svg --out preview.svg` 不要求 `gds.output`。
+- SVG viewport、颜色、layer 顺序和 hole 渲染稳定。
 
 ## 7. Phase 4: base_shape ref + offset
 
@@ -201,7 +201,7 @@ gantt
 
 验收：
 
-- PNG 能显示 base、offset base、via、rings。
+- SVG preview 能显示 base、offset base、via、rings。
 - debug overlay 可显示 source/offset/fillet/final region。
 - Region 转 list 的逻辑只在 image/debug backend 使用。
 

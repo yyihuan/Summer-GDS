@@ -8,7 +8,7 @@
 - 几何流水线顺序正确。
 - GDS writer 和 image renderer 都只消费 RegionObject，且输出可读/可渲染。
 
-PNG 是标准输出 backend，也可以用于人工检查。几何正确性仍然必须靠几何断言、GDS smoke test 和 PNG smoke test 共同覆盖。
+GUI 用户产物只有 YAML 和 GDS。SVG 是程序内部实时预览。image renderer 仍是标准 backend，用于 SVG preview、CI smoke 和开发诊断；PNG 可以保留为开发/兼容 smoke test，但不作为 GUI 产品功能。
 
 ## 2. 测试分层
 
@@ -17,7 +17,7 @@ flowchart TD
   Unit[Unit Tests] --> Integration[Integration Tests]
   Integration --> Image[Image Output Tests]
   Integration --> GDS[GDS Readable Tests]
-  Image --> Visual[PNG Visual Review]
+  Image --> Visual[SVG Preview / Optional PNG Visual Review]
   GDS --> Golden[Golden Fixtures]
 ```
 
@@ -134,26 +134,27 @@ PYTHONPATH=mvp/src .venv-arm64/bin/python -m pytest mvp/tests/integration
 
 | case | 输入 | 输出断言 |
 | --- | --- | --- |
-| base vertices | 一个矩形 base | GDS 有 1 个 region，PNG 非空。 |
-| base offset | base + ref offset base | GDS 有 2 个 layer 输出，PNG 显示两层。 |
-| via | base + via | via layer 非空，PNG 可见孔洞区域。 |
-| rings | base + rings count=3 | ring layer 有 3 个 region 或等价 polygon 集，PNG 可见三圈。 |
-| mixed | base + offset base + via + rings | 所有 sid 输出，GDS 可打开，PNG 可渲染。 |
+| base vertices | 一个矩形 base | GDS 有 1 个 region，SVG preview 非空。 |
+| base offset | base + ref offset base | GDS 有 2 个 layer 输出，SVG preview 显示两层。 |
+| via | base + via | via layer 非空，SVG preview 可见孔洞区域。 |
+| rings | base + rings count=3 | ring layer 有 3 个 region 或等价 polygon 集，SVG preview 可见三圈。 |
+| mixed | base + offset base + via + rings | 所有 sid 输出，GDS 可打开，SVG preview 可渲染。 |
 | invalid offset | 负 offset 吃空 | 报 `offset_empty_region`。 |
 | invalid boolean | inner 大于 outer | 报 `boolean_empty_region`。 |
 
 ## 9. Image Output 测试
 
-PNG 是第一版标准 image backend。它既服务 GUI 预览，也服务人工检查。
+SVG 是 GUI 第一版实时预览格式。PNG 可以作为 image renderer 的开发/兼容 smoke test，但不是 GUI 用户产物。
 
 必须测试：
 
-- `export --format png` 会生成文件。
-- PNG 文件非空且可被图像库读取。
+- GUI preview API 会返回 `svg_text`，并且不生成用户可见文件。
+- 内部 preview SVG 文件写入 app 私有临时目录，读取后清理。
+- 可选 CLI/dev smoke：`export --format png` 或 `export --format svg` 能生成文件。
 - base/via/rings 都能渲染。
 - 多 layer 有确定的颜色或样式映射。
 - layer 顺序按 `(layer, datatype)` 升序。
-- viewport padding、aspect ratio 和 max pixel 限制确定。
+- viewport padding、aspect ratio、最大 SVG 文件大小和 max pixel 限制确定。
 - hole 渲染为空洞，不被填满。
 - `debug_overlay` 不改变 final region fill。
 - 空 RegionObject 输入会被拒绝。
@@ -175,9 +176,9 @@ image renderer 只接受 RegionObject，并可额外提供 debug overlay：
 
 注意：
 
-- PNG 不参与几何语义，但参与正式输出契约。
+- SVG/PNG 不参与几何语义；GUI 产品契约只暴露 SVG preview，不暴露图片导出。
 - Region 转 list 只用于 debug/preview。
-- PNG 快照不能替代几何单元测试。
+- 图像快照不能替代几何单元测试。
 
 ## 10. GDS 测试
 
@@ -197,7 +198,8 @@ image renderer 只接受 RegionObject，并可额外提供 debug overlay：
 
 - `validate config.yaml` 不要求 `gds.output`。
 - `export --format gds --dry-run` 在缺少 `gds.output` 且无 `--out` 时失败。
-- `export --format png --out preview.png` 不读取 `gds.output`。
+- `export --format svg --out preview.svg` 不读取 `gds.output`。
+- GUI GDS export 使用 save dialog 路径覆盖 `gds.output`。
 - `--out` 相对路径按 config 文件所在目录解析。
 - 后缀和 format 不匹配时报 `invalid_output_path`。
 - 父目录不存在时报 `output_parent_missing`。
@@ -213,11 +215,11 @@ image renderer 只接受 RegionObject，并可额外提供 debug overlay：
 - 一个 invalid YAML fixture。
 - 一个 pipeline 单元测试。
 - 一个 GDS smoke test。
-- 一个 PNG smoke test。
-- 必要时一个 PNG visual review fixture。
+- 一个 SVG preview smoke test。
+- 必要时一个 image renderer visual review fixture。
 
 每修一个几何 bug，必须增加：
 
 - 最小复现 fixture。
 - 几何断言。
-- 如果 bug 可视化明显，增加 PNG 输出。
+- 如果 bug 可视化明显，增加 SVG preview 或 image renderer 输出。

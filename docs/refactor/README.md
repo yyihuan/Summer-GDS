@@ -33,7 +33,7 @@
    必须做的最低限度校验、错误码、错误路径格式。
 
 9. [测试策略](./testing-strategy.md)
-   单元测试、集成测试、PNG/GDS 可视化测试矩阵。
+   单元测试、集成测试、GDS smoke 和 image renderer 预览测试矩阵。
 
 10. [性能与限制](./performance-and-limits.md)
     默认上限、benchmark 场景、rings/via 规模风险。
@@ -43,6 +43,15 @@
 
 12. [倒角测试设计](./fillet-test-design.md)
     倒角算法和可视化测试的专项设计。
+
+13. [前端技术架构](./frontend-architecture.md)
+    GUI 技术选型、项目结构、API 设计、Windows 打包方案。
+
+14. [前端交互与页面设计](./frontend-interaction-design.md)
+    页面布局、组件设计、交互流程、模态框设计。
+
+15. [前端设计系统](./frontend-design-system.md)
+    HTML/CSS tokens、语义 DOM 骨架、组件 class 和状态属性。
 
 ---
 
@@ -55,7 +64,9 @@
 - offset 必须发生在倒角前。
 - boolean 必须发生在倒角后。
 - GDS writer 和 image renderer 都只接受 RegionObject。
-- PNG 是标准输出模式，用于 GUI 预览，不是临时 debug 附属能力。
+- GUI 用户产物只有 YAML 和 GDS；SVG 只作为程序内部实时预览。
+- image renderer 是标准 backend，用于 SVG 预览、CI 和开发诊断；PNG 不作为 GUI 产品功能。
+- 前端第一版使用本地 HTML/CSS/JS 和 CSS variables，不使用 CDN、Tailwind、Bootstrap 或 npm build chain。
 - `validate` 只做协议级预检，backend 校验使用 `export --dry-run --format ...`。
 - 输出路径由 CLI/app service 统一解析，默认不覆盖，正式写出使用 atomic rename。
 - 第一版不做复杂拓扑分类，但必须做流水线前置条件校验。
@@ -69,7 +80,7 @@
 - `base_shape` polygon/circle
 - polygon 圆弧倒角
 - CLI validate/generate
-- PNG/GDS 测试产物
+- GDS 测试产物和 image renderer 预览测试
 - KLayout-backed GDS writer
 
 完整产品在此基础上增加：

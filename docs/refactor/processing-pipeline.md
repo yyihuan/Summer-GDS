@@ -249,8 +249,8 @@ flowchart LR
   Regions[list RegionObject] --> GDS[GDS Writer]
   Regions --> Image[Image Renderer]
   GDS --> GdsFile[layout.gds]
-  Image --> PngFile[preview.png]
-  Image --> SvgFile[preview.svg]
+  Image --> SvgFile[session temp preview.svg]
+  Image --> PngFile[optional dev smoke png]
 ```
 
 output backend 不应该包含：
@@ -271,8 +271,8 @@ image renderer 只做：
 
 - 根据 RegionObject 计算视口。
 - 按 layer/datatype 映射颜色。
-- 渲染 PNG/SVG/PDF 等图片 artifact。
-- 保存图片文件。
+- 渲染 SVG preview 或开发/测试用图片 artifact。
+- 保存到调用方指定路径；GUI preview 调用方必须使用程序内部临时目录。
 
 image renderer 确定性规则：
 
