@@ -75,6 +75,51 @@ def create_app(
             return jsonify(protocol_error("invalid_request", "$.request_id", "request_id must be a string.")), 400
         return jsonify(session.preview_svg(yaml_text, request_id))
 
+    @app.post("/api/file/choose-save")
+    def choose_save_path():
+        payload = _json_payload()
+        if not isinstance(payload, dict):
+            return jsonify(protocol_error("invalid_request", "$", "Request body must be a JSON object.")), 400
+        kind = payload.get("kind")
+        suggested_name = payload.get("suggested_name")
+        if not isinstance(kind, str):
+            return jsonify(protocol_error("invalid_request", "$.kind", "kind must be a string.")), 400
+        if suggested_name is not None and not isinstance(suggested_name, str):
+            return jsonify(protocol_error("invalid_request", "$.suggested_name", "suggested_name must be a string.")), 400
+        return jsonify(session.choose_save_path(kind, suggested_name))
+
+    @app.post("/api/yaml/save")
+    def save_yaml():
+        payload = _json_payload()
+        if not isinstance(payload, dict):
+            return jsonify(protocol_error("invalid_request", "$", "Request body must be a JSON object.")), 400
+        yaml_text = payload.get("yaml_text")
+        path_token = payload.get("path_token")
+        force = payload.get("force", False)
+        if not isinstance(yaml_text, str):
+            return jsonify(protocol_error("invalid_request", "$.yaml_text", "yaml_text must be a string.")), 400
+        if not isinstance(path_token, str):
+            return jsonify(protocol_error("invalid_request", "$.path_token", "path_token must be a string.")), 400
+        if not isinstance(force, bool):
+            return jsonify(protocol_error("invalid_request", "$.force", "force must be a boolean.")), 400
+        return jsonify(session.save_yaml(yaml_text, path_token, force))
+
+    @app.post("/api/export/gds")
+    def export_gds():
+        payload = _json_payload()
+        if not isinstance(payload, dict):
+            return jsonify(protocol_error("invalid_request", "$", "Request body must be a JSON object.")), 400
+        yaml_text = payload.get("yaml_text")
+        path_token = payload.get("path_token")
+        force = payload.get("force", False)
+        if not isinstance(yaml_text, str):
+            return jsonify(protocol_error("invalid_request", "$.yaml_text", "yaml_text must be a string.")), 400
+        if not isinstance(path_token, str):
+            return jsonify(protocol_error("invalid_request", "$.path_token", "path_token must be a string.")), 400
+        if not isinstance(force, bool):
+            return jsonify(protocol_error("invalid_request", "$.force", "force must be a boolean.")), 400
+        return jsonify(session.export_gds(yaml_text, path_token, force))
+
     @app.teardown_appcontext
     def close_session(_exception: BaseException | None) -> None:
         if app.config.get("SUMMER_GDS_CLOSE_ON_TEARDOWN"):

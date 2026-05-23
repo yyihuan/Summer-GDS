@@ -16,6 +16,8 @@ shapes:
 const TOKEN = window.SUMMER_GDS_SESSION_TOKEN;
 const editor = document.getElementById("yamlEditor");
 const validateButton = document.getElementById("validateButton");
+const saveYamlButton = document.getElementById("saveYamlButton");
+const exportGdsButton = document.getElementById("exportGdsButton");
 const previewButton = document.getElementById("previewButton");
 const errorList = document.getElementById("errorList");
 const previewCanvas = document.getElementById("previewCanvas");
@@ -32,6 +34,8 @@ let dirty = false;
 editor.value = SAMPLE_YAML;
 
 validateButton.addEventListener("click", validateYaml);
+saveYamlButton.addEventListener("click", saveYaml);
+exportGdsButton.addEventListener("click", exportGds);
 previewButton.addEventListener("click", previewSvg);
 editor.addEventListener("input", () => {
   dirty = true;
@@ -85,6 +89,77 @@ async function validateYaml() {
   }
 }
 
+async function saveYaml() {
+  setBusy(true, "Choosing path");
+  try {
+    const choice = await chooseSavePath("yaml", "config.yaml");
+    if (!choice.ok) {
+      setStatus(choice.canceled ? "Save canceled" : "Save blocked");
+      renderErrors(choice.errors || []);
+      return;
+    }
+    const force = choice.exists ? window.confirm(`Overwrite ${choice.path_label}?`) : false;
+    if (choice.exists && !force) {
+      setStatus("Overwrite canceled");
+      return;
+    }
+    const data = await postJson("/api/yaml/save", {
+      yaml_text: editor.value,
+      path_token: choice.path_token,
+      force,
+    });
+    if (!data.ok) {
+      renderErrors(data.errors);
+      setStatus("Save failed");
+      return;
+    }
+    renderMessages([{ message: `YAML saved: ${data.path_label}`, ok: true }]);
+    dirty = false;
+    updateDirtyState();
+    setStatus("YAML saved");
+  } catch (error) {
+    renderMessages([{ message: messageForError(error), ok: false }]);
+    setStatus("Save error");
+  } finally {
+    setBusy(false);
+  }
+}
+
+async function exportGds() {
+  setBusy(true, "Choosing path");
+  try {
+    const choice = await chooseSavePath("gds", "layout.gds");
+    if (!choice.ok) {
+      setStatus(choice.canceled ? "Export canceled" : "Export blocked");
+      renderErrors(choice.errors || []);
+      return;
+    }
+    const force = choice.exists ? window.confirm(`Overwrite ${choice.path_label}?`) : false;
+    if (choice.exists && !force) {
+      setStatus("Overwrite canceled");
+      return;
+    }
+    setStatus("Exporting GDS");
+    const data = await postJson("/api/export/gds", {
+      yaml_text: editor.value,
+      path_token: choice.path_token,
+      force,
+    });
+    if (!data.ok) {
+      renderErrors(data.errors);
+      setStatus("Export failed");
+      return;
+    }
+    renderMessages([{ message: `GDS exported: ${data.path_label} (${data.region_count} region(s)).`, ok: true }]);
+    setStatus("GDS exported");
+  } catch (error) {
+    renderMessages([{ message: messageForError(error), ok: false }]);
+    setStatus("Export error");
+  } finally {
+    setBusy(false);
+  }
+}
+
 async function previewSvg() {
   requestSeq += 1;
   const requestId = `preview-${requestSeq}`;
@@ -123,6 +198,13 @@ async function previewSvg() {
   }
 }
 
+async function chooseSavePath(kind, suggestedName) {
+  return postJson("/api/file/choose-save", {
+    kind,
+    suggested_name: suggestedName,
+  });
+}
+
 async function postJson(path, payload, signal) {
   const response = await fetch(path, {
     method: "POST",
@@ -143,6 +225,8 @@ async function postJson(path, payload, signal) {
 
 function setBusy(isBusy, label = "") {
   validateButton.disabled = isBusy;
+  saveYamlButton.disabled = isBusy;
+  exportGdsButton.disabled = isBusy;
   previewButton.disabled = isBusy;
   if (label) {
     setStatus(label);
