@@ -31,6 +31,7 @@ let debounceTimer = 0;
 let previewController = null;
 let requestSeq = 0;
 let dirty = false;
+let baselineYaml = SAMPLE_YAML;
 
 editor.value = SAMPLE_YAML;
 
@@ -40,8 +41,7 @@ saveYamlButton.addEventListener("click", saveYaml);
 exportGdsButton.addEventListener("click", exportGds);
 previewButton.addEventListener("click", previewSvg);
 editor.addEventListener("input", () => {
-  dirty = true;
-  updateDirtyState();
+  updateDirtyFromEditor();
   window.clearTimeout(debounceTimer);
   debounceTimer = window.setTimeout(previewSvg, 450);
 });
@@ -84,6 +84,7 @@ async function openYaml() {
       return;
     }
     editor.value = data.yaml_text;
+    baselineYaml = data.yaml_text;
     dirty = false;
     updateDirtyState();
     renderMessages([{ message: `YAML opened: ${data.path_label}`, ok: true }]);
@@ -104,8 +105,6 @@ async function validateYaml() {
     if (data.ok) {
       renderMessages([{ message: `OK, ${data.shape_count} shape(s).`, ok: true }]);
       setStatus("Valid");
-      dirty = false;
-      updateDirtyState();
       return;
     }
     renderErrors(data.errors);
@@ -143,6 +142,7 @@ async function saveYaml() {
       return;
     }
     renderMessages([{ message: `YAML saved: ${data.path_label}`, ok: true }]);
+    baselineYaml = editor.value;
     dirty = false;
     updateDirtyState();
     setStatus("YAML saved");
@@ -195,14 +195,15 @@ async function previewSvg() {
   if (previewController) {
     previewController.abort();
   }
-  previewController = new AbortController();
-  const timeout = window.setTimeout(() => previewController.abort(), 8000);
+  const controller = new AbortController();
+  previewController = controller;
+  const timeout = window.setTimeout(() => controller.abort(), 8000);
   setBusy(true, "Rendering");
   try {
     const data = await postJson(
       "/api/preview/svg",
       { yaml_text: editor.value, request_id: requestId },
-      previewController.signal,
+      controller.signal,
     );
     if (requestId !== `preview-${requestSeq}`) {
       return;
@@ -211,8 +212,6 @@ async function previewSvg() {
       previewCanvas.innerHTML = stripXmlDeclaration(data.svg_text);
       renderMessages([{ message: `Preview ready, ${data.region_count} region(s).`, ok: true }]);
       setStatus("Preview OK");
-      dirty = false;
-      updateDirtyState();
       return;
     }
     renderErrors(data.errors);
@@ -223,7 +222,10 @@ async function previewSvg() {
     setStatus(error.name === "AbortError" ? "Canceled" : "Error");
   } finally {
     window.clearTimeout(timeout);
-    setBusy(false);
+    if (previewController === controller) {
+      previewController = null;
+      setBusy(false);
+    }
   }
 }
 
@@ -269,6 +271,11 @@ function setStatus(label) {
 
 function updateDirtyState() {
   dirtyState.textContent = dirty ? "Dirty" : "Clean";
+}
+
+function updateDirtyFromEditor() {
+  dirty = editor.value !== baselineYaml;
+  updateDirtyState();
 }
 
 function renderErrors(errors) {
