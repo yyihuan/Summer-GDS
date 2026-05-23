@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Summer GDS</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <script>
+      window.SUMMER_GDS_SESSION_TOKEN = {{ session_token | tojson }};
+    </script>
+    <script defer src="/static/app.js"></script>
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">Local layout workbench</p>
+          <h1>Summer GDS</h1>
+        </div>
+        <div class="toolbar" aria-label="主要操作">
+          <button class="button ghost" id="validateButton" type="button">Validate</button>
+          <button class="button primary" id="previewButton" type="button">Preview SVG</button>
+        </div>
+      </header>
+
+      <main class="workspace" id="workspace">
+        <section class="panel editor-panel" aria-labelledby="editorTitle">
+          <div class="panel-head">
+            <div>
+              <p class="eyebrow">YAML source</p>
+              <h2 id="editorTitle">唯一真源</h2>
+            </div>
+            <span class="state-pill" id="dirtyState">Clean</span>
+          </div>
+          <textarea id="yamlEditor" spellcheck="false" aria-label="YAML 编辑器"></textarea>
+          <div class="message-list" id="errorList" aria-live="polite"></div>
+        </section>
+
+        <div class="splitter" id="splitter" role="separator" aria-orientation="vertical" aria-label="调整编辑区和预览区宽度"></div>
+
+        <section class="panel preview-panel" aria-labelledby="previewTitle">
+          <div class="panel-head">
+            <div>
+              <p class="eyebrow">Live preview</p>
+              <h2 id="previewTitle">SVG 临时预览</h2>
+            </div>
+            <span class="state-pill" id="statusText">Idle</span>
+          </div>
+          <div class="preview-canvas" id="previewCanvas">
+            <div class="empty-preview">
+              <strong>等待预览</strong>
+              <span>编辑 YAML 后会自动刷新 SVG。</span>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+  </body>
+</html>
