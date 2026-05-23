@@ -15,6 +15,7 @@ shapes:
 
 const TOKEN = window.SUMMER_GDS_SESSION_TOKEN;
 const editor = document.getElementById("yamlEditor");
+const openYamlButton = document.getElementById("openYamlButton");
 const validateButton = document.getElementById("validateButton");
 const saveYamlButton = document.getElementById("saveYamlButton");
 const exportGdsButton = document.getElementById("exportGdsButton");
@@ -33,6 +34,7 @@ let dirty = false;
 
 editor.value = SAMPLE_YAML;
 
+openYamlButton.addEventListener("click", openYaml);
 validateButton.addEventListener("click", validateYaml);
 saveYamlButton.addEventListener("click", saveYaml);
 exportGdsButton.addEventListener("click", exportGds);
@@ -67,6 +69,33 @@ splitter.addEventListener("pointerup", (event) => {
 
 updateDirtyState();
 previewSvg();
+
+async function openYaml() {
+  if (dirty && !window.confirm("Discard unsaved YAML changes?")) {
+    setStatus("Open canceled");
+    return;
+  }
+  setBusy(true, "Opening YAML");
+  try {
+    const data = await postJson("/api/yaml/open", {});
+    if (!data.ok) {
+      setStatus(data.canceled ? "Open canceled" : "Open failed");
+      renderErrors(data.errors || []);
+      return;
+    }
+    editor.value = data.yaml_text;
+    dirty = false;
+    updateDirtyState();
+    renderMessages([{ message: `YAML opened: ${data.path_label}`, ok: true }]);
+    setStatus("YAML opened");
+    await previewSvg();
+  } catch (error) {
+    renderMessages([{ message: messageForError(error), ok: false }]);
+    setStatus("Open error");
+  } finally {
+    setBusy(false);
+  }
+}
 
 async function validateYaml() {
   setBusy(true, "Validating");
@@ -224,6 +253,7 @@ async function postJson(path, payload, signal) {
 }
 
 function setBusy(isBusy, label = "") {
+  openYamlButton.disabled = isBusy;
   validateButton.disabled = isBusy;
   saveYamlButton.disabled = isBusy;
   exportGdsButton.disabled = isBusy;

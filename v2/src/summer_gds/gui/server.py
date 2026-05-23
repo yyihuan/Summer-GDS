@@ -88,6 +88,13 @@ def create_app(
             return jsonify(protocol_error("invalid_request", "$.suggested_name", "suggested_name must be a string.")), 400
         return jsonify(session.choose_save_path(kind, suggested_name))
 
+    @app.post("/api/yaml/open")
+    def open_yaml():
+        payload = _json_payload()
+        if payload is not None and not isinstance(payload, dict):
+            return jsonify(protocol_error("invalid_request", "$", "Request body must be a JSON object.")), 400
+        return jsonify(session.open_yaml())
+
     @app.post("/api/yaml/save")
     def save_yaml():
         payload = _json_payload()

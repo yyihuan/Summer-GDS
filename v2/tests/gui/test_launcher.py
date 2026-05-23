@@ -60,3 +60,21 @@ def test_pywebview_save_dialog_maps_yaml_and_cancel():
 
     assert result is None
     assert window.calls[0][1]["file_types"] == ("YAML config (*.yaml;*.yml)",)
+
+
+def test_pywebview_open_dialog_maps_yaml(tmp_path):
+    selected = tmp_path / "config.yaml"
+    window = FakeWindow((str(selected),))
+    dialog = PyWebviewSaveFileDialog(window=window, open_dialog_constant="OPEN")
+
+    result = dialog.choose_open_path("yaml")
+
+    assert result == selected
+    assert window.calls == [
+        (
+            "OPEN",
+            {
+                "file_types": ("YAML config (*.yaml;*.yml)",),
+            },
+        )
+    ]

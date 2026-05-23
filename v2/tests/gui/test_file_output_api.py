@@ -27,13 +27,19 @@ shapes:
 
 
 class FakeSaveDialog:
-    def __init__(self, *paths: Path | None):
+    def __init__(self, *paths: Path | None, open_paths: tuple[Path | None, ...] = ()):
         self.paths = deque(paths)
+        self.open_paths = deque(open_paths)
         self.calls: list[tuple[str, str | None]] = []
+        self.open_calls: list[str] = []
 
     def choose_save_path(self, kind: str, suggested_name: str | None) -> Path | None:
         self.calls.append((kind, suggested_name))
         return self.paths.popleft()
+
+    def choose_open_path(self, kind: str) -> Path | None:
+        self.open_calls.append(kind)
+        return self.open_paths.popleft()
 
 
 def make_client(tmp_path: Path, dialog: FakeSaveDialog):
@@ -150,3 +156,44 @@ def test_gds_export_reports_missing_parent(tmp_path):
     data = response.get_json()
     assert data["ok"] is False
     assert {error["code"] for error in data["errors"]} == {"path_missing"}
+
+
+def test_yaml_open_reads_selected_file(tmp_path):
+    config = tmp_path / "config.yaml"
+    config.write_text(VALID_YAML)
+    dialog = FakeSaveDialog(open_paths=(config,))
+    client = make_client(tmp_path, dialog)
+
+    response = post_json(client, "/api/yaml/open", {})
+
+    assert response.status_code == 200
+    data = response.get_json()
+    assert data == {
+        "ok": True,
+        "yaml_text": VALID_YAML,
+        "path_label": str(config),
+        "errors": [],
+    }
+    assert dialog.open_calls == ["yaml"]
+
+
+def test_yaml_open_cancel_is_explicit(tmp_path):
+    client = make_client(tmp_path, FakeSaveDialog(open_paths=(None,)))
+
+    response = post_json(client, "/api/yaml/open", {})
+
+    assert response.get_json() == {"ok": False, "canceled": True, "errors": []}
+
+
+def test_yaml_open_rejects_missing_or_non_yaml_path(tmp_path):
+    missing = tmp_path / "missing.yaml"
+    bad_suffix = tmp_path / "config.txt"
+    bad_suffix.write_text("x")
+    missing_client = make_client(tmp_path, FakeSaveDialog(open_paths=(missing,)))
+    suffix_client = make_client(tmp_path, FakeSaveDialog(open_paths=(bad_suffix,)))
+
+    missing_response = post_json(missing_client, "/api/yaml/open", {})
+    suffix_response = post_json(suffix_client, "/api/yaml/open", {})
+
+    assert {error["code"] for error in missing_response.get_json()["errors"]} == {"path_missing"}
+    assert {error["code"] for error in suffix_response.get_json()["errors"]} == {"invalid_output_path"}

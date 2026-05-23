@@ -18,11 +18,17 @@ from summer_gds.writer.image_renderer import ImageOutputConfig, render_image
 
 
 class SaveFileDialog(Protocol):
+    def choose_open_path(self, kind: str) -> Path | None:
+        pass
+
     def choose_save_path(self, kind: str, suggested_name: str | None) -> Path | None:
         pass
 
 
 class NullSaveFileDialog:
+    def choose_open_path(self, kind: str) -> Path | None:
+        return None
+
     def choose_save_path(self, kind: str, suggested_name: str | None) -> Path | None:
         return None
 
@@ -125,6 +131,21 @@ class GuiSession:
             "path_token": token,
             "path_label": str(path),
             "exists": path.exists(),
+            "errors": [],
+        }
+
+    def open_yaml(self) -> dict[str, Any]:
+        selected = self.file_dialog.choose_open_path("yaml")
+        if selected is None:
+            return {"ok": False, "canceled": True, "errors": []}
+        path = Path(selected)
+        path_error = _validate_read_path(path, "yaml")
+        if path_error is not None:
+            return path_error
+        return {
+            "ok": True,
+            "yaml_text": path.read_text(),
+            "path_label": str(path),
             "errors": [],
         }
 
@@ -264,6 +285,17 @@ def _validate_write_path(path: Path, kind: str, force: bool) -> dict[str, Any] |
         return _simple_error_response("path_missing", "$.path_token", f"Output parent directory does not exist: {path.parent}")
     if path.exists() and not force:
         return _simple_error_response("export_exists", "$.path_token", "Output already exists.")
+    return None
+
+
+def _validate_read_path(path: Path, kind: str) -> dict[str, Any] | None:
+    suffixes = {
+        "yaml": {".yaml", ".yml"},
+    }
+    if path.suffix.lower() not in suffixes[kind]:
+        return _simple_error_response("invalid_output_path", "$.path", f"{kind} input suffix is invalid.")
+    if not path.exists() or not path.is_file():
+        return _simple_error_response("path_missing", "$.path", f"Input file does not exist: {path}")
     return None
 
 
