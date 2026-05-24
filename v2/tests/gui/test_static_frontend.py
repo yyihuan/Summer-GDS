@@ -49,6 +49,7 @@ def test_index_is_builder_first_not_yaml_editor(tmp_path):
     assert "viaInnerFilletModeInput" in html
     assert "viaInnerFilletRadiiInput" in html
     assert "viaOuterFilletModeInput" in html
+    assert "viaOuterConcentricInput" in html
     assert "viaOuterFilletRadiiInput" in html
     assert "vertexTable" not in html
     assert "+ 点" not in html
@@ -97,4 +98,6 @@ def test_frontend_supports_via_inner_outer_per_corner_fillet_radii():
     assert "function formatViaFilletRadiiList" in script
     assert "viaInnerFilletRadiiInput" in script
     assert "viaOuterFilletRadiiInput" in script
+    assert "function computeViaOuterConcentricSpec" in script
+    assert "function markViaOuterOverride" in script
     assert "formatRadiusSpecInline" in script

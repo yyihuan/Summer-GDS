@@ -87,6 +87,7 @@ const viaInnerFilletRadiiShell = document.getElementById("viaInnerFilletRadiiShe
 const viaInnerFilletRadiiInput = document.getElementById("viaInnerFilletRadiiInput");
 const formatViaInnerFilletRadiiButton = document.getElementById("formatViaInnerFilletRadiiButton");
 const viaOuterFilletModeInput = document.getElementById("viaOuterFilletModeInput");
+const viaOuterConcentricInput = document.getElementById("viaOuterConcentricInput");
 const viaOuterFilletRadiusField = document.getElementById("field-via-outer-fillet-radius");
 const viaOuterFilletRadiusInput = document.getElementById("viaOuterFilletRadiusInput");
 const viaOuterFilletRadiiEditor = document.getElementById("viaOuterFilletRadiiEditor");
@@ -129,6 +130,7 @@ let ringsFilletRows = [];
 let busyWatchdogTimer = 0;
 let lastVertexParse = { ok: true, vertices: [] };
 let lastBaseFilletRadiiParse = { ok: true, radii: [] };
+let suppressViaOuterOverride = false;
 
 bindEvents();
 initialize();
@@ -175,12 +177,35 @@ function bindEvents() {
   baseFilletModeInput.addEventListener("change", handleBaseFilletModeChange);
   baseFilletRadiiInput.addEventListener("input", handleBaseFilletRadiiInput);
   formatBaseFilletRadiiButton.addEventListener("click", formatBaseFilletRadiiList);
-  viaInnerFilletModeInput.addEventListener("change", () => renderViaFilletSide("inner"));
-  viaInnerFilletRadiiInput.addEventListener("input", () => handleViaFilletRadiiInput("inner"));
-  formatViaInnerFilletRadiiButton.addEventListener("click", () => formatViaFilletRadiiList("inner"));
-  viaOuterFilletModeInput.addEventListener("change", () => renderViaFilletSide("outer"));
-  viaOuterFilletRadiiInput.addEventListener("input", () => handleViaFilletRadiiInput("outer"));
-  formatViaOuterFilletRadiiButton.addEventListener("click", () => formatViaFilletRadiiList("outer"));
+  viaInnerInput.addEventListener("input", updateViaOuterConcentric);
+  viaOuterInput.addEventListener("input", updateViaOuterConcentric);
+  viaInnerFilletModeInput.addEventListener("change", () => {
+    renderViaFilletSide("inner");
+    updateViaOuterConcentric();
+  });
+  viaInnerFilletRadiusInput.addEventListener("input", updateViaOuterConcentric);
+  viaInnerFilletRadiiInput.addEventListener("input", () => {
+    handleViaFilletRadiiInput("inner");
+    updateViaOuterConcentric();
+  });
+  formatViaInnerFilletRadiiButton.addEventListener("click", () => {
+    formatViaFilletRadiiList("inner");
+    updateViaOuterConcentric();
+  });
+  viaOuterConcentricInput.addEventListener("change", updateViaOuterConcentric);
+  viaOuterFilletModeInput.addEventListener("change", () => {
+    markViaOuterOverride();
+    renderViaFilletSide("outer");
+  });
+  viaOuterFilletRadiusInput.addEventListener("input", markViaOuterOverride);
+  viaOuterFilletRadiiInput.addEventListener("input", () => {
+    markViaOuterOverride();
+    handleViaFilletRadiiInput("outer");
+  });
+  formatViaOuterFilletRadiiButton.addEventListener("click", () => {
+    markViaOuterOverride();
+    formatViaFilletRadiiList("outer");
+  });
   vertexListInput.addEventListener("input", handleVertexListInput);
   vertexListInput.addEventListener("scroll", syncVertexLineNumberScroll);
   formatVertexListButton.addEventListener("click", formatVertexList);
@@ -554,6 +579,8 @@ function openShapeDialog(shape) {
     viaOuterInput.value = shape.offsets.outer;
     setViaFilletSide("inner", shape.fillet?.inner ?? null);
     setViaFilletSide("outer", shape.fillet?.outer ?? null);
+    viaOuterConcentricInput.checked = !shape.fillet?.outer;
+    updateViaOuterConcentric();
   } else if (shape.type === "rings") {
     ringsRefInput.value = String(shape.source.ref);
     ringsCountInput.value = shape.count;
@@ -861,6 +888,26 @@ function setViaFilletSide(side, spec) {
   renderViaFilletSide(side);
 }
 
+function setViaFilletSideValue(side, spec) {
+  const controls = viaFilletControls(side);
+  const run = () => {
+    controls.mode.value = baseFilletMode(spec);
+    controls.radius.value = spec?.radius ?? "";
+    controls.radii.value = spec?.radii ? formatRadiiForList(spec.radii) : "";
+    renderViaFilletSide(side);
+  };
+  if (side !== "outer") {
+    run();
+    return;
+  }
+  suppressViaOuterOverride = true;
+  try {
+    run();
+  } finally {
+    suppressViaOuterOverride = false;
+  }
+}
+
 function renderViaFilletSide(side) {
   const controls = viaFilletControls(side);
   const mode = controls.mode.value;
@@ -897,6 +944,52 @@ function readViaFilletSide(side) {
     return { ok: false };
   }
   return { ok: true, value: { radii: parsed.radii } };
+}
+
+function markViaOuterOverride() {
+  if (suppressViaOuterOverride) {
+    return;
+  }
+  viaOuterConcentricInput.checked = false;
+}
+
+function updateViaOuterConcentric() {
+  if (!viaOuterConcentricInput.checked) {
+    return;
+  }
+  const spec = computeViaOuterConcentricSpec();
+  if (spec === undefined) {
+    return;
+  }
+  setViaFilletSideValue("outer", spec);
+}
+
+function computeViaOuterConcentricSpec() {
+  const innerOffset = readFiniteNumber(viaInnerInput.value);
+  const outerOffset = readFiniteNumber(viaOuterInput.value);
+  if (innerOffset === null || outerOffset === null) {
+    return undefined;
+  }
+  const delta = outerOffset - innerOffset;
+  if (!Number.isFinite(delta) || delta < 0) {
+    return undefined;
+  }
+  const innerMode = viaInnerFilletModeInput.value;
+  if (innerMode === "none") {
+    return null;
+  }
+  if (innerMode === "radius") {
+    const radius = readFiniteNumber(viaInnerFilletRadiusInput.value);
+    if (radius === null || radius < 0) {
+      return undefined;
+    }
+    return { radius: radius + delta };
+  }
+  const parsed = parseRadiiList(viaInnerFilletRadiiInput.value, null);
+  if (!parsed.ok) {
+    return undefined;
+  }
+  return { radii: parsed.radii.map((radius) => radius + delta) };
 }
 
 function handleVertexListInput() {

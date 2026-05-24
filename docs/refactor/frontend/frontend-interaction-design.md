@@ -441,6 +441,12 @@ via 倒角输入规则：
 - `unified radius` 写 `fillet.<side>.radius`。
 - `per-corner radii` 写 `fillet.<side>.radii`，推荐横向逗号格式，例如 `1, 2, 0, 3`。
 - via 的 inner/outer 都是 offset 后边界；前端不预测边界点数，只校验半径是非负有限数值，长度匹配和几何合法性由 preview/validate 后端校验。
+- GUI 默认启用 outer 同心联动。设 `delta = outer_offset - inner_offset`：
+  - inner `radius = r` 时，outer 自动填 `radius = r + delta`。
+  - inner `radii = [r0, r1, ...]` 时，outer 自动填 `radii = [r0 + delta, r1 + delta, ...]`。
+  - inner `none` 时，outer 自动为 `none`。
+- 用户手动修改 outer mode/radius/radii 后，outer 进入 override 状态，不再跟随 inner；用户可以重新启用“outer 自动同心”恢复联动。
+- 同心联动是 GUI 辅助，不进入 YAML；YAML 只保存计算后的显式 `fillet.outer.radius/radii`。
 
 实施计划：
 
@@ -449,6 +455,7 @@ via 倒角输入规则：
 3. YAML serializer 支持 `fillet.inner.radii` 和 `fillet.outer.radii`，同时保留 `radius`。
 4. 打开 YAML 时根据 `radius` / `radii` 回填对应 mode 和输入值。
 5. 测试覆盖 via inner/outer radii 控件存在、序列化路径存在、旧的 unified radius 不回退。
+6. 增加 outer 同心 auto/override 状态；inner 或 offsets 变化时只在 auto 状态下重算 outer。
 
 ### 7.2 创建 Rings
 

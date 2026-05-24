@@ -272,6 +272,7 @@ Open YAML
 - direct vertices 模式下，`base_shape.fillet.radii` 使用横向半径列表输入；列表长度必须等于当前顶点数，第 `i` 个半径绑定第 `i` 行顶点。
 - `source.ref + offset` 模式也允许 `base_shape.fillet.radii`，但前端不推断 offset 后边界点数，只做数值解析和横向格式化；长度匹配、offset 后拓扑和倒角合法性由 preview/validate 的后端几何流水线判定。
 - `via.fillet.inner` 和 `via.fillet.outer` 各自独立支持 `none` / `radius` / `radii`；`radii` 使用横向半径列表输入，前端只校验非负有限数值，长度和 offset 后边界合法性由 preview/validate 判定。
+- via 默认启用 outer 同心联动：当 outer 处于 auto 状态时，`outer_radius = inner_radius + (outer_offset - inner_offset)`；逐角时逐项相加。用户手动修改 outer 后进入 override，不再自动跟随；YAML 只保存计算后的普通 `fillet.outer.radius/radii`。
 - `rings` 的 per-ring fillet 只有在用户选择 per-ring 模式时输出；输出数组长度必须等于 `count`。
 - `gds.output` 仅在打开的 YAML 已存在该字段时保留；GUI 导出路径不回写到 YAML。
 
@@ -485,5 +486,6 @@ pyinstaller --onefile --windowed --name SummerGDS \
 - direct vertices base shape 的逐角倒角正确序列化为 `fillet.radii`，并在数量不等于顶点数时阻止 Apply。
 - ref+offset base shape 的逐角倒角允许保存到 YAML；若 radii 数量和 offset 后边界点数不匹配，preview/validate 必须显示后端 `fillet_radii_length_mismatch` 或相关几何错误。
 - via inner/outer 的逐角倒角分别序列化为 `fillet.inner.radii` / `fillet.outer.radii`；长度不匹配时由 preview/validate 暴露后端错误。
+- via outer 自动同心联动只影响 GUI draft；保存/加载 YAML 后仍回到显式 radius/radii 值，避免协议层出现隐式状态。
 - `rings.count` 变化时 per-ring fillet 数组不会产生 length mismatch。
 - `dbu` / `precision` 联动错误能在 Global 设置中内联显示。
