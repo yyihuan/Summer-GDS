@@ -101,6 +101,14 @@ const ringsCountInput = document.getElementById("ringsCountInput");
 const ringsPitchInput = document.getElementById("ringsPitchInput");
 const ringsWidthInput = document.getElementById("ringsWidthInput");
 const ringsFilletModeInput = document.getElementById("ringsFilletModeInput");
+const ringsConcentricFilletEditor = document.getElementById("ringsConcentricFilletEditor");
+const ringsConcentricFilletModeInput = document.getElementById("ringsConcentricFilletModeInput");
+const ringsConcentricRadiusField = document.getElementById("field-rings-concentric-radius");
+const ringsConcentricRadiusInput = document.getElementById("ringsConcentricRadiusInput");
+const ringsConcentricRadiiEditor = document.getElementById("ringsConcentricRadiiEditor");
+const ringsConcentricRadiiShell = document.getElementById("ringsConcentricRadiiShell");
+const ringsConcentricRadiiInput = document.getElementById("ringsConcentricRadiiInput");
+const formatRingsConcentricRadiiButton = document.getElementById("formatRingsConcentricRadiiButton");
 const ringsFilletTableWrap = document.getElementById("ringsFilletTableWrap");
 const ringsFilletTable = document.getElementById("ringsFilletTable");
 const applySameRingsFilletButton = document.getElementById("applySameRingsFilletButton");
@@ -214,6 +222,9 @@ function bindEvents() {
     renderRingsFilletRows(readInteger(ringsCountInput.value) || 1);
   });
   ringsFilletModeInput.addEventListener("change", renderRingsFilletMode);
+  ringsConcentricFilletModeInput.addEventListener("change", renderRingsConcentricFilletMode);
+  ringsConcentricRadiiInput.addEventListener("input", handleRingsConcentricRadiiInput);
+  formatRingsConcentricRadiiButton.addEventListener("click", formatRingsConcentricRadiiList);
   applySameRingsFilletButton.addEventListener("click", applySameRingsFillet);
 
   splitter.addEventListener("pointerdown", startSplitDrag);
@@ -587,6 +598,9 @@ function openShapeDialog(shape) {
     ringsPitchInput.value = shape.pitch;
     ringsWidthInput.value = shape.width;
     ringsFilletModeInput.value = shape.fillet?.rings ? "per_ring" : "none";
+    ringsConcentricFilletModeInput.value = "none";
+    ringsConcentricRadiusInput.value = "";
+    ringsConcentricRadiiInput.value = "";
     ringsFilletRows = shape.fillet?.rings ? shape.fillet.rings.map((ring) => ({
       inner: ring.inner?.radius ?? "",
       outer: ring.outer?.radius ?? "",
@@ -757,7 +771,19 @@ function readRingsFields() {
   }
 
   let fillet = null;
-  if (ringsFilletModeInput.value === "per_ring" && count !== null && count > 0) {
+  if (ringsFilletModeInput.value === "concentric" && count !== null && count > 0 && pitch !== null && width !== null) {
+    const concentric = readRingsConcentricFillet();
+    if (!concentric.ok) {
+      ok = false;
+    } else if (concentric.value) {
+      fillet = {
+        rings: Array.from({ length: count }, (_, index) => ({
+          inner: addRadiusOffset(concentric.value, index * pitch),
+          outer: addRadiusOffset(concentric.value, index * pitch + width),
+        })),
+      };
+    }
+  } else if (ringsFilletModeInput.value === "per_ring" && count !== null && count > 0) {
     syncRingsFilletRowsFromInputs();
     const rings = [];
     for (let index = 0; index < count; index += 1) {
@@ -787,6 +813,38 @@ function readRingsFields() {
       fillet,
     },
   } : { ok: false };
+}
+
+function readRingsConcentricFillet() {
+  const mode = ringsConcentricFilletModeInput.value;
+  if (mode === "none") {
+    return { ok: true, value: null };
+  }
+  if (mode === "radius") {
+    if (!ringsConcentricRadiusInput.value.trim()) {
+      return { ok: true, value: null };
+    }
+    const radius = readFiniteNumber(ringsConcentricRadiusInput.value);
+    if (radius === null || radius < 0) {
+      setFieldError("field-rings-concentric-radius", "radius 必须是非负有限数值。");
+      return { ok: false };
+    }
+    return { ok: true, value: { radius } };
+  }
+  const parsed = parseRadiiList(ringsConcentricRadiiInput.value, null);
+  updateRingsConcentricRadiiState(parsed);
+  if (!parsed.ok) {
+    setFieldError("field-rings-concentric-radii", parsed.message);
+    return { ok: false };
+  }
+  return { ok: true, value: { radii: parsed.radii } };
+}
+
+function addRadiusOffset(radiusSpec, offset) {
+  if (radiusSpec.radius !== undefined) {
+    return { radius: radiusSpec.radius + offset };
+  }
+  return { radii: radiusSpec.radii.map((radius) => radius + offset) };
 }
 
 function renderBaseSourceMode() {
@@ -1269,11 +1327,45 @@ function pointsEqual(left, right) {
 }
 
 function renderRingsFilletMode() {
-  const enabled = ringsFilletModeInput.value === "per_ring";
-  ringsFilletTableWrap.hidden = !enabled;
-  if (enabled) {
+  const perRingEnabled = ringsFilletModeInput.value === "per_ring";
+  const concentricEnabled = ringsFilletModeInput.value === "concentric";
+  ringsFilletTableWrap.hidden = !perRingEnabled;
+  ringsConcentricFilletEditor.hidden = !concentricEnabled;
+  if (perRingEnabled) {
     renderRingsFilletRows(readInteger(ringsCountInput.value) || 1);
   }
+  if (concentricEnabled) {
+    renderRingsConcentricFilletMode();
+  }
+}
+
+function renderRingsConcentricFilletMode() {
+  const mode = ringsConcentricFilletModeInput.value;
+  ringsConcentricRadiusField.hidden = mode !== "radius";
+  ringsConcentricRadiiEditor.hidden = mode !== "radii";
+  if (mode !== "radii") {
+    ringsConcentricRadiiShell.dataset.status = "idle";
+    return;
+  }
+  handleRingsConcentricRadiiInput();
+}
+
+function handleRingsConcentricRadiiInput() {
+  updateRingsConcentricRadiiState(parseRadiiList(ringsConcentricRadiiInput.value, null));
+}
+
+function formatRingsConcentricRadiiList() {
+  const parsed = parseRadiiList(ringsConcentricRadiiInput.value, null);
+  updateRingsConcentricRadiiState(parsed);
+  if (!parsed.ok) {
+    return;
+  }
+  ringsConcentricRadiiInput.value = formatRadiiForList(parsed.radii);
+  updateRingsConcentricRadiiState(parseRadiiList(ringsConcentricRadiiInput.value, null));
+}
+
+function updateRingsConcentricRadiiState(parsed) {
+  ringsConcentricRadiiShell.dataset.status = parsed.ok ? "valid" : "invalid";
 }
 
 function renderRingsFilletRows(count) {

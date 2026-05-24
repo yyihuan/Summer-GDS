@@ -51,6 +51,8 @@ def test_index_is_builder_first_not_yaml_editor(tmp_path):
     assert "viaOuterFilletModeInput" in html
     assert "viaOuterConcentricInput" in html
     assert "viaOuterFilletRadiiInput" in html
+    assert "ringsConcentricFilletModeInput" in html
+    assert "ringsConcentricRadiiInput" in html
     assert "vertexTable" not in html
     assert "+ 点" not in html
     assert "id=\"yamlEditor\"" not in html
@@ -101,3 +103,12 @@ def test_frontend_supports_via_inner_outer_per_corner_fillet_radii():
     assert "function computeViaOuterConcentricSpec" in script
     assert "function markViaOuterOverride" in script
     assert "formatRadiusSpecInline" in script
+
+
+def test_frontend_supports_rings_concentric_fillet_expansion():
+    script = (Path(__file__).parents[2] / "src/summer_gds/gui/static/app.js").read_text()
+
+    assert "function readRingsConcentricFillet" in script
+    assert "function addRadiusOffset" in script
+    assert "function formatRingsConcentricRadiiList" in script
+    assert "ringsConcentricFilletModeInput" in script

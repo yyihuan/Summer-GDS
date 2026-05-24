@@ -471,7 +471,13 @@ width:  [ 4  ] um
 
 fillet:
   (●) none for all rings
+  ( ) concentric from inner fillet
   ( ) configure per ring
+
+concentric from inner fillet:
+  base inner:
+    ( ) unified radius [ 1 ] um
+    ( ) per-corner radii [ 1, 2, 0, 3 ]
 
 只有选择 "configure per ring" 后才显示 per-ring 表格：
   Ring 0: inner [ 1 ] outer [ 2 ]
@@ -488,10 +494,23 @@ fillet:
 `rings` 倒角写入规则：
 
 - `none for all rings` 模式不写 `fillet` 字段，避免传出与 `count` 不匹配的空数组。
+- `concentric from inner fillet` 是 GUI 辅助模式，不进入 YAML。用户配置 base inner 倒角后，GUI 展开为显式 `fillet.rings`：
+  - `ring_i.inner.radius = base_radius + i * pitch`
+  - `ring_i.outer.radius = base_radius + i * pitch + width`
+  - `radii` 模式逐项相加：`ring_i.inner.radii[j] = base_radii[j] + i * pitch`，`ring_i.outer.radii[j] = base_radii[j] + i * pitch + width`
+  - 若 base inner 为 none，则不写 `fillet`。
 - `configure per ring` 模式写入 `fillet.rings`，长度必须等于 `count`。
 - 用户把 `count` 调大时，新增 ring 行使用空值，并要求用户填写或点击 `同一倒角应用到全部 rings`；前端不静默复制最后一行。
 - 用户把 `count` 调小时，超出范围的 per-ring 行进入临时缓存，当前 YAML 只序列化前 `count` 行。
 - 从 `configure per ring` 切回 `none for all rings` 时，当前 YAML 删除 `fillet` 字段；临时缓存可以保留在弹层内，方便用户切回。
+
+实施计划：
+
+1. rings fillet mode 增加 `concentric`。
+2. `concentric` 先提供一个 base inner fillet editor，支持 `none` / `radius` / `radii`。
+3. serializer 根据 `count/pitch/width` 展开为协议已有的 `fillet.rings` 数组，不新增 YAML 字段。
+4. `configure per ring` 暂时保留现有表格能力；后续再升级为每圈 via-style inner/outer editor。
+5. 测试覆盖同心 radius/radii 展开和既有 per-ring 行为不回退。
 
 ## 8. 主流程
 
