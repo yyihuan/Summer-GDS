@@ -43,6 +43,9 @@ def test_index_is_builder_first_not_yaml_editor(tmp_path):
     assert "vertexListInput" in html
     assert "vertexLineNumbers" in html
     assert "formatVertexListButton" in html
+    assert "baseFilletModeInput" in html
+    assert "baseFilletRadiiInput" in html
+    assert "formatBaseFilletRadiiButton" in html
     assert "vertexTable" not in html
     assert "+ 点" not in html
     assert "id=\"yamlEditor\"" not in html
@@ -69,3 +72,14 @@ def test_frontend_uses_single_vertex_list_input_with_orientation_checks():
     assert "当前点序为顺时针" in script
     assert "首尾点重复" in script
     assert "TODO: 后续加入更智能的格式识别" in script
+
+
+def test_frontend_supports_base_shape_per_corner_fillet_radii():
+    script = (Path(__file__).parents[2] / "src/summer_gds/gui/static/app.js").read_text()
+
+    assert "function parseRadiiList" in script
+    assert "function parseDelimitedRadii" in script
+    assert "function formatRadiiForList" in script
+    assert "半径数量为" in script
+    assert "ref + offset 图形第一版只支持统一半径" in script
+    assert "radii:" in script

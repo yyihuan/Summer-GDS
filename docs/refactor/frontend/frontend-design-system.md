@@ -1,6 +1,6 @@
-# Frontend Design System v1.4
+# Frontend Design System v1.5
 
-文档版本：v1.4
+文档版本：v1.5
 日期：2026-05-25
 状态：方案设计
 
@@ -58,7 +58,8 @@ Component inventory:
 - Global settings modal/drawer: `dbu`, optional `precision`, fixed `unit`, `top_cell`, readonly imported `gds.output`.
 - Shape action bar: `+ Base Shape`, `+ Via`, `+ Rings`.
 - Shape cards: compact summary + explicit Edit/Delete/Create Via/Create Rings actions.
-- Vertex table: row-based point editing, not a free-form coordinate string.
+- Coordinate list editor: code-like point list with line numbers, formatting, and strict orientation validation.
+- Base fillet editor: `none` / unified radius / horizontal per-corner radii list for direct vertices.
 - Create Via modal: source base shape, offsets, layer, inner/outer fillet.
 - Create Rings modal: source base shape, count/pitch/width, optional per-ring inner/outer fillet.
 - YAML preview mode: readonly generated YAML text, visible only when selected.
@@ -172,7 +173,7 @@ Font policy:
 
 - 第一版优先使用系统自带字体，避免额外字体文件打包。
 - 如果后续引入字体文件，必须放在 `v2/src/summer_gds/gui/static/vendor/fonts/`，不能使用 Google Fonts 或 CDN。
-- 坐标列表输入、行号和 YAML 预览使用 monospace，按钮、标签和状态使用 UI sans。
+- 坐标列表输入、横向逐角半径列表、行号和 YAML 预览使用 monospace，按钮、标签和状态使用 UI sans。
 
 ## 4. HTML Skeleton
 

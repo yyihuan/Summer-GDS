@@ -1,6 +1,6 @@
-# 前端技术架构 v2.5
+# 前端技术架构 v2.6
 
-文档版本：v2.5
+文档版本：v2.6
 日期：2026-05-25
 状态：方案设计
 
@@ -10,7 +10,7 @@
 
 - **Windows 双击启动**：生产版打包为单个 `.exe`，用户不需要安装 Python、Node.js 或命令行工具。
 - **纯本地运行**：GUI、静态资源、后端服务和几何流水线都在本机运行；生产版不依赖 CDN。
-- **Web UI + Python app service**：前端主交互是配置构建器，用户通过表单、坐标列表输入和 shape 创建动作生成 YAML；校验、编译、几何和 GDS 输出都走 v2 app service。
+- **Web UI + Python app service**：前端主交互是配置构建器，用户通过表单、坐标列表输入、逐角倒角列表和 shape 创建动作生成 YAML；校验、编译、几何和 GDS 输出都走 v2 app service。
 - **产品产物只有 YAML 和 GDS**：GUI 支持保存/加载 YAML、导出 GDS；SVG 仅作为实时预览通道，不作为用户导出产物。
 - **YAML 是唯一持久化真源**：GUI 保存、加载、预览和导出都以 YAML v2 为协议输入；第一版不把手写 YAML 作为主交互。
 - **无旧 GUI 依赖**：不继承 `web_gui/` 的 v1 协议、linkage、继承和 override 系统。
@@ -268,6 +268,9 @@ Open YAML
 - 坐标列表支持每行一个点、分号分隔、旧版冒号分隔和 JSON/YAML 数组子集；格式化后统一显示为一行一个 `x,y`。
 - 前端保留顺逆时针检测：`source.vertices` 必须为逆时针、非零面积、首尾不重复；违规直接报错，不自动修正。
 - 后端返回 `source.vertices[j][0]` / `[j][1]` 错误时，前端定位到坐标列表和对应行号摘要，而不是行列表格字段。
+- `base_shape` 倒角模式为 `none` / `radius` / `radii`；`none` 不写 `fillet`，`radius` 写 `fillet.radius`，`radii` 写 `fillet.radii`。
+- `base_shape.fillet.radii` 只在 direct vertices 模式开放，使用横向半径列表输入；列表长度必须等于当前顶点数，第 `i` 个半径绑定第 `i` 行顶点。
+- `source.ref + offset` 的 base shape 第一版只允许统一半径，避免 offset 后边界点数和源顶点数不一致造成逐角索引歧义。
 - `rings` 的 per-ring fillet 只有在用户选择 per-ring 模式时输出；输出数组长度必须等于 `count`。
 - `gds.output` 仅在打开的 YAML 已存在该字段时保留；GUI 导出路径不回写到 YAML。
 
@@ -478,5 +481,6 @@ pyinstaller --onefile --windowed --name SummerGDS \
 - `gds.output` 导入后保存保留，导出 GDS 不改写。
 - `path_token_expired` 要求重新选择路径。
 - 坐标列表正确解析并序列化为 `vertices: [[x, y], ...]`，支持长列表滚动、格式化和方向错误提示。
+- direct vertices base shape 的逐角倒角正确序列化为 `fillet.radii`，并在数量不等于顶点数时阻止 Apply。
 - `rings.count` 变化时 per-ring fillet 数组不会产生 length mismatch。
 - `dbu` / `precision` 联动错误能在 Global 设置中内联显示。

@@ -204,10 +204,46 @@
                   <span class="field-error"></span>
                 </label>
               </div>
-              <label class="field compact-field">
-                <span class="field-label">fillet radius（空为 none）</span>
-                <input class="input" id="baseFilletRadiusInput" data-kind="number" type="number" min="0" step="0.1">
-              </label>
+              <div class="fillet-editor" id="baseFilletEditor">
+                <div class="section-row vertices-toolbar">
+                  <div>
+                    <h4>倒角</h4>
+                    <span class="vertex-status" id="baseFilletStatus">无倒角</span>
+                  </div>
+                </div>
+                <label class="field compact-field">
+                  <span class="field-label">倒角模式</span>
+                  <select class="select" id="baseFilletModeInput">
+                    <option value="none">无倒角</option>
+                    <option value="radius">统一半径</option>
+                    <option value="radii">逐角半径</option>
+                  </select>
+                </label>
+                <label class="field compact-field" id="baseFilletRadiusField" hidden>
+                  <span class="field-label">统一半径</span>
+                  <input class="input" id="baseFilletRadiusInput" data-kind="number" type="number" min="0" step="0.1">
+                  <span class="field-error"></span>
+                </label>
+                <div id="baseFilletRadiiEditor" hidden>
+                  <div class="section-row vertices-toolbar">
+                    <span class="field-label">半径列表</span>
+                    <button class="button button-secondary" id="formatBaseFilletRadiiButton" type="button">格式化</button>
+                  </div>
+                  <label class="field" id="field-base-fillet-radii">
+                    <div class="radii-list-shell" id="baseFilletRadiiShell" data-status="idle">
+                      <input
+                        class="input radii-list-input"
+                        id="baseFilletRadiiInput"
+                        type="text"
+                        spellcheck="false"
+                        placeholder="1, 2, 0, 3"
+                      >
+                    </div>
+                    <span class="field-error" id="baseFilletRadiiError"></span>
+                  </label>
+                  <p class="field-hint">逐角半径按坐标列表顺序绑定，数量必须等于顶点数。推荐格式：1, 2, 0, 3。</p>
+                </div>
+              </div>
             </section>
 
             <section class="shape-section" id="viaEditor" hidden>

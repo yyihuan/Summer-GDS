@@ -599,6 +599,7 @@ h4 {
 .input[data-kind="number"],
 .textarea[data-kind="yaml"],
 .vertex-list-input,
+.radii-list-input,
 .ring-fillet-table input {
   font-family: var(--font-mono);
 }
@@ -606,6 +607,7 @@ h4 {
 .field[data-error="true"] .input,
 .field[data-error="true"] .select,
 .field[data-error="true"] .vertex-list-shell,
+.field[data-error="true"] .radii-list-shell,
 .ring-fillet-row[data-error="true"] .input {
   border-color: var(--color-danger);
 }
@@ -633,7 +635,9 @@ h4 {
   justify-content: space-between;
 }
 
-.vertices-editor {
+.vertices-editor,
+.fillet-editor,
+#baseFilletRadiiEditor {
   display: grid;
   gap: var(--space-8);
 }
@@ -670,6 +674,31 @@ h4 {
 
 .vertex-list-shell[data-status="invalid"] {
   border-color: var(--color-danger);
+}
+
+.radii-list-shell {
+  border: var(--border-thin) solid var(--color-border);
+  border-radius: var(--radius-4);
+  background: #fffdf7;
+}
+
+.radii-list-shell[data-status="valid"] {
+  border-color: var(--color-success);
+}
+
+.radii-list-shell[data-status="invalid"] {
+  border-color: var(--color-danger);
+}
+
+.radii-list-input {
+  min-height: 36px;
+  border: 0;
+  border-radius: 0;
+  white-space: nowrap;
+}
+
+.radii-list-input:focus-visible {
+  outline-offset: -2px;
 }
 
 .vertex-line-numbers {
