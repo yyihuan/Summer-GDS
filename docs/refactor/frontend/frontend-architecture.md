@@ -269,8 +269,8 @@ Open YAML
 - 前端保留顺逆时针检测：`source.vertices` 必须为逆时针、非零面积、首尾不重复；违规直接报错，不自动修正。
 - 后端返回 `source.vertices[j][0]` / `[j][1]` 错误时，前端定位到坐标列表和对应行号摘要，而不是行列表格字段。
 - `base_shape` 倒角模式为 `none` / `radius` / `radii`；`none` 不写 `fillet`，`radius` 写 `fillet.radius`，`radii` 写 `fillet.radii`。
-- `base_shape.fillet.radii` 只在 direct vertices 模式开放，使用横向半径列表输入；列表长度必须等于当前顶点数，第 `i` 个半径绑定第 `i` 行顶点。
-- `source.ref + offset` 的 base shape 第一版只允许统一半径，避免 offset 后边界点数和源顶点数不一致造成逐角索引歧义。
+- direct vertices 模式下，`base_shape.fillet.radii` 使用横向半径列表输入；列表长度必须等于当前顶点数，第 `i` 个半径绑定第 `i` 行顶点。
+- `source.ref + offset` 模式也允许 `base_shape.fillet.radii`，但前端不推断 offset 后边界点数，只做数值解析和横向格式化；长度匹配、offset 后拓扑和倒角合法性由 preview/validate 的后端几何流水线判定。
 - `rings` 的 per-ring fillet 只有在用户选择 per-ring 模式时输出；输出数组长度必须等于 `count`。
 - `gds.output` 仅在打开的 YAML 已存在该字段时保留；GUI 导出路径不回写到 YAML。
 
@@ -482,5 +482,6 @@ pyinstaller --onefile --windowed --name SummerGDS \
 - `path_token_expired` 要求重新选择路径。
 - 坐标列表正确解析并序列化为 `vertices: [[x, y], ...]`，支持长列表滚动、格式化和方向错误提示。
 - direct vertices base shape 的逐角倒角正确序列化为 `fillet.radii`，并在数量不等于顶点数时阻止 Apply。
+- ref+offset base shape 的逐角倒角允许保存到 YAML；若 radii 数量和 offset 后边界点数不匹配，preview/validate 必须显示后端 `fillet_radii_length_mismatch` 或相关几何错误。
 - `rings.count` 变化时 per-ring fillet 数组不会产生 length mismatch。
 - `dbu` / `precision` 联动错误能在 Global 设置中内联显示。

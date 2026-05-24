@@ -80,6 +80,7 @@ def test_frontend_supports_base_shape_per_corner_fillet_radii():
     assert "function parseRadiiList" in script
     assert "function parseDelimitedRadii" in script
     assert "function formatRadiiForList" in script
+    assert "function baseFilletRadiiExpectedCount" in script
     assert "半径数量为" in script
-    assert "ref + offset 图形第一版只支持统一半径" in script
+    assert "offset 后由预览校验" in script
     assert "radii:" in script

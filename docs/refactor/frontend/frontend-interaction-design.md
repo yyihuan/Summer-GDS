@@ -345,14 +345,22 @@ base shape 倒角使用三态模式：
 
 逐角半径列表的交互规则：
 
-- 第 `i` 个半径绑定第 `i` 行顶点，依赖坐标列表的逆时针顺序。
-- 半径列表必须和当前顶点数量完全一致。
+- direct vertices 模式下，第 `i` 个半径绑定第 `i` 行顶点，依赖坐标列表的逆时针顺序。
+- direct vertices 模式下，半径列表必须和当前顶点数量完全一致，数量不匹配时阻止 Apply。
+- `source.ref + offset` 模式下，第 `i` 个半径绑定 offset 后的第 `i` 个边界点；前端不预测 offset 后点数，只做数值校验和格式化，点数匹配由 preview/validate 后端校验。
 - 半径必须是非负有限数值，允许 `0` 表示该角不倒角。
 - 推荐使用横向逗号格式，例如 `1, 2, 0, 3`。
 - 兼容换行、分号和 `[1, 2, 0, 3]` 数组格式；`格式化` 后统一显示为横向逗号列表。
-- 用户从统一半径切到逐角半径时，如果列表为空，前端用当前统一半径展开为 N 个横向值；没有统一半径时使用 `0`。
+- 用户从统一半径切到逐角半径时，如果列表为空，direct vertices 使用当前顶点数展开；ref+offset 尽量使用被引用 direct vertices 的点数展开，否则保持空输入等待用户填写。
 - 用户修改顶点数量后，逐角半径不自动补齐或截断；数量不匹配时阻止 Apply。
-- `source.ref + offset` 模式第一版不开放逐角半径，只允许统一半径。原因是 offset 后边界点数可能变化，逐角索引容易和源顶点产生歧义。
+
+实施计划：
+
+1. 移除 GUI 对 `source.ref + offset` 的逐角半径禁用逻辑。
+2. `readBaseFields()` 在 ref 模式下允许 `fillet.radii`，但不做前端长度校验。
+3. 状态提示区区分 direct vertices 的“匹配 N 个顶点”和 ref+offset 的“offset 后由预览校验”。
+4. 保持 YAML 协议不变，仍输出标准 `fillet.radii`。
+5. 测试覆盖 ref+offset 模式可选择逐角半径、可序列化，并且 direct vertices 的长度硬校验不回退。
 
 ## 6. 实时 SVG 预览
 
@@ -519,7 +527,7 @@ click 保存 YAML / 导出 GDS
 | `dbu` | `0.00001 <= dbu <= 1` | input throttle `300ms` + blur |
 | `precision` | 若填写，`precision >= dbu` 且 `precision / dbu` 为整数 | input throttle `300ms` + blur |
 | `vertices` | 至少 3 个点；空值/非数字/首尾重复/零面积/顺时针立即提示 | input + apply |
-| `base_shape.fillet.radii` | direct vertices 才可用；数量必须等于顶点数；半径必须非负有限数值 | input + apply |
+| `base_shape.fillet.radii` | direct vertices：数量必须等于顶点数；ref+offset：前端只校验非负有限数值，长度由 preview/validate 校验 | input + apply + preview |
 | `layer` | 两个非负整数 | blur |
 | `via.offsets.inner/outer` | 有限数值 | blur |
 | `rings.count` | 正整数 | blur |

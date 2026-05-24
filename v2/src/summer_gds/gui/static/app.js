@@ -617,7 +617,7 @@ function readBaseFields() {
   if (baseSourceModeInput.value === "ref") {
     const ref = readInteger(baseRefInput.value);
     const offset = readFiniteNumber(baseOffsetInput.value);
-    const fillet = readBaseFillet(null, false);
+    const fillet = readBaseFillet(null, true);
     if (ref === null) {
       setFieldError("field-base-source-ref", "请选择 ref。");
       return { ok: false };
@@ -749,24 +749,17 @@ function renderBaseSourceMode() {
 
 function handleBaseFilletModeChange() {
   if (baseFilletModeInput.value === "radii" && !baseFilletRadiiInput.value.trim()) {
-    const parsedVertices = parseVertexList(vertexListInput.value);
-    if (parsedVertices.ok) {
+    const seedCount = seedBaseFilletRadiiCount();
+    if (seedCount !== null) {
       const seedRadius = readFiniteNumber(baseFilletRadiusInput.value) ?? 0;
-      baseFilletRadiiInput.value = formatRadiiForList(Array.from({ length: parsedVertices.vertices.length }, () => seedRadius));
+      baseFilletRadiiInput.value = formatRadiiForList(Array.from({ length: seedCount }, () => seedRadius));
     }
   }
   renderBaseFilletMode();
 }
 
 function renderBaseFilletMode() {
-  const radiiOption = [...baseFilletModeInput.options].find((option) => option.value === "radii");
   const isRef = baseSourceModeInput.value === "ref";
-  if (radiiOption) {
-    radiiOption.disabled = isRef;
-  }
-  if (isRef && baseFilletModeInput.value === "radii") {
-    baseFilletModeInput.value = "radius";
-  }
 
   const mode = baseFilletModeInput.value;
   baseFilletRadiusField.hidden = mode !== "radius";
@@ -802,7 +795,7 @@ function readBaseFillet(expectedVertexCount, allowRadii) {
     return { ok: true, value: { radius } };
   }
   if (!allowRadii) {
-    setFieldError("field-base-fillet-radii", "ref + offset 图形第一版只支持统一半径。");
+    setFieldError("field-base-fillet-radii", "当前图形不支持逐角半径。");
     return { ok: false };
   }
   const parsed = parseRadiiList(baseFilletRadiiInput.value, expectedVertexCount);
@@ -861,16 +854,32 @@ function formatVerticesForList(vertices) {
   return vertices.map((point) => `${formatNumber(point[0])},${formatNumber(point[1])}`).join("\n");
 }
 
-function handleBaseFilletRadiiInput() {
+function seedBaseFilletRadiiCount() {
+  const directCount = baseFilletRadiiExpectedCount();
+  if (directCount !== null) {
+    return directCount;
+  }
+  const ref = readInteger(baseRefInput.value);
+  const sourceShape = ref === null ? null : findShape(ref);
+  return sourceShape?.source?.vertices?.length ?? null;
+}
+
+function baseFilletRadiiExpectedCount() {
+  if (baseSourceModeInput.value !== "vertices") {
+    return null;
+  }
   const parsedVertices = parseVertexList(vertexListInput.value);
-  const expectedCount = parsedVertices.ok ? parsedVertices.vertices.length : null;
+  return parsedVertices.ok ? parsedVertices.vertices.length : null;
+}
+
+function handleBaseFilletRadiiInput() {
+  const expectedCount = baseFilletRadiiExpectedCount();
   const parsed = parseRadiiList(baseFilletRadiiInput.value, expectedCount);
   updateBaseFilletRadiiState(parsed, expectedCount);
 }
 
 function formatBaseFilletRadiiList() {
-  const parsedVertices = parseVertexList(vertexListInput.value);
-  const expectedCount = parsedVertices.ok ? parsedVertices.vertices.length : null;
+  const expectedCount = baseFilletRadiiExpectedCount();
   const parsed = parseRadiiList(baseFilletRadiiInput.value, expectedCount);
   updateBaseFilletRadiiState(parsed, expectedCount);
   if (!parsed.ok) {
@@ -888,7 +897,9 @@ function updateBaseFilletRadiiState(parsed, expectedCount) {
     return;
   }
   if (expectedCount === null) {
-    baseFilletStatus.textContent = `${parsed.radii.length} 个半径 · 等待合法顶点`;
+    baseFilletStatus.textContent = baseSourceModeInput.value === "ref"
+      ? `${parsed.radii.length} 个半径 · offset 后由预览校验`
+      : `${parsed.radii.length} 个半径 · 等待合法顶点`;
     return;
   }
   baseFilletStatus.textContent = `${parsed.radii.length} 个半径 · 匹配 ${expectedCount} 个顶点`;
