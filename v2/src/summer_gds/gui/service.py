@@ -204,9 +204,13 @@ class GuiSession:
         return self.session_dir / "input.yaml"
 
     def _resolve_path_token(self, token: str, expected_kind: str) -> PathToken | dict[str, Any]:
-        self._purge_expired_tokens()
         path_token = self.path_tokens.get(token)
-        if path_token is None or path_token.kind != expected_kind:
+        if path_token is None:
+            return _simple_error_response("invalid_path_token", "$.path_token", "Unknown or mismatched path token.")
+        if path_token.expires_at < time.time():
+            del self.path_tokens[token]
+            return _simple_error_response("path_token_expired", "$.path_token", "Path token expired; choose a save path again.")
+        if path_token.kind != expected_kind:
             return _simple_error_response("invalid_path_token", "$.path_token", "Unknown or mismatched path token.")
         return path_token
 

@@ -1,7 +1,7 @@
-# 前端技术架构 v2.1
+# 前端技术架构 v2.5
 
-文档版本：v2.1
-日期：2026-05-24
+文档版本：v2.5
+日期：2026-05-25
 状态：方案设计
 
 ---
@@ -10,9 +10,9 @@
 
 - **Windows 双击启动**：生产版打包为单个 `.exe`，用户不需要安装 Python、Node.js 或命令行工具。
 - **纯本地运行**：GUI、静态资源、后端服务和几何流水线都在本机运行；生产版不依赖 CDN。
-- **Web UI + Python app service**：前端只负责编辑 YAML 和展示预览，校验、编译、几何和 GDS 输出都走 v2 app service。
+- **Web UI + Python app service**：前端主交互是配置构建器，用户通过表单、坐标列表输入和 shape 创建动作生成 YAML；校验、编译、几何和 GDS 输出都走 v2 app service。
 - **产品产物只有 YAML 和 GDS**：GUI 支持保存/加载 YAML、导出 GDS；SVG 仅作为实时预览通道，不作为用户导出产物。
-- **YAML 是唯一持久化真源**：可视化表单、YAML 编辑器和预览都从当前 YAML 派生。
+- **YAML 是唯一持久化真源**：GUI 保存、加载、预览和导出都以 YAML v2 为协议输入；第一版不把手写 YAML 作为主交互。
 - **无旧 GUI 依赖**：不继承 `web_gui/` 的 v1 协议、linkage、继承和 override 系统。
 
 ## 2. 运行时架构
@@ -26,8 +26,9 @@
 │  ┌────────────────────────────────────────┐  │
 │  │ pywebview window                       │  │
 │  │ ├── local HTML/CSS/JS                  │  │
-│  │ ├── visual YAML editor                 │  │
-│  │ └── live SVG preview                   │  │
+│  │ ├── visual config builder              │  │
+│  │ ├── readonly YAML preview mode         │  │
+│  │ └── centered live SVG preview          │  │
 │  └────────────────────────────────────────┘  │
 │                    │                         │
 │                    │ HTTP / pywebview bridge │
@@ -53,8 +54,9 @@
 | --- | --- | --- |
 | 桌面壳 | `pywebview` + PyInstaller | 生产版必须支持原生打开/保存文件对话框。 |
 | 后端 | Flask | 只监听 `127.0.0.1` 随机端口，禁止作为远程服务使用。 |
-| 前端 | HTML/CSS/JS + Alpine.js | Alpine 使用本地 vendored 文件，不走 CDN。 |
-| YAML 编辑 | CodeMirror 或轻量 textarea fallback | 若使用 CodeMirror，必须 vendor 预构建 bundle。 |
+| 前端 | HTML/CSS/vanilla JS | 第一版不需要 Node 构建链；若后续引入小型库，必须本地 vendored，不走 CDN。 |
+| 配置构建器 | 原生表单 + JS state | 第一版用户通过表单生成 YAML；不要求代码编辑器组件。 |
+| YAML 展示 | readonly textarea / pre | 仅在 `YAML 预览` 模式展示生成的 YAML，供检查和保存，不作为主输入。 |
 | 样式 | 自定义 CSS + CSS variables | 遵循 `frontend-design-system.md`；不使用 Tailwind CDN；第一版不引入 Node 构建链。 |
 | 几何/输出 | v2 app service | GUI 不重复实现 offset、fillet、boolean、GDS writer。 |
 
@@ -63,20 +65,19 @@
 生产版禁止从公网加载资源。
 
 ```text
-v2/gui/static/
-├── index.html
-├── app.js
-├── components.js
-├── style.css
-└── vendor/
-    ├── alpine.min.js
-    └── codemirror.bundle.js   # 可选；也可第一版先用 textarea
+v2/src/summer_gds/gui/
+├── templates/
+│   └── index.html
+└── static/
+    ├── app.js
+    ├── style.css
+    └── vendor/                # 可选；第一版可以不存在
 ```
 
 规则：
 
-- `index.html` 只引用本地 `/static/...` 资源。
-- `index.html` 的语义 DOM 骨架遵循 [前端设计系统](./frontend-design-system.md)。
+- `templates/index.html` 只引用本地 `/static/...` 资源。
+- `templates/index.html` 的语义 DOM 骨架遵循 [前端设计系统](./frontend-design-system.md)。
 - `style.css` 必须从 [前端设计系统](./frontend-design-system.md) 的 CSS tokens 开始。
 - 不使用 CDN script/link。
 - 不保存 `node_modules/`。
@@ -85,20 +86,21 @@ v2/gui/static/
 ## 4. 项目结构
 
 ```text
-v2/gui/
-├── launcher.py              # 入口：启动 Flask + pywebview
+v2/src/summer_gds/gui/
+├── launcher.py              # 入口：启动 Flask + pywebview 或浏览器开发模式
 ├── server.py                # Flask app + API route
-├── desktop_api.py           # pywebview native dialog bridge
+├── service.py               # GUI-facing service wrapper
+├── presenter.py             # UI response/presentation helpers
+├── desktop.py               # pywebview/native dialog bridge
+├── templates/
+│   └── index.html
 ├── static/
-│   ├── index.html
 │   ├── app.js
-│   ├── components.js
-│   ├── style.css
-│   └── vendor/
+│   └── style.css
 └── README.md
 ```
 
-`templates/` 第一版不需要。页面使用纯静态 HTML，所有 UI 状态在客户端 JS 中管理。
+页面由 Flask 从 `templates/index.html` 提供，JS/CSS 从 `static/` 提供。所有 UI 状态在客户端 JS 中管理；第一版不要求 `components.js`，后续组件拆分时再引入。
 
 ## 5. GUI API
 
@@ -134,11 +136,20 @@ GUI 不提供自由文本路径输入。
 - 导出 GDS：先由原生 save dialog 选择 `.gds`，返回 `path_token`。
 - 前端只展示 `path_label`，不要让用户在浏览器表单中手写任意本地路径。
 - 后端把真实路径保存在 session-scoped pending path store 中，前端只持有 `path_token`。
-- `path_token` 必须绑定 `kind`、session token 和过期时间，例如 10 分钟。
+- `path_token` 必须绑定 `kind`、session token 和过期时间；第一版默认 30 分钟，超时后要求用户重新选择路径。
 - 保存/导出请求只能使用匹配 kind 的 `path_token`。
 - 默认不覆盖已有文件；如果 choose-save 返回 `exists=true`，前端确认后再提交 `force=true`。
 
-`gds.output` 在 YAML 协议中仍可作为 CLI 默认路径存在，但 GUI 导出 GDS 时以用户本次 save dialog 选择为准，并通过 `ExportOptions(out=selected_path)` 覆盖。
+`gds.output` 在 YAML 协议中仍可作为 CLI 默认路径存在，但 GUI 不把它当作导出路径输入。
+
+`gds.output` 规则：
+
+- 新建配置不生成 `gds.output`。
+- 打开已有 YAML 时，如果存在 `gds.output`，parse/normalize 后仍保存在 form draft 和 generated YAML 中。
+- GUI 不提供编辑 `gds.output` 的控件。
+- 保存 YAML 时保留导入时已有的 `gds.output`，但不会新增或改写它。
+- 导出 GDS 时以用户本次 save dialog 选择为准，通过 `ExportOptions(out=selected_path)` 覆盖 YAML 中的 `gds.output`。
+- 导出成功后也不把导出路径写回 YAML。
 
 两阶段保存/导出流程：
 
@@ -170,7 +181,8 @@ sequenceDiagram
 
 SVG 预览是内部交互状态，不是用户 artifact。
 
-- 用户编辑 YAML 或表单后，前端 debounce 触发 `/api/preview/svg`。
+- 用户修改表单后，前端先生成 YAML，再 debounce 触发 `/api/preview/svg`。
+- 打开 YAML 文件后，后端 parse 成功并回填表单，随后触发预览。
 - 后端复用 v2 几何流水线和 SVG renderer。
 - 响应直接返回 `svg_text`，前端内嵌显示。
 - 不写入用户选择路径。
@@ -180,12 +192,16 @@ SVG 预览是内部交互状态，不是用户 artifact。
 - app 正常关闭时删除整个 session 临时目录。
 - app 启动时清理超过 24 小时的旧 `summer-gds/gui/*` 临时目录，覆盖异常退出场景。
 - 旧请求返回时，如果 `request_id` 不是当前最新请求，前端必须丢弃结果。
+- 前端挂载 SVG 时必须设置或保留 `viewBox`，并强制 `preserveAspectRatio="xMidYMid meet"`。
+- SVG 必须放入固定 viewport 的 `.svg-stage` 中居中显示；不能让 SVG 自身的 intrinsic width/height 把图形推到预览区底部。
+- `.svg-stage` 默认使用 `display:grid; place-items:center; overflow:hidden`，内部 SVG 使用 `max-width:100%; max-height:100%`。
 
 预览限制：
 
 - 后端限制 SVG 文件大小，超过上限返回 `preview_too_large`。
 - 后端限制预览请求并发，第一版同一 session 只允许一个 active render。
 - 渲染超时后返回 `preview_timeout`，前端保留上一张成功 SVG。
+- 前端在 form draft 已变更但新预览尚未完成时使用 `previewStatus: "stale"`，明确旧 SVG 已过期。
 
 ### 5.4 Parse / Normalize API
 
@@ -193,12 +209,13 @@ SVG 预览是内部交互状态，不是用户 artifact。
 
 职责：
 
-- 接受当前 `yaml_text`。
+- 接受当前生成的 `yaml_text`，或用户从文件打开的 `yaml_text`。
 - 调用 Python v2 parser，不在前端复制 schema parser。
-- 返回 `parsed_config`，供表单渲染。
-- 返回 `canonical_yaml`，供表单编辑后写回标准 YAML。
+- 返回 `parsed_config`，供表单渲染和文件导入。
+- 返回 `canonical_yaml`，供表单生成结果规范化。
 - 返回 `field_map`，把 YAML JSONPath 映射到表单字段 id。
-- 如果 parse 失败，返回结构化 `errors`，前端进入 `yaml_invalid`。
+- `schema_version` 必须为 `2`；缺失或不匹配时返回结构化错误，不做隐式迁移。
+- 如果 parse 失败，返回结构化 `errors`；打开文件时不替换当前表单，表单生成时阻断预览/导出。
 
 `/api/parse` 不执行几何、offset、boolean，也不校验输出路径。
 
@@ -216,7 +233,8 @@ SVG 预览是内部交互状态，不是用户 artifact。
   "canonical_yaml": "schema_version: 2\n...",
   "field_map": {
     "$.global.dbu": "field-global-dbu",
-    "$.shapes[0].source.vertices": "field-shape-0-vertices"
+    "$.shapes[0].source.vertices": "field-shape-0-vertices",
+    "$.shapes[0].source.vertices[2][1]": "field-shape-0-vertex-2-y"
   }
 }
 ```
@@ -225,12 +243,33 @@ SVG 预览是内部交互状态，不是用户 artifact。
 
 ```text
 visual edit
-  -> update parsed_config draft
-  -> serialize draft to YAML
+  -> update form draft
+  -> serialize draft to YAML with schema_version: 2
   -> POST /api/parse
-  -> parse ok: replace yamlText with canonical_yaml and refresh form
-  -> parse error: keep previous valid form state and show field error
+  -> parse ok: replace generatedYamlText with canonical_yaml and refresh normalized form view
+  -> parse error: keep current form draft and show field error
 ```
+
+打开 YAML 流程：
+
+```text
+Open YAML
+  -> native open dialog
+  -> server reads yaml_text
+  -> POST /api/parse
+  -> parse ok: hydrate form draft from parsed_config and show canonical_yaml
+  -> parse error: keep current form draft and show import errors
+```
+
+序列化约束：
+
+- 前端 serializer 固定输出 `schema_version: 2`。
+- 坐标列表输入解析为 `source.vertices: [[x, y], ...]`，不自动闭合多边形。
+- 坐标列表支持每行一个点、分号分隔、旧版冒号分隔和 JSON/YAML 数组子集；格式化后统一显示为一行一个 `x,y`。
+- 前端保留顺逆时针检测：`source.vertices` 必须为逆时针、非零面积、首尾不重复；违规直接报错，不自动修正。
+- 后端返回 `source.vertices[j][0]` / `[j][1]` 错误时，前端定位到坐标列表和对应行号摘要，而不是行列表格字段。
+- `rings` 的 per-ring fillet 只有在用户选择 per-ring 模式时输出；输出数组长度必须等于 `count`。
+- `gds.output` 仅在打开的 YAML 已存在该字段时保留；GUI 导出路径不回写到 YAML。
 
 ## 6. 本地安全边界
 
@@ -244,37 +283,50 @@ visual edit
 - 文件读写只能来自原生 dialog 的返回路径。
 - debug 模式只允许开发启动，不进入 PyInstaller 生产包。
 - 后端错误返回结构化信息，不向前端泄露完整 traceback。
+- `path_token_expired` 要求用户重新选择路径；前端不得重用过期 token。
+- `session_expired` / `unauthorized` 要求用户重启 GUI；第一版不自动续期 session token。
+- WebView 到 Flask 的连接失败时显示本地服务中断错误；第一版不要求自动重启 Flask。
 
 ## 7. 数据流
 
 ```mermaid
 flowchart LR
-  UI[Visual Form] --> Y[YAML text]
-  YE[YAML Editor] --> Y
+  UI[Config Builder] --> Draft[Form Draft]
+  Draft --> Y[Generated YAML text]
+  Open[Open YAML file] --> Parse[Parse / Normalize]
   Y --> Parse[Parse / Validate]
-  Parse --> Model[Derived UI Model]
-  Model --> UI
+  Parse --> Model[Normalized UI Model]
+  Model --> Draft
+  Y --> Inspect[Readonly YAML Preview Mode]
   Y --> SVG[Live SVG Preview]
-  Y --> SaveYaml[Save YAML]
-  Y --> ExportGds[Export GDS]
+  Y --> SaveYaml[保存 YAML]
+  Y --> ExportGds[导出 GDS]
   ExportGds --> GDS[GDS file]
 ```
 
 核心规则：
 
-1. YAML text 是唯一持久化真源。
-2. Visual form state 是从 YAML parse 出来的派生缓存。
-3. 表单编辑必须生成规范 YAML，再从 YAML parse 回 UI model。
-4. YAML 编辑器手改成功 parse 后，覆盖 UI model。
-5. YAML 编辑器手改失败时，进入 `yaml_invalid` 状态，暂停表单同步和预览/导出。
+1. YAML text 是唯一持久化真源，也是所有后端 API 的输入。
+2. GUI 第一版的用户输入主界面是 config builder，不是 YAML 手写编辑器。
+3. 表单编辑必须生成规范 YAML，再从 YAML parse 回 normalized UI model。
+4. 打开的 YAML 文件只有 parse 成功后才能覆盖当前 form draft。
+5. 生成 YAML parse 失败时进入 `yaml_invalid` 状态，暂停预览/导出，并把错误定位到字段。
 
 ## 8. 前端状态模型
 
 ```javascript
-Alpine.store('app', {
+const appState = {
+  // visible UI mode
+  activeMode: 'builder', // builder | yaml_preview
+  globalSettingsOpen: false,
+
+  // editable UI state
+  formDraft: null, // serializer always emits schema_version: 2
+  importedGdsOutput: null, // readonly preservation of imported gds.output
+
   // source of truth
-  yamlText: '',
-  lastValidYamlText: '',
+  generatedYamlText: '',
+  lastSavedOrLoadedYamlText: '',
   parsedConfig: null,
   yamlStatus: 'valid', // valid | invalid | syncing
 
@@ -289,35 +341,71 @@ Alpine.store('app', {
 
   // live preview
   previewSvgText: '',
-  previewStatus: 'idle', // idle | rendering | ready | error
+  previewStatus: 'idle', // idle | stale | rendering | ready | error | yaml_invalid
   previewRequestId: 0,
 
   // operations
   busy: false,
   busyReason: null, // validate | save_yaml | export_gds
   statusMessage: null,
-})
+}
 ```
 
 ### 8.1 YAML 状态机
 
 ```text
 valid
-  ├─ visual edit -> generate YAML -> parse ok -> valid
-  ├─ YAML edit -> parse ok -> valid
-  └─ YAML edit -> parse error -> invalid
+  ├─ form edit -> generate YAML -> parse ok -> valid
+  ├─ form edit -> generate YAML -> parse error -> invalid
+  ├─ open YAML -> parse ok -> valid
+  └─ open YAML -> parse error -> import_error
 
 invalid
-  ├─ YAML edit -> parse ok -> valid
-  └─ restore last valid YAML -> valid
+  ├─ form edit -> generate YAML -> parse ok -> valid
+  └─ restore last valid form draft -> valid
 ```
 
 `invalid` 状态下：
 
-- 保留用户正在编辑的 YAML 文本。
+- 保留用户正在编辑的 form draft。
 - 禁用实时 SVG 预览。
 - 禁用 GDS 导出。
-- 表单只显示上次有效配置或进入只读状态，避免覆盖用户错误文本。
+- YAML 预览模式显示当前生成 YAML 和错误摘要，但不要求用户手写修复。
+
+### 8.2 Preview 状态机
+
+```text
+idle
+  └─ first valid YAML -> rendering
+
+ready
+  ├─ form edit + parse ok -> stale
+  ├─ form edit + parse error -> yaml_invalid
+  └─ manual Fit/Zoom -> ready
+
+stale
+  ├─ debounce fires -> rendering
+  └─ parse error before render -> yaml_invalid
+
+rendering
+  ├─ latest request ok -> ready
+  ├─ latest request failed -> error
+  └─ superseded request returns -> ignore and keep current state
+
+error
+  ├─ form edit + parse ok -> stale
+  └─ retry render -> rendering
+
+yaml_invalid
+  └─ form edit + parse ok -> stale
+```
+
+组合约束：
+
+- `yamlStatus=invalid` 时 `previewStatus` 必须是 `yaml_invalid`，不能是 `ready`。
+- `busyReason=export_gds` 时 `data-busy=true`，且 `Export GDS` 按钮禁用。
+- `previewStatus=rendering` 不阻塞继续编辑，但旧请求结果必须按 `request_id` 丢弃。
+- `previewStatus=stale` 可以继续显示上一张 SVG，但状态文案必须说明旧预览已过期。
 
 ## 9. 错误响应格式
 
@@ -355,12 +443,15 @@ def main():
 
 - 生产版使用 `debug=False`。
 - 关闭窗口时停止 Flask 后台线程并清理 temp 目录。
-- PyInstaller 包含 `v2/gui/static/**` 和 `summer_gds` package。
+- PyInstaller 包含 `v2/src/summer_gds/gui/templates/**`、`v2/src/summer_gds/gui/static/**` 和 `summer_gds` package。
 
 ### 10.2 打包命令
 
 ```bash
-pyinstaller --onefile --windowed --name SummerGDS v2/gui/launcher.py
+cd v2
+pyinstaller --onefile --windowed --name SummerGDS \
+  --collect-data summer_gds \
+  src/summer_gds/gui/launcher.py
 ```
 
 ## 11. 测试策略
@@ -368,14 +459,24 @@ pyinstaller --onefile --windowed --name SummerGDS v2/gui/launcher.py
 | 层级 | 内容 | 工具 |
 | --- | --- | --- |
 | 后端 API 测试 | validate、SVG preview、YAML save/load、GDS export | pytest + Flask test client |
-| 前端状态测试 | YAML 状态机、dirty、field error mapping | JS unit test 或浏览器测试 |
+| 前端状态测试 | form draft -> YAML 生成、dirty、field error mapping、SVG 居中挂载 | JS unit test 或浏览器测试 |
 | 集成测试 | YAML -> SVG preview -> GDS export | pytest |
+| GUI smoke / e2e | 新建 base_shape -> 预览居中 -> 保存 YAML -> mock 导出 GDS | Playwright 或等价浏览器测试 + Flask test server |
 | 桌面 smoke test | 启动窗口、打开/保存对话框 mock、关闭清理 | pytest/manual |
 
 第一版必须覆盖：
 
 - invalid YAML 禁用预览和导出。
+- 用户可以不手写 YAML 完成 base/via/rings 配置。
+- 打开 YAML parse 成功后必须回填表单。
 - SVG preview 不生成用户可见文件。
+- SVG preview 必须在 viewport 中居中，不能沉到底部。
 - GDS export 使用 save dialog 路径。
 - 已存在文件必须二次确认后才覆盖。
 - `rings` 只作为普通 shape 创建，不提供批量 rings 创建功能。
+- `schema_version: 2` 自动写入；v1 或缺失版本导入失败并给出明确错误。
+- `gds.output` 导入后保存保留，导出 GDS 不改写。
+- `path_token_expired` 要求重新选择路径。
+- 坐标列表正确解析并序列化为 `vertices: [[x, y], ...]`，支持长列表滚动、格式化和方向错误提示。
+- `rings.count` 变化时 per-ring fillet 数组不会产生 length mismatch。
+- `dbu` / `precision` 联动错误能在 Global 设置中内联显示。

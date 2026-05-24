@@ -11,52 +11,281 @@
     <script defer src="/static/app.js"></script>
   </head>
   <body>
-    <div class="app-shell">
-      <header class="topbar">
-        <div>
-          <p class="eyebrow">Local layout workbench</p>
-          <h1>Summer GDS</h1>
+    <div id="app" class="app-shell" data-yaml-status="syncing" data-preview-status="idle" data-dirty="false" data-busy="false">
+      <header class="topbar" aria-label="应用工具栏">
+        <div class="brand">
+          <span class="brand-mark" aria-hidden="true"></span>
+          <div>
+            <p class="eyebrow">LOCAL LAYOUT WORKBENCH</p>
+            <h1>Summer GDS</h1>
+          </div>
         </div>
-        <div class="toolbar" aria-label="主要操作">
-          <button class="button ghost" id="openYamlButton" type="button">Open YAML</button>
-          <button class="button ghost" id="validateButton" type="button">Validate</button>
-          <button class="button ghost" id="saveYamlButton" type="button">Save YAML</button>
-          <button class="button ghost" id="exportGdsButton" type="button">Export GDS</button>
-          <button class="button primary" id="previewButton" type="button">Preview SVG</button>
+
+        <div class="document-state" aria-live="polite">
+          <span class="state-pill" id="dirtyState" data-state="clean">YAML 未修改</span>
+          <span class="state-pill" id="previewState" data-state="idle">尚未生成预览</span>
+          <span class="state-pill" id="exportState" data-state="idle">GDS 未导出</span>
         </div>
+
+        <nav class="top-actions" aria-label="文档操作">
+          <button class="button button-secondary" id="openYamlButton" type="button">打开 YAML</button>
+          <button class="button button-secondary" id="saveYamlButton" type="button">保存 YAML</button>
+          <button class="button button-secondary" id="validateButton" type="button">校验</button>
+          <button class="button button-primary" id="exportGdsButton" type="button">导出 GDS</button>
+        </nav>
+
+        <div class="status-text" id="statusText" role="status" aria-live="polite">正在初始化...</div>
       </header>
 
-      <main class="workspace" id="workspace">
-        <section class="panel editor-panel" aria-labelledby="editorTitle">
-          <div class="panel-head">
-            <div>
-              <p class="eyebrow">YAML source</p>
-              <h2 id="editorTitle">唯一真源</h2>
-            </div>
-            <span class="state-pill" id="dirtyState">Clean</span>
+      <main class="app-main" id="workspace">
+        <section class="workspace-pane" aria-label="配置编辑器">
+          <div class="workspace-switcher" aria-label="工作区模式">
+            <button class="mode-button is-active" id="builderModeButton" type="button" aria-pressed="true">构建器</button>
+            <button class="mode-button" id="yamlModeButton" type="button" aria-pressed="false">YAML 预览</button>
+            <button class="button button-secondary global-settings-button" id="globalSettingsButton" type="button">全局设置</button>
           </div>
-          <textarea id="yamlEditor" spellcheck="false" aria-label="YAML 编辑器"></textarea>
-          <div class="message-list" id="errorList" aria-live="polite"></div>
+
+          <div class="shape-action-bar" aria-label="创建图形">
+            <button class="button button-secondary" id="addBaseButton" type="button">+ 基础图形</button>
+            <button class="button button-secondary" id="addViaButton" type="button">+ Via</button>
+            <button class="button button-secondary" id="addRingsButton" type="button">+ Rings</button>
+          </div>
+
+          <section class="workspace-content" id="workspaceContent" data-mode="builder">
+            <div class="shape-list" id="shapeList" aria-label="图形列表"></div>
+
+            <section class="yaml-preview-panel" id="yamlPreviewPanel" aria-label="生成的 YAML" hidden>
+              <header class="panel-toolbar">
+                <h2>YAML 预览</h2>
+                <span class="state-pill" data-state="readonly">只读</span>
+              </header>
+              <textarea class="textarea generated-yaml" id="yamlPreview" data-kind="yaml" readonly spellcheck="false"></textarea>
+            </section>
+
+            <div class="message-list" id="messageList" aria-live="polite"></div>
+          </section>
         </section>
 
-        <div class="splitter" id="splitter" role="separator" aria-orientation="vertical" aria-label="调整编辑区和预览区宽度"></div>
+        <div class="splitter" id="splitter" role="separator" aria-orientation="vertical" aria-label="调整编辑区和预览区宽度" tabindex="0"></div>
 
-        <section class="panel preview-panel" aria-labelledby="previewTitle">
-          <div class="panel-head">
-            <div>
-              <p class="eyebrow">Live preview</p>
-              <h2 id="previewTitle">SVG 临时预览</h2>
-            </div>
-            <span class="state-pill" id="statusText">Idle</span>
-          </div>
-          <div class="preview-canvas" id="previewCanvas">
-            <div class="empty-preview">
-              <strong>等待预览</strong>
-              <span>编辑 YAML 后会自动刷新 SVG。</span>
+        <aside class="preview-pane" aria-label="实时 SVG 预览">
+          <div class="preview-toolbar">
+            <h2>SVG 预览</h2>
+            <div class="toolbar-actions">
+              <button class="button button-ghost" id="fitPreviewButton" type="button">适配</button>
+              <button class="button button-ghost" id="zoomOutButton" type="button">缩小</button>
+              <button class="button button-ghost" id="zoomInButton" type="button">放大</button>
             </div>
           </div>
-        </section>
+
+          <div class="preview-viewport" id="previewViewport" data-preview-state="idle">
+            <div class="svg-stage" id="previewCanvas" aria-label="版图几何预览">
+              <div class="empty-preview">
+                <strong>等待预览</strong>
+                <span>添加或编辑图形后会自动刷新 SVG。</span>
+              </div>
+            </div>
+          </div>
+        </aside>
       </main>
+
+      <dialog class="modal" id="globalDialog" aria-labelledby="globalDialogTitle">
+        <form method="dialog" class="modal-card" id="globalForm">
+          <header class="modal-head">
+            <h2 id="globalDialogTitle">全局设置</h2>
+            <button class="button button-ghost" id="closeGlobalButton" type="button">关闭</button>
+          </header>
+          <div class="modal-body form-grid">
+            <label class="field" id="field-global-dbu">
+              <span class="field-label">dbu</span>
+              <input class="input" id="globalDbuInput" data-kind="number" type="number" min="0.00001" max="1" step="0.00001">
+              <span class="field-error"></span>
+            </label>
+            <label class="field" id="field-global-precision">
+              <span class="field-label">precision（可选）</span>
+              <input class="input" id="globalPrecisionInput" data-kind="number" type="number" min="0" step="0.00001">
+              <span class="field-error"></span>
+            </label>
+            <label class="field">
+              <span class="field-label">unit</span>
+              <input class="input" value="um" readonly>
+            </label>
+            <label class="field" id="field-gds-top-cell">
+              <span class="field-label">top_cell</span>
+              <input class="input" id="topCellInput" type="text">
+              <span class="field-error"></span>
+            </label>
+            <label class="field full-width">
+              <span class="field-label">CLI 默认输出（只读）</span>
+              <input class="input" id="gdsOutputInput" type="text" readonly placeholder="未设置 gds.output">
+            </label>
+          </div>
+          <footer class="modal-actions">
+            <button class="button button-secondary" id="cancelGlobalButton" type="button">取消</button>
+            <button class="button button-primary" id="applyGlobalButton" type="submit">应用</button>
+          </footer>
+        </form>
+      </dialog>
+
+      <dialog class="modal" id="shapeDialog" aria-labelledby="shapeDialogTitle">
+        <form method="dialog" class="modal-card" id="shapeForm">
+          <header class="modal-head">
+            <div>
+              <p class="eyebrow" id="shapeDialogType">SHAPE</p>
+              <h2 id="shapeDialogTitle">编辑图形</h2>
+            </div>
+            <button class="button button-ghost" id="closeShapeButton" type="button">关闭</button>
+          </header>
+
+          <div class="modal-body shape-form">
+            <input id="shapeSidInput" type="hidden">
+            <input id="shapeTypeInput" type="hidden">
+
+            <div class="form-grid">
+              <label class="field" id="field-shape-name">
+                <span class="field-label">name</span>
+                <input class="input" id="shapeNameInput" type="text">
+                <span class="field-error"></span>
+              </label>
+              <label class="field" id="field-shape-layer">
+                <span class="field-label">layer</span>
+                <input class="input" id="shapeLayerInput" data-kind="number" type="number" min="0" step="1">
+                <span class="field-error"></span>
+              </label>
+              <label class="field" id="field-shape-datatype">
+                <span class="field-label">datatype</span>
+                <input class="input" id="shapeDatatypeInput" data-kind="number" type="number" min="0" step="1">
+                <span class="field-error"></span>
+              </label>
+            </div>
+
+            <section class="shape-section" id="baseEditor">
+              <h3>Base Shape</h3>
+              <label class="field">
+                <span class="field-label">source</span>
+                <select class="select" id="baseSourceModeInput">
+                  <option value="vertices">vertices</option>
+                  <option value="ref">ref + offset</option>
+                </select>
+              </label>
+              <div class="vertices-editor" id="baseVerticesEditor">
+                <div class="section-row vertices-toolbar">
+                  <div>
+                    <h4>坐标列表</h4>
+                    <span class="vertex-status" id="vertexStatus">等待输入</span>
+                  </div>
+                  <button class="button button-secondary" id="formatVertexListButton" type="button">格式化</button>
+                </div>
+                <label class="field" id="field-base-vertices-list">
+                  <span class="field-label">vertices</span>
+                  <div class="vertex-list-shell" id="vertexListShell" data-status="idle">
+                    <pre class="vertex-line-numbers" id="vertexLineNumbers" aria-hidden="true">1</pre>
+                    <textarea
+                      class="textarea vertex-list-input"
+                      id="vertexListInput"
+                      rows="12"
+                      spellcheck="false"
+                      placeholder="0,0&#10;100,0&#10;100,80&#10;0,80"
+                    ></textarea>
+                  </div>
+                  <span class="field-error" id="vertexListError"></span>
+                </label>
+                <p class="field-hint">支持每行一个点、分号、旧版冒号和 YAML 数组。输入顺序必须逆时针。</p>
+              </div>
+              <div class="form-grid" id="baseRefEditor" hidden>
+                <label class="field" id="field-base-source-ref">
+                  <span class="field-label">ref</span>
+                  <select class="select" id="baseRefInput"></select>
+                  <span class="field-error"></span>
+                </label>
+                <label class="field" id="field-base-source-offset">
+                  <span class="field-label">offset</span>
+                  <input class="input" id="baseOffsetInput" data-kind="number" type="number" step="0.1">
+                  <span class="field-error"></span>
+                </label>
+              </div>
+              <label class="field compact-field">
+                <span class="field-label">fillet radius（空为 none）</span>
+                <input class="input" id="baseFilletRadiusInput" data-kind="number" type="number" min="0" step="0.1">
+              </label>
+            </section>
+
+            <section class="shape-section" id="viaEditor" hidden>
+              <h3>Via</h3>
+              <div class="form-grid">
+                <label class="field" id="field-via-source-ref">
+                  <span class="field-label">source ref</span>
+                  <select class="select" id="viaRefInput"></select>
+                  <span class="field-error"></span>
+                </label>
+                <label class="field" id="field-via-inner">
+                  <span class="field-label">inner offset</span>
+                  <input class="input" id="viaInnerInput" data-kind="number" type="number" step="0.1">
+                  <span class="field-error"></span>
+                </label>
+                <label class="field" id="field-via-outer">
+                  <span class="field-label">outer offset</span>
+                  <input class="input" id="viaOuterInput" data-kind="number" type="number" step="0.1">
+                  <span class="field-error"></span>
+                </label>
+                <label class="field">
+                  <span class="field-label">inner fillet radius</span>
+                  <input class="input" id="viaInnerFilletInput" data-kind="number" type="number" min="0" step="0.1">
+                </label>
+                <label class="field">
+                  <span class="field-label">outer fillet radius</span>
+                  <input class="input" id="viaOuterFilletInput" data-kind="number" type="number" min="0" step="0.1">
+                </label>
+              </div>
+            </section>
+
+            <section class="shape-section" id="ringsEditor" hidden>
+              <h3>Rings</h3>
+              <div class="form-grid">
+                <label class="field" id="field-rings-source-ref">
+                  <span class="field-label">source ref</span>
+                  <select class="select" id="ringsRefInput"></select>
+                  <span class="field-error"></span>
+                </label>
+                <label class="field" id="field-rings-count">
+                  <span class="field-label">count</span>
+                  <input class="input" id="ringsCountInput" data-kind="number" type="number" min="1" step="1">
+                  <span class="field-error"></span>
+                </label>
+                <label class="field" id="field-rings-pitch">
+                  <span class="field-label">pitch</span>
+                  <input class="input" id="ringsPitchInput" data-kind="number" type="number" min="0" step="0.1">
+                  <span class="field-error"></span>
+                </label>
+                <label class="field" id="field-rings-width">
+                  <span class="field-label">width</span>
+                  <input class="input" id="ringsWidthInput" data-kind="number" type="number" min="0" step="0.1">
+                  <span class="field-error"></span>
+                </label>
+              </div>
+              <label class="field compact-field">
+                <span class="field-label">fillet</span>
+                <select class="select" id="ringsFilletModeInput">
+                  <option value="none">none for all rings</option>
+                  <option value="per_ring">configure per ring</option>
+                </select>
+              </label>
+              <div id="ringsFilletTableWrap" hidden>
+                <div class="section-row">
+                  <h4>per-ring fillet</h4>
+                  <button class="button button-ghost" id="applySameRingsFilletButton" type="button">同一倒角应用到全部 rings</button>
+                </div>
+                <div class="ring-fillet-table" id="ringsFilletTable"></div>
+              </div>
+            </section>
+          </div>
+
+          <footer class="modal-actions">
+            <button class="button button-secondary" id="cancelShapeButton" type="button">取消</button>
+            <button class="button button-primary" id="applyShapeButton" type="submit">应用</button>
+          </footer>
+        </form>
+      </dialog>
     </div>
   </body>
 </html>

@@ -1,16 +1,16 @@
-# 前端交互与页面设计 v2.1
+# 前端交互与页面设计 v2.5
 
-文档版本：v2.1
-日期：2026-05-24
+文档版本：v2.5
+日期：2026-05-25
 状态：方案设计
 
 ---
 
 ## 1. 设计目标
 
-- 用户通过可视化表单编辑 YAML v2 配置，无需手写 YAML。
+- 用户通过可视化配置构建器编辑 YAML v2 配置，无需手写 YAML。
 - 支持 `base_shape`、`via`、`rings` 三类公开 shape。
-- YAML 是唯一持久化真源；表单、实时 SVG 预览和错误定位都从 YAML 派生。
+- YAML 是唯一持久化真源；表单会生成 YAML，实时 SVG 预览、保存和导出都使用这份 YAML。
 - GUI 产品产物只有 YAML 和 GDS。
 - SVG 仅用于实时预览，不提供下载或导出入口。
 - 所有导出/保存都通过 PC 原生文件对话框完成。
@@ -33,14 +33,16 @@
 ```text
 ┌────────────────────────────────────────────────────────────────────────────┐
 │ Summer GDS v2      YAML: modified      Preview: ready      GDS: not saved  │
-│ [Open YAML] [Save YAML] [Validate] [Export GDS]                status text  │
+│ [打开 YAML] [保存 YAML] [校验] [导出 GDS]                      status text  │
 ├──────────────────────────────────────────┬─────────────────────────────────┤
-│ 操作区 / YAML 编辑区                       │ 实时 SVG 预览区                    │
+│ [构建器] [YAML 预览]        [全局设置]     │ 实时 SVG 预览区                    │
 │                                          │                                 │
-│ [Global] [Shapes] [YAML]                 │ ┌─ SVG Preview ───────────────┐ │
+│ [+ Base Shape] [+ Via] [+ Rings]         │ ┌─ SVG Preview ───────────────┐ │
 │                                          │ │ [Fit] [Zoom +] [Zoom -]     │ │
-│  当前 Tab 内容                            │ │                             │ │
-│                                          │ │        live SVG             │ │
+│  shape card list                         │ │                             │ │
+│  #0 base_shape                           │ │        centered live SVG    │ │
+│  #1 via                                  │ │                             │ │
+│  #2 rings                                │ │                             │ │
 │                                          │ │                             │ │
 │                                          │ └─────────────────────────────┘ │
 └──────────────────────────────────────────┴─────────────────────────────────┘
@@ -52,7 +54,11 @@
 - 最小支持分辨率：`640x360`。低于最佳尺寸时允许横向/纵向滚动，不做移动端重排。
 - 操作区和预览区初始比例为 `1:1`。
 - 用户可以拖拽中间 splitter 调整比例，第一版限制在 `35:65` 到 `65:35`。
-- 顶点表格和 YAML 编辑器内部滚动，不挤压整页。
+- 左侧默认是 `构建器` 模式，主要空间用于 shape 列表。
+- `YAML 预览` 是只读模式切换，不是底部常驻面板。
+- 不使用 `Global / Shapes / Generated YAML` 三个传统 tab；Global 设置通过按钮打开弹层或抽屉。
+- shape 列表内部滚动，添加后的所有 shape 都必须在左侧可见；放不下时滚动。
+- 坐标列表和 YAML 预览内部滚动，不挤压整页。
 - 模态框最大高度 `80vh`，内容区滚动。
 - 第一版取消独立日志区。状态、错误和成功提示显示在顶部 status text、字段旁错误和预览错误态中。
 
@@ -60,10 +66,10 @@
 
 | 操作 | 行为 |
 | --- | --- |
-| `Open YAML` | 打开原生文件对话框，读取 `.yaml`/`.yml`。如果当前 dirty，先确认是否丢弃未保存修改。 |
-| `Save YAML` | 打开原生保存对话框选择路径，必要时确认覆盖，然后保存当前 YAML。 |
-| `Validate` | 调 `/api/validate`，显示字段错误和顶部状态。 |
-| `Export GDS` | 打开原生保存对话框选择 `.gds` 路径，必要时确认覆盖，然后导出。 |
+| `打开 YAML` | 打开原生文件对话框，读取 `.yaml`/`.yml`，parse 成功后回填表单。dirty 时先确认是否丢弃未保存修改。 |
+| `保存 YAML` | 打开原生保存对话框选择路径，必要时确认覆盖，然后保存当前 YAML。 |
+| `校验` | 调 `/api/validate`，显示字段错误和顶部状态。 |
+| `导出 GDS` | 打开原生保存对话框选择 `.gds` 路径，必要时确认覆盖，然后导出。 |
 
 不提供：
 
@@ -71,22 +77,40 @@
 - `Export SVG`
 - `Download preview`
 
-## 5. Tab 面板
+## 5. 左侧工作区
 
-### 5.1 Global Tab
+左侧工作区只承担一个职责：让用户通过可见对象构建 YAML。用户不需要理解内部有 `global`、`shapes`、`generated yaml` 三个技术区块。
 
-编辑 YAML 的 `global` 和 GDS 必要配置。
+### 5.1 模式切换栏
+
+顶部使用按钮式模式切换，不使用 tab 组件。
 
 ```text
-┌─ global ──────────────────────────────┐
+[构建器] [YAML 预览]                         [全局设置]
+```
+
+规则：
+
+- `构建器` 是默认模式。
+- `YAML 预览` 显示当前生成 YAML 的只读全文。
+- `全局设置` 是独立按钮，打开弹层或侧边抽屉；关闭后不占用左侧主区域。
+- 如果 global 设置已完成，左侧主区域不持续展示 global 表单，只在顶部或状态 pill 显示摘要，例如 `dbu 0.001 / TOP`。
+- 模式切换不改变数据源；构建器和 YAML 预览都读取同一份 `formDraft -> generatedYamlText`。
+
+### 5.2 Global 设置弹层
+
+Global 设置编辑配置中的 `global` 和 GDS 必要配置，但不是左侧常驻面板。
+
+```text
+┌─ 全局设置 ────────────────────────────┐
 │ dbu:       [ 0.001    ]  (0.00001~1)  │
 │ precision: [          ]  optional     │
 │ unit:       um (fixed)                │
-└───────────────────────────────────────┘
-
-┌─ gds ─────────────────────────────────┐
+│                                       │
 │ top_cell:  [ TOP         ]            │
-│ output:    managed by Export GDS      │
+│ output:    由导出 GDS 管理             │
+│                                       │
+│ [取消] [应用]                         │
 └───────────────────────────────────────┘
 ```
 
@@ -94,20 +118,63 @@
 
 - `unit` 第一版固定为 `um`。
 - `top_cell` 是 GDS 导出必需字段。
-- GUI 导出路径不依赖 `gds.output` 输入框；用户点击 `Export GDS` 时选择保存位置。
-- 如果加载的 YAML 已有 `gds.output`，YAML 编辑器保留该字段，并在 Global Tab 中只读展示为 `CLI default output`。
-- 表单规范化写回 YAML 时不主动新增 `gds.output`。
-- 如果用户在 YAML Tab 手动删除 `gds.output`，GUI 保存 YAML 时不恢复它；GUI 导出 GDS 始终使用保存对话框路径。
+- GUI 导出路径不依赖 `gds.output` 输入框；用户点击 `导出 GDS` 时选择保存位置。
+- 新建配置默认不生成 `gds.output`。
+- 如果加载的 YAML 已有 `gds.output`，form draft 记录该字段，YAML 预览保留显示，并在 Global 设置中只读展示为 `CLI 默认输出`。
+- GUI 不提供编辑 `gds.output` 的输入框，也不会把 `导出 GDS` 选择的路径写回 `gds.output`。
+- 保存 YAML 时，如果原文件带 `gds.output`，规范化 YAML 应保留该字段；如果原文件没有，GUI 不主动新增。
+- GUI 导出 GDS 始终使用本次保存对话框路径，通过后端导出选项覆盖 YAML 中的 `gds.output`。
 
-### 5.2 Shapes Tab
+### 5.3 构建器模式
 
-核心编辑区。顶部只提供添加基础图形：
+构建器模式是左侧默认页面。顶部提供快速添加入口：
 
 ```text
-[+ Add base_shape]
+[+ Base Shape] [+ Via] [+ Rings]
 ```
 
-`via` 和 `rings` 必须从某个已有 `base_shape` 卡片触发创建，以保证 `source.ref` 合法。
+交互规则：
+
+- `+ Base Shape` 打开 base_shape 创建弹层。
+- `+ Via` 打开 source 选择弹层；如果没有 base_shape，则按钮禁用或显示“先创建 base_shape”。
+- `+ Rings` 打开 source 选择弹层；如果没有 base_shape，则按钮禁用或显示“先创建 base_shape”。
+- 更推荐的创建路径是在某个 base_shape 卡片上点击 `Create Via` 或 `Create Rings`，这样 source 已明确。
+- 创建成功后，新 shape 立即出现在左侧 shape 列表中。
+- 左侧列表按 YAML `shapes` 顺序展示；第一版不提供拖拽排序。
+- 编辑 shape 打开弹层/抽屉，不在列表里展开巨大表单，避免占用 shape 列表空间。
+- 删除 shape 必须二次确认。
+- 如果删除的 base_shape 被 via/rings/source ref 引用，第一版默认阻止删除，并提示先删除依赖 shape；不做自动级联删除。
+
+### 5.4 Shape 列表
+
+shape 列表是构建器模式的主体。
+
+```text
+┌ #0 source_pad             base_shape ─────────────┐
+│ layer [1,0] | vertices 4 | fillet none            │
+│ actions: Edit Delete Offset Copy Create Via Rings │
+└───────────────────────────────────────────────────┘
+┌ #1 contact                via ← #0 ───────────────┐
+│ layer [10,0] | inner -5 | outer +8                │
+│ fillet inner none | outer r=2                     │
+│ actions: Edit Delete                              │
+└───────────────────────────────────────────────────┘
+┌ #2 guard                  rings ← #0 ─────────────┐
+│ layer [20,0] | count 3 | pitch 12 | width 4       │
+│ actions: Edit Delete                              │
+└───────────────────────────────────────────────────┘
+```
+
+卡片摘要必须显示：
+
+- `sid`
+- `name`
+- `type`
+- `layer`
+- source 信息：direct vertices 或 `ref #sid`
+- 关键参数：顶点数量、offset、via inner/outer、rings count/pitch/width
+- 倒角摘要：none、shared radius、inner/outer radius、per-ring radius
+- 错误状态：字段错误或后端 validate 错误必须能定位到对应卡片
 
 #### base_shape 卡片
 
@@ -130,12 +197,14 @@ source:
   ( ) ref + offset
 
 vertices:
-  X       Y
-  [0]     [0]     [delete row]
-  [100]   [0]
-  [100]   [80]
-  [0]     [80]
-  [+ Add point]
+  坐标列表                [格式化]
+  4 点 · 逆时针 · 面积 8000
+  ┌────┬──────────────────────────┐
+  │ 1  │ 0,0                      │
+  │ 2  │ 100,0                    │
+  │ 3  │ 100,80                   │
+  │ 4  │ 0,80                     │
+  └────┴──────────────────────────┘
 
 fillet:
   (●) none
@@ -180,9 +249,9 @@ via 支持 inner/outer 独立倒角。
 
 不提供“批量 rings”功能，也就是不提供一次生成多个独立 `type: rings` shape 的交互。
 
-### 5.3 YAML Tab
+### 5.5 YAML 预览模式
 
-YAML 编辑器展示并编辑完整 YAML。
+YAML 预览模式展示由配置构建器生成的完整 YAML。第一版默认只读，不作为普通用户输入入口。
 
 ```yaml
 schema_version: 2
@@ -203,10 +272,60 @@ shapes:
 同步规则：
 
 - 表单编辑会生成规范 YAML。
-- YAML 手动编辑成功 parse 后，同步回表单。
-- YAML 手动编辑失败时，进入 `yaml_invalid` 状态。
-- `yaml_invalid` 状态下，保留用户文本，禁用预览和 GDS 导出。
-- 用户可以继续修 YAML，也可以恢复到上一次有效 YAML。
+- 生成的 YAML 每次 parse 成功后会规范化显示。
+- 打开 YAML 文件时，parse 成功才同步回表单。
+- 打开 YAML 文件 parse 失败时，不覆盖当前表单，显示导入错误。
+- `yaml_invalid` 状态通常来自表单生成结果不满足协议；该状态下禁用预览和 GDS 导出。
+- 第一版不提供主界面手写 YAML 编辑。后续若增加高级 Raw YAML 模式，必须单独设计确认和恢复流程。
+- YAML 预览不在左侧底部常驻；只有切换到 `YAML 预览` 模式时显示。
+
+### 5.6 表单和 YAML 映射规则
+
+#### schema_version
+
+- `schema_version: 2` 由前端序列化器自动写入。
+- 第一版不在 UI 中暴露 schema version 输入框。
+- 打开 YAML 时，如果 `schema_version` 缺失或不是 `2`，显示明确导入错误，不自动迁移旧协议。
+
+#### 坐标列表输入
+
+坐标列表输入是 `source.vertices` 的 UI 表达。第一版不提供顶点表格；大量坐标应通过列表粘贴、脚本生成和格式化完成。
+
+```text
+坐标列表                [格式化]
+4 点 · 逆时针 · 面积 8000
+
+1  0,0
+2  100,0
+3  100,80
+4  0,80
+```
+
+序列化为：
+
+```yaml
+source:
+  vertices:
+    - [0, 0]
+    - [100, 0]
+    - [100, 80]
+    - [0, 80]
+```
+
+规则：
+
+- 行顺序就是多边形顶点顺序。
+- 前端不自动插入闭合点；用户不需要重复第一点作为最后一点。
+- 每行必须能解析为两个有限数值，分别序列化为 `[x, y]`。
+- 支持每行一个点、分号分隔、旧版冒号分隔和 JSON/YAML 数组子集。
+- `格式化` 将当前合法坐标统一写成一行一个 `x,y`。
+- 长列表在输入框内部滚动；左侧行号随输入框同步滚动。
+- 打开 YAML parse 成功后，`source.vertices` 回填为一行一个点的坐标列表。
+- `/api/parse` 或 `/api/validate` 返回 `$.shapes[i].source.vertices[j][0]` / `[j][1]` 时，错误定位到坐标列表，并在消息中保留第 `j + 1` 行信息。
+- 前端阻断明显结构错误：少于 3 点、空值、非数字、首尾重复、零面积、顺时针点序。
+- 点序必须逆时针；违规直接报错，不自动反转。
+- 自交、复杂拓扑和 offset 后几何错误最终以后端 validate/preview 为准。
+- 后续计划：坐标输入框智能识别更多脚本输出格式，例如空格表格、CSV 块、带括号的点列表。
 
 ## 6. 实时 SVG 预览
 
@@ -215,7 +334,7 @@ shapes:
 触发规则：
 
 - 表单修改后 debounce `300-500ms`。
-- YAML 编辑器 parse 成功后 debounce `300-500ms`。
+- Open YAML parse 成功并回填表单后 debounce `300-500ms`。
 - 手动点击 `Validate` 不应是预览的唯一入口。
 
 状态：
@@ -223,26 +342,42 @@ shapes:
 | 状态 | UI |
 | --- | --- |
 | `idle` | 尚未渲染。 |
+| `stale` | YAML 已变化，但新的预览尚未完成；保留旧 SVG，并显示“预览待更新”。 |
 | `rendering` | 显示 loading，保留旧 SVG。 |
 | `ready` | 显示最新 SVG 和 region count。 |
 | `error` | 显示错误摘要，保留旧 SVG 或显示空状态。 |
 | `yaml_invalid` | 显示“YAML 有语法/协议错误，预览暂停”。 |
 
+状态转换：
+
+- 表单编辑并成功生成新 YAML 后，如果已有成功预览，立即进入 `stale`。
+- debounce 触发 `/api/preview/svg` 后进入 `rendering`。
+- 新请求成功并且 `request_id` 仍是最新时进入 `ready`。
+- 新请求失败进入 `error`，旧 SVG 可保留但必须标明错误。
+- YAML parse/validate 进入 invalid 后，预览状态进入 `yaml_invalid`。
+
 交互：
 
-- `Fit to view`
-- `Zoom +`
-- `Zoom -`
+- `适配视图`
+- `放大`
+- `缩小`
 - 鼠标滚轮缩放可后续再加，第一版不是必须。
 
 SVG 预览不是导出产物，界面不提供保存 SVG。
+
+居中规则：
+
+- SVG 进入固定尺寸 `.svg-stage`，stage 在 preview viewport 中居中。
+- 前端挂载 SVG 后必须使用 `preserveAspectRatio="xMidYMid meet"`。
+- SVG 不能依赖文档流自然高度定位；否则 Matplotlib 生成的 intrinsic 画布会把图形推到下方。
+- `Fit to view` 应重置 pan/zoom，使 SVG 的 `viewBox` 完整显示在 stage 中央。
 
 ## 7. 创建/编辑模态框
 
 ### 7.1 创建 Via
 
 ```text
-Create Via based on #0 "source_pad"
+基于 #0 "source_pad" 创建 Via
 
 name:   [ contact_window ]
 layer:  [ 10 ] / [ 0 ]
@@ -259,13 +394,13 @@ outer fillet:
   (●) none
   ( ) arc radius [ 2 ] um
 
-[Cancel] [Create]
+[取消] [创建]
 ```
 
 ### 7.2 创建 Rings
 
 ```text
-Create Rings based on #0 "source_pad"
+基于 #0 "source_pad" 创建 Rings
 
 name:   [ guard_rings ]
 layer:  [ 20 ] / [ 0 ]
@@ -278,23 +413,32 @@ fillet:
   (●) none for all rings
   ( ) configure per ring
 
-Ring 0: inner [ 1 ] outer [ 2 ]
-Ring 1: inner [ 1 ] outer [ 2 ]
-Ring 2: inner [ 1 ] outer [ 2 ]
+只有选择 "configure per ring" 后才显示 per-ring 表格：
+  Ring 0: inner [ 1 ] outer [ 2 ]
+  Ring 1: inner [ 1 ] outer [ 2 ]
+  Ring 2: inner [ 1 ] outer [ 2 ]
 
-[Apply same fillet to all rings]
+[同一倒角应用到全部 rings]
 
-[Cancel] [Create]
+[取消] [创建]
 ```
 
-`Apply same fillet to all rings` 只是单个 rings shape 内的填表快捷操作。它不会创建多个 rings shape，也不会引入新的 YAML 简写协议。
+`同一倒角应用到全部 rings` 只是单个 rings shape 内的填表快捷操作。它不会创建多个 rings shape，也不会引入新的 YAML 简写协议。
+
+`rings` 倒角写入规则：
+
+- `none for all rings` 模式不写 `fillet` 字段，避免传出与 `count` 不匹配的空数组。
+- `configure per ring` 模式写入 `fillet.rings`，长度必须等于 `count`。
+- 用户把 `count` 调大时，新增 ring 行使用空值，并要求用户填写或点击 `同一倒角应用到全部 rings`；前端不静默复制最后一行。
+- 用户把 `count` 调小时，超出范围的 per-ring 行进入临时缓存，当前 YAML 只序列化前 `count` 行。
+- 从 `configure per ring` 切回 `none for all rings` 时，当前 YAML 删除 `fillet` 字段；临时缓存可以保留在弹层内，方便用户切回。
 
 ## 8. 主流程
 
 ```text
 Open app
   │
-  ├─ create/edit base_shape
+  ├─ create/edit base_shape through form
   │    ├─ direct vertices
   │    └─ ref + offset copy
   │
@@ -304,12 +448,14 @@ Open app
   ├─ create rings from base_shape
   │    └─ configure count/pitch/width and optional per-ring fillet
   │
-  ├─ live SVG preview updates automatically
+  ├─ generated YAML updates automatically
+  │
+  ├─ live SVG preview updates automatically from generated YAML
   │
   ├─ validate YAML
   │    └─ map errors to fields
   │
-  ├─ save YAML
+  ├─ save generated YAML
   │    └─ choose .yaml path -> confirm overwrite if needed -> write
   │
   └─ export GDS
@@ -319,7 +465,7 @@ Open app
 保存/导出路径流程：
 
 ```text
-click Save YAML / Export GDS
+click 保存 YAML / 导出 GDS
   -> native save dialog
   -> server returns path_token + path_label + exists
   -> if exists: ask overwrite confirmation
@@ -343,9 +489,9 @@ click Save YAML / Export GDS
 
 | 字段 | 规则 | 触发 |
 | --- | --- | --- |
-| `dbu` | `0.00001 <= dbu <= 1` | blur |
-| `precision` | 若填写，`precision >= dbu` 且 `precision / dbu` 为整数 | blur |
-| `vertices` | 至少 3 个点；明显空值/非数字立即提示 | blur |
+| `dbu` | `0.00001 <= dbu <= 1` | input throttle `300ms` + blur |
+| `precision` | 若填写，`precision >= dbu` 且 `precision / dbu` 为整数 | input throttle `300ms` + blur |
+| `vertices` | 至少 3 个点；空值/非数字/首尾重复/零面积/顺时针立即提示 | input + apply |
 | `layer` | 两个非负整数 | blur |
 | `via.offsets.inner/outer` | 有限数值 | blur |
 | `rings.count` | 正整数 | blur |
@@ -393,27 +539,46 @@ GDS 导出期间禁用 `Export GDS`，避免重复写同一文件。SVG 渲染�
 
 ### 11.5 dirty state
 
-`dirty = currentYamlText != lastSavedOrLoadedYamlText`。
+`dirty = generatedYamlText != lastSavedOrLoadedYamlText`。
 
 触发提示：
 
 - 打开新 YAML 前。
 - 关闭窗口前。
-- 恢复上一次有效 YAML 前。
+- 恢复上一次有效 form draft 前。
 
 保存 YAML 成功后清除 dirty。
 
-### 11.6 status text
+### 11.6 token / connection recovery
+
+`path_token` 过期：
+
+- 后端返回 `path_token_expired`。
+- 前端显示“保存位置已过期，请重新选择路径”。
+- 前端丢弃旧 token，并重新打开保存对话框；不得重用旧路径或要求用户手写路径。
+
+session token 失效：
+
+- 第一版 session token 生命周期等于 GUI 进程生命周期，不做自动续期。
+- 如果 API 返回 `session_expired` 或 `unauthorized`，前端显示“会话已失效，请关闭并重新打开程序”。
+- 不自动重试写文件操作。
+
+WebView 与 Flask 断连：
+
+- API 请求网络失败或健康检查失败时，显示“本地服务连接中断，请重启程序”。
+- 第一版不要求自动重启 Flask；后续可增加轻量心跳和自动恢复。
+
+### 11.7 status text
 
 第一版不提供独立日志区。
 
 顶部 status text 显示最近一条用户需要知道的状态：
 
-- `YAML saved`
-- `GDS exported`
-- `Validation failed: 3 errors`
-- `Preview paused: YAML invalid`
-- `Export failed: output exists`
+- `YAML 已保存`
+- `GDS 已导出`
+- `校验失败：3 个错误`
+- `预览已暂停：YAML 无效`
+- `导出失败：目标文件已存在`
 
 详细错误必须显示在对应字段旁；没有字段路径的错误显示在顶部状态旁的可展开错误摘要中。
 
@@ -427,9 +592,10 @@ GDS 导出期间禁用 `Export GDS`，避免重复写同一文件。SVG 渲染�
 - 以 `640x360` 作为最小支持分辨率。
 - 操作区/预览区默认 `1:1`，允许用户拖拽调整。
 - 低于最佳尺寸时不重排为移动端，而是让内容区域滚动。
-- 顶点表格横向滚动。
-- YAML 编辑器固定高度并内部滚动。
+- 坐标列表内部滚动，长列表不挤压模态框。
+- YAML 预览模式占用左侧内容区并内部滚动。
 - 模态框内容超高时内部滚动。
+- splitter 键盘操作：左右箭头调整 `5px`，`Shift + Arrow` 调整 `20px`，`Home` 跳到左侧最小 `35%`，`End` 跳到左侧最大 `65%`。
 
 最低可访问性规则：
 

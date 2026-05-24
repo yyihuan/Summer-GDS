@@ -66,6 +66,10 @@ def field_map_for_config(config: ConfigSpec) -> dict[str, str]:
         field_map[f"{prefix}.name"] = f"{target}.name"
         field_map[f"{prefix}.layer"] = f"{target}.layer"
         field_map[f"{prefix}.source.vertices"] = f"{target}.source.vertices"
+        if shape.source.vertices is not None:
+            for vertex_index, _point in enumerate(shape.source.vertices):
+                field_map[f"{prefix}.source.vertices[{vertex_index}][0]"] = f"{target}.source.vertices.{vertex_index}.x"
+                field_map[f"{prefix}.source.vertices[{vertex_index}][1]"] = f"{target}.source.vertices.{vertex_index}.y"
         field_map[f"{prefix}.source.ref"] = f"{target}.source.ref"
         field_map[f"{prefix}.source.offset"] = f"{target}.source.offset"
         field_map[f"{prefix}.fillet"] = f"{target}.fillet"

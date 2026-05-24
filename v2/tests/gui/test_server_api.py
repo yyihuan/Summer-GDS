@@ -59,6 +59,7 @@ def test_parse_returns_normalized_config_and_field_map(tmp_path):
     assert data["parsed_config"]["shapes"][0]["layer"] == [1, 0]
     assert data["canonical_yaml"].startswith("schema_version: 2")
     assert data["field_map"]["$.global.dbu"] == "global.dbu"
+    assert data["field_map"]["$.shapes[0].source.vertices[2][1]"] == "shape:0.source.vertices.2.y"
     assert data["errors"] == []
 
 

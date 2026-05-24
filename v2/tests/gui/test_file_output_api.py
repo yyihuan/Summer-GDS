@@ -113,6 +113,23 @@ def test_yaml_save_rejects_wrong_token_kind(tmp_path):
     assert {error["code"] for error in data["errors"]} == {"invalid_path_token"}
 
 
+def test_yaml_save_reports_expired_path_token(tmp_path):
+    session = GuiSession(
+        temp_root=tmp_path / "gui-temp",
+        file_dialog=FakeSaveDialog(tmp_path / "config.yaml"),
+        path_token_ttl_seconds=-1,
+    )
+    app = create_app(session_token=TOKEN, gui_session=session)
+    client = app.test_client()
+    token = choose_path(client, "yaml")["path_token"]
+
+    response = post_json(client, "/api/yaml/save", {"yaml_text": VALID_YAML, "path_token": token})
+
+    data = response.get_json()
+    assert data["ok"] is False
+    assert {error["code"] for error in data["errors"]} == {"path_token_expired"}
+
+
 def test_yaml_save_requires_force_for_existing_file(tmp_path):
     output = tmp_path / "config.yaml"
     output.write_text("old")
