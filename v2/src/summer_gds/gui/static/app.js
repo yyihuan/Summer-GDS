@@ -79,8 +79,20 @@ const viaEditor = document.getElementById("viaEditor");
 const viaRefInput = document.getElementById("viaRefInput");
 const viaInnerInput = document.getElementById("viaInnerInput");
 const viaOuterInput = document.getElementById("viaOuterInput");
-const viaInnerFilletInput = document.getElementById("viaInnerFilletInput");
-const viaOuterFilletInput = document.getElementById("viaOuterFilletInput");
+const viaInnerFilletModeInput = document.getElementById("viaInnerFilletModeInput");
+const viaInnerFilletRadiusField = document.getElementById("field-via-inner-fillet-radius");
+const viaInnerFilletRadiusInput = document.getElementById("viaInnerFilletRadiusInput");
+const viaInnerFilletRadiiEditor = document.getElementById("viaInnerFilletRadiiEditor");
+const viaInnerFilletRadiiShell = document.getElementById("viaInnerFilletRadiiShell");
+const viaInnerFilletRadiiInput = document.getElementById("viaInnerFilletRadiiInput");
+const formatViaInnerFilletRadiiButton = document.getElementById("formatViaInnerFilletRadiiButton");
+const viaOuterFilletModeInput = document.getElementById("viaOuterFilletModeInput");
+const viaOuterFilletRadiusField = document.getElementById("field-via-outer-fillet-radius");
+const viaOuterFilletRadiusInput = document.getElementById("viaOuterFilletRadiusInput");
+const viaOuterFilletRadiiEditor = document.getElementById("viaOuterFilletRadiiEditor");
+const viaOuterFilletRadiiShell = document.getElementById("viaOuterFilletRadiiShell");
+const viaOuterFilletRadiiInput = document.getElementById("viaOuterFilletRadiiInput");
+const formatViaOuterFilletRadiiButton = document.getElementById("formatViaOuterFilletRadiiButton");
 
 const ringsEditor = document.getElementById("ringsEditor");
 const ringsRefInput = document.getElementById("ringsRefInput");
@@ -163,6 +175,12 @@ function bindEvents() {
   baseFilletModeInput.addEventListener("change", handleBaseFilletModeChange);
   baseFilletRadiiInput.addEventListener("input", handleBaseFilletRadiiInput);
   formatBaseFilletRadiiButton.addEventListener("click", formatBaseFilletRadiiList);
+  viaInnerFilletModeInput.addEventListener("change", () => renderViaFilletSide("inner"));
+  viaInnerFilletRadiiInput.addEventListener("input", () => handleViaFilletRadiiInput("inner"));
+  formatViaInnerFilletRadiiButton.addEventListener("click", () => formatViaFilletRadiiList("inner"));
+  viaOuterFilletModeInput.addEventListener("change", () => renderViaFilletSide("outer"));
+  viaOuterFilletRadiiInput.addEventListener("input", () => handleViaFilletRadiiInput("outer"));
+  formatViaOuterFilletRadiiButton.addEventListener("click", () => formatViaFilletRadiiList("outer"));
   vertexListInput.addEventListener("input", handleVertexListInput);
   vertexListInput.addEventListener("scroll", syncVertexLineNumberScroll);
   formatVertexListButton.addEventListener("click", formatVertexList);
@@ -534,8 +552,8 @@ function openShapeDialog(shape) {
     viaRefInput.value = String(shape.source.ref);
     viaInnerInput.value = shape.offsets.inner;
     viaOuterInput.value = shape.offsets.outer;
-    viaInnerFilletInput.value = shape.fillet?.inner?.radius ?? "";
-    viaOuterFilletInput.value = shape.fillet?.outer?.radius ?? "";
+    setViaFilletSide("inner", shape.fillet?.inner ?? null);
+    setViaFilletSide("outer", shape.fillet?.outer ?? null);
   } else if (shape.type === "rings") {
     ringsRefInput.value = String(shape.source.ref);
     ringsCountInput.value = shape.count;
@@ -663,13 +681,16 @@ function readViaFields() {
     ok = false;
   }
   const fillet = {};
-  const innerFillet = readRadius(viaInnerFilletInput.value);
-  const outerFillet = readRadius(viaOuterFilletInput.value);
-  if (innerFillet) {
-    fillet.inner = innerFillet;
+  const innerFillet = readViaFilletSide("inner");
+  const outerFillet = readViaFilletSide("outer");
+  if (!innerFillet.ok || !outerFillet.ok) {
+    ok = false;
   }
-  if (outerFillet) {
-    fillet.outer = outerFillet;
+  if (innerFillet.ok && innerFillet.value) {
+    fillet.inner = innerFillet.value;
+  }
+  if (outerFillet.ok && outerFillet.value) {
+    fillet.outer = outerFillet.value;
   }
   return ok ? {
     ok: true,
@@ -807,6 +828,77 @@ function readBaseFillet(expectedVertexCount, allowRadii) {
   return { ok: true, value: { radii: parsed.radii } };
 }
 
+function viaFilletControls(side) {
+  if (side === "inner") {
+    return {
+      mode: viaInnerFilletModeInput,
+      radiusField: viaInnerFilletRadiusField,
+      radius: viaInnerFilletRadiusInput,
+      radiiEditor: viaInnerFilletRadiiEditor,
+      radiiShell: viaInnerFilletRadiiShell,
+      radii: viaInnerFilletRadiiInput,
+      radiiFieldId: "field-via-inner-fillet-radii",
+      radiusFieldId: "field-via-inner-fillet-radius",
+    };
+  }
+  return {
+    mode: viaOuterFilletModeInput,
+    radiusField: viaOuterFilletRadiusField,
+    radius: viaOuterFilletRadiusInput,
+    radiiEditor: viaOuterFilletRadiiEditor,
+    radiiShell: viaOuterFilletRadiiShell,
+    radii: viaOuterFilletRadiiInput,
+    radiiFieldId: "field-via-outer-fillet-radii",
+    radiusFieldId: "field-via-outer-fillet-radius",
+  };
+}
+
+function setViaFilletSide(side, spec) {
+  const controls = viaFilletControls(side);
+  controls.mode.value = baseFilletMode(spec);
+  controls.radius.value = spec?.radius ?? "";
+  controls.radii.value = spec?.radii ? formatRadiiForList(spec.radii) : "";
+  renderViaFilletSide(side);
+}
+
+function renderViaFilletSide(side) {
+  const controls = viaFilletControls(side);
+  const mode = controls.mode.value;
+  controls.radiusField.hidden = mode !== "radius";
+  controls.radiiEditor.hidden = mode !== "radii";
+  if (mode !== "radii") {
+    controls.radiiShell.dataset.status = "idle";
+    return;
+  }
+  handleViaFilletRadiiInput(side);
+}
+
+function readViaFilletSide(side) {
+  const controls = viaFilletControls(side);
+  const mode = controls.mode.value;
+  if (mode === "none") {
+    return { ok: true, value: null };
+  }
+  if (mode === "radius") {
+    if (!controls.radius.value.trim()) {
+      return { ok: true, value: null };
+    }
+    const radius = readFiniteNumber(controls.radius.value);
+    if (radius === null || radius < 0) {
+      setFieldError(controls.radiusFieldId, "radius 必须是非负有限数值。");
+      return { ok: false };
+    }
+    return { ok: true, value: { radius } };
+  }
+  const parsed = parseRadiiList(controls.radii.value, null);
+  updateViaFilletRadiiState(side, parsed);
+  if (!parsed.ok) {
+    setFieldError(controls.radiiFieldId, parsed.message);
+    return { ok: false };
+  }
+  return { ok: true, value: { radii: parsed.radii } };
+}
+
 function handleVertexListInput() {
   const parsed = parseVertexList(vertexListInput.value);
   updateVertexListState(parsed);
@@ -889,6 +981,23 @@ function formatBaseFilletRadiiList() {
   updateBaseFilletRadiiState(parseRadiiList(baseFilletRadiiInput.value, expectedCount), expectedCount);
 }
 
+function handleViaFilletRadiiInput(side) {
+  const controls = viaFilletControls(side);
+  const parsed = parseRadiiList(controls.radii.value, null);
+  updateViaFilletRadiiState(side, parsed);
+}
+
+function formatViaFilletRadiiList(side) {
+  const controls = viaFilletControls(side);
+  const parsed = parseRadiiList(controls.radii.value, null);
+  updateViaFilletRadiiState(side, parsed);
+  if (!parsed.ok) {
+    return;
+  }
+  controls.radii.value = formatRadiiForList(parsed.radii);
+  updateViaFilletRadiiState(side, parseRadiiList(controls.radii.value, null));
+}
+
 function updateBaseFilletRadiiState(parsed, expectedCount) {
   lastBaseFilletRadiiParse = parsed;
   baseFilletRadiiShell.dataset.status = parsed.ok ? "valid" : "invalid";
@@ -903,6 +1012,11 @@ function updateBaseFilletRadiiState(parsed, expectedCount) {
     return;
   }
   baseFilletStatus.textContent = `${parsed.radii.length} 个半径 · 匹配 ${expectedCount} 个顶点`;
+}
+
+function updateViaFilletRadiiState(side, parsed) {
+  const controls = viaFilletControls(side);
+  controls.radiiShell.dataset.status = parsed.ok ? "valid" : "invalid";
 }
 
 function formatRadiiForList(radii) {
@@ -1396,15 +1510,15 @@ function appendFilletYaml(lines, shape) {
   if (shape.type === "via") {
     const parts = [];
     if (shape.fillet.inner) {
-      parts.push(["inner", shape.fillet.inner.radius]);
+      parts.push(["inner", shape.fillet.inner]);
     }
     if (shape.fillet.outer) {
-      parts.push(["outer", shape.fillet.outer.radius]);
+      parts.push(["outer", shape.fillet.outer]);
     }
     if (parts.length) {
       lines.push("    fillet:");
-      for (const [key, radius] of parts) {
-        lines.push(`      ${key}: { radius: ${formatNumber(radius)} }`);
+      for (const [key, radiusSpec] of parts) {
+        lines.push(`      ${key}: ${formatRadiusSpecInline(radiusSpec)}`);
       }
     }
   }
@@ -1426,6 +1540,16 @@ function appendFilletYaml(lines, shape) {
       }
     }
   }
+}
+
+function formatRadiusSpecInline(radiusSpec) {
+  if (radiusSpec.radius !== undefined) {
+    return `{ radius: ${formatNumber(radiusSpec.radius)} }`;
+  }
+  if (radiusSpec.radii) {
+    return `{ radii: [${radiusSpec.radii.map((radius) => formatNumber(radius)).join(", ")}] }`;
+  }
+  return "{}";
 }
 
 function parsedConfigToDraft(config) {

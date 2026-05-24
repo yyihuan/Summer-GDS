@@ -60,7 +60,7 @@ Component inventory:
 - Shape cards: compact summary + explicit Edit/Delete/Create Via/Create Rings actions.
 - Coordinate list editor: code-like point list with line numbers, formatting, and strict orientation validation.
 - Base fillet editor: `none` / unified radius / horizontal per-corner radii list for direct vertices and ref+offset shapes.
-- Create Via modal: source base shape, offsets, layer, inner/outer fillet.
+- Create Via modal: source base shape, offsets, layer, inner/outer fillet with unified radius or horizontal per-corner radii.
 - Create Rings modal: source base shape, count/pitch/width, optional per-ring inner/outer fillet.
 - YAML preview mode: readonly generated YAML text, visible only when selected.
 - SVG stage: fixed viewport, centered SVG, Fit/Zoom controls.

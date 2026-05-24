@@ -570,6 +570,12 @@ h4 {
   gap: var(--space-10);
 }
 
+.via-fillet-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-10);
+}
+
 .field {
   display: grid;
   gap: var(--space-4);
@@ -777,7 +783,8 @@ h4 {
     padding: 0 var(--space-8);
   }
 
-  .form-grid {
+  .form-grid,
+  .via-fillet-grid {
     grid-template-columns: 1fr;
   }
 }

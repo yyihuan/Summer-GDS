@@ -46,6 +46,10 @@ def test_index_is_builder_first_not_yaml_editor(tmp_path):
     assert "baseFilletModeInput" in html
     assert "baseFilletRadiiInput" in html
     assert "formatBaseFilletRadiiButton" in html
+    assert "viaInnerFilletModeInput" in html
+    assert "viaInnerFilletRadiiInput" in html
+    assert "viaOuterFilletModeInput" in html
+    assert "viaOuterFilletRadiiInput" in html
     assert "vertexTable" not in html
     assert "+ 点" not in html
     assert "id=\"yamlEditor\"" not in html
@@ -84,3 +88,13 @@ def test_frontend_supports_base_shape_per_corner_fillet_radii():
     assert "半径数量为" in script
     assert "offset 后由预览校验" in script
     assert "radii:" in script
+
+
+def test_frontend_supports_via_inner_outer_per_corner_fillet_radii():
+    script = (Path(__file__).parents[2] / "src/summer_gds/gui/static/app.js").read_text()
+
+    assert "function readViaFilletSide" in script
+    assert "function formatViaFilletRadiiList" in script
+    assert "viaInnerFilletRadiiInput" in script
+    assert "viaOuterFilletRadiiInput" in script
+    assert "formatRadiusSpecInline" in script

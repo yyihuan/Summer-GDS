@@ -423,14 +423,32 @@ offsets:
 
 inner fillet:
   (●) none
-  ( ) arc radius [ 1 ] um
+  ( ) unified radius [ 1 ] um
+  ( ) per-corner radii [ 1, 2, 0, 3 ]
 
 outer fillet:
   (●) none
-  ( ) arc radius [ 2 ] um
+  ( ) unified radius [ 2 ] um
+  ( ) per-corner radii [ 2, 2, 1, 1 ]
 
 [取消] [创建]
 ```
+
+via 倒角输入规则：
+
+- `inner` 和 `outer` 是两个独立倒角配置，分别写入 `fillet.inner` 和 `fillet.outer`。
+- 每一侧都有 `none` / `unified radius` / `per-corner radii` 三种模式。
+- `unified radius` 写 `fillet.<side>.radius`。
+- `per-corner radii` 写 `fillet.<side>.radii`，推荐横向逗号格式，例如 `1, 2, 0, 3`。
+- via 的 inner/outer 都是 offset 后边界；前端不预测边界点数，只校验半径是非负有限数值，长度匹配和几何合法性由 preview/validate 后端校验。
+
+实施计划：
+
+1. 将 via 现有 inner/outer 半径输入替换为两个独立 fillet side editor。
+2. 复用 base shape 的横向 radii 解析、格式化和非负数值校验。
+3. YAML serializer 支持 `fillet.inner.radii` 和 `fillet.outer.radii`，同时保留 `radius`。
+4. 打开 YAML 时根据 `radius` / `radii` 回填对应 mode 和输入值。
+5. 测试覆盖 via inner/outer radii 控件存在、序列化路径存在、旧的 unified radius 不回退。
 
 ### 7.2 创建 Rings
 

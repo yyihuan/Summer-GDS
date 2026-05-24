@@ -264,15 +264,66 @@
                   <input class="input" id="viaOuterInput" data-kind="number" type="number" step="0.1">
                   <span class="field-error"></span>
                 </label>
-                <label class="field">
-                  <span class="field-label">inner fillet radius</span>
-                  <input class="input" id="viaInnerFilletInput" data-kind="number" type="number" min="0" step="0.1">
-                </label>
-                <label class="field">
-                  <span class="field-label">outer fillet radius</span>
-                  <input class="input" id="viaOuterFilletInput" data-kind="number" type="number" min="0" step="0.1">
-                </label>
               </div>
+              <div class="via-fillet-grid">
+                <div class="fillet-editor" id="viaInnerFilletEditor">
+                  <h4>inner 倒角</h4>
+                  <label class="field compact-field">
+                    <span class="field-label">倒角模式</span>
+                    <select class="select" id="viaInnerFilletModeInput">
+                      <option value="none">无倒角</option>
+                      <option value="radius">统一半径</option>
+                      <option value="radii">逐角半径</option>
+                    </select>
+                  </label>
+                  <label class="field compact-field" id="field-via-inner-fillet-radius" hidden>
+                    <span class="field-label">统一半径</span>
+                    <input class="input" id="viaInnerFilletRadiusInput" data-kind="number" type="number" min="0" step="0.1">
+                    <span class="field-error"></span>
+                  </label>
+                  <div id="viaInnerFilletRadiiEditor" hidden>
+                    <div class="section-row vertices-toolbar">
+                      <span class="field-label">半径列表</span>
+                      <button class="button button-secondary" id="formatViaInnerFilletRadiiButton" type="button">格式化</button>
+                    </div>
+                    <label class="field" id="field-via-inner-fillet-radii">
+                      <div class="radii-list-shell" id="viaInnerFilletRadiiShell" data-status="idle">
+                        <input class="input radii-list-input" id="viaInnerFilletRadiiInput" type="text" spellcheck="false" placeholder="1, 2, 0, 3">
+                      </div>
+                      <span class="field-error"></span>
+                    </label>
+                  </div>
+                </div>
+                <div class="fillet-editor" id="viaOuterFilletEditor">
+                  <h4>outer 倒角</h4>
+                  <label class="field compact-field">
+                    <span class="field-label">倒角模式</span>
+                    <select class="select" id="viaOuterFilletModeInput">
+                      <option value="none">无倒角</option>
+                      <option value="radius">统一半径</option>
+                      <option value="radii">逐角半径</option>
+                    </select>
+                  </label>
+                  <label class="field compact-field" id="field-via-outer-fillet-radius" hidden>
+                    <span class="field-label">统一半径</span>
+                    <input class="input" id="viaOuterFilletRadiusInput" data-kind="number" type="number" min="0" step="0.1">
+                    <span class="field-error"></span>
+                  </label>
+                  <div id="viaOuterFilletRadiiEditor" hidden>
+                    <div class="section-row vertices-toolbar">
+                      <span class="field-label">半径列表</span>
+                      <button class="button button-secondary" id="formatViaOuterFilletRadiiButton" type="button">格式化</button>
+                    </div>
+                    <label class="field" id="field-via-outer-fillet-radii">
+                      <div class="radii-list-shell" id="viaOuterFilletRadiiShell" data-status="idle">
+                        <input class="input radii-list-input" id="viaOuterFilletRadiiInput" type="text" spellcheck="false" placeholder="2, 2, 1, 1">
+                      </div>
+                      <span class="field-error"></span>
+                    </label>
+                  </div>
+                </div>
+              </div>
+              <p class="field-hint">via inner/outer 逐角半径按 offset 后边界绑定；前端只校验数值，点数由预览校验。</p>
             </section>
 
             <section class="shape-section" id="ringsEditor" hidden>
