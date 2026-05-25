@@ -1,1 +1,0 @@
-"""Geometry primitives and renderers."""

@@ -14,7 +14,6 @@ from summer_gds.gui.presenter import canonical_yaml, config_to_dict, field_map_f
 from summer_gds.schema.errors import ConfigError, ConfigIssue, issue
 from summer_gds.schema.yaml_v2 import parse_yaml_text
 from summer_gds.writer.gds_writer import write_gds
-from summer_gds.writer.image_renderer import ImageOutputConfig, render_image
 
 
 class SaveFileDialog(Protocol):
@@ -96,6 +95,8 @@ class GuiSession:
             regions = tuple(region for result in results for region in result.output_regions)
             if not regions:
                 raise ConfigError([issue("output_empty_input", "$.shapes", "No output regions were produced.")])
+            from summer_gds.writer.image_renderer import ImageOutputConfig, render_image
+
             render_image(
                 regions,
                 ImageOutputConfig(path=svg_path, format="svg", dbu=config.global_config.dbu),
