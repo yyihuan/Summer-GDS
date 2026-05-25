@@ -1,0 +1,190 @@
+"gds":
+  "cell_name": "TOP"
+  "default_layer":
+  - !!int "1"
+  - !!int "0"
+  "input_file": !!null "null"
+  "output_file": "output.gds"
+"global":
+  "dbu": !!float "0.001"
+  "fillet":
+    "default_action": "auto"
+    "interactive": !!bool "false"
+    "precision": !!float "0.01"
+  "layer_mapping":
+    "file": "layer_mapping.txt"
+    "save": !!bool "true"
+"shapes":
+- "_metadata":
+    "generated_at": "2025-10-30T10:25:40.046Z"
+    "params":
+      "center_x": !!int "0"
+      "center_y": !!int "0"
+      "radius": !!int "10"
+      "segments": !!int "3"
+    "source": "circle"
+    "version": "1.0"
+  "fillet":
+    "radius": !!int "1"
+    "type": "arc"
+  "id": "shape_1761819714336_40l6idu4c"
+  "inner_zoom": !!int "0"
+  "layer":
+  - !!int "1"
+  - !!int "0"
+  "name": "环阵列0"
+  "outer_zoom": !!int "0"
+  "ring_mode": "custom"
+  "ring_num": !!int "2"
+  "ring_space": "5"
+  "ring_width": "5"
+  "type": "rings"
+  "vertices": "10.000,0.000;-5.000,8.660;-5.000,-8.660"
+  "zoom": !!int "0"
+- "_computed":
+    "_metadata":
+      "generated_at": "2025-10-30T10:25:40.046Z"
+      "params":
+        "center_x": !!int "0"
+        "center_y": !!int "0"
+        "radius": !!int "10"
+        "segments": !!int "3"
+      "source": "circle"
+      "version": "1.0"
+    "fillet":
+      "radii":
+      - !!int "1"
+      - !!int "2"
+      - !!int "3"
+      "radius": !!int "1"
+      "type": "arc"
+    "ring_num": !!int "2"
+    "ring_space": "5"
+    "ring_width": "5"
+    "vertices": "10.000,0.000;-5.000,8.660;-5.000,-8.660"
+    "zoom": !!int "0"
+  "_metadata":
+    "generated_at": "2025-10-30T10:25:40.046Z"
+    "params":
+      "center_x": !!int "0"
+      "center_y": !!int "0"
+      "radius": !!int "10"
+      "segments": !!int "3"
+    "source": "circle"
+    "version": "1.0"
+  "derivation":
+    "base_shape_id": "shape_1761819714336_40l6idu4c"
+    "created_at": "2025-10-30T10:22:31.365Z"
+    "derive_params":
+      "zoom": !!int "0"
+    "derive_type": "offset"
+    "overrides":
+      "fillet.radii":
+        "overridden": !!bool "true"
+        "overridden_at": "2025-10-30T10:24:50.465Z"
+        "reason": "user_manual_edit"
+        "value":
+        - !!int "1"
+        - !!int "2"
+        - !!int "3"
+  "fillet":
+    "radii":
+    - !!int "1"
+    - !!int "2"
+    - !!int "3"
+    "radius": !!int "1"
+    "type": "arc"
+  "id": "shape_1761819751365_ca78kv7ib"
+  "inner_zoom": !!int "0"
+  "layer":
+  - !!int "2"
+  - !!int "0"
+  "name": "环阵列0_扩大缩小"
+  "outer_zoom": !!int "0"
+  "ring_mode": "custom"
+  "ring_num": !!int "2"
+  "ring_space": "5"
+  "ring_width": "5"
+  "type": "rings"
+  "vertices": "10.000,0.000;-5.000,8.660;-5.000,-8.660"
+  "zoom": !!int "0"
+- "_computed":
+    "_metadata":
+      "generated_at": "2025-10-30T10:25:40.046Z"
+      "params":
+        "center_x": !!int "0"
+        "center_y": !!int "0"
+        "radius": !!int "10"
+        "segments": !!int "3"
+      "source": "circle"
+      "version": "1.0"
+    "fillet":
+      "radii":
+      - !!int "1"
+      - !!int "1"
+      - !!int "1"
+      - !!int "2"
+      - !!int "2"
+      - !!int "2"
+      "radius": !!int "1"
+      "type": "arc"
+    "ring_num": !!int "2"
+    "ring_space": "5"
+    "ring_width": "5"
+    "vertices": "10.000,0.000;-5.000,8.660;-5.000,-8.660"
+    "zoom": !!int "0"
+  "_metadata":
+    "generated_at": "2025-10-30T10:25:40.046Z"
+    "params":
+      "center_x": !!int "0"
+      "center_y": !!int "0"
+      "radius": !!int "10"
+      "segments": !!int "3"
+    "source": "circle"
+    "version": "1.0"
+  "derivation":
+    "base_shape_id": "shape_1761819751365_ca78kv7ib"
+    "created_at": "2025-10-30T10:22:49.773Z"
+    "derive_params":
+      "zoom": !!int "0"
+    "derive_type": "offset"
+    "overrides":
+      "fillet.radii":
+        "overridden": !!bool "true"
+        "overridden_at": "2025-10-30T10:25:00.680Z"
+        "previous_inherited_value":
+        - !!int "1"
+        - !!int "2"
+        - !!int "3"
+        "reason": "user_manual_edit"
+        "value":
+        - !!int "1"
+        - !!int "1"
+        - !!int "1"
+        - !!int "2"
+        - !!int "2"
+        - !!int "2"
+  "fillet":
+    "radii":
+    - !!int "1"
+    - !!int "1"
+    - !!int "1"
+    - !!int "2"
+    - !!int "2"
+    - !!int "2"
+    "radius": !!int "1"
+    "type": "arc"
+  "id": "shape_1761819769773_fji3gx9e1"
+  "inner_zoom": !!int "0"
+  "layer":
+  - !!int "3"
+  - !!int "0"
+  "name": "环阵列0_扩大缩小_扩大缩小"
+  "outer_zoom": !!int "0"
+  "ring_mode": "custom"
+  "ring_num": !!int "2"
+  "ring_space": "5"
+  "ring_width": "5"
+  "type": "rings"
+  "vertices": "10.000,0.000;-5.000,8.660;-5.000,-8.660"
+  "zoom": !!int "0"

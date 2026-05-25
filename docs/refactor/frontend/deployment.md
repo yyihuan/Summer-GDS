@@ -4,7 +4,7 @@
 日期：2026-05-25
 状态：操作说明
 
-适用范围：`v2/` 的桌面 GUI 入口 `summer-gds-v2-gui`
+适用范围：project root 的桌面 GUI 入口 `summer-gds-v2-gui`
 
 这份文档只回答两件事：
 
@@ -20,7 +20,7 @@
 推荐启动方式：
 
 ```bash
-cd v2
+cd .  # project root
 uv sync
 uv run summer-gds-v2-gui
 ```
@@ -28,7 +28,7 @@ uv run summer-gds-v2-gui
 如果你已经激活了自己的虚拟环境，并且希望 `uv` 使用当前激活环境，可以改用：
 
 ```bash
-cd v2
+cd .  # project root
 uv run --active summer-gds-v2-gui
 ```
 
@@ -82,7 +82,7 @@ python -m summer_gds.gui.launcher
 ### 2.1 安装打包工具
 
 ```bash
-cd v2
+cd .  # project root
 python -m pip install pyinstaller
 ```
 
@@ -92,10 +92,10 @@ python -m pip install pyinstaller
 
 ### 2.2 先验证 onedir（推荐使用 spec 文件）
 
-项目提供了 `v2/SummerGDS.spec`，已经配置好 klayout 动态库、matplotlib 数据文件和 GUI 静态资源的收集。推荐直接用 spec 打包：
+项目提供了 `SummerGDS.spec`，已经配置好 klayout 动态库、matplotlib 数据文件和 GUI 静态资源的收集。推荐直接用 spec 打包：
 
 ```bash
-cd v2
+cd .  # project root
 pyinstaller SummerGDS.spec
 ```
 
@@ -106,7 +106,7 @@ spec 文件顶部 `MODE` 变量默认为 `"onedir"`，此时产出目录在 `dis
 如果你不想用 spec，也可以手动执行：
 
 ```bash
-cd v2
+cd .  # project root
 pyinstaller --onedir --name SummerGDS \
   --collect-data summer_gds \
   --collect-data klayout \
@@ -122,7 +122,7 @@ pyinstaller --onedir --name SummerGDS \
 将 spec 文件中的 `MODE` 改为 `"onefile"`，然后重新执行：
 
 ```bash
-cd v2
+cd .  # project root
 # 编辑 SummerGDS.spec: MODE = "onefile"
 pyinstaller SummerGDS.spec
 ```
@@ -130,7 +130,7 @@ pyinstaller SummerGDS.spec
 或者手动执行：
 
 ```bash
-cd v2
+cd .  # project root
 pyinstaller --onefile --windowed --name SummerGDS \
   --collect-data summer_gds \
   --collect-data klayout \

@@ -9,6 +9,15 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
+# Pre-warm matplotlib font cache and backends before anything else imports them.
+# In a PyInstaller bundle the first import triggers a slow cache rebuild;
+# doing it here avoids a confusing long pause.
+import matplotlib
+matplotlib.use("Agg")
+import matplotlib.font_manager  # noqa: F401
+import matplotlib.backends.backend_agg  # noqa: F401
+import matplotlib.backends.backend_svg  # noqa: F401
+
 from flask import Flask
 from werkzeug.serving import BaseWSGIServer, make_server
 
@@ -63,6 +72,14 @@ def launch_desktop(
     _log("launch_desktop: start")
     webview = webview_module or _import_webview()
     _log("launch_desktop: webview imported, guilib=" + str(webview.guilib))
+
+    # pywebview >= 6.x requires explicit initialization on some platforms.
+    # If guilib is still None, call initialize() to force platform detection.
+    if webview.guilib is None and hasattr(webview, "initialize"):
+        _log("launch_desktop: calling webview.initialize()")
+        webview.initialize()
+        _log("launch_desktop: after initialize, guilib=" + str(webview.guilib))
+
     token = session_token or secrets.token_urlsafe(32)
     session = GuiSession(temp_root=temp_root)
     _log("launch_desktop: session created " + session.session_id)
@@ -89,13 +106,13 @@ def launch_desktop(
 
 
 def main() -> int:
-    _log("=== Summer GDS v2 starting === frozen=" + str(getattr(sys, "frozen", False)))
+    _log("=== Summer GDS starting === frozen=" + str(getattr(sys, "frozen", False)))
     try:
         launch_desktop()
     except Exception:
         _report_fatal(traceback.format_exc())
         return 1
-    _log("=== Summer GDS v2 exiting normally ===")
+    _log("=== Summer GDS exiting normally ===")
     return 0
 
 
@@ -106,7 +123,7 @@ def _report_fatal(message: str) -> None:
     try:
         sep = "=" * 40
         _CRASH_LOG.write_text(
-            "Summer GDS v2 crash report\n" + sep + "\n" + message + "\n"
+            "Summer GDS crash report\n" + sep + "\n" + message + "\n"
         )
     except OSError:
         pass
