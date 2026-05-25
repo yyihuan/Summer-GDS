@@ -751,9 +751,14 @@ h4 {
 
 .ring-fillet-row {
   display: grid;
-  grid-template-columns: 80px minmax(0, 1fr) minmax(0, 1fr);
-  align-items: center;
-  gap: var(--space-6);
+  grid-template-columns: 64px minmax(0, 1fr) minmax(0, 1fr);
+  align-items: start;
+  gap: var(--space-8);
+}
+
+.ring-fillet-side {
+  display: grid;
+  gap: var(--space-4);
 }
 
 .ring-fillet-row label {

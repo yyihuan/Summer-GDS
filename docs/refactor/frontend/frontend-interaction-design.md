@@ -465,6 +465,17 @@ via 倒角输入规则：
 name:   [ guard_rings ]
 layer:  [ 20 ] / [ 0 ]
 
+source:
+  (●) vertices
+  ( ) source ref + offset
+
+vertices:
+  [ 坐标列表输入，格式同 base_shape ]
+
+source ref + offset:
+  source ref [ #0 base ]
+  source offset [      ] um
+
 count:  [ 3  ]
 pitch:  [ 12 ] um
 width:  [ 4  ] um
@@ -480,9 +491,9 @@ concentric from inner fillet:
     ( ) per-corner radii [ 1, 2, 0, 3 ]
 
 只有选择 "configure per ring" 后才显示 per-ring 表格：
-  Ring 0: inner [ 1 ] outer [ 2 ]
-  Ring 1: inner [ 1 ] outer [ 2 ]
-  Ring 2: inner [ 1 ] outer [ 2 ]
+  Ring 0: inner (radius) [ 1 ]      outer (radii) [ 2, 2, 1, 1 ]
+  Ring 1: inner (none)              outer (radius) [ 14 ]
+  Ring 2: inner (radii) [ 3, 4, 4 ] outer (radii) [ 7, 8, 8 ]
 
 [同一倒角应用到全部 rings]
 
@@ -499,10 +510,17 @@ concentric from inner fillet:
   - `ring_i.outer.radius = base_radius + i * pitch + width`
   - `radii` 模式逐项相加：`ring_i.inner.radii[j] = base_radii[j] + i * pitch`，`ring_i.outer.radii[j] = base_radii[j] + i * pitch + width`
   - 若 base inner 为 none，则不写 `fillet`。
-- `configure per ring` 模式写入 `fillet.rings`，长度必须等于 `count`。
+- `configure per ring` 模式写入 `fillet.rings`，长度必须等于 `count`；每个 ring 的 `inner` / `outer` 独立选择 `none` / `radius` / `radii`。
+- per-ring 的 `radii` 使用横向列表输入，例如 `1, 2, 4, 4`；前端只校验非负有限数值，逐角数量和 offset 后边界合法性由 preview/validate 判定。
 - 用户把 `count` 调大时，新增 ring 行使用空值，并要求用户填写或点击 `同一倒角应用到全部 rings`；前端不静默复制最后一行。
 - 用户把 `count` 调小时，超出范围的 per-ring 行进入临时缓存，当前 YAML 只序列化前 `count` 行。
 - 从 `configure per ring` 切回 `none for all rings` 时，当前 YAML 删除 `fillet` 字段；临时缓存可以保留在弹层内，方便用户切回。
+
+`rings` source 写入规则：
+
+- `vertices` 模式直接写 `source.vertices`，输入、格式化、长列表滚动和顺逆时针检测与 base_shape 坐标列表一致。
+- `source ref + offset` 模式写 `source.ref` 和可选 `source.offset`，下拉只显示已有 base_shape。
+- 新建 rings 时如果已有 base_shape，默认使用第一个 base ref；如果没有 base_shape，默认进入 vertices 模式，允许用户直接创建 rings。
 
 实施计划：
 
@@ -560,7 +578,7 @@ click 保存 YAML / 导出 GDS
 - 删除 shape 后不重排 `sid`。
 - 引用 shape 时，下拉列表只显示已经存在的 `base_shape`。
 - 不允许引用当前 shape 之后的 shape，避免 forward reference。
-- `via` 和 `rings` 不可作为 source ref。
+- `via` 和 `rings` 不可作为 source ref；但 `rings` 可以直接使用 `source.vertices`，不要求先创建 base_shape。
 
 ## 10. 字段校验
 
@@ -577,6 +595,7 @@ click 保存 YAML / 导出 GDS
 | `rings.count` | 正整数 | blur |
 | `rings.pitch` | 正数，且必须满足后端协议 | blur |
 | `rings.width` | 正数，且必须满足后端协议 | blur |
+| `rings.fillet.rings[].inner/outer.radii` | 非负有限数值列表；数量由 preview/validate 校验 | input + apply + preview |
 | `source.ref` | 已存在的 previous base_shape sid | change |
 
 ## 11. 错误与操作状态

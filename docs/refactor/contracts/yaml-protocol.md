@@ -260,8 +260,8 @@ source boundary
     rings:
       - inner: { radius: 1 }
         outer: { radius: 2 }
-      - inner: { radius: 1 }
-        outer: { radius: 2 }
+      - inner: { radii: [13, 14, 13, 14] }
+        outer: { radii: [17, 18, 17, 18] }
       - inner: { radius: 1 }
         outer: { radius: 2 }
 ```
@@ -272,6 +272,8 @@ source boundary
 - `width` 是每圈 ring 宽度。
 - `pitch` 是相邻 ring 同侧边界之间的距离。
 - 第 `i` 圈基于源图形按迭代 offset 生成。
+- `source` 使用通用 source 规则，可以是直接 `vertices`，也可以是 `ref` / 可选 `offset`。
+- 每圈 `inner` / `outer` 使用通用 radius spec，可以是 `{ radius: ... }` 或 `{ radii: [...] }`。
 
 一种等价实现：
 

@@ -96,7 +96,16 @@ const viaOuterFilletRadiiInput = document.getElementById("viaOuterFilletRadiiInp
 const formatViaOuterFilletRadiiButton = document.getElementById("formatViaOuterFilletRadiiButton");
 
 const ringsEditor = document.getElementById("ringsEditor");
+const ringsSourceModeInput = document.getElementById("ringsSourceModeInput");
+const ringsVerticesEditor = document.getElementById("ringsVerticesEditor");
+const ringsRefEditor = document.getElementById("ringsRefEditor");
 const ringsRefInput = document.getElementById("ringsRefInput");
+const ringsSourceOffsetInput = document.getElementById("ringsSourceOffsetInput");
+const ringsVertexStatus = document.getElementById("ringsVertexStatus");
+const ringsVertexListShell = document.getElementById("ringsVertexListShell");
+const ringsVertexLineNumbers = document.getElementById("ringsVertexLineNumbers");
+const ringsVertexListInput = document.getElementById("ringsVertexListInput");
+const formatRingsVertexListButton = document.getElementById("formatRingsVertexListButton");
 const ringsCountInput = document.getElementById("ringsCountInput");
 const ringsPitchInput = document.getElementById("ringsPitchInput");
 const ringsWidthInput = document.getElementById("ringsWidthInput");
@@ -134,6 +143,7 @@ let previewDebounceTimer = 0;
 let previewController = null;
 let previewScale = 1;
 let vertexRows = [];
+let ringsVertexRows = [];
 let ringsFilletRows = [];
 let busyWatchdogTimer = 0;
 let lastVertexParse = { ok: true, vertices: [] };
@@ -217,6 +227,10 @@ function bindEvents() {
   vertexListInput.addEventListener("input", handleVertexListInput);
   vertexListInput.addEventListener("scroll", syncVertexLineNumberScroll);
   formatVertexListButton.addEventListener("click", formatVertexList);
+  ringsSourceModeInput.addEventListener("change", renderRingsSourceMode);
+  ringsVertexListInput.addEventListener("input", handleRingsVertexListInput);
+  ringsVertexListInput.addEventListener("scroll", syncRingsVertexLineNumberScroll);
+  formatRingsVertexListButton.addEventListener("click", formatRingsVertexList);
   ringsCountInput.addEventListener("input", () => {
     syncRingsFilletRowsFromInputs();
     renderRingsFilletRows(readInteger(ringsCountInput.value) || 1);
@@ -285,7 +299,14 @@ function createRingsShape(sid, sourceRef) {
     sid,
     name: `rings_${sid}`,
     layer: [20, 0],
-    source: { ref: sourceRef },
+    source: sourceRef === null || sourceRef === undefined ? {
+      vertices: [
+        [0, 0],
+        [100, 0],
+        [100, 80],
+        [0, 80],
+      ],
+    } : { ref: sourceRef },
     count: 3,
     pitch: 12,
     width: 4,
@@ -463,14 +484,16 @@ function addShape(type, sourceRef = null) {
   let shape;
   if (type === "base_shape") {
     shape = createBaseShape(sid, { name: `base_${sid}` });
-  } else {
+  } else if (type === "via") {
     const baseSid = sourceRef ?? baseShapes()[0]?.sid;
     if (baseSid === undefined) {
       pushMessage("请先创建 base_shape。", false);
       render();
       return;
     }
-    shape = type === "via" ? createViaShape(sid, baseSid) : createRingsShape(sid, baseSid);
+    shape = createViaShape(sid, baseSid);
+  } else {
+    shape = createRingsShape(sid, sourceRef ?? baseShapes()[0]?.sid);
   }
   state.formDraft.shapes.push(shape);
   state.exported = false;
@@ -593,7 +616,13 @@ function openShapeDialog(shape) {
     viaOuterConcentricInput.checked = !shape.fillet?.outer;
     updateViaOuterConcentric();
   } else if (shape.type === "rings") {
-    ringsRefInput.value = String(shape.source.ref);
+    const isRefSource = shape.source.ref !== undefined;
+    ringsSourceModeInput.value = isRefSource ? "ref" : "vertices";
+    ringsVertexRows = shape.source.vertices ? shape.source.vertices.map((point) => [...point]) : [];
+    ringsVertexListInput.value = formatVerticesForList(ringsVertexRows);
+    handleRingsVertexListInput();
+    ringsRefInput.value = isRefSource ? String(shape.source.ref) : "";
+    ringsSourceOffsetInput.value = isRefSource ? shape.source.offset ?? "" : "";
     ringsCountInput.value = shape.count;
     ringsPitchInput.value = shape.pitch;
     ringsWidthInput.value = shape.width;
@@ -602,9 +631,14 @@ function openShapeDialog(shape) {
     ringsConcentricRadiusInput.value = "";
     ringsConcentricRadiiInput.value = "";
     ringsFilletRows = shape.fillet?.rings ? shape.fillet.rings.map((ring) => ({
-      inner: ring.inner?.radius ?? "",
-      outer: ring.outer?.radius ?? "",
+      innerMode: ringFilletSideMode(ring.inner),
+      innerRadius: ring.inner?.radius ?? "",
+      innerRadii: ring.inner?.radii ? formatRadiiForList(ring.inner.radii) : "",
+      outerMode: ringFilletSideMode(ring.outer),
+      outerRadius: ring.outer?.radius ?? "",
+      outerRadii: ring.outer?.radii ? formatRadiiForList(ring.outer.radii) : "",
     })) : [];
+    renderRingsSourceMode();
     renderRingsFilletMode();
     renderRingsFilletRows(shape.count);
   }
@@ -744,14 +778,32 @@ function readViaFields() {
 }
 
 function readRingsFields() {
-  const ref = readInteger(ringsRefInput.value);
   const count = readInteger(ringsCountInput.value);
   const pitch = readFiniteNumber(ringsPitchInput.value);
   const width = readFiniteNumber(ringsWidthInput.value);
   let ok = true;
-  if (ref === null) {
-    setFieldError("field-rings-source-ref", "请选择 source ref。");
-    ok = false;
+  let source = null;
+  if (ringsSourceModeInput.value === "ref") {
+    const ref = readInteger(ringsRefInput.value);
+    const offset = ringsSourceOffsetInput.value.trim() ? readFiniteNumber(ringsSourceOffsetInput.value) : null;
+    if (ref === null) {
+      setFieldError("field-rings-source-ref", "请选择 source ref。");
+      ok = false;
+    }
+    if (offset === null && ringsSourceOffsetInput.value.trim()) {
+      setFieldError("field-rings-source-offset", "offset 必须是有限数值。");
+      ok = false;
+    }
+    source = offset === null ? { ref } : { ref, offset };
+  } else {
+    const parsed = parseVertexList(ringsVertexListInput.value);
+    updateRingsVertexListState(parsed);
+    if (!parsed.ok) {
+      setFieldError("field-rings-vertices-list", parsed.message);
+      ok = false;
+    } else {
+      source = { vertices: parsed.vertices };
+    }
   }
   if (count === null || count <= 0) {
     setFieldError("field-rings-count", "count 必须是正整数。");
@@ -787,16 +839,16 @@ function readRingsFields() {
     syncRingsFilletRowsFromInputs();
     const rings = [];
     for (let index = 0; index < count; index += 1) {
-      const row = ringsFilletRows[index] || { inner: "", outer: "" };
-      const inner = row.inner === "" ? null : readFiniteNumber(row.inner);
-      const outer = row.outer === "" ? null : readFiniteNumber(row.outer);
-      if ((inner === null && row.inner !== "") || (outer === null && row.outer !== "")) {
+      const row = normalizeRingFilletRow(ringsFilletRows[index]);
+      const inner = readRingFilletSide(row, "inner", index);
+      const outer = readRingFilletSide(row, "outer", index);
+      if (!inner.ok || !outer.ok) {
         markRingFilletRowError(index);
         ok = false;
       }
       rings.push({
-        inner: inner === null ? null : { radius: inner },
-        outer: outer === null ? null : { radius: outer },
+        inner: inner.value,
+        outer: outer.value,
       });
     }
     fillet = { rings };
@@ -805,7 +857,7 @@ function readRingsFields() {
   return ok ? {
     ok: true,
     value: {
-      source: { ref },
+      source,
       count,
       pitch,
       width,
@@ -1072,6 +1124,25 @@ function formatVertexList() {
   updateVertexListState(parseVertexList(vertexListInput.value));
 }
 
+function handleRingsVertexListInput() {
+  const parsed = parseVertexList(ringsVertexListInput.value);
+  updateRingsVertexListState(parsed);
+  if (parsed.ok) {
+    ringsVertexRows = parsed.vertices.map((point) => [...point]);
+  }
+}
+
+function formatRingsVertexList() {
+  const parsed = parseVertexList(ringsVertexListInput.value);
+  updateRingsVertexListState(parsed);
+  if (!parsed.ok) {
+    return;
+  }
+  ringsVertexRows = parsed.vertices.map((point) => [...point]);
+  ringsVertexListInput.value = formatVerticesForList(ringsVertexRows);
+  updateRingsVertexListState(parseVertexList(ringsVertexListInput.value));
+}
+
 function updateVertexListState(parsed) {
   lastVertexParse = parsed;
   updateVertexLineNumbers();
@@ -1084,13 +1155,33 @@ function updateVertexListState(parsed) {
   vertexStatus.textContent = `${parsed.vertices.length} 点 · 逆时针 · 面积 ${formatNumber(Math.abs(area))}`;
 }
 
+function updateRingsVertexListState(parsed) {
+  updateRingsVertexLineNumbers();
+  ringsVertexListShell.dataset.status = parsed.ok ? "valid" : "invalid";
+  if (!parsed.ok) {
+    ringsVertexStatus.textContent = "坐标无效";
+    return;
+  }
+  const area = polygonSignedArea(parsed.vertices);
+  ringsVertexStatus.textContent = `${parsed.vertices.length} 点 · 逆时针 · 面积 ${formatNumber(Math.abs(area))}`;
+}
+
 function updateVertexLineNumbers() {
   const count = Math.max(1, vertexListInput.value.split("\n").length);
   vertexLineNumbers.textContent = Array.from({ length: count }, (_, index) => String(index + 1)).join("\n");
 }
 
+function updateRingsVertexLineNumbers() {
+  const count = Math.max(1, ringsVertexListInput.value.split("\n").length);
+  ringsVertexLineNumbers.textContent = Array.from({ length: count }, (_, index) => String(index + 1)).join("\n");
+}
+
 function syncVertexLineNumberScroll() {
   vertexLineNumbers.scrollTop = vertexListInput.scrollTop;
+}
+
+function syncRingsVertexLineNumberScroll() {
+  ringsVertexLineNumbers.scrollTop = ringsVertexListInput.scrollTop;
 }
 
 function formatVerticesForList(vertices) {
@@ -1339,6 +1430,15 @@ function renderRingsFilletMode() {
   }
 }
 
+function renderRingsSourceMode() {
+  const useVertices = ringsSourceModeInput.value === "vertices";
+  ringsVerticesEditor.hidden = !useVertices;
+  ringsRefEditor.hidden = useVertices;
+  if (useVertices) {
+    handleRingsVertexListInput();
+  }
+}
+
 function renderRingsConcentricFilletMode() {
   const mode = ringsConcentricFilletModeInput.value;
   ringsConcentricRadiusField.hidden = mode !== "radius";
@@ -1371,25 +1471,119 @@ function updateRingsConcentricRadiiState(parsed) {
 function renderRingsFilletRows(count) {
   ringsFilletTable.replaceChildren();
   while (ringsFilletRows.length < count) {
-    ringsFilletRows.push({ inner: "", outer: "" });
+    ringsFilletRows.push(createEmptyRingFilletRow());
   }
   for (let index = 0; index < count; index += 1) {
-    const row = ringsFilletRows[index] || { inner: "", outer: "" };
+    const row = normalizeRingFilletRow(ringsFilletRows[index]);
     const node = document.createElement("div");
     node.className = "ring-fillet-row";
     node.innerHTML = `
       <span class="row-index">Ring ${index}</span>
-      <label>inner <input class="input ring-inner" data-kind="number" type="number" min="0" step="0.1" value="${escapeAttribute(row.inner)}"></label>
-      <label>outer <input class="input ring-outer" data-kind="number" type="number" min="0" step="0.1" value="${escapeAttribute(row.outer)}"></label>
+      ${renderRingFilletSideControls("inner", row)}
+      ${renderRingFilletSideControls("outer", row)}
     `;
+    node.querySelectorAll(".ring-side-mode").forEach((select) => {
+      select.addEventListener("change", () => {
+        syncRingsFilletRowsFromInputs();
+        renderRingsFilletRows(readInteger(ringsCountInput.value) || 1);
+      });
+    });
     ringsFilletTable.appendChild(node);
   }
 }
 
+function renderRingFilletSideControls(side, row) {
+  const mode = row[`${side}Mode`];
+  const radius = row[`${side}Radius`];
+  const radii = row[`${side}Radii`];
+  return `
+    <div class="ring-fillet-side">
+      <label>
+        <span>${side}</span>
+        <select class="select ring-side-mode ring-${side}-mode">
+          <option value="none"${mode === "none" ? " selected" : ""}>none</option>
+          <option value="radius"${mode === "radius" ? " selected" : ""}>radius</option>
+          <option value="radii"${mode === "radii" ? " selected" : ""}>radii</option>
+        </select>
+      </label>
+      <input class="input ring-${side}-radius" data-kind="number" type="number" min="0" step="0.1" value="${escapeAttribute(radius)}"${mode === "radius" ? "" : " hidden"}>
+      <input class="input radii-list-input ring-${side}-radii" type="text" spellcheck="false" placeholder="1, 2, 0, 3" value="${escapeAttribute(radii)}"${mode === "radii" ? "" : " hidden"}>
+    </div>
+  `;
+}
+
+function createEmptyRingFilletRow() {
+  return {
+    innerMode: "none",
+    innerRadius: "",
+    innerRadii: "",
+    outerMode: "none",
+    outerRadius: "",
+    outerRadii: "",
+  };
+}
+
+function normalizeRingFilletRow(row) {
+  if (!row) {
+    return createEmptyRingFilletRow();
+  }
+  if ("inner" in row || "outer" in row) {
+    return {
+      innerMode: row.inner === "" ? "none" : "radius",
+      innerRadius: row.inner ?? "",
+      innerRadii: "",
+      outerMode: row.outer === "" ? "none" : "radius",
+      outerRadius: row.outer ?? "",
+      outerRadii: "",
+    };
+  }
+  return {
+    ...createEmptyRingFilletRow(),
+    ...row,
+  };
+}
+
+function ringFilletSideMode(spec) {
+  if (!spec) {
+    return "none";
+  }
+  if (spec.radii) {
+    return "radii";
+  }
+  if (spec.radius !== undefined) {
+    return "radius";
+  }
+  return "none";
+}
+
+function readRingFilletSide(row, side, index) {
+  const mode = row[`${side}Mode`];
+  if (mode === "none") {
+    return { ok: true, value: null };
+  }
+  if (mode === "radius") {
+    const raw = row[`${side}Radius`];
+    const radius = readFiniteNumber(raw);
+    if (raw === "" || radius === null || radius < 0) {
+      return { ok: false, message: `Ring ${index} ${side} radius 必须是非负有限数值。` };
+    }
+    return { ok: true, value: { radius } };
+  }
+  const parsed = parseRadiiList(row[`${side}Radii`], null);
+  if (!parsed.ok) {
+    return { ok: false, message: parsed.message };
+  }
+  return { ok: true, value: { radii: parsed.radii } };
+}
+
 function syncRingsFilletRowsFromInputs() {
   ringsFilletRows = [...ringsFilletTable.querySelectorAll(".ring-fillet-row")].map((row) => ({
-    inner: row.querySelector(".ring-inner").value,
-    outer: row.querySelector(".ring-outer").value,
+    innerMode: row.querySelector(".ring-inner-mode").value,
+    innerRadius: row.querySelector(".ring-inner-radius")?.value ?? "",
+    innerRadii: row.querySelector(".ring-inner-radii")?.value ?? "",
+    outerMode: row.querySelector(".ring-outer-mode").value,
+    outerRadius: row.querySelector(".ring-outer-radius")?.value ?? "",
+    outerRadii: row.querySelector(".ring-outer-radii")?.value ?? "",
   }));
 }
 
@@ -1402,7 +1596,7 @@ function markRingFilletRowError(index) {
 
 function applySameRingsFillet() {
   syncRingsFilletRowsFromInputs();
-  const first = ringsFilletRows[0] || { inner: "", outer: "" };
+  const first = normalizeRingFilletRow(ringsFilletRows[0]);
   const count = readInteger(ringsCountInput.value) || 1;
   ringsFilletRows = Array.from({ length: count }, () => ({ ...first }));
   renderRingsFilletRows(count);
@@ -1713,13 +1907,13 @@ function appendFilletYaml(lines, shape) {
     for (const ring of shape.fillet.rings.slice(0, shape.count)) {
       if (ring.inner) {
         lines.push("        -");
-        lines.push(`          inner: { radius: ${formatNumber(ring.inner.radius)} }`);
+        lines.push(`          inner: ${formatRadiusSpecInline(ring.inner)}`);
         if (ring.outer) {
-          lines.push(`          outer: { radius: ${formatNumber(ring.outer.radius)} }`);
+          lines.push(`          outer: ${formatRadiusSpecInline(ring.outer)}`);
         }
       } else if (ring.outer) {
         lines.push("        -");
-        lines.push(`          outer: { radius: ${formatNumber(ring.outer.radius)} }`);
+        lines.push(`          outer: ${formatRadiusSpecInline(ring.outer)}`);
       } else {
         lines.push("        - {}");
       }

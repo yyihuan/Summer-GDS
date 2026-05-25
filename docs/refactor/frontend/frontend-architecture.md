@@ -273,8 +273,9 @@ Open YAML
 - `source.ref + offset` 模式也允许 `base_shape.fillet.radii`，但前端不推断 offset 后边界点数，只做数值解析和横向格式化；长度匹配、offset 后拓扑和倒角合法性由 preview/validate 的后端几何流水线判定。
 - `via.fillet.inner` 和 `via.fillet.outer` 各自独立支持 `none` / `radius` / `radii`；`radii` 使用横向半径列表输入，前端只校验非负有限数值，长度和 offset 后边界合法性由 preview/validate 判定。
 - via 默认启用 outer 同心联动：当 outer 处于 auto 状态时，`outer_radius = inner_radius + (outer_offset - inner_offset)`；逐角时逐项相加。用户手动修改 outer 后进入 override，不再自动跟随；YAML 只保存计算后的普通 `fillet.outer.radius/radii`。
+- `rings.source` 支持和 `base_shape.source` 同样的两种输入：直接坐标列表写入 `source.vertices`，或选择已有 base 写入 `source.ref` / 可选 `source.offset`。直接坐标模式同样执行逆时针、非零面积、首尾不重复校验。
 - rings 增加同心展开 GUI 模式：用户配置 base inner 倒角后，前端按 `ring_i_inner_offset = i * pitch`、`ring_i_outer_offset = i * pitch + width` 展开为显式 `fillet.rings`；YAML 协议不新增隐式同心字段。
-- `rings` 的 per-ring fillet 只有在用户选择 per-ring 模式时输出；输出数组长度必须等于 `count`。
+- `rings` 的 per-ring fillet 只有在用户选择 per-ring 模式时输出；每个 ring 的 `inner` / `outer` 都支持 `none` / `radius` / `radii`，输出数组长度必须等于 `count`。
 - `gds.output` 仅在打开的 YAML 已存在该字段时保留；GUI 导出路径不回写到 YAML。
 
 ## 6. 本地安全边界
@@ -488,6 +489,8 @@ pyinstaller --onefile --windowed --name SummerGDS \
 - ref+offset base shape 的逐角倒角允许保存到 YAML；若 radii 数量和 offset 后边界点数不匹配，preview/validate 必须显示后端 `fillet_radii_length_mismatch` 或相关几何错误。
 - via inner/outer 的逐角倒角分别序列化为 `fillet.inner.radii` / `fillet.outer.radii`；长度不匹配时由 preview/validate 暴露后端错误。
 - via outer 自动同心联动只影响 GUI draft；保存/加载 YAML 后仍回到显式 radius/radii 值，避免协议层出现隐式状态。
+- rings 可以不依赖已有 base，直接输入 `source.vertices`；如果选择 source ref，下拉仍只允许已有 base_shape。
 - rings 同心展开模式必须生成 `fillet.rings.length === count`；radius 和 radii 都按 ring offset 递增展开。
+- rings per-ring 模式下，每个 `inner` / `outer` 的逐角倒角序列化为对应的 `radii`；长度和 offset 后边界合法性由 preview/validate 暴露后端错误。
 - `rings.count` 变化时 per-ring fillet 数组不会产生 length mismatch。
 - `dbu` / `precision` 联动错误能在 Global 设置中内联显示。

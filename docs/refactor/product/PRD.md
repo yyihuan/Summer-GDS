@@ -157,7 +157,7 @@ outer_region - inner_region
 
 ### 4.4 Rings
 
-用户从一个源图形迭代生成多圈 ring：
+用户从一个源图形迭代生成多圈 ring。源图形可以是直接 `vertices`，也可以是已有 base_shape 的 `ref` / 可选 `offset`：
 
 ```yaml
 - type: rings
@@ -179,7 +179,7 @@ outer_region - inner_region
 
 - YAML v2 可以描述 base、via、rings。
 - 所有对象最终统一进入 RegionObject output backend。
-- base_shape 支持 `vertices` 和 `ref + offset` 两种 source。
+- base_shape 和 rings 支持 `vertices` 和 `ref + offset` 两种 source；via 只引用已有 base_shape。
 - via 和 rings 的 offset、倒角、boolean 顺序正确。
 - `sid` 引用稳定，不依赖 `name`。
 - `export --format gds` 走统一几何流水线。

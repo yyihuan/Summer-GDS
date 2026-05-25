@@ -333,10 +333,12 @@
             <section class="shape-section" id="ringsEditor" hidden>
               <h3>Rings</h3>
               <div class="form-grid">
-                <label class="field" id="field-rings-source-ref">
-                  <span class="field-label">source ref</span>
-                  <select class="select" id="ringsRefInput"></select>
-                  <span class="field-error"></span>
+                <label class="field compact-field">
+                  <span class="field-label">source</span>
+                  <select class="select" id="ringsSourceModeInput">
+                    <option value="vertices">vertices</option>
+                    <option value="ref">ref + optional source offset</option>
+                  </select>
                 </label>
                 <label class="field" id="field-rings-count">
                   <span class="field-label">count</span>
@@ -351,6 +353,34 @@
                 <label class="field" id="field-rings-width">
                   <span class="field-label">width</span>
                   <input class="input" id="ringsWidthInput" data-kind="number" type="number" min="0" step="0.1">
+                  <span class="field-error"></span>
+                </label>
+              </div>
+              <div class="vertices-editor" id="ringsVerticesEditor">
+                <div class="section-row vertices-toolbar">
+                  <div>
+                    <span class="field-label">vertices</span>
+                    <div class="vertex-status" id="ringsVertexStatus">每行一个点，格式 x,y；必须逆时针。</div>
+                  </div>
+                  <button class="button button-secondary" id="formatRingsVertexListButton" type="button">格式化</button>
+                </div>
+                <label class="field" id="field-rings-vertices-list">
+                  <div class="vertex-list-shell" id="ringsVertexListShell" data-status="idle">
+                    <pre class="vertex-line-numbers" id="ringsVertexLineNumbers" aria-hidden="true">1</pre>
+                    <textarea class="textarea vertex-list-input" id="ringsVertexListInput" spellcheck="false" placeholder="0,0&#10;100,0&#10;100,80&#10;0,80"></textarea>
+                  </div>
+                  <span class="field-error"></span>
+                </label>
+              </div>
+              <div class="form-grid" id="ringsRefEditor" hidden>
+                <label class="field" id="field-rings-source-ref">
+                  <span class="field-label">source ref</span>
+                  <select class="select" id="ringsRefInput"></select>
+                  <span class="field-error"></span>
+                </label>
+                <label class="field" id="field-rings-source-offset">
+                  <span class="field-label">source offset</span>
+                  <input class="input" id="ringsSourceOffsetInput" data-kind="number" type="number" step="0.1" placeholder="可选">
                   <span class="field-error"></span>
                 </label>
               </div>
