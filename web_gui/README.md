@@ -1,5 +1,8 @@
 # Summer-GDS Web GUI
 
+> 这是旧版 Web GUI 的历史文档，仅供参考，不适用于当前 `v2` 桌面 GUI。
+> 当前版本的启动和打包说明见 [前端部署与打包](../docs/refactor/frontend/deployment.md)。
+
 这是一个用于Summer-GDS的Web图形界面，允许您通过浏览器创建和编辑GDS文件的配置。
 
 ## 功能特点
@@ -86,4 +89,4 @@ python run.py --debug
 
 ## 联系与支持
 
-如有任何问题，请参考Summer-GDS主项目的文档或提交Issue。 
+如有任何问题，请参考Summer-GDS主项目的文档或提交Issue。

@@ -1,6 +1,6 @@
-# 前端技术架构 v2.6
+# 前端技术架构 v2.7
 
-文档版本：v2.6
+文档版本：v2.7
 日期：2026-05-25
 状态：方案设计
 
@@ -8,7 +8,7 @@
 
 ## 1. 架构目标
 
-- **Windows 双击启动**：生产版打包为单个 `.exe`，用户不需要安装 Python、Node.js 或命令行工具。
+- **桌面双击启动**：生产版按平台打包为单个可执行包，用户不需要安装 Python、Node.js 或命令行工具。
 - **纯本地运行**：GUI、静态资源、后端服务和几何流水线都在本机运行；生产版不依赖 CDN。
 - **Web UI + Python app service**：前端主交互是配置构建器，用户通过表单、坐标列表输入、逐角倒角列表和 shape 创建动作生成 YAML；校验、编译、几何和 GDS 输出都走 v2 app service。
 - **产品产物只有 YAML 和 GDS**：GUI 支持保存/加载 YAML、导出 GDS；SVG 仅作为实时预览通道，不作为用户导出产物。
@@ -21,7 +21,7 @@
 
 ```text
 ┌──────────────────────────────────────────────┐
-│                 SummerGDS.exe                │
+│                 SummerGDS                    │
 │                                              │
 │  ┌────────────────────────────────────────┐  │
 │  │ pywebview window                       │  │
@@ -87,7 +87,7 @@ v2/src/summer_gds/gui/
 
 ```text
 v2/src/summer_gds/gui/
-├── launcher.py              # 入口：启动 Flask + pywebview 或浏览器开发模式
+├── launcher.py              # 入口：启动 Flask + pywebview 桌面壳
 ├── server.py                # Flask app + API route
 ├── service.py               # GUI-facing service wrapper
 ├── presenter.py             # UI response/presentation helpers
@@ -433,33 +433,17 @@ yaml_invalid
 
 前端必须把 `errors[].path` 映射到表单字段；无法定位字段的错误进入顶部状态摘要。
 
-## 10. Windows 打包
+## 10. 部署与打包
 
-### 10.1 启动流程
+这一节只保留架构约束，具体的启动命令、平台差异和 PyInstaller 命令见 [前端部署与打包](./deployment.md)。
 
-```python
-def main():
-    port = allocate_loopback_port()
-    token = create_session_token()
-    start_flask_thread(host="127.0.0.1", port=port, token=token)
-    webview.create_window("Summer GDS", f"http://127.0.0.1:{port}/?token={token}")
-    webview.start()
-```
+部署层的关键约束：
 
-要求：
-
-- 生产版使用 `debug=False`。
-- 关闭窗口时停止 Flask 后台线程并清理 temp 目录。
-- PyInstaller 包含 `v2/src/summer_gds/gui/templates/**`、`v2/src/summer_gds/gui/static/**` 和 `summer_gds` package。
-
-### 10.2 打包命令
-
-```bash
-cd v2
-pyinstaller --onefile --windowed --name SummerGDS \
-  --collect-data summer_gds \
-  src/summer_gds/gui/launcher.py
-```
+- `launcher.py` 是桌面入口，负责拉起本地 Flask 服务和 `pywebview` 窗口。
+- 生产版只监听 `127.0.0.1`，不暴露公网端口。
+- 关闭窗口时要停止 Flask 后台线程并清理临时目录。
+- 打包时必须把 `v2/src/summer_gds/gui/templates/**`、`v2/src/summer_gds/gui/static/**` 和 `summer_gds` package 一起带上。
+- 生产版不使用 `debug=True`。
 
 ## 11. 测试策略
 

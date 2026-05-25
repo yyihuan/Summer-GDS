@@ -1,7 +1,7 @@
 # Summer-GDS Refactor Docs
 
-文档版本：v2.1
-日期：2026-05-24
+文档版本：v2.2
+日期：2026-05-25
 状态：完整产品架构规划
 
 ---
@@ -51,21 +51,24 @@ docs/refactor/
     默认上限、benchmark 场景、rings/via 规模风险。
 
 11. [前端技术架构](./frontend/frontend-architecture.md)
-    GUI 技术选型、API、安全边界、Windows 打包方案。
+    GUI 技术选型、API、安全边界、部署入口。
 
-12. [前端交互与页面设计](./frontend/frontend-interaction-design.md)
+12. [前端部署与打包](./frontend/deployment.md)
+    不同平台的直接启动方式、单文件打包方式。
+
+13. [前端交互与页面设计](./frontend/frontend-interaction-design.md)
     页面布局、组件设计、交互流程、模态框设计。
 
-13. [前端设计系统](./frontend/frontend-design-system.md)
+14. [前端设计系统](./frontend/frontend-design-system.md)
     HTML/CSS tokens、语义 DOM 骨架、组件 class 和状态属性。
 
-14. [倒角测试设计](./quality/fillet-test-design.md)
+15. [倒角测试设计](./quality/fillet-test-design.md)
     倒角算法和可视化测试的专项设计。
 
-15. [实施路线](./planning/implementation-roadmap.md)
+16. [实施路线](./planning/implementation-roadmap.md)
     后续开发阶段、每阶段目标、验收标准。
 
-16. [MVP Plan Archive](./product/MVP_PLAN.md)
+17. [MVP Plan Archive](./product/MVP_PLAN.md)
     历史参考，不作为当前执行依据。
 
 ---
