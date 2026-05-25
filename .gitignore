@@ -38,12 +38,14 @@ logs/
 env/
 venv/
 ENV/
+.claude/
 
 # Test outputs
 *.png
 *.gds
 layer_mapping.txt
 examples/*.gds
+v2/uv.lock
 
 # Web GUI temporary files
 web_gui/uploads/
@@ -57,4 +59,5 @@ docs/generated/
 
 # Jupyter Notebooks
 .ipynb_checkpoints
-*.ipynb 
+*.ipynb
+.gstack/

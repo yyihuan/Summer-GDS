@@ -32,6 +32,10 @@ YAML 业务对象 -> 编译为几何任务 -> KLayout Region 几何内核 -> out
 - 用户可以用 `source.ref + offset` 定义新图形，避免手工重复计算坐标。
 - 用户可以为不同对象配置 layer。
 - 用户可以为 base、via、rings 分别配置倒角。
+- GUI 用户通过图形类型选择、坐标/参数表单创建配置；GUI 自动生成 YAML，用户不需要直接手写 YAML。
+- GUI 左侧主界面以 shape 列表为中心；Global 设置通过弹层/抽屉完成，YAML 只作为只读预览模式出现，不作为默认编辑面板。
+- GUI 自动写入 `schema_version: 2`，不把 schema version 暴露为普通用户设置；打开旧版或缺失版本 YAML 时给出明确错误。
+- GUI 导出 GDS 的路径由保存对话框决定；`gds.output` 只作为 CLI 兼容字段保留，不作为 GUI 导出路径输入。
 - GUI 用户可以保存/加载 YAML，并把同一份几何结果导出为 GDS。
 - GUI 用户可以看到实时 SVG 预览；SVG 是程序内部预览，不是用户导出产物。
 - 用户不需要理解内部 inner/outer、DAG、Region 转换等实现细节。
