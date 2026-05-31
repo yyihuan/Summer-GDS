@@ -2,6 +2,11 @@
 """
 PyInstaller spec for Summer GDS v2 desktop GUI.
 
+Known issue:
+    Windows onedir builds can start on the build machine but fail on some
+    target machines while importing pythonnet/clr from pywebview WinForms.
+    Keep validating distributed Windows builds on a clean target machine.
+
 Usage (from project root):
     # Step 1: verify with onedir (default)
     pyinstaller SummerGDS.spec
@@ -12,6 +17,7 @@ Usage (from project root):
 """
 
 import os
+import sys
 from PyInstaller.utils.hooks import collect_data_files, collect_submodules, collect_dynamic_libs
 
 # ---------------------------------------------------------------------------
@@ -20,6 +26,13 @@ from PyInstaller.utils.hooks import collect_data_files, collect_submodules, coll
 MODE = "onedir"  # "onedir" for debug, "onefile" for release
 PROJECT_ROOT = os.path.abspath(SPECPATH)
 SRC_DIR = os.path.join(PROJECT_ROOT, "src")
+ICON_FILE = (
+    os.path.join(PROJECT_ROOT, "packaging", "icons", "summergds-icon.ico")
+    if sys.platform == "win32"
+    else os.path.join(PROJECT_ROOT, "packaging", "icons", "summergds-icon.icns")
+    if sys.platform == "darwin"
+    else None
+)
 
 # ---------------------------------------------------------------------------
 # Data files
@@ -123,6 +136,7 @@ if MODE == "onefile":
         strip=False,
         upx=True,
         console=False,
+        icon=ICON_FILE,
         disable_windowed_traceback=False,
         argv_emulation=False,
         target_arch=None,
@@ -140,7 +154,8 @@ else:
         bootloader_ignore_signals=False,
         strip=False,
         upx=True,
-        console=True,  # onedir keeps console for debugging
+        console=False,  # onedir hides console for GUI app
+        icon=ICON_FILE,
         disable_windowed_traceback=False,
         argv_emulation=False,
         target_arch=None,

@@ -73,13 +73,6 @@ def launch_desktop(
     webview = webview_module or _import_webview()
     _log("launch_desktop: webview imported, guilib=" + str(webview.guilib))
 
-    # pywebview >= 6.x requires explicit initialization on some platforms.
-    # If guilib is still None, call initialize() to force platform detection.
-    if webview.guilib is None and hasattr(webview, "initialize"):
-        _log("launch_desktop: calling webview.initialize()")
-        webview.initialize()
-        _log("launch_desktop: after initialize, guilib=" + str(webview.guilib))
-
     token = session_token or secrets.token_urlsafe(32)
     session = GuiSession(temp_root=temp_root)
     _log("launch_desktop: session created " + session.session_id)
@@ -96,8 +89,15 @@ def launch_desktop(
             min_size=(640, 360),
         )
         session.file_dialog = PyWebviewSaveFileDialog(window=window)
-        _log("launch_desktop: calling webview.start()")
-        webview.start()
+        start_kwargs: dict[str, Any] = {
+            "func": _log_webview_runtime,
+            "args": (webview,),
+        }
+        if sys.platform == "win32":
+            # Prefer WebView2 over the legacy MSHTML renderer when WinForms is available.
+            start_kwargs["gui"] = "edgechromium"
+        _log("launch_desktop: calling webview.start() kwargs=" + str(_public_start_kwargs(start_kwargs)))
+        webview.start(**start_kwargs)
         _log("launch_desktop: webview.start() returned")
     finally:
         handle.stop()
@@ -114,6 +114,19 @@ def main() -> int:
         return 1
     _log("=== Summer GDS exiting normally ===")
     return 0
+
+
+def _log_webview_runtime(webview: Any) -> None:
+    _log(
+        "webview runtime: guilib="
+        + str(getattr(webview, "guilib", None))
+        + ", renderer="
+        + str(getattr(webview, "renderer", None))
+    )
+
+
+def _public_start_kwargs(start_kwargs: dict[str, Any]) -> dict[str, Any]:
+    return {key: value for key, value in start_kwargs.items() if key not in {"func", "args"}}
 
 
 def _report_fatal(message: str) -> None:

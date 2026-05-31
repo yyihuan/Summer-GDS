@@ -4,7 +4,7 @@
 日期：2026-05-25
 状态：操作说明
 
-适用范围：project root 的桌面 GUI 入口 `summer-gds-v2-gui`
+适用范围：project root 的桌面 GUI 入口 `summer-gds-gui`
 
 这份文档只回答两件事：
 
@@ -15,27 +15,27 @@
 
 ## 1. 直接启动
 
-当前 GUI 入口是 `summer-gds-v2-gui`，对应 `summer_gds.gui.launcher:main`。
+当前 GUI 入口是 `summer-gds-gui`，对应 `summer_gds.gui.launcher:main`。
 
 推荐启动方式：
 
 ```bash
 cd .  # project root
 uv sync
-uv run summer-gds-v2-gui
+uv run summer-gds-gui
 ```
 
 如果你已经激活了自己的虚拟环境，并且希望 `uv` 使用当前激活环境，可以改用：
 
 ```bash
 cd .  # project root
-uv run --active summer-gds-v2-gui
+uv run --active summer-gds-gui
 ```
 
 如果项目依赖已经安装到当前环境，也可以直接运行已安装的命令：
 
 ```bash
-summer-gds-v2-gui
+summer-gds-gui
 ```
 
 或者：
@@ -48,15 +48,17 @@ python -m summer_gds.gui.launcher
 
 ### 1.1 macOS
 
-- 推荐使用项目内的 `uv run summer-gds-v2-gui`。
+- 推荐使用项目内的 `uv run summer-gds-gui`。
 - 如果你使用独立 Python 解释器，确保当前环境能加载 `pywebview` 的 macOS 后端。
 - 如果弹出窗口启动失败，先确认 Python 是 64 位，且图形会话正常。
 - 启动失败时，崩溃日志写入 `~/.summer-gds-crash.log`。
 
 ### 1.2 Windows
 
-- 推荐使用 `uv run summer-gds-v2-gui`。
+- 推荐使用 `uv run summer-gds-gui`。
 - 需要 WebView2 Runtime。Win10 21H2+ 和 Win11 已内置，无需额外操作。
+- pywebview 的 Windows 桌面壳仍依赖 WinForms/pythonnet，因此目标机还需要安装匹配架构的 Microsoft .NET Desktop Runtime。
+- Summer GDS 在 Windows 上调用 `webview.start(gui="edgechromium")`，强制使用 WebView2 renderer，避免回退到旧 MSHTML renderer。
 - 较老版本的 Win10（21H1 及更早）需要手动安装 WebView2 Runtime：
   1. 下载 Evergreen Standalone Installer：<https://developer.microsoft.com/en-us/microsoft-edge/webview2/#download-section>
   2. 选择 "x86" 或 "x64" 对应目标系统的体系结构，下载并运行 `MicrosoftEdgeWebview2Setup.exe`。
@@ -64,10 +66,11 @@ python -m summer_gds.gui.launcher
   4. 如果目标机器完全离线，下载 "Fixed Version" 离线包，解压后将路径设为环境变量 `WEBVIEW2_BROWSER_EXECUTABLE_FOLDER` 指向解压目录。
 - 如果双击启动失败，优先从命令行运行，先看异常而不是直接打包。
 - 启动失败时，崩溃日志写入 `%USERPROFILE%\.summer-gds-crash.log`。
+- 运行后可打开 `%USERPROFILE%\.summer-gds-debug.log`，确认存在类似 `webview runtime: ..., renderer=edgechromium` 的日志。
 
 ### 1.3 Linux
 
-- 推荐使用 `uv run summer-gds-v2-gui`。
+- 推荐使用 `uv run summer-gds-gui`。
 - 如果默认后端不可用，优先安装 `pywebview[qt]`。
 - 如果你想走 GTK 路线，按 pywebview 的 GTK 依赖安装系统包。
 - 在 Ubuntu 上，常见依赖是 `python3-gi`、`python3-gi-cairo`、`gir1.2-gtk-3.0`、`gir1.2-webkit2-4.0`。
