@@ -1,0 +1,3990 @@
+{
+  "version": 1,
+  "generatedAt": "2026-08-11T18:18:18.300Z",
+  "graphPath": ".graphify/graph.json",
+  "maxDepth": 15,
+  "includeTests": false,
+  "warnings": [],
+  "flows": [
+    {
+      "id": "flow:scripts_verify_desktop_bundle_main",
+      "name": "main",
+      "entryPoint": "scripts_verify_desktop_bundle_main",
+      "entryPointId": "scripts_verify_desktop_bundle_main",
+      "path": [
+        "scripts_verify_desktop_bundle_main",
+        "scripts_verify_desktop_bundle_atomic_json",
+        "scripts_verify_desktop_bundle_atomic_text",
+        "scripts_verify_desktop_bundle_business_probe",
+        "scripts_verify_desktop_bundle_clean_environment",
+        "scripts_verify_desktop_bundle_executable",
+        "scripts_verify_desktop_bundle_remove_tree",
+        "scripts_verify_desktop_bundle_validate_ready",
+        "scripts_verify_desktop_bundle_verify_inventory",
+        "scripts_verify_desktop_bundle_wait_json",
+        "scripts_verify_desktop_bundle_json_request",
+        "scripts_verify_desktop_bundle_noredirect",
+        "scripts_verify_desktop_bundle_request",
+        "scripts_verify_desktop_bundle_sha256",
+        "scripts_verify_desktop_bundle_verify_dynamic_dependencies",
+        "scripts_verify_desktop_bundle_verify_klayout_plugin_locations",
+        "scripts_verify_desktop_bundle_verify_windows_dynamic_dependencies",
+        "scripts_verify_desktop_bundle_runtime_payload_root",
+        "scripts_verify_desktop_bundle_pe_import_names"
+      ],
+      "qualifiedPath": [
+        "scripts_verify_desktop_bundle_main",
+        "scripts_verify_desktop_bundle_atomic_json",
+        "scripts_verify_desktop_bundle_atomic_text",
+        "scripts_verify_desktop_bundle_business_probe",
+        "scripts_verify_desktop_bundle_clean_environment",
+        "scripts_verify_desktop_bundle_executable",
+        "scripts_verify_desktop_bundle_remove_tree",
+        "scripts_verify_desktop_bundle_validate_ready",
+        "scripts_verify_desktop_bundle_verify_inventory",
+        "scripts_verify_desktop_bundle_wait_json",
+        "scripts_verify_desktop_bundle_json_request",
+        "scripts_verify_desktop_bundle_noredirect",
+        "scripts_verify_desktop_bundle_request",
+        "scripts_verify_desktop_bundle_sha256",
+        "scripts_verify_desktop_bundle_verify_dynamic_dependencies",
+        "scripts_verify_desktop_bundle_verify_klayout_plugin_locations",
+        "scripts_verify_desktop_bundle_verify_windows_dynamic_dependencies",
+        "scripts_verify_desktop_bundle_runtime_payload_root",
+        "scripts_verify_desktop_bundle_pe_import_names"
+      ],
+      "depth": 4,
+      "nodeCount": 19,
+      "fileCount": 1,
+      "files": [
+        "scripts/verify_desktop_bundle.py"
+      ],
+      "criticality": 0.44,
+      "warnings": []
+    },
+    {
+      "id": "flow:linkage_validator_validateshapeconfig",
+      "name": "validateShapeConfig",
+      "entryPoint": "linkage_validator_validateshapeconfig",
+      "entryPointId": "linkage_validator_validateshapeconfig",
+      "path": [
+        "linkage_validator_validateshapeconfig",
+        "linkage_validator_validatederivationconfig",
+        "linkage_validator_validateoverrideconfig"
+      ],
+      "qualifiedPath": [
+        "linkage_validator_validateshapeconfig",
+        "linkage_validator_validatederivationconfig",
+        "linkage_validator_validateoverrideconfig"
+      ],
+      "depth": 2,
+      "nodeCount": 3,
+      "fileCount": 1,
+      "files": [
+        "summer_gds_v1/web_gui/static/linkage/validator.js"
+      ],
+      "criticality": 0.42,
+      "warnings": []
+    },
+    {
+      "id": "flow:linkage_validator_validatesystemcompatibility",
+      "name": "validateSystemCompatibility",
+      "entryPoint": "linkage_validator_validatesystemcompatibility",
+      "entryPointId": "linkage_validator_validatesystemcompatibility",
+      "path": [
+        "linkage_validator_validatesystemcompatibility",
+        "linkage_validator_validateshapesconfig",
+        "linkage_validator_validatereferenceintegrity"
+      ],
+      "qualifiedPath": [
+        "linkage_validator_validatesystemcompatibility",
+        "linkage_validator_validateshapesconfig",
+        "linkage_validator_validatereferenceintegrity"
+      ],
+      "depth": 2,
+      "nodeCount": 3,
+      "fileCount": 1,
+      "files": [
+        "summer_gds_v1/web_gui/static/linkage/validator.js"
+      ],
+      "criticality": 0.42,
+      "warnings": []
+    },
+    {
+      "id": "flow:gui_service_guisession_post_init",
+      "name": ".__post_init",
+      "entryPoint": "gui_service_guisession_post_init",
+      "entryPointId": "gui_service_guisession_post_init",
+      "path": [
+        "gui_service_guisession_post_init",
+        "gui_service_guisession_cleanup_stale_sessions"
+      ],
+      "qualifiedPath": [
+        "gui_service_guisession_post_init",
+        "gui_service_guisession_cleanup_stale_sessions"
+      ],
+      "depth": 1,
+      "nodeCount": 2,
+      "fileCount": 1,
+      "files": [
+        "src/summer_gds/gui/service.py"
+      ],
+      "criticality": 0.41,
+      "warnings": []
+    },
+    {
+      "id": "flow:gui_service_guisession_purge_expired_tokens",
+      "name": "._purge_expired_tokens",
+      "entryPoint": "gui_service_guisession_purge_expired_tokens",
+      "entryPointId": "gui_service_guisession_purge_expired_tokens",
+      "path": [
+        "gui_service_guisession_purge_expired_tokens",
+        "gui_service_guisession_purge_expired_tokens_locked"
+      ],
+      "qualifiedPath": [
+        "gui_service_guisession_purge_expired_tokens",
+        "gui_service_guisession_purge_expired_tokens_locked"
+      ],
+      "depth": 1,
+      "nodeCount": 2,
+      "fileCount": 1,
+      "files": [
+        "src/summer_gds/gui/service.py"
+      ],
+      "criticality": 0.41,
+      "warnings": []
+    },
+    {
+      "id": "flow:gui_service_guisession_validate",
+      "name": ".validate",
+      "entryPoint": "gui_service_guisession_validate",
+      "entryPointId": "gui_service_guisession_validate",
+      "path": [
+        "gui_service_guisession_validate",
+        "gui_service_guisession_virtual_yaml_path"
+      ],
+      "qualifiedPath": [
+        "gui_service_guisession_validate",
+        "gui_service_guisession_virtual_yaml_path"
+      ],
+      "depth": 1,
+      "nodeCount": 2,
+      "fileCount": 1,
+      "files": [
+        "src/summer_gds/gui/service.py"
+      ],
+      "criticality": 0.41,
+      "warnings": []
+    },
+    {
+      "id": "flow:gui_service_guisession_preview_svg",
+      "name": ".preview_svg",
+      "entryPoint": "gui_service_guisession_preview_svg",
+      "entryPointId": "gui_service_guisession_preview_svg",
+      "path": [
+        "gui_service_guisession_preview_svg",
+        "gui_service_guisession_virtual_yaml_path",
+        "gui_service_preview_error_response",
+        "gui_service_stable_request_id"
+      ],
+      "qualifiedPath": [
+        "gui_service_guisession_preview_svg",
+        "gui_service_guisession_virtual_yaml_path",
+        "gui_service_preview_error_response",
+        "gui_service_stable_request_id"
+      ],
+      "depth": 1,
+      "nodeCount": 4,
+      "fileCount": 1,
+      "files": [
+        "src/summer_gds/gui/service.py"
+      ],
+      "criticality": 0.3475,
+      "warnings": []
+    },
+    {
+      "id": "flow:gui_service_guisession_parse",
+      "name": ".parse",
+      "entryPoint": "gui_service_guisession_parse",
+      "entryPointId": "gui_service_guisession_parse",
+      "path": [
+        "gui_service_guisession_parse",
+        "gui_service_guisession_virtual_yaml_path",
+        "gui_service_parse_error_response"
+      ],
+      "qualifiedPath": [
+        "gui_service_guisession_parse",
+        "gui_service_guisession_virtual_yaml_path",
+        "gui_service_parse_error_response"
+      ],
+      "depth": 1,
+      "nodeCount": 3,
+      "fileCount": 1,
+      "files": [
+        "src/summer_gds/gui/service.py"
+      ],
+      "criticality": 0.3267,
+      "warnings": []
+    },
+    {
+      "id": "flow:app_pipeline_execute_config",
+      "name": "execute_config",
+      "entryPoint": "app_pipeline_execute_config",
+      "entryPointId": "app_pipeline_execute_config",
+      "path": [
+        "app_pipeline_execute_config",
+        "app_pipeline_execute_base_shape",
+        "app_pipeline_execute_rings",
+        "app_pipeline_execute_via",
+        "app_pipeline_resolve_source_boundary",
+        "app_pipeline_offset_boundary",
+        "app_pipeline_resolve_shape_source_boundary",
+        "app_pipeline_resolve_ref_boundary",
+        "app_pipeline_validate_boundary"
+      ],
+      "qualifiedPath": [
+        "app_pipeline_execute_config",
+        "app_pipeline_execute_base_shape",
+        "app_pipeline_execute_rings",
+        "app_pipeline_execute_via",
+        "app_pipeline_resolve_source_boundary",
+        "app_pipeline_offset_boundary",
+        "app_pipeline_resolve_shape_source_boundary",
+        "app_pipeline_resolve_ref_boundary",
+        "app_pipeline_validate_boundary"
+      ],
+      "depth": 3,
+      "nodeCount": 9,
+      "fileCount": 1,
+      "files": [
+        "src/summer_gds/app/pipeline.py"
+      ],
+      "criticality": 0.3189,
+      "warnings": []
+    },
+    {
+      "id": "flow:gui_service_guisession_choose_save_path",
+      "name": ".choose_save_path",
+      "entryPoint": "gui_service_guisession_choose_save_path",
+      "entryPointId": "gui_service_guisession_choose_save_path",
+      "path": [
+        "gui_service_guisession_choose_save_path",
+        "gui_service_dialog_error_response",
+        "gui_service_guisession_purge_expired_tokens_locked",
+        "gui_service_pathtoken",
+        "gui_service_secretsafe_token",
+        "gui_service_simple_error_response",
+        "gui_service_simple_issues_response"
+      ],
+      "qualifiedPath": [
+        "gui_service_guisession_choose_save_path",
+        "gui_service_dialog_error_response",
+        "gui_service_guisession_purge_expired_tokens_locked",
+        "gui_service_pathtoken",
+        "gui_service_secretsafe_token",
+        "gui_service_simple_error_response",
+        "gui_service_simple_issues_response"
+      ],
+      "depth": 2,
+      "nodeCount": 7,
+      "fileCount": 1,
+      "files": [
+        "src/summer_gds/gui/service.py"
+      ],
+      "criticality": 0.3129,
+      "warnings": []
+    },
+    {
+      "id": "flow:gui_service_guisession_export_gds",
+      "name": ".export_gds",
+      "entryPoint": "gui_service_guisession_export_gds",
+      "entryPointId": "gui_service_guisession_export_gds",
+      "path": [
+        "gui_service_guisession_export_gds",
+        "gui_service_guisession_resolve_path_token",
+        "gui_service_guisession_virtual_yaml_path",
+        "gui_service_simple_issues_response",
+        "gui_service_temp_output_path",
+        "gui_service_validate_write_path",
+        "gui_service_simple_error_response"
+      ],
+      "qualifiedPath": [
+        "gui_service_guisession_export_gds",
+        "gui_service_guisession_resolve_path_token",
+        "gui_service_guisession_virtual_yaml_path",
+        "gui_service_simple_issues_response",
+        "gui_service_temp_output_path",
+        "gui_service_validate_write_path",
+        "gui_service_simple_error_response"
+      ],
+      "depth": 2,
+      "nodeCount": 7,
+      "fileCount": 1,
+      "files": [
+        "src/summer_gds/gui/service.py"
+      ],
+      "criticality": 0.3129,
+      "warnings": []
+    },
+    {
+      "id": "flow:gui_qt_dialog_qtsavefiledialog_choose_open_path",
+      "name": ".choose_open_path",
+      "entryPoint": "gui_qt_dialog_qtsavefiledialog_choose_open_path",
+      "entryPointId": "gui_qt_dialog_qtsavefiledialog_choose_open_path",
+      "path": [
+        "gui_qt_dialog_qtsavefiledialog_choose_open_path",
+        "gui_qt_dialog_qtsavefiledialog_choose",
+        "gui_qt_dialog_dialogrequest",
+        "gui_qt_dialog_dialogrequest_complete"
+      ],
+      "qualifiedPath": [
+        "gui_qt_dialog_qtsavefiledialog_choose_open_path",
+        "gui_qt_dialog_qtsavefiledialog_choose",
+        "gui_qt_dialog_dialogrequest",
+        "gui_qt_dialog_dialogrequest_complete"
+      ],
+      "depth": 2,
+      "nodeCount": 4,
+      "fileCount": 1,
+      "files": [
+        "src/summer_gds/gui/qt_dialog.py"
+      ],
+      "criticality": 0.295,
+      "warnings": []
+    },
+    {
+      "id": "flow:gui_qt_dialog_qtsavefiledialog_choose_save_path",
+      "name": ".choose_save_path",
+      "entryPoint": "gui_qt_dialog_qtsavefiledialog_choose_save_path",
+      "entryPointId": "gui_qt_dialog_qtsavefiledialog_choose_save_path",
+      "path": [
+        "gui_qt_dialog_qtsavefiledialog_choose_save_path",
+        "gui_qt_dialog_qtsavefiledialog_choose",
+        "gui_qt_dialog_dialogrequest",
+        "gui_qt_dialog_dialogrequest_complete"
+      ],
+      "qualifiedPath": [
+        "gui_qt_dialog_qtsavefiledialog_choose_save_path",
+        "gui_qt_dialog_qtsavefiledialog_choose",
+        "gui_qt_dialog_dialogrequest",
+        "gui_qt_dialog_dialogrequest_complete"
+      ],
+      "depth": 2,
+      "nodeCount": 4,
+      "fileCount": 1,
+      "files": [
+        "src/summer_gds/gui/qt_dialog.py"
+      ],
+      "criticality": 0.295,
+      "warnings": []
+    },
+    {
+      "id": "flow:gui_service_guisession_save_yaml",
+      "name": ".save_yaml",
+      "entryPoint": "gui_service_guisession_save_yaml",
+      "entryPointId": "gui_service_guisession_save_yaml",
+      "path": [
+        "gui_service_guisession_save_yaml",
+        "gui_service_atomic_write_text",
+        "gui_service_guisession_resolve_path_token",
+        "gui_service_guisession_virtual_yaml_path",
+        "gui_service_simple_issues_response",
+        "gui_service_validate_write_path",
+        "gui_service_temp_output_path",
+        "gui_service_simple_error_response"
+      ],
+      "qualifiedPath": [
+        "gui_service_guisession_save_yaml",
+        "gui_service_atomic_write_text",
+        "gui_service_guisession_resolve_path_token",
+        "gui_service_guisession_virtual_yaml_path",
+        "gui_service_simple_issues_response",
+        "gui_service_validate_write_path",
+        "gui_service_temp_output_path",
+        "gui_service_simple_error_response"
+      ],
+      "depth": 2,
+      "nodeCount": 8,
+      "fileCount": 1,
+      "files": [
+        "src/summer_gds/gui/service.py"
+      ],
+      "criticality": 0.295,
+      "warnings": []
+    },
+    {
+      "id": "flow:gui_qt_shell_restrictedpage_acceptnavigationrequest",
+      "name": ".acceptNavigationRequest",
+      "entryPoint": "gui_qt_shell_restrictedpage_acceptnavigationrequest",
+      "entryPointId": "gui_qt_shell_restrictedpage_acceptnavigationrequest",
+      "path": [
+        "gui_qt_shell_restrictedpage_acceptnavigationrequest",
+        "gui_qt_shell_origin"
+      ],
+      "qualifiedPath": [
+        "gui_qt_shell_restrictedpage_acceptnavigationrequest",
+        "gui_qt_shell_origin"
+      ],
+      "depth": 1,
+      "nodeCount": 2,
+      "fileCount": 1,
+      "files": [
+        "src/summer_gds/gui/qt_shell.py"
+      ],
+      "criticality": 0.285,
+      "warnings": []
+    },
+    {
+      "id": "flow:gui_qt_dialog_qtsavefiledialog_begin_shutdown",
+      "name": ".begin_shutdown",
+      "entryPoint": "gui_qt_dialog_qtsavefiledialog_begin_shutdown",
+      "entryPointId": "gui_qt_dialog_qtsavefiledialog_begin_shutdown",
+      "path": [
+        "gui_qt_dialog_qtsavefiledialog_begin_shutdown",
+        "gui_qt_dialog_dialogrequest_complete"
+      ],
+      "qualifiedPath": [
+        "gui_qt_dialog_qtsavefiledialog_begin_shutdown",
+        "gui_qt_dialog_dialogrequest_complete"
+      ],
+      "depth": 1,
+      "nodeCount": 2,
+      "fileCount": 1,
+      "files": [
+        "src/summer_gds/gui/qt_dialog.py"
+      ],
+      "criticality": 0.285,
+      "warnings": []
+    },
+    {
+      "id": "flow:gui_qt_shell_origininterceptor_interceptrequest",
+      "name": ".interceptRequest",
+      "entryPoint": "gui_qt_shell_origininterceptor_interceptrequest",
+      "entryPointId": "gui_qt_shell_origininterceptor_interceptrequest",
+      "path": [
+        "gui_qt_shell_origininterceptor_interceptrequest",
+        "gui_qt_shell_origin"
+      ],
+      "qualifiedPath": [
+        "gui_qt_shell_origininterceptor_interceptrequest",
+        "gui_qt_shell_origin"
+      ],
+      "depth": 1,
+      "nodeCount": 2,
+      "fileCount": 1,
+      "files": [
+        "src/summer_gds/gui/qt_shell.py"
+      ],
+      "criticality": 0.285,
+      "warnings": []
+    },
+    {
+      "id": "flow:geometry_primitives_normalize_counterclockwise",
+      "name": "normalize_counterclockwise",
+      "entryPoint": "geometry_primitives_normalize_counterclockwise",
+      "entryPointId": "geometry_primitives_normalize_counterclockwise",
+      "path": [
+        "geometry_primitives_normalize_counterclockwise",
+        "geometry_primitives_signed_area"
+      ],
+      "qualifiedPath": [
+        "geometry_primitives_normalize_counterclockwise",
+        "geometry_primitives_signed_area"
+      ],
+      "depth": 1,
+      "nodeCount": 2,
+      "fileCount": 1,
+      "files": [
+        "src/summer_gds/geometry/primitives.py"
+      ],
+      "criticality": 0.285,
+      "warnings": []
+    },
+    {
+      "id": "flow:static_main_validateconfig",
+      "name": "validateConfig",
+      "entryPoint": "static_main_validateconfig",
+      "entryPointId": "static_main_validateconfig",
+      "path": [
+        "static_main_validateconfig",
+        "static_main_showalert"
+      ],
+      "qualifiedPath": [
+        "static_main_validateconfig",
+        "static_main_showalert"
+      ],
+      "depth": 1,
+      "nodeCount": 2,
+      "fileCount": 1,
+      "files": [
+        "summer_gds_v1/web_gui/static/main.js"
+      ],
+      "criticality": 0.285,
+      "warnings": []
+    },
+    {
+      "id": "flow:gui_service_guisession_open_yaml",
+      "name": ".open_yaml",
+      "entryPoint": "gui_service_guisession_open_yaml",
+      "entryPointId": "gui_service_guisession_open_yaml",
+      "path": [
+        "gui_service_guisession_open_yaml",
+        "gui_service_dialog_error_response",
+        "gui_service_validate_read_path",
+        "gui_service_simple_error_response",
+        "gui_service_simple_issues_response"
+      ],
+      "qualifiedPath": [
+        "gui_service_guisession_open_yaml",
+        "gui_service_dialog_error_response",
+        "gui_service_validate_read_path",
+        "gui_service_simple_error_response",
+        "gui_service_simple_issues_response"
+      ],
+      "depth": 3,
+      "nodeCount": 5,
+      "fileCount": 1,
+      "files": [
+        "src/summer_gds/gui/service.py"
+      ],
+      "criticality": 0.28,
+      "warnings": []
+    },
+    {
+      "id": "flow:static_app_validateyaml",
+      "name": "validateYaml",
+      "entryPoint": "static_app_validateyaml",
+      "entryPointId": "static_app_validateyaml",
+      "path": [
+        "static_app_validateyaml",
+        "static_app_guardbusy",
+        "static_app_handlerequesterror",
+        "static_app_postjson",
+        "static_app_pushmessage",
+        "static_app_renderapierrors",
+        "static_app_setbusy",
+        "static_app_setstatus",
+        "static_app_render",
+        "static_app_mergeabortsignals",
+        "static_app_normalizerequestoptions",
+        "static_app_rendermessages",
+        "static_app_baseshapes",
+        "static_app_isdirty",
+        "static_app_previewstatetext",
+        "static_app_rendershapelist",
+        "static_app_shapecard",
+        "static_app_actionbutton",
+        "static_app_escapehtml",
+        "static_app_shapesummary",
+        "static_app_basefilletsummary"
+      ],
+      "qualifiedPath": [
+        "static_app_validateyaml",
+        "static_app_guardbusy",
+        "static_app_handlerequesterror",
+        "static_app_postjson",
+        "static_app_pushmessage",
+        "static_app_renderapierrors",
+        "static_app_setbusy",
+        "static_app_setstatus",
+        "static_app_render",
+        "static_app_mergeabortsignals",
+        "static_app_normalizerequestoptions",
+        "static_app_rendermessages",
+        "static_app_baseshapes",
+        "static_app_isdirty",
+        "static_app_previewstatetext",
+        "static_app_rendershapelist",
+        "static_app_shapecard",
+        "static_app_actionbutton",
+        "static_app_escapehtml",
+        "static_app_shapesummary",
+        "static_app_basefilletsummary"
+      ],
+      "depth": 6,
+      "nodeCount": 21,
+      "fileCount": 1,
+      "files": [
+        "src/summer_gds/gui/static/app.js"
+      ],
+      "criticality": 0.2576,
+      "warnings": []
+    },
+    {
+      "id": "flow:gui_bundle_probe_bundleprobe_session_root",
+      "name": ".session_root",
+      "entryPoint": "gui_bundle_probe_bundleprobe_session_root",
+      "entryPointId": "gui_bundle_probe_bundleprobe_session_root",
+      "path": [
+        "gui_bundle_probe_bundleprobe_session_root",
+        "gui_bundle_probe_bundleprobe_fixed",
+        "gui_bundle_probe_probeactivationerror"
+      ],
+      "qualifiedPath": [
+        "gui_bundle_probe_bundleprobe_session_root",
+        "gui_bundle_probe_bundleprobe_fixed",
+        "gui_bundle_probe_probeactivationerror"
+      ],
+      "depth": 2,
+      "nodeCount": 3,
+      "fileCount": 1,
+      "files": [
+        "src/summer_gds/gui/bundle_probe.py"
+      ],
+      "criticality": 0.2533,
+      "warnings": []
+    },
+    {
+      "id": "flow:app_service_export_artifact",
+      "name": "export_artifact",
+      "entryPoint": "app_service_export_artifact",
+      "entryPointId": "app_service_export_artifact",
+      "path": [
+        "app_service_export_artifact",
+        "app_service_exportresult",
+        "app_service_resolve_output_path",
+        "app_service_temp_output_path",
+        "app_service_validate_config_file",
+        "app_service_validate_output_path"
+      ],
+      "qualifiedPath": [
+        "app_service_export_artifact",
+        "app_service_exportresult",
+        "app_service_resolve_output_path",
+        "app_service_temp_output_path",
+        "app_service_validate_config_file",
+        "app_service_validate_output_path"
+      ],
+      "depth": 1,
+      "nodeCount": 6,
+      "fileCount": 1,
+      "files": [
+        "src/summer_gds/app/service.py"
+      ],
+      "criticality": 0.2433,
+      "warnings": []
+    },
+    {
+      "id": "flow:web_gui_app_validate_config",
+      "name": "validate_config",
+      "entryPoint": "web_gui_app_validate_config",
+      "entryPointId": "web_gui_app_validate_config",
+      "path": [
+        "web_gui_app_validate_config",
+        "web_gui_app_ensure_string_values",
+        "web_gui_app_process_metadata"
+      ],
+      "qualifiedPath": [
+        "web_gui_app_validate_config",
+        "web_gui_app_ensure_string_values",
+        "web_gui_app_process_metadata"
+      ],
+      "depth": 1,
+      "nodeCount": 3,
+      "fileCount": 1,
+      "files": [
+        "summer_gds_v1/web_gui/app.py"
+      ],
+      "criticality": 0.2433,
+      "warnings": []
+    },
+    {
+      "id": "flow:static_app_exportgds",
+      "name": "exportGds",
+      "entryPoint": "static_app_exportgds",
+      "entryPointId": "static_app_exportgds",
+      "path": [
+        "static_app_exportgds",
+        "static_app_guardbusy",
+        "static_app_writewithpathchoice",
+        "static_app_setstatus",
+        "static_app_handlerequesterror",
+        "static_app_haserrorcode",
+        "static_app_postjson",
+        "static_app_pushmessage",
+        "static_app_render",
+        "static_app_renderapierrors",
+        "static_app_setbusy",
+        "static_app_mergeabortsignals",
+        "static_app_normalizerequestoptions",
+        "static_app_baseshapes",
+        "static_app_isdirty",
+        "static_app_previewstatetext",
+        "static_app_rendermessages",
+        "static_app_rendershapelist",
+        "static_app_shapecard",
+        "static_app_actionbutton",
+        "static_app_escapehtml",
+        "static_app_shapesummary",
+        "static_app_basefilletsummary"
+      ],
+      "qualifiedPath": [
+        "static_app_exportgds",
+        "static_app_guardbusy",
+        "static_app_writewithpathchoice",
+        "static_app_setstatus",
+        "static_app_handlerequesterror",
+        "static_app_haserrorcode",
+        "static_app_postjson",
+        "static_app_pushmessage",
+        "static_app_render",
+        "static_app_renderapierrors",
+        "static_app_setbusy",
+        "static_app_mergeabortsignals",
+        "static_app_normalizerequestoptions",
+        "static_app_baseshapes",
+        "static_app_isdirty",
+        "static_app_previewstatetext",
+        "static_app_rendermessages",
+        "static_app_rendershapelist",
+        "static_app_shapecard",
+        "static_app_actionbutton",
+        "static_app_escapehtml",
+        "static_app_shapesummary",
+        "static_app_basefilletsummary"
+      ],
+      "depth": 6,
+      "nodeCount": 23,
+      "fileCount": 1,
+      "files": [
+        "src/summer_gds/gui/static/app.js"
+      ],
+      "criticality": 0.2426,
+      "warnings": []
+    },
+    {
+      "id": "flow:static_app_saveyaml",
+      "name": "saveYaml",
+      "entryPoint": "static_app_saveyaml",
+      "entryPointId": "static_app_saveyaml",
+      "path": [
+        "static_app_saveyaml",
+        "static_app_guardbusy",
+        "static_app_writewithpathchoice",
+        "static_app_setstatus",
+        "static_app_handlerequesterror",
+        "static_app_haserrorcode",
+        "static_app_postjson",
+        "static_app_pushmessage",
+        "static_app_render",
+        "static_app_renderapierrors",
+        "static_app_setbusy",
+        "static_app_mergeabortsignals",
+        "static_app_normalizerequestoptions",
+        "static_app_baseshapes",
+        "static_app_isdirty",
+        "static_app_previewstatetext",
+        "static_app_rendermessages",
+        "static_app_rendershapelist",
+        "static_app_shapecard",
+        "static_app_actionbutton",
+        "static_app_escapehtml",
+        "static_app_shapesummary",
+        "static_app_basefilletsummary"
+      ],
+      "qualifiedPath": [
+        "static_app_saveyaml",
+        "static_app_guardbusy",
+        "static_app_writewithpathchoice",
+        "static_app_setstatus",
+        "static_app_handlerequesterror",
+        "static_app_haserrorcode",
+        "static_app_postjson",
+        "static_app_pushmessage",
+        "static_app_render",
+        "static_app_renderapierrors",
+        "static_app_setbusy",
+        "static_app_mergeabortsignals",
+        "static_app_normalizerequestoptions",
+        "static_app_baseshapes",
+        "static_app_isdirty",
+        "static_app_previewstatetext",
+        "static_app_rendermessages",
+        "static_app_rendershapelist",
+        "static_app_shapecard",
+        "static_app_actionbutton",
+        "static_app_escapehtml",
+        "static_app_shapesummary",
+        "static_app_basefilletsummary"
+      ],
+      "depth": 6,
+      "nodeCount": 23,
+      "fileCount": 1,
+      "files": [
+        "src/summer_gds/gui/static/app.js"
+      ],
+      "criticality": 0.2426,
+      "warnings": []
+    },
+    {
+      "id": "flow:static_app_applyglobalsettings",
+      "name": "applyGlobalSettings",
+      "entryPoint": "static_app_applyglobalsettings",
+      "entryPointId": "static_app_applyglobalsettings",
+      "path": [
+        "static_app_applyglobalsettings",
+        "static_app_closeglobaldialog",
+        "static_app_syncyamlfromdraft",
+        "static_app_validateglobalfields",
+        "static_app_closedialog",
+        "static_app_handlerequesterror",
+        "static_app_postjson",
+        "static_app_render",
+        "static_app_renderapierrors",
+        "static_app_schedulepreview",
+        "static_app_serializedrafttoyaml",
+        "static_app_clearfielderrors",
+        "static_app_setfielderror",
+        "static_app_pushmessage",
+        "static_app_setstatus",
+        "static_app_mergeabortsignals",
+        "static_app_normalizerequestoptions",
+        "static_app_baseshapes",
+        "static_app_isdirty",
+        "static_app_previewstatetext",
+        "static_app_rendermessages",
+        "static_app_rendershapelist",
+        "static_app_appendfilletyaml",
+        "static_app_formatnumber",
+        "static_app_yamlscalar",
+        "static_app_shapecard",
+        "static_app_formatradiusspecinline",
+        "static_app_actionbutton",
+        "static_app_escapehtml",
+        "static_app_shapesummary",
+        "static_app_basefilletsummary"
+      ],
+      "qualifiedPath": [
+        "static_app_applyglobalsettings",
+        "static_app_closeglobaldialog",
+        "static_app_syncyamlfromdraft",
+        "static_app_validateglobalfields",
+        "static_app_closedialog",
+        "static_app_handlerequesterror",
+        "static_app_postjson",
+        "static_app_render",
+        "static_app_renderapierrors",
+        "static_app_schedulepreview",
+        "static_app_serializedrafttoyaml",
+        "static_app_clearfielderrors",
+        "static_app_setfielderror",
+        "static_app_pushmessage",
+        "static_app_setstatus",
+        "static_app_mergeabortsignals",
+        "static_app_normalizerequestoptions",
+        "static_app_baseshapes",
+        "static_app_isdirty",
+        "static_app_previewstatetext",
+        "static_app_rendermessages",
+        "static_app_rendershapelist",
+        "static_app_appendfilletyaml",
+        "static_app_formatnumber",
+        "static_app_yamlscalar",
+        "static_app_shapecard",
+        "static_app_formatradiusspecinline",
+        "static_app_actionbutton",
+        "static_app_escapehtml",
+        "static_app_shapesummary",
+        "static_app_basefilletsummary"
+      ],
+      "depth": 6,
+      "nodeCount": 31,
+      "fileCount": 1,
+      "files": [
+        "src/summer_gds/gui/static/app.js"
+      ],
+      "criticality": 0.2423,
+      "warnings": []
+    },
+    {
+      "id": "flow:static_app_applyshapedialog",
+      "name": "applyShapeDialog",
+      "entryPoint": "static_app_applyshapedialog",
+      "entryPointId": "static_app_applyshapedialog",
+      "path": [
+        "static_app_applyshapedialog",
+        "static_app_clearfielderrors",
+        "static_app_closeshapedialog",
+        "static_app_findshape",
+        "static_app_readbasefields",
+        "static_app_readcommonshapefields",
+        "static_app_readringsfields",
+        "static_app_readviafields",
+        "static_app_syncyamlfromdraft",
+        "static_app_closedialog",
+        "static_app_parsevertexlist",
+        "static_app_readbasefillet",
+        "static_app_readfinitenumber",
+        "static_app_readinteger",
+        "static_app_setfielderror",
+        "static_app_updatevertexliststate",
+        "static_app_markringfilletrowerror",
+        "static_app_normalizeringfilletrow",
+        "static_app_readringfilletside",
+        "static_app_readringsconcentricfillet",
+        "static_app_syncringsfilletrowsfrominputs",
+        "static_app_updateringsvertexliststate",
+        "static_app_readviafilletside",
+        "static_app_handlerequesterror",
+        "static_app_postjson",
+        "static_app_render",
+        "static_app_renderapierrors",
+        "static_app_schedulepreview",
+        "static_app_serializedrafttoyaml",
+        "static_app_parsedelimitedvertices",
+        "static_app_parseyamlstylevertices",
+        "static_app_validateparsedvertices",
+        "static_app_parseradiilist",
+        "static_app_updatebasefilletradiistate",
+        "static_app_pushmessage",
+        "static_app_formatnumber",
+        "static_app_polygonsignedarea",
+        "static_app_updatevertexlinenumbers",
+        "static_app_createemptyringfilletrow",
+        "static_app_updateringsconcentricradiistate",
+        "static_app_updateringsvertexlinenumbers",
+        "static_app_updateviafilletradiistate",
+        "static_app_viafilletcontrols",
+        "static_app_setstatus",
+        "static_app_mergeabortsignals",
+        "static_app_normalizerequestoptions",
+        "static_app_baseshapes",
+        "static_app_isdirty",
+        "static_app_previewstatetext",
+        "static_app_rendermessages",
+        "static_app_rendershapelist",
+        "static_app_appendfilletyaml",
+        "static_app_yamlscalar",
+        "static_app_coercevertexpairs",
+        "static_app_pointsequal",
+        "static_app_parsedelimitedradii",
+        "static_app_parseyamlstyleradii",
+        "static_app_shapecard",
+        "static_app_formatradiusspecinline",
+        "static_app_coerceradii",
+        "static_app_actionbutton",
+        "static_app_escapehtml",
+        "static_app_shapesummary",
+        "static_app_basefilletsummary"
+      ],
+      "qualifiedPath": [
+        "static_app_applyshapedialog",
+        "static_app_clearfielderrors",
+        "static_app_closeshapedialog",
+        "static_app_findshape",
+        "static_app_readbasefields",
+        "static_app_readcommonshapefields",
+        "static_app_readringsfields",
+        "static_app_readviafields",
+        "static_app_syncyamlfromdraft",
+        "static_app_closedialog",
+        "static_app_parsevertexlist",
+        "static_app_readbasefillet",
+        "static_app_readfinitenumber",
+        "static_app_readinteger",
+        "static_app_setfielderror",
+        "static_app_updatevertexliststate",
+        "static_app_markringfilletrowerror",
+        "static_app_normalizeringfilletrow",
+        "static_app_readringfilletside",
+        "static_app_readringsconcentricfillet",
+        "static_app_syncringsfilletrowsfrominputs",
+        "static_app_updateringsvertexliststate",
+        "static_app_readviafilletside",
+        "static_app_handlerequesterror",
+        "static_app_postjson",
+        "static_app_render",
+        "static_app_renderapierrors",
+        "static_app_schedulepreview",
+        "static_app_serializedrafttoyaml",
+        "static_app_parsedelimitedvertices",
+        "static_app_parseyamlstylevertices",
+        "static_app_validateparsedvertices",
+        "static_app_parseradiilist",
+        "static_app_updatebasefilletradiistate",
+        "static_app_pushmessage",
+        "static_app_formatnumber",
+        "static_app_polygonsignedarea",
+        "static_app_updatevertexlinenumbers",
+        "static_app_createemptyringfilletrow",
+        "static_app_updateringsconcentricradiistate",
+        "static_app_updateringsvertexlinenumbers",
+        "static_app_updateviafilletradiistate",
+        "static_app_viafilletcontrols",
+        "static_app_setstatus",
+        "static_app_mergeabortsignals",
+        "static_app_normalizerequestoptions",
+        "static_app_baseshapes",
+        "static_app_isdirty",
+        "static_app_previewstatetext",
+        "static_app_rendermessages",
+        "static_app_rendershapelist",
+        "static_app_appendfilletyaml",
+        "static_app_yamlscalar",
+        "static_app_coercevertexpairs",
+        "static_app_pointsequal",
+        "static_app_parsedelimitedradii",
+        "static_app_parseyamlstyleradii",
+        "static_app_shapecard",
+        "static_app_formatradiusspecinline",
+        "static_app_coerceradii",
+        "static_app_actionbutton",
+        "static_app_escapehtml",
+        "static_app_shapesummary",
+        "static_app_basefilletsummary"
+      ],
+      "depth": 6,
+      "nodeCount": 64,
+      "fileCount": 1,
+      "files": [
+        "src/summer_gds/gui/static/app.js"
+      ],
+      "criticality": 0.2295,
+      "warnings": []
+    },
+    {
+      "id": "flow:static_app_initialize",
+      "name": "initialize",
+      "entryPoint": "static_app_initialize",
+      "entryPointId": "static_app_initialize",
+      "path": [
+        "static_app_initialize",
+        "static_app_render",
+        "static_app_serializedrafttoyaml",
+        "static_app_syncyamlfromdraft",
+        "static_app_baseshapes",
+        "static_app_isdirty",
+        "static_app_previewstatetext",
+        "static_app_rendermessages",
+        "static_app_rendershapelist",
+        "static_app_appendfilletyaml",
+        "static_app_formatnumber",
+        "static_app_yamlscalar",
+        "static_app_handlerequesterror",
+        "static_app_postjson",
+        "static_app_renderapierrors",
+        "static_app_schedulepreview",
+        "static_app_shapecard",
+        "static_app_formatradiusspecinline",
+        "static_app_pushmessage",
+        "static_app_setstatus",
+        "static_app_mergeabortsignals",
+        "static_app_normalizerequestoptions",
+        "static_app_actionbutton",
+        "static_app_escapehtml",
+        "static_app_shapesummary",
+        "static_app_basefilletsummary"
+      ],
+      "qualifiedPath": [
+        "static_app_initialize",
+        "static_app_render",
+        "static_app_serializedrafttoyaml",
+        "static_app_syncyamlfromdraft",
+        "static_app_baseshapes",
+        "static_app_isdirty",
+        "static_app_previewstatetext",
+        "static_app_rendermessages",
+        "static_app_rendershapelist",
+        "static_app_appendfilletyaml",
+        "static_app_formatnumber",
+        "static_app_yamlscalar",
+        "static_app_handlerequesterror",
+        "static_app_postjson",
+        "static_app_renderapierrors",
+        "static_app_schedulepreview",
+        "static_app_shapecard",
+        "static_app_formatradiusspecinline",
+        "static_app_pushmessage",
+        "static_app_setstatus",
+        "static_app_mergeabortsignals",
+        "static_app_normalizerequestoptions",
+        "static_app_actionbutton",
+        "static_app_escapehtml",
+        "static_app_shapesummary",
+        "static_app_basefilletsummary"
+      ],
+      "depth": 5,
+      "nodeCount": 26,
+      "fileCount": 1,
+      "files": [
+        "src/summer_gds/gui/static/app.js"
+      ],
+      "criticality": 0.2288,
+      "warnings": []
+    },
+    {
+      "id": "flow:static_app_openyaml",
+      "name": "openYaml",
+      "entryPoint": "static_app_openyaml",
+      "entryPointId": "static_app_openyaml",
+      "path": [
+        "static_app_openyaml",
+        "static_app_guardbusy",
+        "static_app_handlerequesterror",
+        "static_app_isdirty",
+        "static_app_parsedconfigtodraft",
+        "static_app_postjson",
+        "static_app_previewsvg",
+        "static_app_pushmessage",
+        "static_app_render",
+        "static_app_renderapierrors",
+        "static_app_setbusy",
+        "static_app_setstatus",
+        "static_app_mergeabortsignals",
+        "static_app_normalizerequestoptions",
+        "static_app_mountsvg",
+        "static_app_renderemptypreview",
+        "static_app_baseshapes",
+        "static_app_previewstatetext",
+        "static_app_rendermessages",
+        "static_app_rendershapelist",
+        "static_app_stripxmldeclaration",
+        "static_app_escapehtml",
+        "static_app_shapecard",
+        "static_app_actionbutton",
+        "static_app_shapesummary",
+        "static_app_basefilletsummary"
+      ],
+      "qualifiedPath": [
+        "static_app_openyaml",
+        "static_app_guardbusy",
+        "static_app_handlerequesterror",
+        "static_app_isdirty",
+        "static_app_parsedconfigtodraft",
+        "static_app_postjson",
+        "static_app_previewsvg",
+        "static_app_pushmessage",
+        "static_app_render",
+        "static_app_renderapierrors",
+        "static_app_setbusy",
+        "static_app_setstatus",
+        "static_app_mergeabortsignals",
+        "static_app_normalizerequestoptions",
+        "static_app_mountsvg",
+        "static_app_renderemptypreview",
+        "static_app_baseshapes",
+        "static_app_previewstatetext",
+        "static_app_rendermessages",
+        "static_app_rendershapelist",
+        "static_app_stripxmldeclaration",
+        "static_app_escapehtml",
+        "static_app_shapecard",
+        "static_app_actionbutton",
+        "static_app_shapesummary",
+        "static_app_basefilletsummary"
+      ],
+      "depth": 5,
+      "nodeCount": 26,
+      "fileCount": 1,
+      "files": [
+        "src/summer_gds/gui/static/app.js"
+      ],
+      "criticality": 0.2288,
+      "warnings": []
+    },
+    {
+      "id": "flow:static_app_handleshapeaction",
+      "name": "handleShapeAction",
+      "entryPoint": "static_app_handleshapeaction",
+      "entryPointId": "static_app_handleshapeaction",
+      "path": [
+        "static_app_handleshapeaction",
+        "static_app_addoffsetcopy",
+        "static_app_addshape",
+        "static_app_deleteshape",
+        "static_app_findshape",
+        "static_app_openshapedialog",
+        "static_app_createbaseshape",
+        "static_app_nextsid",
+        "static_app_syncyamlfromdraft",
+        "static_app_baseshapes",
+        "static_app_createringsshape",
+        "static_app_createviashape",
+        "static_app_pushmessage",
+        "static_app_render",
+        "static_app_basefilletmode",
+        "static_app_clearfielderrors",
+        "static_app_formatradiiforlist",
+        "static_app_formatverticesforlist",
+        "static_app_handleringsvertexlistinput",
+        "static_app_handlevertexlistinput",
+        "static_app_renderbasefilletmode",
+        "static_app_renderbaseoptions",
+        "static_app_renderbasesourcemode",
+        "static_app_renderringsfilletmode",
+        "static_app_renderringsfilletrows",
+        "static_app_renderringssourcemode",
+        "static_app_setviafilletside",
+        "static_app_showdialog",
+        "static_app_updateviaouterconcentric",
+        "static_app_handlerequesterror",
+        "static_app_postjson",
+        "static_app_renderapierrors",
+        "static_app_schedulepreview",
+        "static_app_serializedrafttoyaml",
+        "static_app_isdirty",
+        "static_app_previewstatetext",
+        "static_app_rendermessages",
+        "static_app_rendershapelist",
+        "static_app_parsevertexlist",
+        "static_app_updateringsvertexliststate",
+        "static_app_handlebasefilletradiiinput",
+        "static_app_updatevertexliststate",
+        "static_app_readinteger",
+        "static_app_renderringsconcentricfilletmode",
+        "static_app_createemptyringfilletrow",
+        "static_app_normalizeringfilletrow",
+        "static_app_renderringfilletsidecontrols",
+        "static_app_renderviafilletside",
+        "static_app_viafilletcontrols",
+        "static_app_computeviaouterconcentricspec",
+        "static_app_setviafilletsidevalue",
+        "static_app_setstatus",
+        "static_app_mergeabortsignals",
+        "static_app_normalizerequestoptions",
+        "static_app_appendfilletyaml",
+        "static_app_formatnumber",
+        "static_app_yamlscalar",
+        "static_app_shapecard",
+        "static_app_parsedelimitedvertices",
+        "static_app_parseyamlstylevertices",
+        "static_app_validateparsedvertices",
+        "static_app_polygonsignedarea",
+        "static_app_updateringsvertexlinenumbers",
+        "static_app_basefilletradiiexpectedcount",
+        "static_app_parseradiilist",
+        "static_app_updatebasefilletradiistate",
+        "static_app_updatevertexlinenumbers",
+        "static_app_handleringsconcentricradiiinput",
+        "static_app_escapeattribute",
+        "static_app_handleviafilletradiiinput",
+        "static_app_readfinitenumber",
+        "static_app_formatradiusspecinline",
+        "static_app_actionbutton",
+        "static_app_escapehtml",
+        "static_app_shapesummary",
+        "static_app_coercevertexpairs",
+        "static_app_pointsequal",
+        "static_app_parsedelimitedradii",
+        "static_app_parseyamlstyleradii",
+        "static_app_updateringsconcentricradiistate",
+        "static_app_updateviafilletradiistate",
+        "static_app_basefilletsummary",
+        "static_app_coerceradii"
+      ],
+      "qualifiedPath": [
+        "static_app_handleshapeaction",
+        "static_app_addoffsetcopy",
+        "static_app_addshape",
+        "static_app_deleteshape",
+        "static_app_findshape",
+        "static_app_openshapedialog",
+        "static_app_createbaseshape",
+        "static_app_nextsid",
+        "static_app_syncyamlfromdraft",
+        "static_app_baseshapes",
+        "static_app_createringsshape",
+        "static_app_createviashape",
+        "static_app_pushmessage",
+        "static_app_render",
+        "static_app_basefilletmode",
+        "static_app_clearfielderrors",
+        "static_app_formatradiiforlist",
+        "static_app_formatverticesforlist",
+        "static_app_handleringsvertexlistinput",
+        "static_app_handlevertexlistinput",
+        "static_app_renderbasefilletmode",
+        "static_app_renderbaseoptions",
+        "static_app_renderbasesourcemode",
+        "static_app_renderringsfilletmode",
+        "static_app_renderringsfilletrows",
+        "static_app_renderringssourcemode",
+        "static_app_setviafilletside",
+        "static_app_showdialog",
+        "static_app_updateviaouterconcentric",
+        "static_app_handlerequesterror",
+        "static_app_postjson",
+        "static_app_renderapierrors",
+        "static_app_schedulepreview",
+        "static_app_serializedrafttoyaml",
+        "static_app_isdirty",
+        "static_app_previewstatetext",
+        "static_app_rendermessages",
+        "static_app_rendershapelist",
+        "static_app_parsevertexlist",
+        "static_app_updateringsvertexliststate",
+        "static_app_handlebasefilletradiiinput",
+        "static_app_updatevertexliststate",
+        "static_app_readinteger",
+        "static_app_renderringsconcentricfilletmode",
+        "static_app_createemptyringfilletrow",
+        "static_app_normalizeringfilletrow",
+        "static_app_renderringfilletsidecontrols",
+        "static_app_renderviafilletside",
+        "static_app_viafilletcontrols",
+        "static_app_computeviaouterconcentricspec",
+        "static_app_setviafilletsidevalue",
+        "static_app_setstatus",
+        "static_app_mergeabortsignals",
+        "static_app_normalizerequestoptions",
+        "static_app_appendfilletyaml",
+        "static_app_formatnumber",
+        "static_app_yamlscalar",
+        "static_app_shapecard",
+        "static_app_parsedelimitedvertices",
+        "static_app_parseyamlstylevertices",
+        "static_app_validateparsedvertices",
+        "static_app_polygonsignedarea",
+        "static_app_updateringsvertexlinenumbers",
+        "static_app_basefilletradiiexpectedcount",
+        "static_app_parseradiilist",
+        "static_app_updatebasefilletradiistate",
+        "static_app_updatevertexlinenumbers",
+        "static_app_handleringsconcentricradiiinput",
+        "static_app_escapeattribute",
+        "static_app_handleviafilletradiiinput",
+        "static_app_readfinitenumber",
+        "static_app_formatradiusspecinline",
+        "static_app_actionbutton",
+        "static_app_escapehtml",
+        "static_app_shapesummary",
+        "static_app_coercevertexpairs",
+        "static_app_pointsequal",
+        "static_app_parsedelimitedradii",
+        "static_app_parseyamlstyleradii",
+        "static_app_updateringsconcentricradiistate",
+        "static_app_updateviafilletradiistate",
+        "static_app_basefilletsummary",
+        "static_app_coerceradii"
+      ],
+      "depth": 6,
+      "nodeCount": 83,
+      "fileCount": 1,
+      "files": [
+        "src/summer_gds/gui/static/app.js"
+      ],
+      "criticality": 0.2251,
+      "warnings": []
+    },
+    {
+      "id": "flow:static_app_handlebasefilletmodechange",
+      "name": "handleBaseFilletModeChange",
+      "entryPoint": "static_app_handlebasefilletmodechange",
+      "entryPointId": "static_app_handlebasefilletmodechange",
+      "path": [
+        "static_app_handlebasefilletmodechange",
+        "static_app_formatradiiforlist",
+        "static_app_readfinitenumber",
+        "static_app_renderbasefilletmode",
+        "static_app_seedbasefilletradiicount",
+        "static_app_handlebasefilletradiiinput",
+        "static_app_basefilletradiiexpectedcount",
+        "static_app_findshape",
+        "static_app_readinteger",
+        "static_app_parseradiilist",
+        "static_app_updatebasefilletradiistate",
+        "static_app_parsevertexlist",
+        "static_app_parsedelimitedradii",
+        "static_app_parseyamlstyleradii",
+        "static_app_parsedelimitedvertices",
+        "static_app_parseyamlstylevertices",
+        "static_app_validateparsedvertices",
+        "static_app_coerceradii",
+        "static_app_coercevertexpairs",
+        "static_app_pointsequal",
+        "static_app_polygonsignedarea"
+      ],
+      "qualifiedPath": [
+        "static_app_handlebasefilletmodechange",
+        "static_app_formatradiiforlist",
+        "static_app_readfinitenumber",
+        "static_app_renderbasefilletmode",
+        "static_app_seedbasefilletradiicount",
+        "static_app_handlebasefilletradiiinput",
+        "static_app_basefilletradiiexpectedcount",
+        "static_app_findshape",
+        "static_app_readinteger",
+        "static_app_parseradiilist",
+        "static_app_updatebasefilletradiistate",
+        "static_app_parsevertexlist",
+        "static_app_parsedelimitedradii",
+        "static_app_parseyamlstyleradii",
+        "static_app_parsedelimitedvertices",
+        "static_app_parseyamlstylevertices",
+        "static_app_validateparsedvertices",
+        "static_app_coerceradii",
+        "static_app_coercevertexpairs",
+        "static_app_pointsequal",
+        "static_app_polygonsignedarea"
+      ],
+      "depth": 5,
+      "nodeCount": 21,
+      "fileCount": 1,
+      "files": [
+        "src/summer_gds/gui/static/app.js"
+      ],
+      "criticality": 0.2238,
+      "warnings": []
+    },
+    {
+      "id": "flow:static_app_formatbasefilletradiilist",
+      "name": "formatBaseFilletRadiiList",
+      "entryPoint": "static_app_formatbasefilletradiilist",
+      "entryPointId": "static_app_formatbasefilletradiilist",
+      "path": [
+        "static_app_formatbasefilletradiilist",
+        "static_app_basefilletradiiexpectedcount",
+        "static_app_formatradiiforlist",
+        "static_app_parseradiilist",
+        "static_app_updatebasefilletradiistate",
+        "static_app_parsevertexlist",
+        "static_app_parsedelimitedradii",
+        "static_app_parseyamlstyleradii",
+        "static_app_parsedelimitedvertices",
+        "static_app_parseyamlstylevertices",
+        "static_app_validateparsedvertices",
+        "static_app_coerceradii",
+        "static_app_readfinitenumber",
+        "static_app_coercevertexpairs",
+        "static_app_pointsequal",
+        "static_app_polygonsignedarea"
+      ],
+      "qualifiedPath": [
+        "static_app_formatbasefilletradiilist",
+        "static_app_basefilletradiiexpectedcount",
+        "static_app_formatradiiforlist",
+        "static_app_parseradiilist",
+        "static_app_updatebasefilletradiistate",
+        "static_app_parsevertexlist",
+        "static_app_parsedelimitedradii",
+        "static_app_parseyamlstyleradii",
+        "static_app_parsedelimitedvertices",
+        "static_app_parseyamlstylevertices",
+        "static_app_validateparsedvertices",
+        "static_app_coerceradii",
+        "static_app_readfinitenumber",
+        "static_app_coercevertexpairs",
+        "static_app_pointsequal",
+        "static_app_polygonsignedarea"
+      ],
+      "depth": 4,
+      "nodeCount": 16,
+      "fileCount": 1,
+      "files": [
+        "src/summer_gds/gui/static/app.js"
+      ],
+      "criticality": 0.2213,
+      "warnings": []
+    },
+    {
+      "id": "flow:static_app_formatringsvertexlist",
+      "name": "formatRingsVertexList",
+      "entryPoint": "static_app_formatringsvertexlist",
+      "entryPointId": "static_app_formatringsvertexlist",
+      "path": [
+        "static_app_formatringsvertexlist",
+        "static_app_formatverticesforlist",
+        "static_app_parsevertexlist",
+        "static_app_updateringsvertexliststate",
+        "static_app_parsedelimitedvertices",
+        "static_app_parseyamlstylevertices",
+        "static_app_validateparsedvertices",
+        "static_app_formatnumber",
+        "static_app_polygonsignedarea",
+        "static_app_updateringsvertexlinenumbers",
+        "static_app_readfinitenumber",
+        "static_app_coercevertexpairs",
+        "static_app_pointsequal"
+      ],
+      "qualifiedPath": [
+        "static_app_formatringsvertexlist",
+        "static_app_formatverticesforlist",
+        "static_app_parsevertexlist",
+        "static_app_updateringsvertexliststate",
+        "static_app_parsedelimitedvertices",
+        "static_app_parseyamlstylevertices",
+        "static_app_validateparsedvertices",
+        "static_app_formatnumber",
+        "static_app_polygonsignedarea",
+        "static_app_updateringsvertexlinenumbers",
+        "static_app_readfinitenumber",
+        "static_app_coercevertexpairs",
+        "static_app_pointsequal"
+      ],
+      "depth": 3,
+      "nodeCount": 13,
+      "fileCount": 1,
+      "files": [
+        "src/summer_gds/gui/static/app.js"
+      ],
+      "criticality": 0.2185,
+      "warnings": []
+    },
+    {
+      "id": "flow:static_app_formatvertexlist",
+      "name": "formatVertexList",
+      "entryPoint": "static_app_formatvertexlist",
+      "entryPointId": "static_app_formatvertexlist",
+      "path": [
+        "static_app_formatvertexlist",
+        "static_app_formatverticesforlist",
+        "static_app_parsevertexlist",
+        "static_app_updatevertexliststate",
+        "static_app_parsedelimitedvertices",
+        "static_app_parseyamlstylevertices",
+        "static_app_validateparsedvertices",
+        "static_app_formatnumber",
+        "static_app_polygonsignedarea",
+        "static_app_updatevertexlinenumbers",
+        "static_app_readfinitenumber",
+        "static_app_coercevertexpairs",
+        "static_app_pointsequal"
+      ],
+      "qualifiedPath": [
+        "static_app_formatvertexlist",
+        "static_app_formatverticesforlist",
+        "static_app_parsevertexlist",
+        "static_app_updatevertexliststate",
+        "static_app_parsedelimitedvertices",
+        "static_app_parseyamlstylevertices",
+        "static_app_validateparsedvertices",
+        "static_app_formatnumber",
+        "static_app_polygonsignedarea",
+        "static_app_updatevertexlinenumbers",
+        "static_app_readfinitenumber",
+        "static_app_coercevertexpairs",
+        "static_app_pointsequal"
+      ],
+      "depth": 3,
+      "nodeCount": 13,
+      "fileCount": 1,
+      "files": [
+        "src/summer_gds/gui/static/app.js"
+      ],
+      "criticality": 0.2185,
+      "warnings": []
+    },
+    {
+      "id": "flow:gui_qt_dialog_qtsavefiledialog_show_dialog",
+      "name": "._show_dialog",
+      "entryPoint": "gui_qt_dialog_qtsavefiledialog_show_dialog",
+      "entryPointId": "gui_qt_dialog_qtsavefiledialog_show_dialog",
+      "path": [
+        "gui_qt_dialog_qtsavefiledialog_show_dialog",
+        "gui_qt_dialog_dialogrequest_complete",
+        "gui_qt_dialog_name_filter",
+        "gui_qt_dialog_qtsavefiledialog_dialog_finished",
+        "gui_qt_dialog_qtsavefiledialog_release",
+        "gui_qt_dialog_qtsavefiledialog_release_if_closed"
+      ],
+      "qualifiedPath": [
+        "gui_qt_dialog_qtsavefiledialog_show_dialog",
+        "gui_qt_dialog_dialogrequest_complete",
+        "gui_qt_dialog_name_filter",
+        "gui_qt_dialog_qtsavefiledialog_dialog_finished",
+        "gui_qt_dialog_qtsavefiledialog_release",
+        "gui_qt_dialog_qtsavefiledialog_release_if_closed"
+      ],
+      "depth": 1,
+      "nodeCount": 6,
+      "fileCount": 1,
+      "files": [
+        "src/summer_gds/gui/qt_dialog.py"
+      ],
+      "criticality": 0.2017,
+      "warnings": []
+    },
+    {
+      "id": "flow:static_app_setmode",
+      "name": "setMode",
+      "entryPoint": "static_app_setmode",
+      "entryPointId": "static_app_setmode",
+      "path": [
+        "static_app_setmode",
+        "static_app_render",
+        "static_app_baseshapes",
+        "static_app_isdirty",
+        "static_app_previewstatetext",
+        "static_app_rendermessages",
+        "static_app_rendershapelist",
+        "static_app_shapecard",
+        "static_app_actionbutton",
+        "static_app_escapehtml",
+        "static_app_shapesummary",
+        "static_app_basefilletsummary"
+      ],
+      "qualifiedPath": [
+        "static_app_setmode",
+        "static_app_render",
+        "static_app_baseshapes",
+        "static_app_isdirty",
+        "static_app_previewstatetext",
+        "static_app_rendermessages",
+        "static_app_rendershapelist",
+        "static_app_shapecard",
+        "static_app_actionbutton",
+        "static_app_escapehtml",
+        "static_app_shapesummary",
+        "static_app_basefilletsummary"
+      ],
+      "depth": 5,
+      "nodeCount": 12,
+      "fileCount": 1,
+      "files": [
+        "src/summer_gds/gui/static/app.js"
+      ],
+      "criticality": 0.2,
+      "warnings": []
+    },
+    {
+      "id": "flow:summer_gds_cli_main",
+      "name": "main",
+      "entryPoint": "summer_gds_cli_main",
+      "entryPointId": "summer_gds_cli_main",
+      "path": [
+        "summer_gds_cli_main",
+        "summer_gds_cli_build_parser",
+        "summer_gds_cli_exit_code_for_config_error",
+        "summer_gds_cli_print_config_error",
+        "summer_gds_cli_print_export_success",
+        "summer_gds_cli_print_plain_error",
+        "summer_gds_cli_print_validate_success"
+      ],
+      "qualifiedPath": [
+        "summer_gds_cli_main",
+        "summer_gds_cli_build_parser",
+        "summer_gds_cli_exit_code_for_config_error",
+        "summer_gds_cli_print_config_error",
+        "summer_gds_cli_print_export_success",
+        "summer_gds_cli_print_plain_error",
+        "summer_gds_cli_print_validate_success"
+      ],
+      "depth": 1,
+      "nodeCount": 7,
+      "fileCount": 1,
+      "files": [
+        "src/summer_gds/cli.py"
+      ],
+      "criticality": 0.1957,
+      "warnings": []
+    },
+    {
+      "id": "flow:static_main_addshape",
+      "name": "addShape",
+      "entryPoint": "static_main_addshape",
+      "entryPointId": "static_main_addshape",
+      "path": [
+        "static_main_addshape",
+        "static_main_bindprecisionlisttoggleevents",
+        "static_main_bindradiuslisttoggleevents",
+        "static_main_rendershapecard",
+        "static_main_updateyamlpreview",
+        "static_main_bindshapecardevents",
+        "static_main_fillshapeformvalues",
+        "static_main_handleviabuttonclick",
+        "static_main_offsetshape",
+        "static_main_removeshape",
+        "static_main_togglegeometryinputs",
+        "static_main_toggletoradiuslist",
+        "static_main_toggletosingleradius",
+        "static_main_showalert",
+        "static_main_refreshshapescontainer",
+        "static_main_updatejsonfromform"
+      ],
+      "qualifiedPath": [
+        "static_main_addshape",
+        "static_main_bindprecisionlisttoggleevents",
+        "static_main_bindradiuslisttoggleevents",
+        "static_main_rendershapecard",
+        "static_main_updateyamlpreview",
+        "static_main_bindshapecardevents",
+        "static_main_fillshapeformvalues",
+        "static_main_handleviabuttonclick",
+        "static_main_offsetshape",
+        "static_main_removeshape",
+        "static_main_togglegeometryinputs",
+        "static_main_toggletoradiuslist",
+        "static_main_toggletosingleradius",
+        "static_main_showalert",
+        "static_main_refreshshapescontainer",
+        "static_main_updatejsonfromform"
+      ],
+      "depth": 4,
+      "nodeCount": 16,
+      "fileCount": 1,
+      "files": [
+        "summer_gds_v1/web_gui/static/main.js"
+      ],
+      "criticality": 0.19,
+      "warnings": []
+    },
+    {
+      "id": "flow:static_app_applysameringsfillet",
+      "name": "applySameRingsFillet",
+      "entryPoint": "static_app_applysameringsfillet",
+      "entryPointId": "static_app_applysameringsfillet",
+      "path": [
+        "static_app_applysameringsfillet",
+        "static_app_normalizeringfilletrow",
+        "static_app_readinteger",
+        "static_app_renderringsfilletrows",
+        "static_app_syncringsfilletrowsfrominputs",
+        "static_app_createemptyringfilletrow",
+        "static_app_renderringfilletsidecontrols",
+        "static_app_escapeattribute",
+        "static_app_escapehtml"
+      ],
+      "qualifiedPath": [
+        "static_app_applysameringsfillet",
+        "static_app_normalizeringfilletrow",
+        "static_app_readinteger",
+        "static_app_renderringsfilletrows",
+        "static_app_syncringsfilletrowsfrominputs",
+        "static_app_createemptyringfilletrow",
+        "static_app_renderringfilletsidecontrols",
+        "static_app_escapeattribute",
+        "static_app_escapehtml"
+      ],
+      "depth": 4,
+      "nodeCount": 9,
+      "fileCount": 1,
+      "files": [
+        "src/summer_gds/gui/static/app.js"
+      ],
+      "criticality": 0.19,
+      "warnings": []
+    },
+    {
+      "id": "flow:gui_presenter_canonical_yaml",
+      "name": "canonical_yaml",
+      "entryPoint": "gui_presenter_canonical_yaml",
+      "entryPointId": "gui_presenter_canonical_yaml",
+      "path": [
+        "gui_presenter_canonical_yaml",
+        "gui_presenter_config_to_dict",
+        "gui_presenter_path_to_string",
+        "gui_presenter_shape_to_dict",
+        "gui_presenter_fillet_to_dict",
+        "gui_presenter_source_to_dict",
+        "gui_presenter_radius_to_dict",
+        "gui_presenter_ring_fillet_to_dict"
+      ],
+      "qualifiedPath": [
+        "gui_presenter_canonical_yaml",
+        "gui_presenter_config_to_dict",
+        "gui_presenter_path_to_string",
+        "gui_presenter_shape_to_dict",
+        "gui_presenter_fillet_to_dict",
+        "gui_presenter_source_to_dict",
+        "gui_presenter_radius_to_dict",
+        "gui_presenter_ring_fillet_to_dict"
+      ],
+      "depth": 4,
+      "nodeCount": 8,
+      "fileCount": 1,
+      "files": [
+        "src/summer_gds/gui/presenter.py"
+      ],
+      "criticality": 0.19,
+      "warnings": []
+    },
+    {
+      "id": "flow:static_main_confirmaddvia",
+      "name": "confirmAddVia",
+      "entryPoint": "static_main_confirmaddvia",
+      "entryPointId": "static_main_confirmaddvia",
+      "path": [
+        "static_main_confirmaddvia",
+        "static_main_refreshshapescontainer",
+        "static_main_rendershapecard",
+        "static_main_showalert",
+        "static_main_updateyamlpreview",
+        "static_main_bindshapecardevents",
+        "static_main_fillshapeformvalues",
+        "static_main_handleviabuttonclick",
+        "static_main_offsetshape",
+        "static_main_removeshape",
+        "static_main_togglegeometryinputs",
+        "static_main_toggletoradiuslist",
+        "static_main_toggletosingleradius",
+        "static_main_bindprecisionlisttoggleevents",
+        "static_main_bindradiuslisttoggleevents",
+        "static_main_updatejsonfromform"
+      ],
+      "qualifiedPath": [
+        "static_main_confirmaddvia",
+        "static_main_refreshshapescontainer",
+        "static_main_rendershapecard",
+        "static_main_showalert",
+        "static_main_updateyamlpreview",
+        "static_main_bindshapecardevents",
+        "static_main_fillshapeformvalues",
+        "static_main_handleviabuttonclick",
+        "static_main_offsetshape",
+        "static_main_removeshape",
+        "static_main_togglegeometryinputs",
+        "static_main_toggletoradiuslist",
+        "static_main_toggletosingleradius",
+        "static_main_bindprecisionlisttoggleevents",
+        "static_main_bindradiuslisttoggleevents",
+        "static_main_updatejsonfromform"
+      ],
+      "depth": 4,
+      "nodeCount": 16,
+      "fileCount": 1,
+      "files": [
+        "summer_gds_v1/web_gui/static/main.js"
+      ],
+      "criticality": 0.19,
+      "warnings": []
+    },
+    {
+      "id": "flow:static_app_formatringsconcentricradiilist",
+      "name": "formatRingsConcentricRadiiList",
+      "entryPoint": "static_app_formatringsconcentricradiilist",
+      "entryPointId": "static_app_formatringsconcentricradiilist",
+      "path": [
+        "static_app_formatringsconcentricradiilist",
+        "static_app_formatradiiforlist",
+        "static_app_parseradiilist",
+        "static_app_updateringsconcentricradiistate",
+        "static_app_parsedelimitedradii",
+        "static_app_parseyamlstyleradii",
+        "static_app_coerceradii",
+        "static_app_readfinitenumber"
+      ],
+      "qualifiedPath": [
+        "static_app_formatringsconcentricradiilist",
+        "static_app_formatradiiforlist",
+        "static_app_parseradiilist",
+        "static_app_updateringsconcentricradiistate",
+        "static_app_parsedelimitedradii",
+        "static_app_parseyamlstyleradii",
+        "static_app_coerceradii",
+        "static_app_readfinitenumber"
+      ],
+      "depth": 4,
+      "nodeCount": 8,
+      "fileCount": 1,
+      "files": [
+        "src/summer_gds/gui/static/app.js"
+      ],
+      "criticality": 0.19,
+      "warnings": []
+    },
+    {
+      "id": "flow:static_app_formatviafilletradiilist",
+      "name": "formatViaFilletRadiiList",
+      "entryPoint": "static_app_formatviafilletradiilist",
+      "entryPointId": "static_app_formatviafilletradiilist",
+      "path": [
+        "static_app_formatviafilletradiilist",
+        "static_app_formatradiiforlist",
+        "static_app_parseradiilist",
+        "static_app_updateviafilletradiistate",
+        "static_app_viafilletcontrols",
+        "static_app_parsedelimitedradii",
+        "static_app_parseyamlstyleradii",
+        "static_app_coerceradii",
+        "static_app_readfinitenumber"
+      ],
+      "qualifiedPath": [
+        "static_app_formatviafilletradiilist",
+        "static_app_formatradiiforlist",
+        "static_app_parseradiilist",
+        "static_app_updateviafilletradiistate",
+        "static_app_viafilletcontrols",
+        "static_app_parsedelimitedradii",
+        "static_app_parseyamlstyleradii",
+        "static_app_coerceradii",
+        "static_app_readfinitenumber"
+      ],
+      "depth": 4,
+      "nodeCount": 9,
+      "fileCount": 1,
+      "files": [
+        "src/summer_gds/gui/static/app.js"
+      ],
+      "criticality": 0.19,
+      "warnings": []
+    },
+    {
+      "id": "flow:schema_yaml_v2_parse_yaml_text",
+      "name": "parse_yaml_text",
+      "entryPoint": "schema_yaml_v2_parse_yaml_text",
+      "entryPointId": "schema_yaml_v2_parse_yaml_text",
+      "path": [
+        "schema_yaml_v2_parse_yaml_text",
+        "schema_yaml_v2_contains_yaml_alias_or_anchor",
+        "schema_yaml_v2_depth",
+        "schema_yaml_v2_parse_gds",
+        "schema_yaml_v2_parse_global",
+        "schema_yaml_v2_parse_schema_version",
+        "schema_yaml_v2_parse_shapes",
+        "schema_yaml_v2_reject_unknown",
+        "schema_yaml_v2_finite_float",
+        "schema_yaml_v2_is_int",
+        "schema_yaml_v2_parse_shape",
+        "schema_yaml_v2_parse_count",
+        "schema_yaml_v2_parse_layer",
+        "schema_yaml_v2_parse_radius_spec",
+        "schema_yaml_v2_parse_rings_fillet",
+        "schema_yaml_v2_parse_sid",
+        "schema_yaml_v2_parse_source",
+        "schema_yaml_v2_parse_via_fillet",
+        "schema_yaml_v2_parse_via_offsets",
+        "schema_yaml_v2_parse_vertices"
+      ],
+      "qualifiedPath": [
+        "schema_yaml_v2_parse_yaml_text",
+        "schema_yaml_v2_contains_yaml_alias_or_anchor",
+        "schema_yaml_v2_depth",
+        "schema_yaml_v2_parse_gds",
+        "schema_yaml_v2_parse_global",
+        "schema_yaml_v2_parse_schema_version",
+        "schema_yaml_v2_parse_shapes",
+        "schema_yaml_v2_reject_unknown",
+        "schema_yaml_v2_finite_float",
+        "schema_yaml_v2_is_int",
+        "schema_yaml_v2_parse_shape",
+        "schema_yaml_v2_parse_count",
+        "schema_yaml_v2_parse_layer",
+        "schema_yaml_v2_parse_radius_spec",
+        "schema_yaml_v2_parse_rings_fillet",
+        "schema_yaml_v2_parse_sid",
+        "schema_yaml_v2_parse_source",
+        "schema_yaml_v2_parse_via_fillet",
+        "schema_yaml_v2_parse_via_offsets",
+        "schema_yaml_v2_parse_vertices"
+      ],
+      "depth": 4,
+      "nodeCount": 20,
+      "fileCount": 1,
+      "files": [
+        "src/summer_gds/schema/yaml_v2.py"
+      ],
+      "criticality": 0.19,
+      "warnings": []
+    },
+    {
+      "id": "flow:gds_utils_region_region_create_rings",
+      "name": ".create_rings",
+      "entryPoint": "gds_utils_region_region_create_rings",
+      "entryPointId": "gds_utils_region_region_create_rings",
+      "path": [
+        "gds_utils_region_region_create_rings",
+        "gds_utils_region_region_get_klayout_region",
+        "gds_utils_region_region_polygon2ring",
+        "gds_utils_region_region_create_polygon",
+        "gds_utils_region_region"
+      ],
+      "qualifiedPath": [
+        "gds_utils_region_region_create_rings",
+        "gds_utils_region_region_get_klayout_region",
+        "gds_utils_region_region_polygon2ring",
+        "gds_utils_region_region_create_polygon",
+        "gds_utils_region_region"
+      ],
+      "depth": 3,
+      "nodeCount": 5,
+      "fileCount": 1,
+      "files": [
+        "summer_gds_v1/gds_utils/region.py"
+      ],
+      "criticality": 0.18,
+      "warnings": []
+    },
+    {
+      "id": "flow:gui_bundle_probe_bundleprobe_publish_complete",
+      "name": ".publish_complete",
+      "entryPoint": "gui_bundle_probe_bundleprobe_publish_complete",
+      "entryPointId": "gui_bundle_probe_bundleprobe_publish_complete",
+      "path": [
+        "gui_bundle_probe_bundleprobe_publish_complete",
+        "gui_bundle_probe_bundleprobe_write_json",
+        "gui_bundle_probe_bundleprobe_fixed",
+        "gui_bundle_probe_probeactivationerror"
+      ],
+      "qualifiedPath": [
+        "gui_bundle_probe_bundleprobe_publish_complete",
+        "gui_bundle_probe_bundleprobe_write_json",
+        "gui_bundle_probe_bundleprobe_fixed",
+        "gui_bundle_probe_probeactivationerror"
+      ],
+      "depth": 3,
+      "nodeCount": 4,
+      "fileCount": 1,
+      "files": [
+        "src/summer_gds/gui/bundle_probe.py"
+      ],
+      "criticality": 0.18,
+      "warnings": []
+    },
+    {
+      "id": "flow:gui_bundle_probe_bundleprobe_publish_ready",
+      "name": ".publish_ready",
+      "entryPoint": "gui_bundle_probe_bundleprobe_publish_ready",
+      "entryPointId": "gui_bundle_probe_bundleprobe_publish_ready",
+      "path": [
+        "gui_bundle_probe_bundleprobe_publish_ready",
+        "gui_bundle_probe_bundleprobe_write_json",
+        "gui_bundle_probe_bundleprobe_fixed",
+        "gui_bundle_probe_probeactivationerror"
+      ],
+      "qualifiedPath": [
+        "gui_bundle_probe_bundleprobe_publish_ready",
+        "gui_bundle_probe_bundleprobe_write_json",
+        "gui_bundle_probe_bundleprobe_fixed",
+        "gui_bundle_probe_probeactivationerror"
+      ],
+      "depth": 3,
+      "nodeCount": 4,
+      "fileCount": 1,
+      "files": [
+        "src/summer_gds/gui/bundle_probe.py"
+      ],
+      "criticality": 0.18,
+      "warnings": []
+    },
+    {
+      "id": "flow:geometry_primitives_is_simple_polygon",
+      "name": "is_simple_polygon",
+      "entryPoint": "geometry_primitives_is_simple_polygon",
+      "entryPointId": "geometry_primitives_is_simple_polygon",
+      "path": [
+        "geometry_primitives_is_simple_polygon",
+        "geometry_primitives_segments_intersect",
+        "geometry_primitives_on_segment",
+        "geometry_primitives_orientation",
+        "geometry_primitives_cross"
+      ],
+      "qualifiedPath": [
+        "geometry_primitives_is_simple_polygon",
+        "geometry_primitives_segments_intersect",
+        "geometry_primitives_on_segment",
+        "geometry_primitives_orientation",
+        "geometry_primitives_cross"
+      ],
+      "depth": 3,
+      "nodeCount": 5,
+      "fileCount": 1,
+      "files": [
+        "src/summer_gds/geometry/primitives.py"
+      ],
+      "criticality": 0.18,
+      "warnings": []
+    },
+    {
+      "id": "flow:gui_launcher_main",
+      "name": "main",
+      "entryPoint": "gui_launcher_main",
+      "entryPointId": "gui_launcher_main",
+      "path": [
+        "gui_launcher_main",
+        "gui_launcher_launch_desktop",
+        "gui_launcher_log",
+        "gui_launcher_report_fatal",
+        "gui_launcher_import_webview",
+        "gui_launcher_loopbackserverhandle_stop",
+        "gui_launcher_public_start_kwargs",
+        "gui_launcher_start_loopback_server",
+        "gui_launcher_loopbackserverhandle"
+      ],
+      "qualifiedPath": [
+        "gui_launcher_main",
+        "gui_launcher_launch_desktop",
+        "gui_launcher_log",
+        "gui_launcher_report_fatal",
+        "gui_launcher_import_webview",
+        "gui_launcher_loopbackserverhandle_stop",
+        "gui_launcher_public_start_kwargs",
+        "gui_launcher_start_loopback_server",
+        "gui_launcher_loopbackserverhandle"
+      ],
+      "depth": 3,
+      "nodeCount": 9,
+      "fileCount": 1,
+      "files": [
+        "src/summer_gds/gui/launcher.py"
+      ],
+      "criticality": 0.18,
+      "warnings": []
+    },
+    {
+      "id": "flow:process_vertics_process_polygon_main",
+      "name": "main",
+      "entryPoint": "process_vertics_process_polygon_main",
+      "entryPointId": "process_vertics_process_polygon_main",
+      "path": [
+        "process_vertics_process_polygon_main",
+        "process_vertics_process_polygon_parse_args",
+        "process_vertics_process_polygon_process_file",
+        "process_vertics_process_polygon_format_vertices",
+        "process_vertics_process_polygon_make_control_list",
+        "process_vertics_process_polygon_read_coordinate_file",
+        "process_vertics_process_polygon_normalize_line"
+      ],
+      "qualifiedPath": [
+        "process_vertics_process_polygon_main",
+        "process_vertics_process_polygon_parse_args",
+        "process_vertics_process_polygon_process_file",
+        "process_vertics_process_polygon_format_vertices",
+        "process_vertics_process_polygon_make_control_list",
+        "process_vertics_process_polygon_read_coordinate_file",
+        "process_vertics_process_polygon_normalize_line"
+      ],
+      "depth": 3,
+      "nodeCount": 7,
+      "fileCount": 1,
+      "files": [
+        "summer_gds_v1/tools/process_vertics/process_polygon.py"
+      ],
+      "criticality": 0.18,
+      "warnings": []
+    },
+    {
+      "id": "flow:tools_process_polygon_main",
+      "name": "main",
+      "entryPoint": "tools_process_polygon_main",
+      "entryPointId": "tools_process_polygon_main",
+      "path": [
+        "tools_process_polygon_main",
+        "tools_process_polygon_parse_args",
+        "tools_process_polygon_process_file",
+        "tools_process_polygon_format_vertices",
+        "tools_process_polygon_make_control_list",
+        "tools_process_polygon_read_coordinate_file",
+        "tools_process_polygon_normalize_line"
+      ],
+      "qualifiedPath": [
+        "tools_process_polygon_main",
+        "tools_process_polygon_parse_args",
+        "tools_process_polygon_process_file",
+        "tools_process_polygon_format_vertices",
+        "tools_process_polygon_make_control_list",
+        "tools_process_polygon_read_coordinate_file",
+        "tools_process_polygon_normalize_line"
+      ],
+      "depth": 3,
+      "nodeCount": 7,
+      "fileCount": 1,
+      "files": [
+        "summer_gds_v1/tools/process_polygon.py"
+      ],
+      "criticality": 0.18,
+      "warnings": []
+    },
+    {
+      "id": "flow:gds_utils_gds_gds_init",
+      "name": ".__init",
+      "entryPoint": "gds_utils_gds_gds_init",
+      "entryPointId": "gds_utils_gds_gds_init",
+      "path": [
+        "gds_utils_gds_gds_init",
+        "gds_utils_gds_gds_create_default_cell",
+        "gds_utils_gds_gds_create_cell"
+      ],
+      "qualifiedPath": [
+        "gds_utils_gds_gds_init",
+        "gds_utils_gds_gds_create_default_cell",
+        "gds_utils_gds_gds_create_cell"
+      ],
+      "depth": 2,
+      "nodeCount": 3,
+      "fileCount": 1,
+      "files": [
+        "summer_gds_v1/gds_utils/gds.py"
+      ],
+      "criticality": 0.17,
+      "warnings": []
+    },
+    {
+      "id": "flow:web_gui_qt_mainwindow_mainwindow_handle_download",
+      "name": "._handle_download",
+      "entryPoint": "web_gui_qt_mainwindow_mainwindow_handle_download",
+      "entryPointId": "web_gui_qt_mainwindow_mainwindow_handle_download",
+      "path": [
+        "web_gui_qt_mainwindow_mainwindow_handle_download",
+        "web_gui_qt_mainwindow_mainwindow_load_last_download_path",
+        "web_gui_qt_mainwindow_mainwindow_log_message",
+        "web_gui_qt_mainwindow_mainwindow_save_last_download_path",
+        "web_gui_qt_mainwindow_mainwindow_default_download_path"
+      ],
+      "qualifiedPath": [
+        "web_gui_qt_mainwindow_mainwindow_handle_download",
+        "web_gui_qt_mainwindow_mainwindow_load_last_download_path",
+        "web_gui_qt_mainwindow_mainwindow_log_message",
+        "web_gui_qt_mainwindow_mainwindow_save_last_download_path",
+        "web_gui_qt_mainwindow_mainwindow_default_download_path"
+      ],
+      "depth": 2,
+      "nodeCount": 5,
+      "fileCount": 1,
+      "files": [
+        "summer_gds_v1/web_gui/qt_mainwindow.py"
+      ],
+      "criticality": 0.17,
+      "warnings": []
+    },
+    {
+      "id": "flow:gds_utils_frame_frame_apply_arc_fillet",
+      "name": ".apply_arc_fillet",
+      "entryPoint": "gds_utils_frame_frame_apply_arc_fillet",
+      "entryPointId": "gds_utils_frame_frame_apply_arc_fillet",
+      "path": [
+        "gds_utils_frame_frame_apply_arc_fillet",
+        "gds_utils_frame_frame",
+        "gds_utils_frame_frame_apply_arc_fillet_internal",
+        "gds_utils_frame_frame_is_convex_vertex"
+      ],
+      "qualifiedPath": [
+        "gds_utils_frame_frame_apply_arc_fillet",
+        "gds_utils_frame_frame",
+        "gds_utils_frame_frame_apply_arc_fillet_internal",
+        "gds_utils_frame_frame_is_convex_vertex"
+      ],
+      "depth": 2,
+      "nodeCount": 4,
+      "fileCount": 1,
+      "files": [
+        "summer_gds_v1/gds_utils/frame.py"
+      ],
+      "criticality": 0.17,
+      "warnings": []
+    },
+    {
+      "id": "flow:gui_bundle_probe_probefiledialog_choose_open_path",
+      "name": ".choose_open_path",
+      "entryPoint": "gui_bundle_probe_probefiledialog_choose_open_path",
+      "entryPointId": "gui_bundle_probe_probefiledialog_choose_open_path",
+      "path": [
+        "gui_bundle_probe_probefiledialog_choose_open_path",
+        "gui_bundle_probe_bundleprobe_fixed",
+        "gui_bundle_probe_probeactivationerror"
+      ],
+      "qualifiedPath": [
+        "gui_bundle_probe_probefiledialog_choose_open_path",
+        "gui_bundle_probe_bundleprobe_fixed",
+        "gui_bundle_probe_probeactivationerror"
+      ],
+      "depth": 2,
+      "nodeCount": 3,
+      "fileCount": 1,
+      "files": [
+        "src/summer_gds/gui/bundle_probe.py"
+      ],
+      "criticality": 0.17,
+      "warnings": []
+    },
+    {
+      "id": "flow:gui_bundle_probe_probefiledialog_choose_save_path",
+      "name": ".choose_save_path",
+      "entryPoint": "gui_bundle_probe_probefiledialog_choose_save_path",
+      "entryPointId": "gui_bundle_probe_probefiledialog_choose_save_path",
+      "path": [
+        "gui_bundle_probe_probefiledialog_choose_save_path",
+        "gui_bundle_probe_bundleprobe_fixed",
+        "gui_bundle_probe_probeactivationerror"
+      ],
+      "qualifiedPath": [
+        "gui_bundle_probe_probefiledialog_choose_save_path",
+        "gui_bundle_probe_bundleprobe_fixed",
+        "gui_bundle_probe_probeactivationerror"
+      ],
+      "depth": 2,
+      "nodeCount": 3,
+      "fileCount": 1,
+      "files": [
+        "src/summer_gds/gui/bundle_probe.py"
+      ],
+      "criticality": 0.17,
+      "warnings": []
+    },
+    {
+      "id": "flow:gui_bundle_probe_bundleprobe_command_path",
+      "name": ".command_path",
+      "entryPoint": "gui_bundle_probe_bundleprobe_command_path",
+      "entryPointId": "gui_bundle_probe_bundleprobe_command_path",
+      "path": [
+        "gui_bundle_probe_bundleprobe_command_path",
+        "gui_bundle_probe_bundleprobe_fixed",
+        "gui_bundle_probe_probeactivationerror"
+      ],
+      "qualifiedPath": [
+        "gui_bundle_probe_bundleprobe_command_path",
+        "gui_bundle_probe_bundleprobe_fixed",
+        "gui_bundle_probe_probeactivationerror"
+      ],
+      "depth": 2,
+      "nodeCount": 3,
+      "fileCount": 1,
+      "files": [
+        "src/summer_gds/gui/bundle_probe.py"
+      ],
+      "criticality": 0.17,
+      "warnings": []
+    },
+    {
+      "id": "flow:gui_bundle_probe_bundleprobe_complete_path",
+      "name": ".complete_path",
+      "entryPoint": "gui_bundle_probe_bundleprobe_complete_path",
+      "entryPointId": "gui_bundle_probe_bundleprobe_complete_path",
+      "path": [
+        "gui_bundle_probe_bundleprobe_complete_path",
+        "gui_bundle_probe_bundleprobe_fixed",
+        "gui_bundle_probe_probeactivationerror"
+      ],
+      "qualifiedPath": [
+        "gui_bundle_probe_bundleprobe_complete_path",
+        "gui_bundle_probe_bundleprobe_fixed",
+        "gui_bundle_probe_probeactivationerror"
+      ],
+      "depth": 2,
+      "nodeCount": 3,
+      "fileCount": 1,
+      "files": [
+        "src/summer_gds/gui/bundle_probe.py"
+      ],
+      "criticality": 0.17,
+      "warnings": []
+    },
+    {
+      "id": "flow:gui_bundle_probe_bundleprobe_read_command",
+      "name": ".read_command",
+      "entryPoint": "gui_bundle_probe_bundleprobe_read_command",
+      "entryPointId": "gui_bundle_probe_bundleprobe_read_command",
+      "path": [
+        "gui_bundle_probe_bundleprobe_read_command",
+        "gui_bundle_probe_bundleprobe_read_json",
+        "gui_bundle_probe_probeactivationerror",
+        "gui_bundle_probe_assert_regular_control_file"
+      ],
+      "qualifiedPath": [
+        "gui_bundle_probe_bundleprobe_read_command",
+        "gui_bundle_probe_bundleprobe_read_json",
+        "gui_bundle_probe_probeactivationerror",
+        "gui_bundle_probe_assert_regular_control_file"
+      ],
+      "depth": 2,
+      "nodeCount": 4,
+      "fileCount": 1,
+      "files": [
+        "src/summer_gds/gui/bundle_probe.py"
+      ],
+      "criticality": 0.17,
+      "warnings": []
+    },
+    {
+      "id": "flow:gui_bundle_probe_bundleprobe_ready_path",
+      "name": ".ready_path",
+      "entryPoint": "gui_bundle_probe_bundleprobe_ready_path",
+      "entryPointId": "gui_bundle_probe_bundleprobe_ready_path",
+      "path": [
+        "gui_bundle_probe_bundleprobe_ready_path",
+        "gui_bundle_probe_bundleprobe_fixed",
+        "gui_bundle_probe_probeactivationerror"
+      ],
+      "qualifiedPath": [
+        "gui_bundle_probe_bundleprobe_ready_path",
+        "gui_bundle_probe_bundleprobe_fixed",
+        "gui_bundle_probe_probeactivationerror"
+      ],
+      "depth": 2,
+      "nodeCount": 3,
+      "fileCount": 1,
+      "files": [
+        "src/summer_gds/gui/bundle_probe.py"
+      ],
+      "criticality": 0.17,
+      "warnings": []
+    },
+    {
+      "id": "flow:geometry_fillet_apply_fillet",
+      "name": "apply_fillet",
+      "entryPoint": "geometry_fillet_apply_fillet",
+      "entryPointId": "geometry_fillet_apply_fillet",
+      "path": [
+        "geometry_fillet_apply_fillet",
+        "geometry_fillet_arc_points_for_corner",
+        "geometry_fillet_expand_radii",
+        "geometry_fillet_tangent_distance",
+        "geometry_fillet_arc_points",
+        "geometry_fillet_interior_angle",
+        "geometry_fillet_minor_sweep",
+        "geometry_fillet_point_from_unit",
+        "geometry_fillet_segments_for_arc",
+        "geometry_fillet_unit_sum",
+        "geometry_fillet_unit_vector"
+      ],
+      "qualifiedPath": [
+        "geometry_fillet_apply_fillet",
+        "geometry_fillet_arc_points_for_corner",
+        "geometry_fillet_expand_radii",
+        "geometry_fillet_tangent_distance",
+        "geometry_fillet_arc_points",
+        "geometry_fillet_interior_angle",
+        "geometry_fillet_minor_sweep",
+        "geometry_fillet_point_from_unit",
+        "geometry_fillet_segments_for_arc",
+        "geometry_fillet_unit_sum",
+        "geometry_fillet_unit_vector"
+      ],
+      "depth": 2,
+      "nodeCount": 11,
+      "fileCount": 1,
+      "files": [
+        "src/summer_gds/geometry/fillet.py"
+      ],
+      "criticality": 0.17,
+      "warnings": []
+    },
+    {
+      "id": "flow:linkage_property_path_comparepropertyvalues",
+      "name": "comparePropertyValues",
+      "entryPoint": "linkage_property_path_comparepropertyvalues",
+      "entryPointId": "linkage_property_path_comparepropertyvalues",
+      "path": [
+        "linkage_property_path_comparepropertyvalues",
+        "linkage_property_path_normalizepropertyvalue",
+        "linkage_property_path_getpropertytypeinfo"
+      ],
+      "qualifiedPath": [
+        "linkage_property_path_comparepropertyvalues",
+        "linkage_property_path_normalizepropertyvalue",
+        "linkage_property_path_getpropertytypeinfo"
+      ],
+      "depth": 2,
+      "nodeCount": 3,
+      "fileCount": 1,
+      "files": [
+        "summer_gds_v1/web_gui/static/linkage/property-path.js"
+      ],
+      "criticality": 0.17,
+      "warnings": []
+    },
+    {
+      "id": "flow:linkage_sync_manager_forcerecalculateshape",
+      "name": "forceRecalculateShape",
+      "entryPoint": "linkage_sync_manager_forcerecalculateshape",
+      "entryPointId": "linkage_sync_manager_forcerecalculateshape",
+      "path": [
+        "linkage_sync_manager_forcerecalculateshape",
+        "linkage_sync_manager_getconfig",
+        "linkage_sync_manager_updatejsoneditorsilently",
+        "linkage_sync_manager_updateshapecarddisplay",
+        "linkage_sync_manager_updateformvalues"
+      ],
+      "qualifiedPath": [
+        "linkage_sync_manager_forcerecalculateshape",
+        "linkage_sync_manager_getconfig",
+        "linkage_sync_manager_updatejsoneditorsilently",
+        "linkage_sync_manager_updateshapecarddisplay",
+        "linkage_sync_manager_updateformvalues"
+      ],
+      "depth": 2,
+      "nodeCount": 5,
+      "fileCount": 1,
+      "files": [
+        "summer_gds_v1/web_gui/static/linkage/sync-manager.js"
+      ],
+      "criticality": 0.17,
+      "warnings": []
+    },
+    {
+      "id": "flow:static_app_handlesplitterkeydown",
+      "name": "handleSplitterKeydown",
+      "entryPoint": "static_app_handlesplitterkeydown",
+      "entryPointId": "static_app_handlesplitterkeydown",
+      "path": [
+        "static_app_handlesplitterkeydown",
+        "static_app_setsplitterleft",
+        "static_app_clamp"
+      ],
+      "qualifiedPath": [
+        "static_app_handlesplitterkeydown",
+        "static_app_setsplitterleft",
+        "static_app_clamp"
+      ],
+      "depth": 2,
+      "nodeCount": 3,
+      "fileCount": 1,
+      "files": [
+        "src/summer_gds/gui/static/app.js"
+      ],
+      "criticality": 0.17,
+      "warnings": []
+    },
+    {
+      "id": "flow:linkage_override_manager_handleuseroverride",
+      "name": "handleUserOverride",
+      "entryPoint": "linkage_override_manager_handleuseroverride",
+      "entryPointId": "linkage_override_manager_handleuseroverride",
+      "path": [
+        "linkage_override_manager_handleuseroverride",
+        "linkage_override_manager_createoverride",
+        "linkage_override_manager_removeoverride",
+        "linkage_override_manager_updateinheritanceindicator",
+        "linkage_override_manager_synccardderivation"
+      ],
+      "qualifiedPath": [
+        "linkage_override_manager_handleuseroverride",
+        "linkage_override_manager_createoverride",
+        "linkage_override_manager_removeoverride",
+        "linkage_override_manager_updateinheritanceindicator",
+        "linkage_override_manager_synccardderivation"
+      ],
+      "depth": 2,
+      "nodeCount": 5,
+      "fileCount": 1,
+      "files": [
+        "summer_gds_v1/web_gui/static/linkage/override-manager.js"
+      ],
+      "criticality": 0.17,
+      "warnings": []
+    },
+    {
+      "id": "flow:scripts_compare_gds_main",
+      "name": "main",
+      "entryPoint": "scripts_compare_gds_main",
+      "entryPointId": "scripts_compare_gds_main",
+      "path": [
+        "scripts_compare_gds_main",
+        "scripts_compare_gds_compare_gds_files",
+        "scripts_compare_gds_calculate_md5"
+      ],
+      "qualifiedPath": [
+        "scripts_compare_gds_main",
+        "scripts_compare_gds_compare_gds_files",
+        "scripts_compare_gds_calculate_md5"
+      ],
+      "depth": 2,
+      "nodeCount": 3,
+      "fileCount": 1,
+      "files": [
+        "summer_gds_v1/scripts/compare_gds.py"
+      ],
+      "criticality": 0.17,
+      "warnings": []
+    },
+    {
+      "id": "flow:web_gui_qt_launcher_main",
+      "name": "main",
+      "entryPoint": "web_gui_qt_launcher_main",
+      "entryPointId": "web_gui_qt_launcher_main",
+      "path": [
+        "web_gui_qt_launcher_main",
+        "web_gui_qt_launcher_build_parser",
+        "web_gui_qt_launcher_load_config",
+        "web_gui_qt_launcher_merge_options",
+        "web_gui_qt_launcher_print_summary",
+        "web_gui_qt_launcher_run_headless",
+        "web_gui_qt_launcher_run_qt",
+        "web_gui_qt_launcher_launchoptions",
+        "web_gui_qt_launcher_load_wsgi_app",
+        "web_gui_qt_launcher_print_event"
+      ],
+      "qualifiedPath": [
+        "web_gui_qt_launcher_main",
+        "web_gui_qt_launcher_build_parser",
+        "web_gui_qt_launcher_load_config",
+        "web_gui_qt_launcher_merge_options",
+        "web_gui_qt_launcher_print_summary",
+        "web_gui_qt_launcher_run_headless",
+        "web_gui_qt_launcher_run_qt",
+        "web_gui_qt_launcher_launchoptions",
+        "web_gui_qt_launcher_load_wsgi_app",
+        "web_gui_qt_launcher_print_event"
+      ],
+      "depth": 2,
+      "nodeCount": 10,
+      "fileCount": 1,
+      "files": [
+        "summer_gds_v1/web_gui/qt_launcher.py"
+      ],
+      "criticality": 0.17,
+      "warnings": []
+    },
+    {
+      "id": "flow:static_app_movesplitdrag",
+      "name": "moveSplitDrag",
+      "entryPoint": "static_app_movesplitdrag",
+      "entryPointId": "static_app_movesplitdrag",
+      "path": [
+        "static_app_movesplitdrag",
+        "static_app_setsplitterleft",
+        "static_app_clamp"
+      ],
+      "qualifiedPath": [
+        "static_app_movesplitdrag",
+        "static_app_setsplitterleft",
+        "static_app_clamp"
+      ],
+      "depth": 2,
+      "nodeCount": 3,
+      "fileCount": 1,
+      "files": [
+        "src/summer_gds/gui/static/app.js"
+      ],
+      "criticality": 0.17,
+      "warnings": []
+    },
+    {
+      "id": "flow:gui_runtime_start_loopback_server",
+      "name": "start_loopback_server",
+      "entryPoint": "gui_runtime_start_loopback_server",
+      "entryPointId": "gui_runtime_start_loopback_server",
+      "path": [
+        "gui_runtime_start_loopback_server",
+        "gui_runtime_loopbackserverhandle",
+        "gui_runtime_loopbackserverhandle_stop",
+        "gui_runtime_wait_until_ready",
+        "gui_runtime_loopbackserverhandle_join",
+        "gui_runtime_loopbackserverhandle_server_close",
+        "gui_runtime_loopbackserverhandle_shutdown"
+      ],
+      "qualifiedPath": [
+        "gui_runtime_start_loopback_server",
+        "gui_runtime_loopbackserverhandle",
+        "gui_runtime_loopbackserverhandle_stop",
+        "gui_runtime_wait_until_ready",
+        "gui_runtime_loopbackserverhandle_join",
+        "gui_runtime_loopbackserverhandle_server_close",
+        "gui_runtime_loopbackserverhandle_shutdown"
+      ],
+      "depth": 2,
+      "nodeCount": 7,
+      "fileCount": 1,
+      "files": [
+        "src/summer_gds/gui/runtime.py"
+      ],
+      "criticality": 0.17,
+      "warnings": []
+    },
+    {
+      "id": "flow:static_main_toggletoprecisionlist",
+      "name": "toggleToPrecisionList",
+      "entryPoint": "static_main_toggletoprecisionlist",
+      "entryPointId": "static_main_toggletoprecisionlist",
+      "path": [
+        "static_main_toggletoprecisionlist",
+        "static_main_updatejsonfromform",
+        "static_main_updateyamlpreview"
+      ],
+      "qualifiedPath": [
+        "static_main_toggletoprecisionlist",
+        "static_main_updatejsonfromform",
+        "static_main_updateyamlpreview"
+      ],
+      "depth": 2,
+      "nodeCount": 3,
+      "fileCount": 1,
+      "files": [
+        "summer_gds_v1/web_gui/static/main.js"
+      ],
+      "criticality": 0.17,
+      "warnings": []
+    },
+    {
+      "id": "flow:static_main_toggletosingleprecision",
+      "name": "toggleToSinglePrecision",
+      "entryPoint": "static_main_toggletosingleprecision",
+      "entryPointId": "static_main_toggletosingleprecision",
+      "path": [
+        "static_main_toggletosingleprecision",
+        "static_main_updatejsonfromform",
+        "static_main_updateyamlpreview"
+      ],
+      "qualifiedPath": [
+        "static_main_toggletosingleprecision",
+        "static_main_updatejsonfromform",
+        "static_main_updateyamlpreview"
+      ],
+      "depth": 2,
+      "nodeCount": 3,
+      "fileCount": 1,
+      "files": [
+        "summer_gds_v1/web_gui/static/main.js"
+      ],
+      "criticality": 0.17,
+      "warnings": []
+    },
+    {
+      "id": "flow:static_main_updateverticesfromcircle",
+      "name": "updateVerticesFromCircle",
+      "entryPoint": "static_main_updateverticesfromcircle",
+      "entryPointId": "static_main_updateverticesfromcircle",
+      "path": [
+        "static_main_updateverticesfromcircle",
+        "static_main_generatecirclevertices",
+        "static_main_showalert",
+        "static_main_updatejsonfromform",
+        "static_main_updateyamlpreview"
+      ],
+      "qualifiedPath": [
+        "static_main_updateverticesfromcircle",
+        "static_main_generatecirclevertices",
+        "static_main_showalert",
+        "static_main_updatejsonfromform",
+        "static_main_updateyamlpreview"
+      ],
+      "depth": 2,
+      "nodeCount": 5,
+      "fileCount": 1,
+      "files": [
+        "summer_gds_v1/web_gui/static/main.js"
+      ],
+      "criticality": 0.17,
+      "warnings": []
+    },
+    {
+      "id": "flow:gds_utils_region_region_add",
+      "name": ".__add",
+      "entryPoint": "gds_utils_region_region_add",
+      "entryPointId": "gds_utils_region_region_add",
+      "path": [
+        "gds_utils_region_region_add",
+        "gds_utils_region_region",
+        "gds_utils_region_region_get_klayout_region"
+      ],
+      "qualifiedPath": [
+        "gds_utils_region_region_add",
+        "gds_utils_region_region",
+        "gds_utils_region_region_get_klayout_region"
+      ],
+      "depth": 1,
+      "nodeCount": 3,
+      "fileCount": 1,
+      "files": [
+        "summer_gds_v1/gds_utils/region.py"
+      ],
+      "criticality": 0.16,
+      "warnings": []
+    },
+    {
+      "id": "flow:gds_utils_region_region_and",
+      "name": ".__and",
+      "entryPoint": "gds_utils_region_region_and",
+      "entryPointId": "gds_utils_region_region_and",
+      "path": [
+        "gds_utils_region_region_and",
+        "gds_utils_region_region",
+        "gds_utils_region_region_get_klayout_region"
+      ],
+      "qualifiedPath": [
+        "gds_utils_region_region_and",
+        "gds_utils_region_region",
+        "gds_utils_region_region_get_klayout_region"
+      ],
+      "depth": 1,
+      "nodeCount": 3,
+      "fileCount": 1,
+      "files": [
+        "summer_gds_v1/gds_utils/region.py"
+      ],
+      "criticality": 0.16,
+      "warnings": []
+    },
+    {
+      "id": "flow:gds_utils_region_region_init",
+      "name": ".__init",
+      "entryPoint": "gds_utils_region_region_init",
+      "entryPointId": "gds_utils_region_region_init",
+      "path": [
+        "gds_utils_region_region_init",
+        "gds_utils_region_region"
+      ],
+      "qualifiedPath": [
+        "gds_utils_region_region_init",
+        "gds_utils_region_region"
+      ],
+      "depth": 1,
+      "nodeCount": 2,
+      "fileCount": 1,
+      "files": [
+        "summer_gds_v1/gds_utils/region.py"
+      ],
+      "criticality": 0.16,
+      "warnings": []
+    },
+    {
+      "id": "flow:web_gui_log_bridge_logbridge_init",
+      "name": ".__init",
+      "entryPoint": "web_gui_log_bridge_logbridge_init",
+      "entryPointId": "web_gui_log_bridge_logbridge_init",
+      "path": [
+        "web_gui_log_bridge_logbridge_init",
+        "web_gui_log_bridge_logbridge_attach",
+        "web_gui_log_bridge_queueloghandler"
+      ],
+      "qualifiedPath": [
+        "web_gui_log_bridge_logbridge_init",
+        "web_gui_log_bridge_logbridge_attach",
+        "web_gui_log_bridge_queueloghandler"
+      ],
+      "depth": 1,
+      "nodeCount": 3,
+      "fileCount": 1,
+      "files": [
+        "summer_gds_v1/web_gui/log_bridge.py"
+      ],
+      "criticality": 0.16,
+      "warnings": []
+    },
+    {
+      "id": "flow:web_gui_qt_mainwindow_mainwindow_init",
+      "name": ".__init",
+      "entryPoint": "web_gui_qt_mainwindow_mainwindow_init",
+      "entryPointId": "web_gui_qt_mainwindow_mainwindow_init",
+      "path": [
+        "web_gui_qt_mainwindow_mainwindow_init",
+        "web_gui_qt_mainwindow_mainwindow_init_log_view",
+        "web_gui_qt_mainwindow_mainwindow_init_web_view",
+        "web_gui_qt_mainwindow_mainwindow_log_message",
+        "web_gui_qt_mainwindow_mainwindow_setup_download_handler"
+      ],
+      "qualifiedPath": [
+        "web_gui_qt_mainwindow_mainwindow_init",
+        "web_gui_qt_mainwindow_mainwindow_init_log_view",
+        "web_gui_qt_mainwindow_mainwindow_init_web_view",
+        "web_gui_qt_mainwindow_mainwindow_log_message",
+        "web_gui_qt_mainwindow_mainwindow_setup_download_handler"
+      ],
+      "depth": 1,
+      "nodeCount": 5,
+      "fileCount": 1,
+      "files": [
+        "summer_gds_v1/web_gui/qt_mainwindow.py"
+      ],
+      "criticality": 0.16,
+      "warnings": []
+    },
+    {
+      "id": "flow:gds_utils_region_region_or",
+      "name": ".__or",
+      "entryPoint": "gds_utils_region_region_or",
+      "entryPointId": "gds_utils_region_region_or",
+      "path": [
+        "gds_utils_region_region_or",
+        "gds_utils_region_region",
+        "gds_utils_region_region_get_klayout_region"
+      ],
+      "qualifiedPath": [
+        "gds_utils_region_region_or",
+        "gds_utils_region_region",
+        "gds_utils_region_region_get_klayout_region"
+      ],
+      "depth": 1,
+      "nodeCount": 3,
+      "fileCount": 1,
+      "files": [
+        "summer_gds_v1/gds_utils/region.py"
+      ],
+      "criticality": 0.16,
+      "warnings": []
+    },
+    {
+      "id": "flow:gds_utils_region_region_sub",
+      "name": ".__sub",
+      "entryPoint": "gds_utils_region_region_sub",
+      "entryPointId": "gds_utils_region_region_sub",
+      "path": [
+        "gds_utils_region_region_sub",
+        "gds_utils_region_region",
+        "gds_utils_region_region_get_klayout_region"
+      ],
+      "qualifiedPath": [
+        "gds_utils_region_region_sub",
+        "gds_utils_region_region",
+        "gds_utils_region_region_get_klayout_region"
+      ],
+      "depth": 1,
+      "nodeCount": 3,
+      "fileCount": 1,
+      "files": [
+        "summer_gds_v1/gds_utils/region.py"
+      ],
+      "criticality": 0.16,
+      "warnings": []
+    },
+    {
+      "id": "flow:gds_utils_region_region_xor",
+      "name": ".__xor",
+      "entryPoint": "gds_utils_region_region_xor",
+      "entryPointId": "gds_utils_region_region_xor",
+      "path": [
+        "gds_utils_region_region_xor",
+        "gds_utils_region_region",
+        "gds_utils_region_region_get_klayout_region"
+      ],
+      "qualifiedPath": [
+        "gds_utils_region_region_xor",
+        "gds_utils_region_region",
+        "gds_utils_region_region_get_klayout_region"
+      ],
+      "depth": 1,
+      "nodeCount": 3,
+      "fileCount": 1,
+      "files": [
+        "summer_gds_v1/gds_utils/region.py"
+      ],
+      "criticality": 0.16,
+      "warnings": []
+    },
+    {
+      "id": "flow:gui_qt_dialog_qtsavefiledialog_cancel_on_gui_thread",
+      "name": "._cancel_on_gui_thread",
+      "entryPoint": "gui_qt_dialog_qtsavefiledialog_cancel_on_gui_thread",
+      "entryPointId": "gui_qt_dialog_qtsavefiledialog_cancel_on_gui_thread",
+      "path": [
+        "gui_qt_dialog_qtsavefiledialog_cancel_on_gui_thread",
+        "gui_qt_dialog_qtsavefiledialog_release"
+      ],
+      "qualifiedPath": [
+        "gui_qt_dialog_qtsavefiledialog_cancel_on_gui_thread",
+        "gui_qt_dialog_qtsavefiledialog_release"
+      ],
+      "depth": 1,
+      "nodeCount": 2,
+      "fileCount": 1,
+      "files": [
+        "src/summer_gds/gui/qt_dialog.py"
+      ],
+      "criticality": 0.16,
+      "warnings": []
+    },
+    {
+      "id": "flow:web_gui_qt_mainwindow_mainwindow_drain_logs",
+      "name": "._drain_logs",
+      "entryPoint": "web_gui_qt_mainwindow_mainwindow_drain_logs",
+      "entryPointId": "web_gui_qt_mainwindow_mainwindow_drain_logs",
+      "path": [
+        "web_gui_qt_mainwindow_mainwindow_drain_logs",
+        "web_gui_qt_mainwindow_mainwindow_append_event"
+      ],
+      "qualifiedPath": [
+        "web_gui_qt_mainwindow_mainwindow_drain_logs",
+        "web_gui_qt_mainwindow_mainwindow_append_event"
+      ],
+      "depth": 1,
+      "nodeCount": 2,
+      "fileCount": 1,
+      "files": [
+        "summer_gds_v1/web_gui/qt_mainwindow.py"
+      ],
+      "criticality": 0.16,
+      "warnings": []
+    },
+    {
+      "id": "flow:gui_qt_shell_shutdowncoordinator_on_watchdog",
+      "name": "._on_watchdog",
+      "entryPoint": "gui_qt_shell_shutdowncoordinator_on_watchdog",
+      "entryPointId": "gui_qt_shell_shutdowncoordinator_on_watchdog",
+      "path": [
+        "gui_qt_shell_shutdowncoordinator_on_watchdog",
+        "gui_qt_shell_shutdowncoordinator_finish",
+        "gui_qt_shell_shutdownresult"
+      ],
+      "qualifiedPath": [
+        "gui_qt_shell_shutdowncoordinator_on_watchdog",
+        "gui_qt_shell_shutdowncoordinator_finish",
+        "gui_qt_shell_shutdownresult"
+      ],
+      "depth": 1,
+      "nodeCount": 3,
+      "fileCount": 1,
+      "files": [
+        "src/summer_gds/gui/qt_shell.py"
+      ],
+      "criticality": 0.16,
+      "warnings": []
+    },
+    {
+      "id": "flow:gui_qt_shell_shutdowncoordinator_on_worker_finished",
+      "name": "._on_worker_finished",
+      "entryPoint": "gui_qt_shell_shutdowncoordinator_on_worker_finished",
+      "entryPointId": "gui_qt_shell_shutdowncoordinator_on_worker_finished",
+      "path": [
+        "gui_qt_shell_shutdowncoordinator_on_worker_finished",
+        "gui_qt_shell_shutdowncoordinator_finish"
+      ],
+      "qualifiedPath": [
+        "gui_qt_shell_shutdowncoordinator_on_worker_finished",
+        "gui_qt_shell_shutdowncoordinator_finish"
+      ],
+      "depth": 1,
+      "nodeCount": 2,
+      "fileCount": 1,
+      "files": [
+        "src/summer_gds/gui/qt_shell.py"
+      ],
+      "criticality": 0.16,
+      "warnings": []
+    },
+    {
+      "id": "flow:gui_qt_shell_shutdowncoordinator_shutdown_worker",
+      "name": "._shutdown_worker",
+      "entryPoint": "gui_qt_shell_shutdowncoordinator_shutdown_worker",
+      "entryPointId": "gui_qt_shell_shutdowncoordinator_shutdown_worker",
+      "path": [
+        "gui_qt_shell_shutdowncoordinator_shutdown_worker",
+        "gui_qt_shell_shutdowncoordinator_remaining",
+        "gui_qt_shell_shutdownresult"
+      ],
+      "qualifiedPath": [
+        "gui_qt_shell_shutdowncoordinator_shutdown_worker",
+        "gui_qt_shell_shutdowncoordinator_remaining",
+        "gui_qt_shell_shutdownresult"
+      ],
+      "depth": 1,
+      "nodeCount": 3,
+      "fileCount": 1,
+      "files": [
+        "src/summer_gds/gui/qt_shell.py"
+      ],
+      "criticality": 0.16,
+      "warnings": []
+    },
+    {
+      "id": "flow:gds_utils_frame_frame_apply_adaptive_fillet",
+      "name": ".apply_adaptive_fillet",
+      "entryPoint": "gds_utils_frame_frame_apply_adaptive_fillet",
+      "entryPointId": "gds_utils_frame_frame_apply_adaptive_fillet",
+      "path": [
+        "gds_utils_frame_frame_apply_adaptive_fillet",
+        "gds_utils_frame_frame",
+        "gds_utils_frame_frame_apply_arc_fillet_internal",
+        "gds_utils_frame_frame_is_convex_vertex"
+      ],
+      "qualifiedPath": [
+        "gds_utils_frame_frame_apply_adaptive_fillet",
+        "gds_utils_frame_frame",
+        "gds_utils_frame_frame_apply_arc_fillet_internal",
+        "gds_utils_frame_frame_is_convex_vertex"
+      ],
+      "depth": 1,
+      "nodeCount": 4,
+      "fileCount": 1,
+      "files": [
+        "summer_gds_v1/gds_utils/frame.py"
+      ],
+      "criticality": 0.16,
+      "warnings": []
+    },
+    {
+      "id": "flow:web_gui_log_bridge_logbridge_close",
+      "name": ".close",
+      "entryPoint": "web_gui_log_bridge_logbridge_close",
+      "entryPointId": "web_gui_log_bridge_logbridge_close",
+      "path": [
+        "web_gui_log_bridge_logbridge_close",
+        "web_gui_log_bridge_logbridge_detach"
+      ],
+      "qualifiedPath": [
+        "web_gui_log_bridge_logbridge_close",
+        "web_gui_log_bridge_logbridge_detach"
+      ],
+      "depth": 1,
+      "nodeCount": 2,
+      "fileCount": 1,
+      "files": [
+        "summer_gds_v1/web_gui/log_bridge.py"
+      ],
+      "criticality": 0.16,
+      "warnings": []
+    },
+    {
+      "id": "flow:web_gui_qt_mainwindow_mainwindow_closeevent",
+      "name": ".closeEvent",
+      "entryPoint": "web_gui_qt_mainwindow_mainwindow_closeevent",
+      "entryPointId": "web_gui_qt_mainwindow_mainwindow_closeevent",
+      "path": [
+        "web_gui_qt_mainwindow_mainwindow_closeevent",
+        "web_gui_qt_mainwindow_mainwindow_append_event"
+      ],
+      "qualifiedPath": [
+        "web_gui_qt_mainwindow_mainwindow_closeevent",
+        "web_gui_qt_mainwindow_mainwindow_append_event"
+      ],
+      "depth": 1,
+      "nodeCount": 2,
+      "fileCount": 1,
+      "files": [
+        "summer_gds_v1/web_gui/qt_mainwindow.py"
+      ],
+      "criticality": 0.16,
+      "warnings": []
+    },
+    {
+      "id": "flow:gds_utils_cell_cell_create_layer",
+      "name": ".create_layer",
+      "entryPoint": "gds_utils_cell_cell_create_layer",
+      "entryPointId": "gds_utils_cell_cell_create_layer",
+      "path": [
+        "gds_utils_cell_cell_create_layer",
+        "gds_utils_cell_cell_get_layer_index"
+      ],
+      "qualifiedPath": [
+        "gds_utils_cell_cell_create_layer",
+        "gds_utils_cell_cell_get_layer_index"
+      ],
+      "depth": 1,
+      "nodeCount": 2,
+      "fileCount": 1,
+      "files": [
+        "summer_gds_v1/gds_utils/cell.py"
+      ],
+      "criticality": 0.16,
+      "warnings": []
+    },
+    {
+      "id": "flow:gui_bundle_probe_bundleprobe_dialog",
+      "name": ".dialog",
+      "entryPoint": "gui_bundle_probe_bundleprobe_dialog",
+      "entryPointId": "gui_bundle_probe_bundleprobe_dialog",
+      "path": [
+        "gui_bundle_probe_bundleprobe_dialog",
+        "gui_bundle_probe_probefiledialog"
+      ],
+      "qualifiedPath": [
+        "gui_bundle_probe_bundleprobe_dialog",
+        "gui_bundle_probe_probefiledialog"
+      ],
+      "depth": 1,
+      "nodeCount": 2,
+      "fileCount": 1,
+      "files": [
+        "src/summer_gds/gui/bundle_probe.py"
+      ],
+      "criticality": 0.16,
+      "warnings": []
+    },
+    {
+      "id": "flow:web_gui_log_bridge_queueloghandler_emit",
+      "name": ".emit",
+      "entryPoint": "web_gui_log_bridge_queueloghandler_emit",
+      "entryPointId": "web_gui_log_bridge_queueloghandler_emit",
+      "path": [
+        "web_gui_log_bridge_queueloghandler_emit",
+        "web_gui_log_bridge_logevent"
+      ],
+      "qualifiedPath": [
+        "web_gui_log_bridge_queueloghandler_emit",
+        "web_gui_log_bridge_logevent"
+      ],
+      "depth": 1,
+      "nodeCount": 2,
+      "fileCount": 1,
+      "files": [
+        "summer_gds_v1/web_gui/log_bridge.py"
+      ],
+      "criticality": 0.16,
+      "warnings": []
+    },
+    {
+      "id": "flow:gds_utils_frame_frame_ensure_counterclockwise",
+      "name": ".ensure_counterclockwise",
+      "entryPoint": "gds_utils_frame_frame_ensure_counterclockwise",
+      "entryPointId": "gds_utils_frame_frame_ensure_counterclockwise",
+      "path": [
+        "gds_utils_frame_frame_ensure_counterclockwise",
+        "gds_utils_frame_frame_is_clockwise"
+      ],
+      "qualifiedPath": [
+        "gds_utils_frame_frame_ensure_counterclockwise",
+        "gds_utils_frame_frame_is_clockwise"
+      ],
+      "depth": 1,
+      "nodeCount": 2,
+      "fileCount": 1,
+      "files": [
+        "summer_gds_v1/gds_utils/frame.py"
+      ],
+      "criticality": 0.16,
+      "warnings": []
+    },
+    {
+      "id": "flow:gds_utils_frame_frame_offset",
+      "name": ".offset",
+      "entryPoint": "gds_utils_frame_frame_offset",
+      "entryPointId": "gds_utils_frame_frame_offset",
+      "path": [
+        "gds_utils_frame_frame_offset",
+        "gds_utils_frame_frame"
+      ],
+      "qualifiedPath": [
+        "gds_utils_frame_frame_offset",
+        "gds_utils_frame_frame"
+      ],
+      "depth": 1,
+      "nodeCount": 2,
+      "fileCount": 1,
+      "files": [
+        "summer_gds_v1/gds_utils/frame.py"
+      ],
+      "criticality": 0.16,
+      "warnings": []
+    },
+    {
+      "id": "flow:gui_bundle_probe_activate_bundle_probe",
+      "name": "activate_bundle_probe",
+      "entryPoint": "gui_bundle_probe_activate_bundle_probe",
+      "entryPointId": "gui_bundle_probe_activate_bundle_probe",
+      "path": [
+        "gui_bundle_probe_activate_bundle_probe",
+        "gui_bundle_probe_bundleprobe",
+        "gui_bundle_probe_probeactivationerror"
+      ],
+      "qualifiedPath": [
+        "gui_bundle_probe_activate_bundle_probe",
+        "gui_bundle_probe_bundleprobe",
+        "gui_bundle_probe_probeactivationerror"
+      ],
+      "depth": 1,
+      "nodeCount": 3,
+      "fileCount": 1,
+      "files": [
+        "src/summer_gds/gui/bundle_probe.py"
+      ],
+      "criticality": 0.16,
+      "warnings": []
+    },
+    {
+      "id": "flow:static_app_bindevents",
+      "name": "bindEvents",
+      "entryPoint": "static_app_bindevents",
+      "entryPointId": "static_app_bindevents",
+      "path": [
+        "static_app_bindevents",
+        "static_app_debounce"
+      ],
+      "qualifiedPath": [
+        "static_app_bindevents",
+        "static_app_debounce"
+      ],
+      "depth": 1,
+      "nodeCount": 2,
+      "fileCount": 1,
+      "files": [
+        "src/summer_gds/gui/static/app.js"
+      ],
+      "criticality": 0.16,
+      "warnings": []
+    },
+    {
+      "id": "flow:geometry_region_adapter_boundary_to_region",
+      "name": "boundary_to_region",
+      "entryPoint": "geometry_region_adapter_boundary_to_region",
+      "entryPointId": "geometry_region_adapter_boundary_to_region",
+      "path": [
+        "geometry_region_adapter_boundary_to_region",
+        "geometry_region_adapter_um_to_dbu"
+      ],
+      "qualifiedPath": [
+        "geometry_region_adapter_boundary_to_region",
+        "geometry_region_adapter_um_to_dbu"
+      ],
+      "depth": 1,
+      "nodeCount": 2,
+      "fileCount": 1,
+      "files": [
+        "src/summer_gds/geometry/region_adapter.py"
+      ],
+      "criticality": 0.16,
+      "warnings": []
+    },
+    {
+      "id": "flow:gds_utils_ring_utils_build_ring_radius_series",
+      "name": "build_ring_radius_series",
+      "entryPoint": "gds_utils_ring_utils_build_ring_radius_series",
+      "entryPointId": "gds_utils_ring_utils_build_ring_radius_series",
+      "path": [
+        "gds_utils_ring_utils_build_ring_radius_series",
+        "gds_utils_ring_utils_ensure_float_sequence",
+        "gds_utils_ring_utils_expand_ring_sequence",
+        "gds_utils_ring_utils_ringradiusprofile"
+      ],
+      "qualifiedPath": [
+        "gds_utils_ring_utils_build_ring_radius_series",
+        "gds_utils_ring_utils_ensure_float_sequence",
+        "gds_utils_ring_utils_expand_ring_sequence",
+        "gds_utils_ring_utils_ringradiusprofile"
+      ],
+      "depth": 1,
+      "nodeCount": 4,
+      "fileCount": 1,
+      "files": [
+        "summer_gds_v1/gds_utils/ring_utils.py"
+      ],
+      "criticality": 0.16,
+      "warnings": []
+    },
+    {
+      "id": "flow:static_app_createdefaultdraft",
+      "name": "createDefaultDraft",
+      "entryPoint": "static_app_createdefaultdraft",
+      "entryPointId": "static_app_createdefaultdraft",
+      "path": [
+        "static_app_createdefaultdraft",
+        "static_app_createbaseshape"
+      ],
+      "qualifiedPath": [
+        "static_app_createdefaultdraft",
+        "static_app_createbaseshape"
+      ],
+      "depth": 1,
+      "nodeCount": 2,
+      "fileCount": 1,
+      "files": [
+        "src/summer_gds/gui/static/app.js"
+      ],
+      "criticality": 0.16,
+      "warnings": []
+    },
+    {
+      "id": "flow:linkage_sync_manager_detectandsync",
+      "name": "detectAndSync",
+      "entryPoint": "linkage_sync_manager_detectandsync",
+      "entryPointId": "linkage_sync_manager_detectandsync",
+      "path": [
+        "linkage_sync_manager_detectandsync",
+        "linkage_sync_manager_detectchanges"
+      ],
+      "qualifiedPath": [
+        "linkage_sync_manager_detectandsync",
+        "linkage_sync_manager_detectchanges"
+      ],
+      "depth": 1,
+      "nodeCount": 2,
+      "fileCount": 1,
+      "files": [
+        "summer_gds_v1/web_gui/static/linkage/sync-manager.js"
+      ],
+      "criticality": 0.16,
+      "warnings": []
+    },
+    {
+      "id": "flow:linkage_id_manager_detectcirculardependency",
+      "name": "detectCircularDependency",
+      "entryPoint": "linkage_id_manager_detectcirculardependency",
+      "entryPointId": "linkage_id_manager_detectcirculardependency",
+      "path": [
+        "linkage_id_manager_detectcirculardependency",
+        "linkage_id_manager_findshapebyid"
+      ],
+      "qualifiedPath": [
+        "linkage_id_manager_detectcirculardependency",
+        "linkage_id_manager_findshapebyid"
+      ],
+      "depth": 1,
+      "nodeCount": 2,
+      "fileCount": 1,
+      "files": [
+        "summer_gds_v1/web_gui/static/linkage/id-manager.js"
+      ],
+      "criticality": 0.16,
+      "warnings": []
+    },
+    {
+      "id": "flow:linkage_override_manager_enhanceformeventbinding",
+      "name": "enhanceFormEventBinding",
+      "entryPoint": "linkage_override_manager_enhanceformeventbinding",
+      "entryPointId": "linkage_override_manager_enhanceformeventbinding",
+      "path": [
+        "linkage_override_manager_enhanceformeventbinding",
+        "linkage_override_manager_addoverridedetection"
+      ],
+      "qualifiedPath": [
+        "linkage_override_manager_enhanceformeventbinding",
+        "linkage_override_manager_addoverridedetection"
+      ],
+      "depth": 1,
+      "nodeCount": 2,
+      "fileCount": 1,
+      "files": [
+        "summer_gds_v1/web_gui/static/linkage/override-manager.js"
+      ],
+      "criticality": 0.16,
+      "warnings": []
+    },
+    {
+      "id": "flow:linkage_sync_manager_enhanceupdatejsonfromform",
+      "name": "enhanceUpdateJSONFromForm",
+      "entryPoint": "linkage_sync_manager_enhanceupdatejsonfromform",
+      "entryPointId": "linkage_sync_manager_enhanceupdatejsonfromform",
+      "path": [
+        "linkage_sync_manager_enhanceupdatejsonfromform",
+        "linkage_sync_manager_getconfig"
+      ],
+      "qualifiedPath": [
+        "linkage_sync_manager_enhanceupdatejsonfromform",
+        "linkage_sync_manager_getconfig"
+      ],
+      "depth": 1,
+      "nodeCount": 2,
+      "fileCount": 1,
+      "files": [
+        "summer_gds_v1/web_gui/static/linkage/sync-manager.js"
+      ],
+      "criticality": 0.16,
+      "warnings": []
+    },
+    {
+      "id": "flow:static_app_fitpreview",
+      "name": "fitPreview",
+      "entryPoint": "static_app_fitpreview",
+      "entryPointId": "static_app_fitpreview",
+      "path": [
+        "static_app_fitpreview",
+        "static_app_applypreviewscale"
+      ],
+      "qualifiedPath": [
+        "static_app_fitpreview",
+        "static_app_applypreviewscale"
+      ],
+      "depth": 1,
+      "nodeCount": 2,
+      "fileCount": 1,
+      "files": [
+        "src/summer_gds/gui/static/app.js"
+      ],
+      "criticality": 0.16,
+      "warnings": []
+    },
+    {
+      "id": "flow:static_main_generategds",
+      "name": "generateGDS",
+      "entryPoint": "static_main_generategds",
+      "entryPointId": "static_main_generategds",
+      "path": [
+        "static_main_generategds",
+        "static_main_showalert"
+      ],
+      "qualifiedPath": [
+        "static_main_generategds",
+        "static_main_showalert"
+      ],
+      "depth": 1,
+      "nodeCount": 2,
+      "fileCount": 1,
+      "files": [
+        "summer_gds_v1/web_gui/static/main.js"
+      ],
+      "criticality": 0.16,
+      "warnings": []
+    },
+    {
+      "id": "flow:linkage_validator_generatevalidationreport",
+      "name": "generateValidationReport",
+      "entryPoint": "linkage_validator_generatevalidationreport",
+      "entryPointId": "linkage_validator_generatevalidationreport",
+      "path": [
+        "linkage_validator_generatevalidationreport",
+        "linkage_validator_generatesuggestions"
+      ],
+      "qualifiedPath": [
+        "linkage_validator_generatevalidationreport",
+        "linkage_validator_generatesuggestions"
+      ],
+      "depth": 1,
+      "nodeCount": 2,
+      "fileCount": 1,
+      "files": [
+        "summer_gds_v1/web_gui/static/linkage/validator.js"
+      ],
+      "criticality": 0.16,
+      "warnings": []
+    },
+    {
+      "id": "flow:web_gui_app_generate_gds",
+      "name": "generate_gds",
+      "entryPoint": "web_gui_app_generate_gds",
+      "entryPointId": "web_gui_app_generate_gds",
+      "path": [
+        "web_gui_app_generate_gds",
+        "web_gui_app_ensure_string_values",
+        "web_gui_app_process_metadata"
+      ],
+      "qualifiedPath": [
+        "web_gui_app_generate_gds",
+        "web_gui_app_ensure_string_values",
+        "web_gui_app_process_metadata"
+      ],
+      "depth": 1,
+      "nodeCount": 3,
+      "fileCount": 1,
+      "files": [
+        "summer_gds_v1/web_gui/app.py"
+      ],
+      "criticality": 0.16,
+      "warnings": []
+    },
+    {
+      "id": "flow:geometry_primitives_has_consecutive_duplicate_points",
+      "name": "has_consecutive_duplicate_points",
+      "entryPoint": "geometry_primitives_has_consecutive_duplicate_points",
+      "entryPointId": "geometry_primitives_has_consecutive_duplicate_points",
+      "path": [
+        "geometry_primitives_has_consecutive_duplicate_points",
+        "geometry_primitives_points_equal"
+      ],
+      "qualifiedPath": [
+        "geometry_primitives_has_consecutive_duplicate_points",
+        "geometry_primitives_points_equal"
+      ],
+      "depth": 1,
+      "nodeCount": 2,
+      "fileCount": 1,
+      "files": [
+        "src/summer_gds/geometry/primitives.py"
+      ],
+      "criticality": 0.16,
+      "warnings": []
+    },
+    {
+      "id": "flow:schema_errors_issue",
+      "name": "issue",
+      "entryPoint": "schema_errors_issue",
+      "entryPointId": "schema_errors_issue",
+      "path": [
+        "schema_errors_issue",
+        "schema_errors_configissue"
+      ],
+      "qualifiedPath": [
+        "schema_errors_issue",
+        "schema_errors_configissue"
+      ],
+      "depth": 1,
+      "nodeCount": 2,
+      "fileCount": 1,
+      "files": [
+        "src/summer_gds/schema/errors.py"
+      ],
+      "criticality": 0.16,
+      "warnings": []
+    },
+    {
+      "id": "flow:web_gui_app_load_config",
+      "name": "load_config",
+      "entryPoint": "web_gui_app_load_config",
+      "entryPointId": "web_gui_app_load_config",
+      "path": [
+        "web_gui_app_load_config",
+        "web_gui_app_ensure_metadata_compatibility",
+        "web_gui_app_ensure_string_values"
+      ],
+      "qualifiedPath": [
+        "web_gui_app_load_config",
+        "web_gui_app_ensure_metadata_compatibility",
+        "web_gui_app_ensure_string_values"
+      ],
+      "depth": 1,
+      "nodeCount": 3,
+      "fileCount": 1,
+      "files": [
+        "summer_gds_v1/web_gui/app.py"
+      ],
+      "criticality": 0.16,
+      "warnings": []
+    },
+    {
+      "id": "flow:gui_launcher_log_webview_runtime",
+      "name": "log_webview_runtime",
+      "entryPoint": "gui_launcher_log_webview_runtime",
+      "entryPointId": "gui_launcher_log_webview_runtime",
+      "path": [
+        "gui_launcher_log_webview_runtime",
+        "gui_launcher_log"
+      ],
+      "qualifiedPath": [
+        "gui_launcher_log_webview_runtime",
+        "gui_launcher_log"
+      ],
+      "depth": 1,
+      "nodeCount": 2,
+      "fileCount": 1,
+      "files": [
+        "src/summer_gds/gui/launcher.py"
+      ],
+      "criticality": 0.16,
+      "warnings": []
+    },
+    {
+      "id": "flow:scripts_create_customer_source_archive_main",
+      "name": "main",
+      "entryPoint": "scripts_create_customer_source_archive_main",
+      "entryPointId": "scripts_create_customer_source_archive_main",
+      "path": [
+        "scripts_create_customer_source_archive_main",
+        "scripts_create_customer_source_archive_revision"
+      ],
+      "qualifiedPath": [
+        "scripts_create_customer_source_archive_main",
+        "scripts_create_customer_source_archive_revision"
+      ],
+      "depth": 1,
+      "nodeCount": 2,
+      "fileCount": 1,
+      "files": [
+        "scripts/create_customer_source_archive.py"
+      ],
+      "criticality": 0.16,
+      "warnings": []
+    },
+    {
+      "id": "flow:summer_gds_v1_fillet_gds_main",
+      "name": "main",
+      "entryPoint": "summer_gds_v1_fillet_gds_main",
+      "entryPointId": "summer_gds_v1_fillet_gds_main",
+      "path": [
+        "summer_gds_v1_fillet_gds_main",
+        "summer_gds_v1_fillet_gds_fillet_gds"
+      ],
+      "qualifiedPath": [
+        "summer_gds_v1_fillet_gds_main",
+        "summer_gds_v1_fillet_gds_fillet_gds"
+      ],
+      "depth": 1,
+      "nodeCount": 2,
+      "fileCount": 1,
+      "files": [
+        "summer_gds_v1/fillet_gds.py"
+      ],
+      "criticality": 0.16,
+      "warnings": []
+    },
+    {
+      "id": "flow:summer_gds_v1_main_main",
+      "name": "main",
+      "entryPoint": "summer_gds_v1_main_main",
+      "entryPointId": "summer_gds_v1_main_main",
+      "path": [
+        "summer_gds_v1_main_main",
+        "summer_gds_v1_main_generate_vertices",
+        "summer_gds_v1_main_parse_vertices"
+      ],
+      "qualifiedPath": [
+        "summer_gds_v1_main_main",
+        "summer_gds_v1_main_generate_vertices",
+        "summer_gds_v1_main_parse_vertices"
+      ],
+      "depth": 1,
+      "nodeCount": 3,
+      "fileCount": 1,
+      "files": [
+        "summer_gds_v1/main.py"
+      ],
+      "criticality": 0.16,
+      "warnings": []
+    },
+    {
+      "id": "flow:gds_utils_fillet_utils_normalize_arc_fillet_config",
+      "name": "normalize_arc_fillet_config",
+      "entryPoint": "gds_utils_fillet_utils_normalize_arc_fillet_config",
+      "entryPointId": "gds_utils_fillet_utils_normalize_arc_fillet_config",
+      "path": [
+        "gds_utils_fillet_utils_normalize_arc_fillet_config",
+        "gds_utils_fillet_utils_ensure_float_list"
+      ],
+      "qualifiedPath": [
+        "gds_utils_fillet_utils_normalize_arc_fillet_config",
+        "gds_utils_fillet_utils_ensure_float_list"
+      ],
+      "depth": 1,
+      "nodeCount": 2,
+      "fileCount": 1,
+      "files": [
+        "summer_gds_v1/gds_utils/fillet_utils.py"
+      ],
+      "criticality": 0.16,
+      "warnings": []
+    },
+    {
+      "id": "flow:static_app_openglobaldialog",
+      "name": "openGlobalDialog",
+      "entryPoint": "static_app_openglobaldialog",
+      "entryPointId": "static_app_openglobaldialog",
+      "path": [
+        "static_app_openglobaldialog",
+        "static_app_clearfielderrors",
+        "static_app_showdialog"
+      ],
+      "qualifiedPath": [
+        "static_app_openglobaldialog",
+        "static_app_clearfielderrors",
+        "static_app_showdialog"
+      ],
+      "depth": 1,
+      "nodeCount": 3,
+      "fileCount": 1,
+      "files": [
+        "src/summer_gds/gui/static/app.js"
+      ],
+      "criticality": 0.16,
+      "warnings": []
+    },
+    {
+      "id": "flow:static_app_readradius",
+      "name": "readRadius",
+      "entryPoint": "static_app_readradius",
+      "entryPointId": "static_app_readradius",
+      "path": [
+        "static_app_readradius",
+        "static_app_readfinitenumber"
+      ],
+      "qualifiedPath": [
+        "static_app_readradius",
+        "static_app_readfinitenumber"
+      ],
+      "depth": 1,
+      "nodeCount": 2,
+      "fileCount": 1,
+      "files": [
+        "src/summer_gds/gui/static/app.js"
+      ],
+      "criticality": 0.16,
+      "warnings": []
+    },
+    {
+      "id": "flow:geometry_region_adapter_region_to_boundary",
+      "name": "region_to_boundary",
+      "entryPoint": "geometry_region_adapter_region_to_boundary",
+      "entryPointId": "geometry_region_adapter_region_to_boundary",
+      "path": [
+        "geometry_region_adapter_region_to_boundary",
+        "geometry_region_adapter_dbu_to_um"
+      ],
+      "qualifiedPath": [
+        "geometry_region_adapter_region_to_boundary",
+        "geometry_region_adapter_dbu_to_um"
+      ],
+      "depth": 1,
+      "nodeCount": 2,
+      "fileCount": 1,
+      "files": [
+        "src/summer_gds/geometry/region_adapter.py"
+      ],
+      "criticality": 0.16,
+      "warnings": []
+    },
+    {
+      "id": "flow:writer_image_renderer_render_image",
+      "name": "render_image",
+      "entryPoint": "writer_image_renderer_render_image",
+      "entryPointId": "writer_image_renderer_render_image",
+      "path": [
+        "writer_image_renderer_render_image",
+        "writer_image_renderer_combined_bbox",
+        "writer_image_renderer_metadata_for_format",
+        "writer_image_renderer_stable_color"
+      ],
+      "qualifiedPath": [
+        "writer_image_renderer_render_image",
+        "writer_image_renderer_combined_bbox",
+        "writer_image_renderer_metadata_for_format",
+        "writer_image_renderer_stable_color"
+      ],
+      "depth": 1,
+      "nodeCount": 4,
+      "fileCount": 1,
+      "files": [
+        "src/summer_gds/writer/image_renderer.py"
+      ],
+      "criticality": 0.16,
+      "warnings": []
+    },
+    {
+      "id": "flow:linkage_property_resolver_resolveshapeproperties",
+      "name": "resolveShapeProperties",
+      "entryPoint": "linkage_property_resolver_resolveshapeproperties",
+      "entryPointId": "linkage_property_resolver_resolveshapeproperties",
+      "path": [
+        "linkage_property_resolver_resolveshapeproperties",
+        "linkage_property_resolver_applyderivedparams",
+        "linkage_property_resolver_extractcomputedprops"
+      ],
+      "qualifiedPath": [
+        "linkage_property_resolver_resolveshapeproperties",
+        "linkage_property_resolver_applyderivedparams",
+        "linkage_property_resolver_extractcomputedprops"
+      ],
+      "depth": 1,
+      "nodeCount": 3,
+      "fileCount": 1,
+      "files": [
+        "summer_gds_v1/web_gui/static/linkage/property-resolver.js"
+      ],
+      "criticality": 0.16,
+      "warnings": []
+    },
+    {
+      "id": "flow:gui_qt_shell_run_qt_shell",
+      "name": "run_qt_shell",
+      "entryPoint": "gui_qt_shell_run_qt_shell",
+      "entryPointId": "gui_qt_shell_run_qt_shell",
+      "path": [
+        "gui_qt_shell_run_qt_shell",
+        "gui_qt_shell_origininterceptor",
+        "gui_qt_shell_restrictedpage",
+        "gui_qt_shell_shellwindow",
+        "gui_qt_shell_shutdowncoordinator",
+        "gui_qt_shell_shutdowncoordinator_begin"
+      ],
+      "qualifiedPath": [
+        "gui_qt_shell_run_qt_shell",
+        "gui_qt_shell_origininterceptor",
+        "gui_qt_shell_restrictedpage",
+        "gui_qt_shell_shellwindow",
+        "gui_qt_shell_shutdowncoordinator",
+        "gui_qt_shell_shutdowncoordinator_begin"
+      ],
+      "depth": 1,
+      "nodeCount": 6,
+      "fileCount": 1,
+      "files": [
+        "src/summer_gds/gui/qt_shell.py"
+      ],
+      "criticality": 0.16,
+      "warnings": []
+    },
+    {
+      "id": "flow:web_gui_app_save_config",
+      "name": "save_config",
+      "entryPoint": "web_gui_app_save_config",
+      "entryPointId": "web_gui_app_save_config",
+      "path": [
+        "web_gui_app_save_config",
+        "web_gui_app_ensure_string_values",
+        "web_gui_app_process_metadata"
+      ],
+      "qualifiedPath": [
+        "web_gui_app_save_config",
+        "web_gui_app_ensure_string_values",
+        "web_gui_app_process_metadata"
+      ],
+      "depth": 1,
+      "nodeCount": 3,
+      "fileCount": 1,
+      "files": [
+        "summer_gds_v1/web_gui/app.py"
+      ],
+      "criticality": 0.16,
+      "warnings": []
+    },
+    {
+      "id": "flow:linkage_sync_manager_syncallderivedshapes",
+      "name": "syncAllDerivedShapes",
+      "entryPoint": "linkage_sync_manager_syncallderivedshapes",
+      "entryPointId": "linkage_sync_manager_syncallderivedshapes",
+      "path": [
+        "linkage_sync_manager_syncallderivedshapes",
+        "linkage_sync_manager_getconfig",
+        "linkage_sync_manager_updatejsoneditorsilently"
+      ],
+      "qualifiedPath": [
+        "linkage_sync_manager_syncallderivedshapes",
+        "linkage_sync_manager_getconfig",
+        "linkage_sync_manager_updatejsoneditorsilently"
+      ],
+      "depth": 1,
+      "nodeCount": 3,
+      "fileCount": 1,
+      "files": [
+        "summer_gds_v1/web_gui/static/linkage/sync-manager.js"
+      ],
+      "criticality": 0.16,
+      "warnings": []
+    },
+    {
+      "id": "flow:linkage_sync_manager_syncderivedshapes",
+      "name": "syncDerivedShapes",
+      "entryPoint": "linkage_sync_manager_syncderivedshapes",
+      "entryPointId": "linkage_sync_manager_syncderivedshapes",
+      "path": [
+        "linkage_sync_manager_syncderivedshapes",
+        "linkage_sync_manager_getconfig",
+        "linkage_sync_manager_updatejsoneditorsilently"
+      ],
+      "qualifiedPath": [
+        "linkage_sync_manager_syncderivedshapes",
+        "linkage_sync_manager_getconfig",
+        "linkage_sync_manager_updatejsoneditorsilently"
+      ],
+      "depth": 1,
+      "nodeCount": 3,
+      "fileCount": 1,
+      "files": [
+        "summer_gds_v1/web_gui/static/linkage/sync-manager.js"
+      ],
+      "criticality": 0.16,
+      "warnings": []
+    },
+    {
+      "id": "flow:static_main_updateformfromjson",
+      "name": "updateFormFromJSON",
+      "entryPoint": "static_main_updateformfromjson",
+      "entryPointId": "static_main_updateformfromjson",
+      "path": [
+        "static_main_updateformfromjson",
+        "static_main_refreshshapescontainer"
+      ],
+      "qualifiedPath": [
+        "static_main_updateformfromjson",
+        "static_main_refreshshapescontainer"
+      ],
+      "depth": 1,
+      "nodeCount": 2,
+      "fileCount": 1,
+      "files": [
+        "summer_gds_v1/web_gui/static/main.js"
+      ],
+      "criticality": 0.16,
+      "warnings": []
+    },
+    {
+      "id": "flow:static_main_updatevertexvalidationfeedback",
+      "name": "updateVertexValidationFeedback",
+      "entryPoint": "static_main_updatevertexvalidationfeedback",
+      "entryPointId": "static_main_updatevertexvalidationfeedback",
+      "path": [
+        "static_main_updatevertexvalidationfeedback",
+        "static_main_escapehtml"
+      ],
+      "qualifiedPath": [
+        "static_main_updatevertexvalidationfeedback",
+        "static_main_escapehtml"
+      ],
+      "depth": 1,
+      "nodeCount": 2,
+      "fileCount": 1,
+      "files": [
+        "summer_gds_v1/web_gui/static/main.js"
+      ],
+      "criticality": 0.16,
+      "warnings": []
+    },
+    {
+      "id": "flow:static_app_zoompreview",
+      "name": "zoomPreview",
+      "entryPoint": "static_app_zoompreview",
+      "entryPointId": "static_app_zoompreview",
+      "path": [
+        "static_app_zoompreview",
+        "static_app_applypreviewscale",
+        "static_app_clamp"
+      ],
+      "qualifiedPath": [
+        "static_app_zoompreview",
+        "static_app_applypreviewscale",
+        "static_app_clamp"
+      ],
+      "depth": 1,
+      "nodeCount": 3,
+      "fileCount": 1,
+      "files": [
+        "src/summer_gds/gui/static/app.js"
+      ],
+      "criticality": 0.16,
+      "warnings": []
+    }
+  ]
+}

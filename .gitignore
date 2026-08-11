@@ -66,6 +66,7 @@ docs/generated/
 .graphify/*
 !.graphify/GRAPH_REPORT.md
 !.graphify/flows.json
+!.graphify/graph.json
 !.graphify/graph.svg
 
 # Locally generated customer delivery archives.
