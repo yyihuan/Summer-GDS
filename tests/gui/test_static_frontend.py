@@ -64,7 +64,7 @@ def test_index_is_builder_first_not_yaml_editor(tmp_path):
 
 
 def test_frontend_guards_against_stuck_busy_state():
-    script = (Path(__file__).parents[2] / "src/summer_gds/gui/static/app.js").read_text()
+    script = (Path(__file__).parents[2] / "src/summer_gds/gui/static/app.js").read_text(encoding="utf-8")
 
     assert "REQUEST_TIMEOUT_MS" in script
     assert "FILE_DIALOG_TIMEOUT_MS" in script
@@ -82,7 +82,7 @@ def test_preview_svg_viewport_fills_the_responsive_render_stage():
 
 
 def test_frontend_uses_single_vertex_list_input_with_orientation_checks():
-    script = (Path(__file__).parents[2] / "src/summer_gds/gui/static/app.js").read_text()
+    script = (Path(__file__).parents[2] / "src/summer_gds/gui/static/app.js").read_text(encoding="utf-8")
 
     assert "function parseVertexList" in script
     assert "function parseDelimitedVertices" in script
@@ -94,7 +94,7 @@ def test_frontend_uses_single_vertex_list_input_with_orientation_checks():
 
 
 def test_frontend_supports_base_shape_per_corner_fillet_radii():
-    script = (Path(__file__).parents[2] / "src/summer_gds/gui/static/app.js").read_text()
+    script = (Path(__file__).parents[2] / "src/summer_gds/gui/static/app.js").read_text(encoding="utf-8")
 
     assert "function parseRadiiList" in script
     assert "function parseDelimitedRadii" in script
@@ -106,7 +106,7 @@ def test_frontend_supports_base_shape_per_corner_fillet_radii():
 
 
 def test_frontend_supports_via_inner_outer_per_corner_fillet_radii():
-    script = (Path(__file__).parents[2] / "src/summer_gds/gui/static/app.js").read_text()
+    script = (Path(__file__).parents[2] / "src/summer_gds/gui/static/app.js").read_text(encoding="utf-8")
 
     assert "function readViaFilletSide" in script
     assert "function formatViaFilletRadiiList" in script
@@ -118,7 +118,7 @@ def test_frontend_supports_via_inner_outer_per_corner_fillet_radii():
 
 
 def test_frontend_supports_rings_concentric_fillet_expansion():
-    script = (Path(__file__).parents[2] / "src/summer_gds/gui/static/app.js").read_text()
+    script = (Path(__file__).parents[2] / "src/summer_gds/gui/static/app.js").read_text(encoding="utf-8")
 
     assert "function readRingsConcentricFillet" in script
     assert "function addRadiusOffset" in script
@@ -127,7 +127,7 @@ def test_frontend_supports_rings_concentric_fillet_expansion():
 
 
 def test_frontend_supports_rings_vertices_source_and_per_corner_fillet():
-    script = (Path(__file__).parents[2] / "src/summer_gds/gui/static/app.js").read_text()
+    script = (Path(__file__).parents[2] / "src/summer_gds/gui/static/app.js").read_text(encoding="utf-8")
 
     assert "function renderRingsSourceMode" in script
     assert "function handleRingsVertexListInput" in script
