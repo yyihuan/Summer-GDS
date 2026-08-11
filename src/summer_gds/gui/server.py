@@ -4,8 +4,9 @@ import secrets
 from pathlib import Path
 from typing import Any
 
-from flask import Flask, jsonify, render_template, request
+from flask import Flask, g, jsonify, render_template, request
 
+from summer_gds.gui.runtime import RequestGate
 from summer_gds.gui.service import GuiSession, protocol_error
 
 
@@ -17,6 +18,7 @@ def create_app(
     session_token: str | None = None,
     temp_root: Path | None = None,
     gui_session: GuiSession | None = None,
+    request_gate: RequestGate | None = None,
 ) -> Flask:
     token = session_token or secrets.token_urlsafe(32)
     session = gui_session or GuiSession(temp_root=temp_root)
@@ -29,14 +31,29 @@ def create_app(
     )
     app.config["SUMMER_GDS_SESSION_TOKEN"] = token
     app.config["SUMMER_GDS_GUI_SESSION"] = session
+    app.config["SUMMER_GDS_REQUEST_GATE"] = request_gate
+    app.config["DEBUG"] = False
+    app.config["TESTING"] = False
 
     @app.before_request
     def require_session_token():
+        g.summer_gds_gate_entered = False
         if not request.path.startswith("/api/"):
             return None
         if request.headers.get(TOKEN_HEADER) != token:
             return jsonify(protocol_error("forbidden", "$.headers", "Invalid GUI session token.")), 403
+        if request_gate is not None:
+            if not request_gate.try_enter():
+                return jsonify(protocol_error("app_closing", "$", "The application is closing.")), 503
+            g.summer_gds_gate_entered = True
         return None
+
+    @app.teardown_request
+    def leave_request_gate(_exception: BaseException | None) -> None:
+        if getattr(g, "summer_gds_gate_entered", False):
+            g.summer_gds_gate_entered = False
+            assert request_gate is not None
+            request_gate.leave()
 
     @app.get("/")
     def index():

@@ -1,0 +1,7 @@
+flowchart LR
+  Sync["锁定 uv 环境"] --> Build["Windows AMD64 onedir 构建"]
+  Build --> Inventory["资源清单与 PE Qt 唯一来源检查"]
+  Inventory --> Move["复制到仓库外临时目录"]
+  Move --> Probe["冻结态 loopback API probe"]
+  Probe --> Output["YAML、SVG、GDS 与 KLayout read-back"]
+  Output --> Shutdown["协调器清理与 exit 0"]

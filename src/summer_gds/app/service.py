@@ -4,6 +4,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Literal
 
+from summer_gds.app.output_paths import atomic_temp_output_path
 from summer_gds.app.pipeline import execute_config
 from summer_gds.schema.errors import ConfigError, issue
 from summer_gds.schema.yaml_v2 import parse_yaml_text
@@ -29,7 +30,7 @@ class ExportResult:
 
 def validate_config_file(path: Path) -> object:
     config_path = Path(path).resolve()
-    return parse_yaml_text(config_path.read_text(), base_path=config_path)
+    return parse_yaml_text(config_path.read_text(encoding="utf-8"), base_path=config_path)
 
 
 def export_artifact(path: Path, options: ExportOptions) -> ExportResult:
@@ -51,7 +52,7 @@ def export_artifact(path: Path, options: ExportOptions) -> ExportResult:
             region_count=len(regions),
         )
 
-    temp_path = _temp_output_path(output_path)
+    temp_path = atomic_temp_output_path(output_path)
     try:
         if options.format == "gds":
             top_cell = config.gds.top_cell if config.gds else None
@@ -102,7 +103,3 @@ def _validate_output_path(output_path: Path, options: ExportOptions) -> None:
         raise ConfigError([issue("output_parent_missing", "$.out", f"Output parent directory does not exist: {output_path.parent}")])
     if output_path.exists() and not options.force:
         raise ConfigError([issue("output_exists", "$.out", "Output already exists; pass force=True to overwrite.")])
-
-
-def _temp_output_path(output_path: Path) -> Path:
-    return output_path.with_name(f".{output_path.stem}.tmp{output_path.suffix}")

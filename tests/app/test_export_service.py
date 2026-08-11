@@ -2,6 +2,7 @@ from pathlib import Path
 
 import pytest
 
+from summer_gds.app.output_paths import atomic_temp_output_path
 from summer_gds.app.service import ExportOptions, export_artifact, validate_config_file
 from summer_gds.schema.errors import ConfigError
 
@@ -26,7 +27,7 @@ shapes:
 def write_config(tmp_path: Path, text: str = VALID_BASE) -> Path:
     path = tmp_path / "case" / "config.yaml"
     path.parent.mkdir()
-    path.write_text(text)
+    path.write_text(text, encoding="utf-8")
     return path
 
 
@@ -35,7 +36,7 @@ def assert_code(exc_info, code: str):
 
 
 def test_validate_config_file_does_not_require_gds_output(tmp_path):
-    config_path = write_config(tmp_path)
+    config_path = write_config(tmp_path, VALID_BASE + "# UTF-8: 中文\n")
 
     config = validate_config_file(config_path)
 
@@ -116,4 +117,9 @@ def test_svg_export_uses_image_renderer(tmp_path):
 
     assert result.output_path == output
     assert output.exists()
-    assert output.read_text().lstrip().startswith("<?xml")
+    assert output.read_text(encoding="utf-8").lstrip().startswith("<?xml")
+
+
+def test_atomic_temp_output_name_is_not_hidden_and_preserves_writer_suffix(tmp_path):
+    assert atomic_temp_output_path(tmp_path / "layout.gds").name == "layout.tmp.gds"
+    assert atomic_temp_output_path(tmp_path / "preview.svg").name == "preview.tmp.svg"

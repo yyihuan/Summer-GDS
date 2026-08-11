@@ -16,4 +16,6 @@ def write_gds(regions: tuple[RegionObject, ...], output_path: Path, top_cell: st
     for region_object in regions:
         layer_index = layout.layer(region_object.layer.layer, region_object.layer.datatype)
         cell.shapes(layer_index).insert(region_object.region)
-    layout.write(str(output_path))
+    options = pya.SaveLayoutOptions()
+    options.format = "GDS2"
+    layout.write(str(output_path), options)

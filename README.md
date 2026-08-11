@@ -23,12 +23,12 @@ Summer-GDS/
 │   ├── model/               # 内部数据模型
 │   ├── geometry/            # 几何计算（fillet、Region 转换、offset）
 │   ├── writer/              # 输出 backend（GDS writer、image renderer）
-│   └── gui/                 # 桌面 GUI（pywebview + Flask）
+│   └── gui/                 # 桌面 GUI（PySide6 + QtWebEngine + Flask loopback）
 │       ├── templates/
 │       └── static/
 ├── tests/                   # 测试
 ├── docs/                    # 设计文档
-├── summer_gds_v1/           # v1 代码存档
+├── summer_gds_v1/           # v1 代码存档（仅开发仓库保留）
 ├── pyproject.toml
 ├── SummerGDS.spec           # PyInstaller 打包配置
 └── uv.lock
@@ -69,13 +69,13 @@ uv run summer-gds-gui
 ### 打包为可执行文件
 
 ```bash
-pip install pyinstaller
-pyinstaller SummerGDS.spec   # onedir 模式验证
-# 确认无误后，将 SummerGDS.spec 中 MODE 改为 "onefile"，重新打包
-pyinstaller SummerGDS.spec
+uv sync --frozen --group packaging
+uv run pyinstaller --noconfirm SummerGDS.spec
 ```
 
-产物位于 `dist/` 目录，建议在目标平台上直接构建。
+根目录 `SummerGDS.spec` 是唯一权威配置，产物为 QtWebEngine 所需资源齐全的
+onedir 包，位于 `dist/`。建议在目标平台上直接构建；详细验证流程见
+[前端部署与打包文档](./docs/frontend/deployment.md)。
 
 ## YAML 配置示例
 
@@ -144,4 +144,8 @@ shapes:
 
 ## v1 到 v2 的变化
 
-v1 基于 PySide6 GUI + Flask 后端，v2 做了架构重构：CLI-first 设计（CLI 是稳定执行入口，GUI 和脚本都通过 YAML 交互）、统一几何流水线（`YAML 业务对象 → 编译 → KLayout Region → output backend`）、GUI 从 PySide6 切换到 pywebview + Flask 去掉 Qt 依赖。v1 代码保留在 `summer_gds_v1/` 目录和远程 `v1` 分支。核心功能优化是优化倒角功能。
+v1 基于 PySide6 GUI + Flask 后端。v2 重构为 CLI-first 设计（CLI 是稳定执行
+入口，GUI 和脚本都通过 YAML 交互）和统一几何流水线（`YAML 业务对象 → 编译 →
+KLayout Region → output backend`）；当前桌面壳使用 `PySide6 + QtWebEngine +
+Flask loopback`，保留既有 Web UI、YAML v2 和几何/GDS 语义。v1 代码仅作为
+开发仓库中的历史存档，客户源代码包不包含它。

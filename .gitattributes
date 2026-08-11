@@ -1,0 +1,5 @@
+# Customer source archives intentionally omit internal development evidence.
+.graphify export-ignore
+docs/reviews export-ignore
+docs/tmp export-ignore
+summer_gds_v1 export-ignore

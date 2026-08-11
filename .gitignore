@@ -61,3 +61,12 @@ docs/generated/
 .ipynb_checkpoints
 *.ipynb
 .gstack/
+
+# Internal Graphify output: only the concise report/flow evidence is versioned.
+.graphify/*
+!.graphify/GRAPH_REPORT.md
+!.graphify/flows.json
+!.graphify/graph.svg
+
+# Locally generated customer delivery archives.
+artifacts/

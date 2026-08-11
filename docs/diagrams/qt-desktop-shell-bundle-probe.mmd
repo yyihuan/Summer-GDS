@@ -1,0 +1,27 @@
+sequenceDiagram
+  participant Verify as Bundle verifier
+  participant Shell as Frozen Qt shell
+  participant Page as QWebEngine page
+  participant API as Existing Flask API
+  participant Adapter as Restricted probe adapter
+  participant Life as Shutdown coordinator
+
+  Verify->>Verify: Create private root and 256-bit run ID
+  Verify->>Shell: Launch with paired internal environment variables
+  Shell->>Shell: Validate frozen mode, root, owner, and run ID
+  Shell->>Shell: Arm 180-second probe watchdog
+  Shell->>Page: Load loopback page and verify DOM app-ready
+  Page-->>Shell: DOM ready
+  Shell-->>Verify: Atomically publish matching ready marker
+  Verify->>API: GET root, extract token, call open/parse/validate/preview
+  API->>Adapter: Choose fixed input and output paths
+  Adapter-->>API: Paths confined to private root
+  Verify->>API: Save YAML and export GDS with path tokens
+  API-->>Verify: SVG, YAML, GDS, or a preserved failure
+  alt Finally publishes a valid command before deadline
+    Verify->>Shell: Atomically publish matching shutdown command
+    Shell->>Life: Cancel probe timer and invoke the single coordinator
+  else No valid command by 180 seconds
+    Shell->>Life: Invoke the same coordinator with probe timeout
+  end
+  Life-->>Verify: Publish cleanup marker, then exit

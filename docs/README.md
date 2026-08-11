@@ -71,6 +71,13 @@ docs/refactor/
 17. [MVP Plan Archive](./product/MVP_PLAN.md)
     历史参考，不作为当前执行依据。
 
+18. [Qt 桌面壳迁移计划](./planning/qt-desktop-shell-migration-plan.md)
+    从 pywebview 迁移到 PySide6 QtWebEngine 的背景、决策边界、实施阶段、
+    平台验证门槛和回滚方式。
+
+19. [客户源代码包说明](./customer-source-handover.md)
+    客户交付包的内容、重建方法与刻意排除的内部开发材料。
+
 ---
 
 ## 核心结论

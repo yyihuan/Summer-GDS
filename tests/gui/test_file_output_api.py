@@ -2,9 +2,11 @@ from __future__ import annotations
 
 from collections import deque
 from pathlib import Path
+import threading
+import time
 
 from summer_gds.gui.server import create_app
-from summer_gds.gui.service import GuiSession
+from summer_gds.gui.service import DialogFailure, GuiSession
 
 
 TOKEN = "test-token"
@@ -85,6 +87,19 @@ def test_choose_save_cancel_is_explicit(tmp_path):
     assert data == {"ok": False, "canceled": True, "errors": []}
 
 
+def test_dialog_failure_is_not_reported_as_cancel(tmp_path):
+    class FailingDialog(FakeSaveDialog):
+        def choose_save_path(self, kind, suggested_name):
+            raise DialogFailure("dialog_busy", "Another file dialog is already open.")
+
+    client = make_client(tmp_path, FailingDialog())
+    data = choose_path(client, "yaml")
+
+    assert data["ok"] is False
+    assert data["canceled"] is False
+    assert {error["code"] for error in data["errors"]} == {"dialog_busy"}
+
+
 def test_yaml_save_validates_token_kind_and_writes_atomically(tmp_path):
     output = tmp_path / "config.yaml"
     client = make_client(tmp_path, FakeSaveDialog(output))
@@ -97,7 +112,7 @@ def test_yaml_save_validates_token_kind_and_writes_atomically(tmp_path):
     assert data["ok"] is True
     assert data["path_label"] == str(output)
     assert data["errors"] == []
-    assert output.read_text() == VALID_YAML
+    assert output.read_text(encoding="utf-8") == VALID_YAML
     assert not (output.parent / ".config.tmp.yaml").exists()
 
 
@@ -132,7 +147,7 @@ def test_yaml_save_reports_expired_path_token(tmp_path):
 
 def test_yaml_save_requires_force_for_existing_file(tmp_path):
     output = tmp_path / "config.yaml"
-    output.write_text("old")
+    output.write_text("old", encoding="utf-8")
     client = make_client(tmp_path, FakeSaveDialog(output))
     token = choose_path(client, "yaml")["path_token"]
 
@@ -142,7 +157,47 @@ def test_yaml_save_requires_force_for_existing_file(tmp_path):
     assert blocked.get_json()["ok"] is False
     assert {error["code"] for error in blocked.get_json()["errors"]} == {"export_exists"}
     assert forced.get_json()["ok"] is True
-    assert output.read_text() == VALID_YAML
+    assert output.read_text(encoding="utf-8") == VALID_YAML
+
+
+def test_force_retry_can_reuse_valid_token(tmp_path):
+    output = tmp_path / "config.yaml"
+    output.write_text("old", encoding="utf-8")
+    client = make_client(tmp_path, FakeSaveDialog(output))
+    token = choose_path(client, "yaml")["path_token"]
+
+    blocked = post_json(client, "/api/yaml/save", {"yaml_text": VALID_YAML, "path_token": token})
+    forced = post_json(
+        client,
+        "/api/yaml/save",
+        {"yaml_text": VALID_YAML, "path_token": token, "force": True},
+    )
+
+    assert blocked.get_json()["ok"] is False
+    assert forced.get_json()["ok"] is True
+
+
+def test_path_tokens_are_locked_and_purged(tmp_path):
+    outputs = tuple(tmp_path / f"config-{index}.yaml" for index in range(8))
+    session = GuiSession(temp_root=tmp_path / "gui-temp", file_dialog=FakeSaveDialog(*outputs))
+    stale = "stale-token"
+    from summer_gds.gui.service import PathToken
+
+    session.path_tokens[stale] = PathToken("yaml", tmp_path / "stale.yaml", time.time() - 1)
+    results: list[dict] = []
+    threads = [
+        threading.Thread(target=lambda: results.append(session.choose_save_path("yaml")))
+        for _ in outputs
+    ]
+    for thread in threads:
+        thread.start()
+    for thread in threads:
+        thread.join()
+
+    assert len(results) == len(outputs)
+    assert all(result["ok"] for result in results)
+    assert stale not in session.path_tokens
+    assert len(session.path_tokens) == len(outputs)
 
 
 def test_gds_export_uses_selected_token_path_not_gds_output(tmp_path):
@@ -177,7 +232,8 @@ def test_gds_export_reports_missing_parent(tmp_path):
 
 def test_yaml_open_reads_selected_file(tmp_path):
     config = tmp_path / "config.yaml"
-    config.write_text(VALID_YAML)
+    yaml_text = VALID_YAML + "# UTF-8: 中文\n"
+    config.write_text(yaml_text, encoding="utf-8")
     dialog = FakeSaveDialog(open_paths=(config,))
     client = make_client(tmp_path, dialog)
 
@@ -187,7 +243,7 @@ def test_yaml_open_reads_selected_file(tmp_path):
     data = response.get_json()
     assert data == {
         "ok": True,
-        "yaml_text": VALID_YAML,
+        "yaml_text": yaml_text,
         "path_label": str(config),
         "errors": [],
     }
@@ -205,7 +261,7 @@ def test_yaml_open_cancel_is_explicit(tmp_path):
 def test_yaml_open_rejects_missing_or_non_yaml_path(tmp_path):
     missing = tmp_path / "missing.yaml"
     bad_suffix = tmp_path / "config.txt"
-    bad_suffix.write_text("x")
+    bad_suffix.write_text("x", encoding="utf-8")
     missing_client = make_client(tmp_path, FakeSaveDialog(open_paths=(missing,)))
     suffix_client = make_client(tmp_path, FakeSaveDialog(open_paths=(bad_suffix,)))
 

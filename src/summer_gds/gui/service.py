@@ -3,12 +3,14 @@ from __future__ import annotations
 import hashlib
 import shutil
 import tempfile
+import threading
 import time
 import uuid
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any, Protocol
 
+from summer_gds.app.output_paths import atomic_temp_output_path
 from summer_gds.app.pipeline import execute_config
 from summer_gds.gui.presenter import canonical_yaml, config_to_dict, field_map_for_config, issue_to_dict
 from summer_gds.schema.errors import ConfigError, ConfigIssue, issue
@@ -22,6 +24,13 @@ class SaveFileDialog(Protocol):
 
     def choose_save_path(self, kind: str, suggested_name: str | None) -> Path | None:
         pass
+
+
+class DialogFailure(Exception):
+    def __init__(self, code: str, safe_message: str) -> None:
+        super().__init__(safe_message)
+        self.code = code
+        self.safe_message = safe_message
 
 
 class NullSaveFileDialog:
@@ -47,6 +56,7 @@ class GuiSession:
     file_dialog: SaveFileDialog = field(default_factory=NullSaveFileDialog)
     session_id: str = field(default_factory=lambda: uuid.uuid4().hex)
     path_tokens: dict[str, PathToken] = field(default_factory=dict)
+    _path_tokens_lock: threading.Lock = field(default_factory=threading.Lock, init=False, repr=False)
 
     def __post_init__(self) -> None:
         root = self.temp_root or Path(tempfile.gettempdir()) / "summer-gds-v2-gui"
@@ -61,6 +71,8 @@ class GuiSession:
         return self.temp_root / f"session-{self.session_id}"
 
     def close(self) -> None:
+        with self._path_tokens_lock:
+            self.path_tokens.clear()
         shutil.rmtree(self.session_dir, ignore_errors=True)
 
     def parse(self, yaml_text: str) -> dict[str, Any]:
@@ -101,7 +113,7 @@ class GuiSession:
                 regions,
                 ImageOutputConfig(path=svg_path, format="svg", dbu=config.global_config.dbu),
             )
-            svg_text = svg_path.read_text()
+            svg_text = svg_path.read_text(encoding="utf-8")
         except ConfigError as exc:
             return _preview_error_response(exc.issues)
         finally:
@@ -117,16 +129,23 @@ class GuiSession:
     def choose_save_path(self, kind: str, suggested_name: str | None = None) -> dict[str, Any]:
         if kind not in {"yaml", "gds"}:
             return _simple_error_response("invalid_output_kind", "$.kind", "kind must be yaml or gds.")
-        selected = self.file_dialog.choose_save_path(kind, suggested_name)
+        with self._path_tokens_lock:
+            self._purge_expired_tokens_locked()
+        try:
+            selected = self.file_dialog.choose_save_path(kind, suggested_name)
+        except DialogFailure as exc:
+            return _dialog_error_response(exc)
         if selected is None:
             return {"ok": False, "canceled": True, "errors": []}
         path = Path(selected)
         token = secretsafe_token()
-        self.path_tokens[token] = PathToken(
-            kind=kind,
-            path=path,
-            expires_at=time.time() + self.path_token_ttl_seconds,
-        )
+        with self._path_tokens_lock:
+            self._purge_expired_tokens_locked()
+            self.path_tokens[token] = PathToken(
+                kind=kind,
+                path=path,
+                expires_at=time.time() + self.path_token_ttl_seconds,
+            )
         return {
             "ok": True,
             "path_token": token,
@@ -136,7 +155,10 @@ class GuiSession:
         }
 
     def open_yaml(self) -> dict[str, Any]:
-        selected = self.file_dialog.choose_open_path("yaml")
+        try:
+            selected = self.file_dialog.choose_open_path("yaml")
+        except DialogFailure as exc:
+            return _dialog_error_response(exc)
         if selected is None:
             return {"ok": False, "canceled": True, "errors": []}
         path = Path(selected)
@@ -145,7 +167,7 @@ class GuiSession:
             return path_error
         return {
             "ok": True,
-            "yaml_text": path.read_text(),
+            "yaml_text": path.read_text(encoding="utf-8"),
             "path_label": str(path),
             "errors": [],
         }
@@ -185,7 +207,7 @@ class GuiSession:
             regions = tuple(region for result in results for region in result.output_regions)
             if not regions:
                 raise ConfigError([issue("output_empty_input", "$.shapes", "No output regions were produced.")])
-            temp_path = _temp_output_path(path)
+            temp_path = atomic_temp_output_path(path)
             try:
                 write_gds(regions, temp_path, top_cell=config.gds.top_cell, dbu=config.global_config.dbu)
                 temp_path.replace(path)
@@ -205,17 +227,22 @@ class GuiSession:
         return self.session_dir / "input.yaml"
 
     def _resolve_path_token(self, token: str, expected_kind: str) -> PathToken | dict[str, Any]:
-        path_token = self.path_tokens.get(token)
-        if path_token is None:
-            return _simple_error_response("invalid_path_token", "$.path_token", "Unknown or mismatched path token.")
-        if path_token.expires_at < time.time():
-            del self.path_tokens[token]
-            return _simple_error_response("path_token_expired", "$.path_token", "Path token expired; choose a save path again.")
-        if path_token.kind != expected_kind:
-            return _simple_error_response("invalid_path_token", "$.path_token", "Unknown or mismatched path token.")
-        return path_token
+        with self._path_tokens_lock:
+            path_token = self.path_tokens.get(token)
+            if path_token is None:
+                return _simple_error_response("invalid_path_token", "$.path_token", "Unknown or mismatched path token.")
+            if path_token.expires_at < time.time():
+                del self.path_tokens[token]
+                return _simple_error_response("path_token_expired", "$.path_token", "Path token expired; choose a save path again.")
+            if path_token.kind != expected_kind:
+                return _simple_error_response("invalid_path_token", "$.path_token", "Unknown or mismatched path token.")
+            return path_token
 
     def _purge_expired_tokens(self) -> None:
+        with self._path_tokens_lock:
+            self._purge_expired_tokens_locked()
+
+    def _purge_expired_tokens_locked(self) -> None:
         now = time.time()
         expired = [token for token, value in self.path_tokens.items() if value.expires_at < now]
         for token in expired:
@@ -272,6 +299,12 @@ def _simple_error_response(code: str, path: str, message: str) -> dict[str, Any]
     return _simple_issues_response([issue(code, path, message)])
 
 
+def _dialog_error_response(exc: DialogFailure) -> dict[str, Any]:
+    response = _simple_error_response(exc.code, "$.dialog", exc.safe_message)
+    response["canceled"] = False
+    return response
+
+
 def _simple_issues_response(issues: list[ConfigIssue]) -> dict[str, Any]:
     return {
         "ok": False,
@@ -305,14 +338,10 @@ def _validate_read_path(path: Path, kind: str) -> dict[str, Any] | None:
 
 
 def _atomic_write_text(path: Path, text: str) -> None:
-    temp_path = _temp_output_path(path)
+    temp_path = atomic_temp_output_path(path)
     try:
-        temp_path.write_text(text)
+        temp_path.write_text(text, encoding="utf-8")
         temp_path.replace(path)
     finally:
         if temp_path.exists():
             temp_path.unlink()
-
-
-def _temp_output_path(path: Path) -> Path:
-    return path.with_name(f".{path.stem}.tmp{path.suffix}")

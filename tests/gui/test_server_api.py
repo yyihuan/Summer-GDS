@@ -3,6 +3,7 @@ from __future__ import annotations
 from pathlib import Path
 
 from summer_gds.gui.server import create_app
+from summer_gds.gui.runtime import RequestGate
 
 
 TOKEN = "test-token"
@@ -117,3 +118,36 @@ def test_preview_svg_reports_geometry_errors(tmp_path):
     assert data["ok"] is False
     assert data["svg_text"] is None
     assert {error["code"] for error in data["errors"]} == {"invalid_boundary"}
+
+
+def test_api_returns_503_app_closing_after_gate_shutdown(tmp_path):
+    gate = RequestGate()
+    app = create_app(session_token=TOKEN, temp_root=tmp_path, request_gate=gate)
+    gate.begin_shutdown()
+
+    response = post_json(app.test_client(), "/api/validate", {"yaml_text": VALID_YAML})
+
+    assert response.status_code == 503
+    assert {error["code"] for error in response.get_json()["errors"]} == {"app_closing"}
+    assert gate.inflight == 0
+
+
+def test_request_leaves_gate_exactly_once_on_route_error(tmp_path, monkeypatch):
+    gate = RequestGate()
+    app = create_app(session_token=TOKEN, temp_root=tmp_path, request_gate=gate)
+    session = app.config["SUMMER_GDS_GUI_SESSION"]
+
+    def fail(_yaml_text):
+        raise RuntimeError("route failed")
+
+    monkeypatch.setattr(session, "validate", fail)
+    response = post_json(app.test_client(), "/api/validate", {"yaml_text": VALID_YAML})
+
+    assert response.status_code == 500
+    assert gate.inflight == 0
+
+
+def test_production_flask_configuration(tmp_path):
+    app = create_app(session_token=TOKEN, temp_root=tmp_path)
+    assert app.debug is False
+    assert app.testing is False

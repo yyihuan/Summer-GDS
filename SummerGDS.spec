@@ -2,28 +2,21 @@
 """
 PyInstaller spec for Summer GDS v2 desktop GUI.
 
-Known issue:
-    Windows onedir builds can start on the build machine but fail on some
-    target machines while importing pythonnet/clr from pywebview WinForms.
-    Keep validating distributed Windows builds on a clean target machine.
-
 Usage (from project root):
-    # Step 1: verify with onedir (default)
-    pyinstaller SummerGDS.spec
-
-    # Step 2: switch to onefile for release — change MODE below
-    # MODE = "onefile" then re-run
     pyinstaller SummerGDS.spec
 """
 
+import glob
 import os
 import sys
-from PyInstaller.utils.hooks import collect_data_files, collect_submodules, collect_dynamic_libs
+import klayout
+import matplotlib
+import matplotlib.font_manager  # Ensures the build-time cache exists.
+from PyInstaller.utils.hooks import collect_data_files
 
 # ---------------------------------------------------------------------------
 # Config
 # ---------------------------------------------------------------------------
-MODE = "onedir"  # "onedir" for debug, "onefile" for release
 PROJECT_ROOT = os.path.abspath(SPECPATH)
 SRC_DIR = os.path.join(PROJECT_ROOT, "src")
 ICON_FILE = (
@@ -44,31 +37,24 @@ gui_dir = os.path.join(SRC_DIR, "summer_gds", "gui")
 datas.append((os.path.join(gui_dir, "templates"), "summer_gds/gui/templates"))
 datas.append((os.path.join(gui_dir, "static"), "summer_gds/gui/static"))
 
-# klayout data files
-try:
-    datas += collect_data_files("klayout")
-except Exception:
-    pass
-
 # matplotlib data (fonts, backend configs)
 try:
     datas += collect_data_files("matplotlib")
 except Exception:
     pass
+for font_cache in glob.glob(os.path.join(matplotlib.get_cachedir(), "fontlist-v*.json")):
+    datas.append((font_cache, "matplotlib-cache"))
 
 # ---------------------------------------------------------------------------
 # Hidden imports
 # ---------------------------------------------------------------------------
 hiddenimports = [
     # klayout — pya is accessed via `import pya` but lives under klayout
-    "klayout",
     "klayout.db",
-    "klayout.lay",
+    "klayout.dbcore",
     "klayout.tl",
     "klayout.pya",
-    "klayout.rdb",
-    "klayout.lib",
-    "klayout.pex",
+    "klayout.pyacore",
     # web stack
     "flask",
     "werkzeug",
@@ -88,19 +74,25 @@ hiddenimports = [
     "numpy",
 ]
 
-try:
-    hiddenimports += collect_submodules("klayout")
-except Exception:
-    pass
-
 # ---------------------------------------------------------------------------
-# Binaries: klayout native libs (.so / .dylib / .dll)
+# Binaries: the GDS reader/writer plugin is loaded dynamically by KLayout.
+# Native extension dependencies are otherwise discovered from the exact imports
+# above by PyInstaller's binary analysis.
 # ---------------------------------------------------------------------------
 binaries = []
-try:
-    binaries += collect_dynamic_libs("klayout")
-except Exception:
-    pass
+klayout_dir = os.path.dirname(klayout.__file__)
+GDS_PLUGIN_PATTERNS = ("lib_gds2_dbpi.*", "_gds2_dbpi.*")
+for plugin_pattern in GDS_PLUGIN_PATTERNS:
+    for plugin in glob.glob(os.path.join(klayout_dir, "db_plugins", plugin_pattern)):
+        if sys.platform == "win32":
+            # The native db core discovers root/db_plugins, while the Python
+            # package loader also probes klayout/db_plugins. Keep one source
+            # binary and mirror it as data so PyInstaller does not deduplicate
+            # the two required runtime locations.
+            binaries.append((plugin, "db_plugins"))
+            datas.append((plugin, "klayout/db_plugins"))
+        else:
+            binaries.append((plugin, "klayout/db_plugins"))
 
 # ---------------------------------------------------------------------------
 # Analysis
@@ -123,51 +115,37 @@ pyz = PYZ(a.pure, a.zipped_data)
 # ---------------------------------------------------------------------------
 # Output
 # ---------------------------------------------------------------------------
-if MODE == "onefile":
-    exe = EXE(
-        pyz,
-        a.scripts,
-        a.binaries,
-        a.datas,
-        [],
-        name="SummerGDS",
-        debug=False,
-        bootloader_ignore_signals=False,
-        strip=False,
-        upx=True,
-        console=False,
+exe = EXE(
+    pyz,
+    a.scripts,
+    [],
+    exclude_binaries=True,
+    name="SummerGDS",
+    debug=False,
+    bootloader_ignore_signals=False,
+    strip=False,
+    upx=True,
+    console=False,
+    icon=ICON_FILE,
+    disable_windowed_traceback=False,
+    argv_emulation=False,
+    target_arch=None,
+    codesign_identity=None,
+    entitlements_file=None,
+)
+coll = COLLECT(
+    exe,
+    a.binaries,
+    a.datas,
+    strip=False,
+    upx=True,
+    upx_exclude=[],
+    name="SummerGDS",
+)
+if sys.platform == "darwin":
+    app = BUNDLE(
+        coll,
+        name="SummerGDS.app",
         icon=ICON_FILE,
-        disable_windowed_traceback=False,
-        argv_emulation=False,
-        target_arch=None,
-        codesign_identity=None,
-        entitlements_file=None,
-    )
-else:
-    exe = EXE(
-        pyz,
-        a.scripts,
-        [],
-        exclude_binaries=True,
-        name="SummerGDS",
-        debug=False,
-        bootloader_ignore_signals=False,
-        strip=False,
-        upx=True,
-        console=False,  # onedir hides console for GUI app
-        icon=ICON_FILE,
-        disable_windowed_traceback=False,
-        argv_emulation=False,
-        target_arch=None,
-        codesign_identity=None,
-        entitlements_file=None,
-    )
-    coll = COLLECT(
-        exe,
-        a.binaries,
-        a.datas,
-        strip=False,
-        upx=True,
-        upx_exclude=[],
-        name="SummerGDS",
+        bundle_identifier="org.summergds.desktop",
     )

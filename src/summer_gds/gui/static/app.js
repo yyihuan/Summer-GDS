@@ -247,11 +247,12 @@ function bindEvents() {
   splitter.addEventListener("keydown", handleSplitterKeydown);
 }
 
-function initialize() {
+async function initialize() {
   state.generatedYamlText = serializeDraftToYaml(state.formDraft);
   state.lastSavedOrLoadedYamlText = state.generatedYamlText;
   render();
-  syncYamlFromDraft({ preview: true, markDirty: false });
+  await syncYamlFromDraft({ preview: true, markDirty: false });
+  window.SUMMER_GDS_APP_READY = true;
 }
 
 function createDefaultDraft() {

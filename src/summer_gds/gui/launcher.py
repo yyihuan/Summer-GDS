@@ -1,29 +1,36 @@
 from __future__ import annotations
 
 import logging
-import secrets
+import os
+import shutil
 import sys
-import threading
 import traceback
-from dataclasses import dataclass
 from pathlib import Path
-from typing import Any
+from typing import Callable
 
 # Pre-warm matplotlib font cache and backends before anything else imports them.
 # In a PyInstaller bundle the first import triggers a slow cache rebuild;
 # doing it here avoids a confusing long pause.
+def _seed_frozen_matplotlib_cache() -> None:
+    if not getattr(sys, "frozen", False):
+        return
+    cache_root = Path(os.environ["MPLCONFIGDIR"])
+    packaged_root = Path(getattr(sys, "_MEIPASS")) / "matplotlib-cache"
+    cache_root.mkdir(parents=True, exist_ok=True)
+    for packaged_cache in packaged_root.glob("fontlist-v*.json"):
+        destination = cache_root / packaged_cache.name
+        if not destination.exists():
+            shutil.copy2(packaged_cache, destination)
+
+
+_seed_frozen_matplotlib_cache()
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.font_manager  # noqa: F401
 import matplotlib.backends.backend_agg  # noqa: F401
 import matplotlib.backends.backend_svg  # noqa: F401
 
-from flask import Flask
-from werkzeug.serving import BaseWSGIServer, make_server
-
-from summer_gds.gui.desktop import PyWebviewSaveFileDialog
-from summer_gds.gui.server import create_app
-from summer_gds.gui.service import GuiSession
+from summer_gds.gui.qt_shell import run_qt_shell
 
 # Fatal-error log file for --windowed mode (no console visible).
 _CRASH_LOG = Path.home() / ".summer-gds-crash.log"
@@ -39,94 +46,15 @@ def _log(message: str) -> None:
         pass
 
 
-@dataclass
-class LoopbackServerHandle:
-    host: str
-    port: int
-    server: BaseWSGIServer
-    thread: threading.Thread
-
-    @property
-    def url(self) -> str:
-        return f"http://{self.host}:{self.port}/"
-
-    def stop(self) -> None:
-        self.server.shutdown()
-        self.thread.join(timeout=2)
-        self.server.server_close()
-
-
-def start_loopback_server(app: Flask, host: str = "127.0.0.1") -> LoopbackServerHandle:
-    server = make_server(host, 0, app, threaded=True)
-    thread = threading.Thread(target=server.serve_forever, name="summer-gds-gui-server", daemon=True)
-    thread.start()
-    return LoopbackServerHandle(host=host, port=server.server_port, server=server, thread=thread)
-
-
-def launch_desktop(
-    *,
-    session_token: str | None = None,
-    temp_root: Path | None = None,
-    webview_module: Any | None = None,
-) -> None:
-    _log("launch_desktop: start")
-    webview = webview_module or _import_webview()
-    _log("launch_desktop: webview imported, guilib=" + str(webview.guilib))
-
-    token = session_token or secrets.token_urlsafe(32)
-    session = GuiSession(temp_root=temp_root)
-    _log("launch_desktop: session created " + session.session_id)
-    app = create_app(session_token=token, gui_session=session)
-    _log("launch_desktop: Flask app created")
-    handle = start_loopback_server(app)
-    _log("launch_desktop: server at " + handle.url)
-    try:
-        window = webview.create_window(
-            "Summer GDS",
-            handle.url,
-            width=1280,
-            height=720,
-            min_size=(640, 360),
-        )
-        session.file_dialog = PyWebviewSaveFileDialog(window=window)
-        start_kwargs: dict[str, Any] = {
-            "func": _log_webview_runtime,
-            "args": (webview,),
-        }
-        if sys.platform == "win32":
-            # Prefer WebView2 over the legacy MSHTML renderer when WinForms is available.
-            start_kwargs["gui"] = "edgechromium"
-        _log("launch_desktop: calling webview.start() kwargs=" + str(_public_start_kwargs(start_kwargs)))
-        webview.start(**start_kwargs)
-        _log("launch_desktop: webview.start() returned")
-    finally:
-        handle.stop()
-        session.close()
-        _log("launch_desktop: cleaned up")
-
-
-def main() -> int:
+def main(shell_runner: Callable[[], int] = run_qt_shell) -> int:
     _log("=== Summer GDS starting === frozen=" + str(getattr(sys, "frozen", False)))
     try:
-        launch_desktop()
+        exit_code = shell_runner()
     except Exception:
         _report_fatal(traceback.format_exc())
         return 1
-    _log("=== Summer GDS exiting normally ===")
-    return 0
-
-
-def _log_webview_runtime(webview: Any) -> None:
-    _log(
-        "webview runtime: guilib="
-        + str(getattr(webview, "guilib", None))
-        + ", renderer="
-        + str(getattr(webview, "renderer", None))
-    )
-
-
-def _public_start_kwargs(start_kwargs: dict[str, Any]) -> dict[str, Any]:
-    return {key: value for key, value in start_kwargs.items() if key not in {"func", "args"}}
+    _log("=== Summer GDS exiting code=" + str(exit_code) + " ===")
+    return exit_code
 
 
 def _report_fatal(message: str) -> None:
@@ -136,32 +64,24 @@ def _report_fatal(message: str) -> None:
     try:
         sep = "=" * 40
         _CRASH_LOG.write_text(
-            "Summer GDS crash report\n" + sep + "\n" + message + "\n"
+            "Summer GDS crash report\n" + sep + "\n" + message + "\n",
+            encoding="utf-8",
         )
     except OSError:
         pass
     try:
-        import tkinter as tk
-        from tkinter import messagebox
-        root = tk.Tk()
-        root.withdraw()
-        messagebox.showerror(
+        from PySide6.QtWidgets import QApplication, QMessageBox
+
+        app = QApplication.instance() or QApplication([])
+        QMessageBox.critical(
+            None,
             "Summer GDS - Fatal Error",
-            "Summer GDS failed to start.\n\n"
-            "Details saved to:\n" + str(_CRASH_LOG) + "\n\n"
-            + message[:500],
+            "Summer GDS failed to start.\n\nDetails saved to:\n" + str(_CRASH_LOG),
         )
-        root.destroy()
+        if QApplication.instance() is app:
+            app.processEvents()
     except Exception:
         pass
-
-
-def _import_webview() -> Any:
-    try:
-        import webview
-    except ImportError as exc:
-        raise RuntimeError("pywebview is required to launch the desktop GUI.") from exc
-    return webview
 
 
 if __name__ == "__main__":

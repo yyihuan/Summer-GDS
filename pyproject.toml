@@ -6,13 +6,16 @@ dependencies = [
     "flask>=3.1.0",
     "klayout>=0.28.0",
     "matplotlib>=3.5.0",
-    "pywebview>=5.0",
+    "pyside6==6.11.1",
     "pyyaml>=6.0",
 ]
 
 [dependency-groups]
 dev = [
     "pytest>=9.0.2",
+]
+packaging = [
+    "pyinstaller==6.21.0",
 ]
 
 [project.scripts]

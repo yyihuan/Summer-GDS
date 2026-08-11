@@ -6,6 +6,7 @@ from summer_gds.gui.server import create_app
 
 
 TOKEN = "test-token"
+STYLE_CSS = (Path(__file__).parents[2] / "src/summer_gds/gui/static/style.css").read_text(encoding="utf-8")
 
 
 def test_index_is_local_static_shell(tmp_path):
@@ -70,6 +71,14 @@ def test_frontend_guards_against_stuck_busy_state():
     assert "busyWatchdogTimer" in script
     assert "function guardBusy()" in script
     assert "TimeoutError" in script
+
+
+def test_preview_svg_viewport_fills_the_responsive_render_stage():
+    assert ".svg-stage svg" in STYLE_CSS
+    assert "width: 100%;" in STYLE_CSS
+    assert "height: 100%;" in STYLE_CSS
+    assert "max-width: 100%;" not in STYLE_CSS
+    assert "max-height: 100%;" not in STYLE_CSS
 
 
 def test_frontend_uses_single_vertex_list_input_with_orientation_checks():

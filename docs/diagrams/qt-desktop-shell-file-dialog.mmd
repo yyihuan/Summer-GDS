@@ -1,0 +1,28 @@
+sequenceDiagram
+  participant UI as Web UI
+  participant Flask as Flask worker
+  participant Bridge as Qt dialog bridge
+  participant Qt as Qt GUI thread
+  participant Dialog as QFileDialog
+
+  UI->>Flask: choose save or open
+  Flask->>Bridge: try start single-flight request
+  alt active request or closing
+    Bridge-->>Flask: dialog_busy or canceled
+    Flask-->>UI: structured response
+  else request accepted
+    Bridge->>Qt: queued open request
+    Qt->>Dialog: open asynchronous native dialog
+    alt completed before 100 seconds
+      Dialog-->>Qt: selected, canceled, or failed
+      Qt-->>Bridge: set exactly one terminal state
+      Bridge-->>Flask: path, None, or DialogFailure
+      Flask-->>UI: defined response
+    else worker timeout
+      Flask->>Bridge: mark timed_out and request close
+      Bridge->>Qt: queued cancel
+      Qt->>Dialog: close matching dialog
+      Qt-->>Bridge: discard late result and release gate
+      Flask-->>UI: dialog_timeout
+    end
+  end

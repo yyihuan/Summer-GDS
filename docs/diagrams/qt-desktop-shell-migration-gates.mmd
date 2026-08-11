@@ -1,0 +1,12 @@
+flowchart TD
+  Docs["Revised plan and round-two reviews"] --> Baseline["Baseline, exact dependencies, license inventory"]
+  Baseline --> Shell["Runtime, dialog bridge, Qt shell"]
+  Shell --> Unit["Unit, API, concurrency, lifecycle tests"]
+  Unit --> PreCutover["Pre-cutover direct Qt-shell real-window smoke"]
+  PreCutover --> Cutover["Qt entry and no pywebview production path"]
+  Cutover --> MacRun["Post-cutover macOS source workflow and real-window smoke"]
+  MacRun --> MacBundle["Moved macOS onedir inventory and workflow smoke"]
+  MacBundle --> WinBuild["AMD64 bundle on Windows ARM x64 emulation"]
+  WinBuild --> WinVisual["User visual acceptance"]
+  WinVisual --> NativeWin["Clean native Windows x64 release gate"]
+  NativeWin --> Installer["Installer and signed release"]

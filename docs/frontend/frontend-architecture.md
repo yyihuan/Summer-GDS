@@ -17,21 +17,26 @@
 
 ## 2. 运行时架构
 
-生产版使用 `pywebview` 嵌入本地页面。系统浏览器只用于开发调试，不作为正式交付路径。
+生产版使用 `PySide6 + QtWebEngine` 嵌入本地页面。系统浏览器只用于开发调试，不作为正式交付路径。
+
+![Qt 桌面壳目标架构](../diagrams/qt-desktop-shell-target-architecture.svg)
+
+可编辑图源：
+[`qt-desktop-shell-target-architecture.mmd`](../diagrams/qt-desktop-shell-target-architecture.mmd)。
 
 ```text
 ┌──────────────────────────────────────────────┐
 │                 SummerGDS                    │
 │                                              │
 │  ┌────────────────────────────────────────┐  │
-│  │ pywebview window                       │  │
+│  │ QMainWindow + QWebEngineView           │  │
 │  │ ├── local HTML/CSS/JS                  │  │
 │  │ ├── visual config builder              │  │
 │  │ ├── readonly YAML preview mode         │  │
 │  │ └── centered live SVG preview          │  │
 │  └────────────────────────────────────────┘  │
 │                    │                         │
-│                    │ HTTP / pywebview bridge │
+│                    │ HTTP / Qt dialog bridge │
 │                    ▼                         │
 │  ┌────────────────────────────────────────┐  │
 │  │ Flask server on loopback random port   │  │
@@ -52,7 +57,7 @@
 
 | 层次 | 技术 | 约束 |
 | --- | --- | --- |
-| 桌面壳 | `pywebview` + PyInstaller | 生产版必须支持原生打开/保存文件对话框。 |
+| 桌面壳 | `PySide6 QtWebEngine` + PyInstaller | Qt GUI thread 承载原生打开/保存文件对话框。 |
 | 后端 | Flask | 只监听 `127.0.0.1` 随机端口，禁止作为远程服务使用。 |
 | 前端 | HTML/CSS/vanilla JS | 第一版不需要 Node 构建链；若后续引入小型库，必须本地 vendored，不走 CDN。 |
 | 配置构建器 | 原生表单 + JS state | 第一版用户通过表单生成 YAML；不要求代码编辑器组件。 |
@@ -87,11 +92,14 @@ v2/src/summer_gds/gui/
 
 ```text
 v2/src/summer_gds/gui/
-├── launcher.py              # 入口：启动 Flask + pywebview 桌面壳
+├── launcher.py              # 稳定入口与 matplotlib 预热
+├── runtime.py               # loopback server、readiness、RequestGate
+├── qt_shell.py              # Qt 窗口、WebEngine、安全边界与 shutdown
+├── qt_dialog.py             # Flask worker 到 Qt GUI thread 的 dialog bridge
+├── bundle_probe.py          # frozen-only 私有 bundle 验收协议
 ├── server.py                # Flask app + API route
 ├── service.py               # GUI-facing service wrapper
 ├── presenter.py             # UI response/presentation helpers
-├── desktop.py               # pywebview/native dialog bridge
 ├── templates/
 │   └── index.html
 ├── static/
@@ -439,7 +447,8 @@ yaml_invalid
 
 部署层的关键约束：
 
-- `launcher.py` 是桌面入口，负责拉起本地 Flask 服务和 `pywebview` 窗口。
+- `launcher.py` 是唯一桌面入口，委托 `qt_shell.py` 拉起 Qt、Flask loopback
+  server 和唯一 shutdown coordinator。
 - 生产版只监听 `127.0.0.1`，不暴露公网端口。
 - 关闭窗口时要停止 Flask 后台线程并清理临时目录。
 - 打包时必须把 `v2/src/summer_gds/gui/templates/**`、`v2/src/summer_gds/gui/static/**` 和 `summer_gds` package 一起带上。

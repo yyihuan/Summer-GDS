@@ -1,0 +1,25 @@
+flowchart TD
+  User["Desktop user"] --> Entry["summer-gds-gui"]
+  Entry --> Launcher["launcher.py"]
+
+  subgraph Process["Summer GDS process"]
+    Launcher --> QtApp["QApplication"]
+    Launcher --> Runtime["Loopback runtime"]
+    Runtime --> Ready["Bounded HTTP readiness probe"]
+    QtApp --> Window["QMainWindow"]
+    Window --> WebView["QWebEngineView"]
+    WebView --> Page["Restricted QWebEnginePage"]
+    Page --> Profile["Off-the-record profile"]
+    Ready --> Flask["Production Flask on 127.0.0.1 random port"]
+    Page -->|"HTTP with session token"| Flask
+    Flask --> Gate["Request gate and in-flight tracking"]
+    Gate --> GuiSession["GuiSession"]
+    GuiSession --> Pipeline["YAML v2 and geometry pipeline"]
+    Pipeline --> Preview["SVG preview"]
+    Pipeline --> Writer["GDS writer"]
+    GuiSession -->|"framework-neutral protocol"| DialogBridge["Qt dialog thread bridge"]
+    DialogBridge -->|"GUI thread"| NativeDialog["QFileDialog"]
+  end
+
+  Preview --> Page
+  Writer --> GdsFile["GDS file"]

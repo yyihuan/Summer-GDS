@@ -55,7 +55,7 @@ def test_visual_fixture_exports_png_svg_and_gds(case_name):
         assert result.output_path.stat().st_size > 0
 
     assert png.read_bytes().startswith(b"\x89PNG")
-    assert "<svg" in svg.read_text()
+    assert "<svg" in svg.read_text(encoding="utf-8")
     assert gds.stat().st_size > 100
 
 

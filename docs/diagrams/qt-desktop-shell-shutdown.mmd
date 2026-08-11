@@ -1,0 +1,13 @@
+flowchart TD
+  Close["Window close event"] --> Quiesce["Enter closing once; keep Qt alive; reject new dialog and API requests"]
+  Quiesce --> Watchdog["Arm GUI-thread 10-second hard-deadline watchdog"]
+  Quiesce --> Dialog["Close active dialog and wake pending worker"]
+  Dialog --> Server["Non-GUI thread: server shutdown and bounded serve-thread join"]
+  Server --> Gate["RequestGate wait_drained with remaining shared deadline"]
+  Gate --> Socket["Best-effort server_close exactly once"]
+  Socket --> Drain{"Serve thread stopped and request gate drained?"}
+  Drain -->|"Yes"| Session["Close GuiSession exactly once"]
+  Drain -->|"No"| Preserve["Preserve session directory for deferred stale cleanup"]
+  Watchdog -.->|"Timeout wins terminal state"| Preserve
+  Session --> Complete["GUI thread: destroy page, profile, and window; exit"]
+  Preserve --> Complete
