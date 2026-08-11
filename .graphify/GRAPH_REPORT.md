@@ -1,25 +1,25 @@
 # Graph Report - .  (2026-08-11)
 
 ## Corpus Check
-- 264 files · ~133,315 words
+- 266 files · ~165,911 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 1218 nodes · 2358 edges · 59 communities detected
+- 1220 nodes · 2363 edges · 58 communities detected
 - Extraction: 95% EXTRACTED · 5% INFERRED · 0% AMBIGUOUS · INFERRED: 108 edges (avg confidence: 0.5)
 - Token cost: 0 input · 0 output
-- Edge kinds: calls: 796 · contains: 792 · ON_BRANCH: 221 · method: 151 · uses: 108 · MODIFIES: 102 · PARENT_OF: 98 · rationale_for: 67 · inherits: 15 · imports_from: 8
+- Edge kinds: calls: 796 · contains: 792 · ON_BRANCH: 223 · method: 151 · uses: 108 · MODIFIES: 103 · PARENT_OF: 100 · rationale_for: 67 · inherits: 15 · imports_from: 8
 
 
 ## Input Scope
 - Requested: auto
 - Resolved: committed (source: default-auto)
-- Included files: 264 · Candidates: 290
-- Excluded: 4 untracked · 19629 ignored · 0 sensitive · 1 missing committed
+- Included files: 266 · Candidates: 294
+- Excluded: 1 untracked · 19689 ignored · 0 sensitive · 1 missing committed
 - Recommendation: Use --scope all or graphify.yaml inputs.corpus for a knowledge-base folder.
 
 ## Graph Freshness
-- Built from Git commit: `7ef43db`
+- Built from Git commit: `5b9d54d`
 - Compare this hash to `git rev-parse HEAD` before trusting freshness-sensitive graph output.
 ## God Nodes (most connected - your core abstractions)
 1. `Frame` - 22 edges
@@ -156,48 +156,48 @@ Cohesion: 0.29
 Nodes (12): assert_code(), parse(), test_rejects_dbu_and_precision_mismatch(), test_rejects_duplicate_sid(), test_rejects_forward_ref_and_ref_to_non_base_shape(), test_rejects_invalid_rings_count_pitch_width_and_fillet_length(), test_rejects_non_finite_and_bool_numbers(), test_rejects_non_mapping_or_deep_yaml() (+4 more)
 
 ### Community 27 - "Community 27"
+Cohesion: 0.17
+Nodes (5): atomic_temp_output_path(), Return an adjacent temporary name while preserving the writer's suffix., 1a85671 docs: refresh Graphify evidence for Qt shell, 5b9d54d test: decode static frontend fixtures as UTF-8, 7ef43db feat: migrate desktop shell to QtWebEngine
+
+### Community 28 - "Community 28"
 Cohesion: 0.36
 Nodes (11): apply_fillet(), _arc_points(), _arc_points_for_corner(), _expand_radii(), _interior_angle(), _minor_sweep(), _point_from_unit(), _segments_for_arc() (+3 more)
 
-### Community 28 - "Community 28"
+### Community 29 - "Community 29"
 Cohesion: 0.38
 Nodes (10): make_client(), post_json(), test_api_rejects_missing_session_token(), test_api_returns_503_app_closing_after_gate_shutdown(), test_parse_reports_contract_errors_without_throwing(), test_parse_returns_normalized_config_and_field_map(), test_preview_svg_reports_geometry_errors(), test_preview_svg_returns_svg_text_and_removes_temp_files() (+2 more)
 
-### Community 29 - "Community 29"
+### Community 30 - "Community 30"
 Cohesion: 0.26
 Nodes (7): addOverrideDetection(), createOverride(), enhanceFormEventBinding(), handleUserOverride(), removeOverride(), syncCardDerivation(), updateInheritanceIndicator()
 
-### Community 30 - "Community 30"
+### Community 31 - "Community 31"
 Cohesion: 0.39
 Nodes (10): printTestSummary(), recordTest(), runAllTests(), testBasicPropertyExtraction(), testBatchShapeResolution(), testDeriveParamsApplication(), testEdgeCases(), testInheritanceResolution() (+2 more)
 
-### Community 31 - "Community 31"
+### Community 32 - "Community 32"
 Cohesion: 0.32
 Nodes (11): runAllTests(), setupTestEnvironment(), teardownTestEnvironment(), testChangeDetection(), testDerivedShapeSync(), testOverrideSkipSync(), testPropertyComparison(), testRingPropertiesInheritance() (+3 more)
 
-### Community 32 - "Community 32"
+### Community 33 - "Community 33"
 Cohesion: 0.35
 Nodes (9): assert_code(), test_force_allows_overwrite(), test_gds_dry_run_requires_final_gds_output_path(), test_output_path_errors_are_reported_before_writing(), test_png_and_gds_exports_write_files(), test_png_dry_run_uses_cli_out_and_writes_nothing(), test_svg_export_uses_image_renderer(), test_validate_config_file_does_not_require_gds_output() (+1 more)
 
-### Community 33 - "Community 33"
+### Community 34 - "Community 34"
 Cohesion: 0.31
 Nodes (9): cross(), has_consecutive_duplicate_points(), is_simple_polygon(), normalize_counterclockwise(), _on_segment(), _orientation(), points_equal(), segments_intersect() (+1 more)
 
-### Community 34 - "Community 34"
+### Community 35 - "Community 35"
 Cohesion: 0.33
 Nodes (8): canonical_yaml(), config_to_dict(), _fillet_to_dict(), _path_to_string(), _radius_to_dict(), _ring_fillet_to_dict(), _shape_to_dict(), _source_to_dict()
 
-### Community 35 - "Community 35"
+### Community 36 - "Community 36"
 Cohesion: 0.51
 Nodes (9): _execute_base_shape(), execute_config(), _execute_rings(), _execute_via(), _offset_boundary(), _resolve_ref_boundary(), _resolve_shape_source_boundary(), _resolve_source_boundary() (+1 more)
 
-### Community 36 - "Community 36"
+### Community 37 - "Community 37"
 Cohesion: 0.38
 Nodes (9): bbox_tuple(), run_config(), test_rings_each_ring_inner_and_outer_fillet_are_independent(), test_rings_output_count_and_offsets_match_protocol(), test_rings_with_per_ring_fillet_increases_boundary_point_count(), test_rings_without_fillet_keeps_outer_boundaries_unfilleted(), test_via_inner_and_outer_fillet_are_independent(), test_via_inner_bigger_than_outer_reports_empty_boolean() (+1 more)
-
-### Community 37 - "Community 37"
-Cohesion: 0.20
-Nodes (1): 7ef43db feat: migrate desktop shell to QtWebEngine
 
 ### Community 39 - "Community 39"
 Cohesion: 0.24
@@ -275,10 +275,6 @@ Nodes (4): _combined_bbox(), _metadata_for_format(), render_image(), _stable_col
 Cohesion: 0.67
 Nodes (3): fillet_gds(), main(), 对GDS文件中的所有多边形进行倒角处理      参数:         input_file: 输入GDS文件路径         output_file:
 
-### Community 63 - "Community 63"
-Cohesion: 0.67
-Nodes (2): atomic_temp_output_path(), Return an adjacent temporary name while preserving the writer's suffix.
-
 ### Community 64 - "Community 64"
 Cohesion: 1.00
 Nodes (2): main(), _revision()
@@ -286,13 +282,9 @@ Nodes (2): main(), _revision()
 ## Knowledge Gaps
 - **174 isolated node(s):** `Remove a verifier temporary tree, tolerating Windows' copied DLL attributes.`, `Return the directory exposed to a frozen application as ``_MEIPASS``.`, `Summer GDS v2 implementation.`, `Application services.`, `Return an adjacent temporary name while preserving the writer's suffix.` (+169 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **Thin community `Community 37`** (1 nodes): `7ef43db feat: migrate desktop shell to QtWebEngine`
-  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
 - **Thin community `Community 52`** (2 nodes): `cloneDeep()`, `summarizeCircle()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
 - **Thin community `Community 56`** (2 nodes): `detectCircularDependency()`, `findShapeById()`
-  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 63`** (2 nodes): `atomic_temp_output_path()`, `Return an adjacent temporary name while preserving the writer's suffix.`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
 - **Thin community `Community 64`** (2 nodes): `main()`, `_revision()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
